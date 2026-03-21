@@ -307,7 +307,7 @@ export default async function BillDetailPage({ params }: PageProps) {
                           className="flex items-center gap-2.5 rounded-md border border-[var(--codex-border)] px-3 py-2 no-underline transition-all hover:border-[var(--codex-input-border)]"
                         >
                           <div
-                            className="h-7 w-7 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]"
+                            className="h-7 w-7 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]"
                             style={{ border: `1.5px solid ${partyColor(pol.party)}44` }}
                           >
                             <AvatarImage

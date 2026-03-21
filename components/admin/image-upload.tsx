@@ -55,7 +55,7 @@ export function ImageUpload({ currentUrl, folder, onUpload, className }: ImageUp
     <div className={className}>
       <div className="flex items-center gap-4">
         {preview && (
-          <div className="h-16 w-16 overflow-hidden rounded-full bg-[var(--codex-card)] border border-[var(--codex-border)]">
+          <div className="h-16 w-16 overflow-hidden rounded-lg bg-[var(--codex-card)] border border-[var(--codex-border)]">
             <Image
               src={preview}
               alt="Preview"

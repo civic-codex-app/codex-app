@@ -90,7 +90,7 @@ export function RaceCard({ race }: RaceCardProps) {
             {candidates.slice(0, 5).map((c) => (
               <div
                 key={c.id}
-                className="h-7 w-7 overflow-hidden rounded-full bg-[var(--codex-bg)]"
+                className="h-7 w-7 overflow-hidden rounded-lg bg-[var(--codex-bg)]"
                 style={{ border: `2px solid ${partyColor(c.party)}44` }}
                 title={`${c.name} (${partyLabel(c.party)})`}
               >

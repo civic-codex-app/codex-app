@@ -121,7 +121,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         <div className="mb-8 flex items-start gap-5">
           {/* Avatar */}
           <div
-            className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)] md:h-28 md:w-28"
+            className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-[var(--codex-card)] md:h-28 md:w-28"
             style={{ border: `3px solid ${color}44` }}
           >
             <AvatarImage

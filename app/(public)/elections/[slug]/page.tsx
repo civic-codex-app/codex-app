@@ -221,7 +221,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                       <div className="flex items-start gap-4">
                         {/* Avatar */}
                         <div
-                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]"
+                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
                           style={{ border: `2px solid ${color}44` }}
                         >
                           <AvatarImage

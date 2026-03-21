@@ -231,7 +231,7 @@ export default async function PoliticianPage({ params }: PageProps) {
 
         <div className="grid gap-10 md:grid-cols-[340px_1fr]">
           {/* Image -- large on desktop, hidden on mobile */}
-          <div className="relative hidden overflow-hidden rounded-sm md:block">
+          <div className="relative hidden overflow-hidden rounded-xl md:block">
             {pol.image_url ? (
               <Image
                 src={pol.image_url}
@@ -254,7 +254,7 @@ export default async function PoliticianPage({ params }: PageProps) {
             {/* Mobile: compact avatar + name row */}
             <div className="mb-5 flex items-center gap-4 md:hidden">
               <div
-                className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]"
+                className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
                 style={{ border: `2.5px solid ${color}44` }}
               >
                 {pol.image_url ? (

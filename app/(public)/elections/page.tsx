@@ -292,7 +292,7 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
                         {candidates.slice(0, 4).map((c: any) => (
                           <div
                             key={c.id}
-                            className="h-7 w-7 overflow-hidden rounded-full bg-[var(--codex-bg)]"
+                            className="h-7 w-7 overflow-hidden rounded-lg bg-[var(--codex-bg)]"
                             style={{ border: `2px solid ${partyColor(c.party)}44` }}
                             title={`${c.name} (${partyLabel(c.party)})`}
                           >

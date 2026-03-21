@@ -40,7 +40,7 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
       {/* Avatar */}
       <div className="relative">
         <div
-          className="h-12 w-12 overflow-hidden rounded-full bg-[var(--codex-card)] transition-colors sm:h-14 sm:w-14"
+          className="h-12 w-12 overflow-hidden rounded-lg bg-[var(--codex-card)] transition-colors sm:h-14 sm:w-14"
           style={{ border: `2px solid var(--codex-border)` }}
         >
           {politician.image_url ? (

@@ -64,7 +64,7 @@ export function BipartisanScoreCard({
 
               {/* Avatar */}
               <div
-                className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[var(--codex-border)]"
+                className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[var(--codex-border)]"
                 style={{ borderColor: isHovered ? color : undefined }}
               >
                 <AvatarImage

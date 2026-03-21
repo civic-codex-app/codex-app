@@ -281,7 +281,7 @@ function ProfileCard({
 
       <div className="mb-3 flex items-center gap-3">
         <div
-          className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)] sm:h-14 sm:w-14"
+          className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)] sm:h-14 sm:w-14"
           style={{ border: `2px solid ${color}66` }}
         >
           <AvatarImage

@@ -283,7 +283,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                       href={`/politicians/${pol.slug}`}
                       className="group flex items-center gap-4 rounded-md border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-input-border)]"
                     >
-                      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]">
+                      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]">
                         <AvatarImage
                           src={pol.image_url}
                           alt={pol.name}
