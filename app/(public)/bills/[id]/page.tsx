@@ -227,7 +227,7 @@ export default async function BillDetailPage({ params }: PageProps) {
                             style={{ border: `1.5px solid ${partyColor(pol.party)}44` }}
                           >
                             <AvatarImage
-                              src={pol.image_url || ''}
+                              src={pol.image_url}
                               alt={pol.name}
                               size={28}
                               fallbackColor={partyColor(pol.party)}

@@ -101,54 +101,20 @@ export default async function PoliticianPage({ params }: PageProps) {
 
   const pol = data as Politician
 
-  // Fetch stances on issues
-  const { data: stances, error: stancesError } = await supabase
-    .from('politician_issues')
-    .select('*, issues:issue_id(id, name, slug, icon, category)')
-    .eq('politician_id', pol.id)
-    .order('created_at')
-  if (stancesError) console.error('Failed to fetch stances:', stancesError.message)
+  // Run all queries in parallel for performance
+  const [stancesResult, committeeResult, votingResult, financeResult, electionResult] = await Promise.all([
+    supabase.from('politician_issues').select('*, issues:issue_id(id, name, slug, icon, category)').eq('politician_id', pol.id).order('created_at'),
+    supabase.from('politician_committees').select('role, committees:committee_id(id, name, slug, chamber)').eq('politician_id', pol.id),
+    supabase.from('voting_records').select('id, bill_name, bill_number, bill_id, vote, vote_date').eq('politician_id', pol.id).order('vote_date', { ascending: false }),
+    supabase.from('campaign_finance').select('*').eq('politician_id', pol.id).order('cycle', { ascending: false }),
+    supabase.from('election_results').select('*').eq('politician_id', pol.id).order('election_year', { ascending: false }),
+  ])
 
-  const politicianStances = (stances ?? []) as any as PoliticianStanceRow[]
-
-  // Fetch committee memberships (only for senators and house members)
-  const { data: committeeData, error: committeesError } = await supabase
-    .from('politician_committees')
-    .select('role, committees:committee_id(id, name, slug, chamber)')
-    .eq('politician_id', pol.id)
-  if (committeesError) console.error('Failed to fetch committees:', committeesError.message)
-
-  const committees = (committeeData ?? []) as any as CommitteeMembershipRow[]
-
-  // Fetch voting records
-  const { data: votingData, error: votingError } = await supabase
-    .from('voting_records')
-    .select('id, bill_name, bill_number, bill_id, vote, vote_date')
-    .eq('politician_id', pol.id)
-    .order('vote_date', { ascending: false })
-  if (votingError) console.error('Failed to fetch voting records:', votingError.message)
-
-  const votingRecords = (votingData ?? []) as any as VotingRecordRow[]
-
-  // Fetch campaign finance
-  const { data: financeData, error: financeError } = await supabase
-    .from('campaign_finance')
-    .select('*')
-    .eq('politician_id', pol.id)
-    .order('cycle', { ascending: false })
-  if (financeError) console.error('Failed to fetch campaign finance:', financeError.message)
-
-  const financeRecords = (financeData ?? []) as any as CampaignFinanceRow[]
-
-  // Fetch election history
-  const { data: electionData, error: electionError } = await supabase
-    .from('election_results')
-    .select('*')
-    .eq('politician_id', pol.id)
-    .order('election_year', { ascending: false })
-  if (electionError) console.error('Failed to fetch election history:', electionError.message)
-
-  const electionResults = (electionData ?? []) as any as ElectionResultRow[]
+  const politicianStances = (stancesResult.data ?? []) as any as PoliticianStanceRow[]
+  const committees = (committeeResult.data ?? []) as any as CommitteeMembershipRow[]
+  const votingRecords = (votingResult.data ?? []) as any as VotingRecordRow[]
+  const financeRecords = (financeResult.data ?? []) as any as CampaignFinanceRow[]
+  const electionResults = (electionResult.data ?? []) as any as ElectionResultRow[]
 
   // Compute party alignment score
   const alignmentScore = computeAlignment(pol.party, politicianStances)
@@ -159,69 +125,62 @@ export default async function PoliticianPage({ params }: PageProps) {
     if (s.issues?.id) stanceMap.set(s.issues.id, s.stance)
   }
 
-  // Find like-minded officials: fetch all politicians' stances and compare
+  // Find like-minded officials: only compare same-party politicians for speed
   let likeMinded: LikeMindedPolitician[] = []
   if (stanceMap.size > 0) {
-    // Paginate past supabase 1000-row server limit
-    const allStances: ComparisonStanceRow[] = []
-    {
-      let from = 0
-      const PAGE = 1000
-      while (true) {
-        const { data } = await supabase
-          .from('politician_issues')
-          .select('politician_id, stance, issue_id')
-          .range(from, from + PAGE - 1)
-        if (!data || data.length === 0) break
-        allStances.push(...(data as any as ComparisonStanceRow[]))
-        if (data.length < PAGE) break
-        from += PAGE
-      }
-    }
+    // Fetch stances for same-party politicians only (much smaller dataset)
+    const { data: sameParyPols } = await supabase
+      .from('politicians')
+      .select('id')
+      .eq('party', pol.party)
+      .neq('id', pol.id)
+      .limit(200)
 
-    if (allStances.length > 0) {
-      // Group by politician
-      const byPol = new Map<string, Map<string, string>>()
-      for (const row of allStances) {
-        if (row.politician_id === pol.id) continue
-        if (!byPol.has(row.politician_id)) byPol.set(row.politician_id, new Map())
-        byPol.get(row.politician_id)!.set(row.issue_id, row.stance)
-      }
+    if (sameParyPols && sameParyPols.length > 0) {
+      const samePartyIds = sameParyPols.map(p => p.id)
+      const { data: partyStances } = await supabase
+        .from('politician_issues')
+        .select('politician_id, stance, issue_id')
+        .in('politician_id', samePartyIds)
 
-      // Compute overlap scores
-      const scores: { id: string; overlap: number }[] = []
-      for (const [pid, otherMap] of byPol) {
-        let matched = 0
-        let total = 0
-        for (const [issueId, stance] of stanceMap) {
-          const other = otherMap.get(issueId)
-          if (!other) continue
-          total++
-          if (stance === other) matched += 1.0
-          else if (
-            (stance === 'mixed' && (other === 'supports' || other === 'opposes')) ||
-            ((stance === 'supports' || stance === 'opposes') && other === 'mixed')
-          ) matched += 0.4
+      if (partyStances && partyStances.length > 0) {
+        const byPol = new Map<string, Map<string, string>>()
+        for (const row of partyStances as ComparisonStanceRow[]) {
+          if (!byPol.has(row.politician_id)) byPol.set(row.politician_id, new Map())
+          byPol.get(row.politician_id)!.set(row.issue_id, row.stance)
         }
-        if (total >= 5) {
-          scores.push({ id: pid, overlap: Math.round((matched / total) * 100) })
+
+        const scores: { id: string; overlap: number }[] = []
+        for (const [pid, otherMap] of byPol) {
+          let matched = 0, total = 0
+          for (const [issueId, stance] of stanceMap) {
+            const other = otherMap.get(issueId)
+            if (!other) continue
+            total++
+            if (stance === other) matched += 1.0
+            else if (
+              (stance === 'mixed' && (other === 'supports' || other === 'opposes')) ||
+              ((stance === 'supports' || stance === 'opposes') && other === 'mixed')
+            ) matched += 0.4
+          }
+          if (total >= 5) scores.push({ id: pid, overlap: Math.round((matched / total) * 100) })
         }
-      }
 
-      scores.sort((a, b) => b.overlap - a.overlap)
-      const topIds = scores.slice(0, 6).map((s) => s.id)
+        scores.sort((a, b) => b.overlap - a.overlap)
+        const topIds = scores.slice(0, 6).map(s => s.id)
 
-      if (topIds.length > 0) {
-        const { data: topPols } = await supabase
-          .from('politicians')
-          .select('id, name, slug, party, state, chamber, image_url')
-          .in('id', topIds)
+        if (topIds.length > 0) {
+          const { data: topPols } = await supabase
+            .from('politicians')
+            .select('id, name, slug, party, state, chamber, image_url')
+            .in('id', topIds)
 
-        if (topPols) {
-          const scoreMap = new Map(scores.map((s) => [s.id, s.overlap]))
-          likeMinded = (topPols as any as LikeMindedPoliticianRow[])
-            .map((p) => ({ ...p, overlap: scoreMap.get(p.id) ?? 0 }))
-            .sort((a, b) => b.overlap - a.overlap)
+          if (topPols) {
+            const scoreMap = new Map(scores.map(s => [s.id, s.overlap]))
+            likeMinded = (topPols as any as LikeMindedPoliticianRow[])
+              .map(p => ({ ...p, overlap: scoreMap.get(p.id) ?? 0 }))
+              .sort((a, b) => b.overlap - a.overlap)
+          }
         }
       }
     }
@@ -370,6 +329,16 @@ export default async function PoliticianPage({ params }: PageProps) {
                 <LinkButton href={pol.donate_url} label="Donate" icon="$" accent={color} />
               )}
             </div>
+
+            {/* Appointed disclaimer for cabinet members */}
+            {pol.chamber === 'presidential' &&
+              pol.title !== 'President of the United States' &&
+              pol.title !== 'Vice President of the United States' && (
+              <div className="mb-6 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-[13px] text-[var(--codex-sub)]">
+                <span className="mr-1.5 font-medium text-amber-600">Appointed Official</span>
+                — This position is not elected. {pol.name} was appointed to serve as {pol.title}.
+              </div>
+            )}
 
             {/* Stats grid */}
             <div className="border-t border-[var(--codex-border)] pt-6">

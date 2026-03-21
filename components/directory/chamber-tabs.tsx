@@ -5,7 +5,11 @@ import { useTransition } from 'react'
 import { CHAMBERS, CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { cn } from '@/lib/utils'
 
-export function ChamberTabs() {
+interface ChamberTabsProps {
+  chamberCounts?: Partial<Record<ChamberKey, number>>
+}
+
+export function ChamberTabs({ chamberCounts }: ChamberTabsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [, startTransition] = useTransition()
@@ -40,6 +44,11 @@ export function ChamberTabs() {
             )}
           >
             {CHAMBER_LABELS[c]}
+            {chamberCounts && c !== 'all' && chamberCounts[c] ? (
+              <span className="ml-1.5 text-[11px] text-[var(--codex-faint)]">
+                {chamberCounts[c]}
+              </span>
+            ) : null}
           </button>
         ))}
       </div>

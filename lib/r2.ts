@@ -23,6 +23,7 @@ export async function uploadImage(
       Key: key,
       Body: file,
       ContentType: contentType,
+      CacheControl: 'public, max-age=31536000, immutable',
     })
   )
   return `${PUBLIC_URL}/${key}`

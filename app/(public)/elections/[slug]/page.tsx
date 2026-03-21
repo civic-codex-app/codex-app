@@ -225,7 +225,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                           style={{ border: `2px solid ${color}44` }}
                         >
                           <AvatarImage
-                            src={candidate.image_url || pol?.image_url || ''}
+                            src={candidate.image_url || pol?.image_url || null}
                             alt={candidate.name}
                             size={64}
                             fallbackColor={color}

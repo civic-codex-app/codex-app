@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 interface AvatarImageProps {
-  src: string
+  src: string | null | undefined
   alt: string
   size: number
   fallbackColor?: string
@@ -14,7 +14,7 @@ interface AvatarImageProps {
 export function AvatarImage({ src, alt, size, fallbackColor, className }: AvatarImageProps) {
   const [error, setError] = useState(false)
 
-  if (error) {
+  if (!src || error) {
     return (
       <div
         className="flex h-full w-full items-center justify-center text-[9px] font-medium"

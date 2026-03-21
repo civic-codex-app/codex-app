@@ -30,6 +30,8 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
   const [hovered, setHovered] = useState(false)
   const [imgError, setImgError] = useState(false)
   const color = partyColor(politician.party)
+  const isAppointed = politician.chamber === 'presidential' &&
+    !['President of the United States', 'Vice President of the United States'].includes(politician.title ?? '')
 
   const total = stances ? stances.supports + stances.opposes + stances.mixed : 0
 
@@ -78,8 +80,13 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
         >
           {politician.name}
         </div>
-        <div className="mb-1.5 truncate text-[13px] text-[var(--codex-sub)]">
-          {politician.title} &middot; {politician.state}
+        <div className="mb-1.5 flex items-center gap-2 truncate text-[13px] text-[var(--codex-sub)]">
+          <span className="truncate">{politician.title} &middot; {politician.state}</span>
+          {isAppointed && (
+            <span className="shrink-0 rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[var(--codex-faint)]">
+              Appointed
+            </span>
+          )}
         </div>
 
         {/* Stance dot strip + alignment */}

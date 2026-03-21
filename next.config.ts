@@ -34,6 +34,24 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        // Static assets (icons, fonts)
+        source: '/(favicon|icon-|apple-touch)(.*)\\.(ico|png|svg)',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        // OG images — cache for 1 hour
+        source: '/api/og',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=3600, s-maxage=86400' },
+        ],
+      },
+    ]
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',

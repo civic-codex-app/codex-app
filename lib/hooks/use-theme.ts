@@ -10,7 +10,7 @@ interface ThemeStore {
 }
 
 export const useThemeStore = create<ThemeStore>((set) => ({
-  mode: 'dark',
+  mode: 'light',
   toggle: () =>
     set((state) => {
       const next = state.mode === 'dark' ? 'light' : 'dark'
@@ -48,10 +48,12 @@ export function useTheme() {
 
   useEffect(() => {
     const root = document.documentElement
-    if (mode === 'light') {
-      root.classList.add('light')
-    } else {
+    if (mode === 'dark') {
+      root.classList.add('dark')
       root.classList.remove('light')
+    } else {
+      root.classList.add('light')
+      root.classList.remove('dark')
     }
   }, [mode])
 

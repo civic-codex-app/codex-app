@@ -180,7 +180,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                     >
                       <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]">
                         <AvatarImage
-                          src={pol.image_url || ''}
+                          src={pol.image_url}
                           alt={pol.name}
                           size={40}
                           fallbackColor={partyColor(pol.party)}

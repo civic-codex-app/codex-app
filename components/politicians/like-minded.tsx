@@ -41,7 +41,7 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
                 style={{ border: `1.5px solid ${color}44` }}
               >
                 <AvatarImage
-                  src={p.image_url || ''}
+                  src={p.image_url}
                   alt={p.name}
                   size={32}
                   fallbackColor={color}

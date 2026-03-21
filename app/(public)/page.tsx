@@ -11,8 +11,9 @@ import { StateFilter } from '@/components/filters/state-filter'
 import { PartyFilter } from '@/components/filters/party-filter'
 import { SortFilter } from '@/components/filters/sort-filter'
 import type { Politician } from '@/lib/types/politician'
-import type { HomeStanceRow } from '@/lib/types/supabase'
 import { computeAlignment } from '@/lib/utils/alignment'
+import { stanceBucket } from '@/lib/utils/stances'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Codex - U.S. Politician Directory & Civic Engagement Platform',
@@ -26,23 +27,25 @@ export const metadata: Metadata = {
 }
 
 interface PageProps {
-  searchParams: Promise<{ q?: string; chamber?: string; state?: string; party?: string; sort?: string }>
+  searchParams: Promise<{ q?: string; chamber?: string; state?: string; party?: string; sort?: string; page?: string }>
 }
 
 const SORT_OPTIONS = [
   { key: 'name', label: 'Name A–Z' },
   { key: 'name-desc', label: 'Name Z–A' },
   { key: 'state', label: 'State A–Z' },
-  { key: 'alignment', label: 'Alignment ↓' },
-  { key: 'alignment-asc', label: 'Mavericks First' },
 ]
+
+const PAGE_SIZE = 50
 
 export default async function HomePage({ searchParams }: PageProps) {
   const params = await searchParams
   const supabase = createServiceRoleClient()
+  const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1)
+  const offset = (page - 1) * PAGE_SIZE
 
-  // Build query
-  let query = supabase.from('politicians').select('*')
+  // Build filtered query
+  let query = supabase.from('politicians').select('*', { count: 'exact' })
 
   if (params.chamber && params.chamber !== 'all') {
     query = query.eq('chamber', params.chamber)
@@ -60,105 +63,91 @@ export default async function HomePage({ searchParams }: PageProps) {
   }
 
   const sort = params.sort ?? 'name'
-  if (sort !== 'alignment' && sort !== 'alignment-asc') {
-    if (sort === 'name-desc') {
-      query = query.order('name', { ascending: false })
-    } else if (sort === 'state') {
-      query = query.order('state').order('name')
-    } else {
-      query = query.order('name')
-    }
+  if (sort === 'name-desc') {
+    query = query.order('name', { ascending: false })
+  } else if (sort === 'state') {
+    query = query.order('state').order('name')
   } else {
     query = query.order('name')
   }
 
-  const { data: politicians, error: politiciansError } = await query
-  if (politiciansError) console.error('Failed to fetch politicians:', politiciansError.message)
+  // Paginate
+  query = query.range(offset, offset + PAGE_SIZE - 1)
 
-  if (!politicians) {
-    return (
-      <>
-        <Header />
-        <div className="mx-auto max-w-[1200px] px-6 md:px-10">
-          <div className="py-20 text-center">
-            <div className="mb-3 font-serif text-2xl text-[var(--codex-text)]">Something went wrong</div>
-            <p className="text-sm text-[var(--codex-sub)]">
-              We couldn&apos;t load the politician directory right now. Please try again later.
-            </p>
-          </div>
-          <Footer />
-        </div>
-      </>
-    )
-  }
+  // Run page query + stats in parallel
+  const [pageResult, demR, gopR, indR, totalR, chamberR] = await Promise.all([
+    query,
+    supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'democrat'),
+    supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'republican'),
+    supabase.from('politicians').select('id', { count: 'exact', head: true }).not('party', 'in', '("democrat","republican")'),
+    supabase.from('politicians').select('id', { count: 'exact', head: true }),
+    supabase.from('politicians').select('chamber'),
+  ])
 
-  const { data: allPoliticians, error: allPoliticiansError } = await supabase
-    .from('politicians')
-    .select('id, party')
-  if (allPoliticiansError) console.error('Failed to fetch all politicians:', allPoliticiansError.message)
+  const politicians = (pageResult.data ?? []) as Politician[]
+  const totalCount = pageResult.count ?? 0
 
-  // Fetch all stances for enrichment — paginate past supabase 1000-row server limit
-  const allStances: HomeStanceRow[] = []
-  {
-    let from = 0
-    const PAGE = 1000
-    while (true) {
-      const { data } = await supabase
-        .from('politician_issues')
-        .select('politician_id, stance, issue_id, issues:issue_id(slug)')
-        .range(from, from + PAGE - 1)
-      if (!data || data.length === 0) break
-      allStances.push(...(data as unknown as HomeStanceRow[]))
-      if (data.length < PAGE) break
-      from += PAGE
-    }
+  // Fetch stances ONLY for visible politicians (max 50)
+  const visibleIds = politicians.map(p => p.id)
+  let stancesData: { politician_id: string; stance: string; issues: { slug: string } | null }[] = []
+  if (visibleIds.length > 0) {
+    const { data } = await supabase
+      .from('politician_issues')
+      .select('politician_id, stance, issues:issue_id(slug)')
+      .in('politician_id', visibleIds)
+    stancesData = (data ?? []) as typeof stancesData
   }
 
   // Build per-politician stance data
-  const stancesByPol = new Map<
-    string,
-    {
-      supports: number
-      opposes: number
-      mixed: number
-      stances: Array<{ stance: string; issues: { slug: string } | null }>
-    }
-  >()
-  for (const s of allStances) {
+  const stancesByPol = new Map<string, { supports: number; opposes: number; mixed: number; stances: typeof stancesData }>()
+  for (const s of stancesData) {
     if (!stancesByPol.has(s.politician_id)) {
       stancesByPol.set(s.politician_id, { supports: 0, opposes: 0, mixed: 0, stances: [] })
     }
     const entry = stancesByPol.get(s.politician_id)!
-    if (['strongly_supports', 'supports', 'leans_support'].includes(s.stance)) entry.supports++
-    else if (['strongly_opposes', 'opposes', 'leans_oppose'].includes(s.stance)) entry.opposes++
-    else if (['mixed', 'neutral'].includes(s.stance)) entry.mixed++
-    entry.stances.push({ stance: s.stance, issues: s.issues })
+    const bucket = stanceBucket(s.stance)
+    if (bucket === 'supports') entry.supports++
+    else if (bucket === 'opposes') entry.opposes++
+    else entry.mixed++
+    entry.stances.push(s)
   }
 
-  const all = (allPoliticians ?? []) as Pick<Politician, 'id' | 'party'>[]
-  let filtered = (politicians ?? []) as Politician[]
-
-  // Compute alignment for each politician
+  // Compute alignment
   const alignmentMap = new Map<string, number>()
-  for (const pol of filtered) {
+  for (const pol of politicians) {
     const data = stancesByPol.get(pol.id)
     if (data) {
       alignmentMap.set(pol.id, computeAlignment(pol.party, data.stances))
     }
   }
 
-  // Apply alignment sort
-  if (sort === 'alignment') {
-    filtered = [...filtered].sort(
-      (a, b) => (alignmentMap.get(b.id) ?? -1) - (alignmentMap.get(a.id) ?? -1)
-    )
-  } else if (sort === 'alignment-asc') {
-    filtered = [...filtered].sort(
-      (a, b) => (alignmentMap.get(a.id) ?? 999) - (alignmentMap.get(b.id) ?? 999)
-    )
+  // Stats from parallel queries above
+  const demCount = demR.count ?? 0
+  const gopCount = gopR.count ?? 0
+  const indCount = indR.count ?? 0
+  const totalOfficials = totalR.count ?? 0
+  const chamberCounts: Record<string, number> = {}
+  if (chamberR.data) {
+    for (const row of chamberR.data) {
+      chamberCounts[row.chamber] = (chamberCounts[row.chamber] || 0) + 1
+    }
   }
 
   const hasFilters = !!(params.q || params.chamber || params.state || params.party)
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE)
+
+  // Build pagination URL helper
+  function pageUrl(p: number) {
+    const sp = new URLSearchParams()
+    if (params.q) sp.set('q', params.q)
+    if (params.chamber) sp.set('chamber', params.chamber)
+    if (params.state) sp.set('state', params.state)
+    if (params.party) sp.set('party', params.party)
+    if (params.sort) sp.set('sort', params.sort)
+    if (p > 1) sp.set('page', String(p))
+    const qs = sp.toString()
+    return qs ? `/?${qs}` : '/'
+  }
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -197,7 +186,13 @@ export default async function HomePage({ searchParams }: PageProps) {
           </p>
         </div>
 
-        <StatsBar politicians={all as Politician[]} />
+        <StatsBar
+          politicians={[
+            ...Array(demCount).fill({ party: 'democrat' }),
+            ...Array(gopCount).fill({ party: 'republican' }),
+            ...Array(indCount).fill({ party: 'independent' }),
+          ] as Politician[]}
+        />
 
         <Suspense>
           <SearchInput />
@@ -216,7 +211,7 @@ export default async function HomePage({ searchParams }: PageProps) {
         </Suspense>
 
         <Suspense>
-          <ChamberTabs />
+          <ChamberTabs chamberCounts={chamberCounts} />
         </Suspense>
 
         {/* Table header */}
@@ -232,13 +227,13 @@ export default async function HomePage({ searchParams }: PageProps) {
 
         {hasFilters && (
           <div className="px-3 pt-3 text-[11px] text-[var(--codex-faint)]" aria-live="polite" aria-atomic="true">
-            {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+            {totalCount} result{totalCount !== 1 ? 's' : ''}
           </div>
         )}
 
         {/* List */}
         <div className="animate-fade-up">
-          {filtered.map((pol) => {
+          {politicians.map((pol) => {
             const data = stancesByPol.get(pol.id)
             return (
               <PoliticianCard
@@ -253,13 +248,38 @@ export default async function HomePage({ searchParams }: PageProps) {
               />
             )
           })}
-          {filtered.length === 0 && (
+          {politicians.length === 0 && (
             <div className="py-20 text-center text-[var(--codex-faint)]">
               <div className="mb-2 font-serif text-2xl">No results</div>
               <div className="text-sm">Try adjusting your filters or search query</div>
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 border-t border-[var(--codex-border)] py-8">
+            {page > 1 && (
+              <Link
+                href={pageUrl(page - 1)}
+                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+              >
+                ← Prev
+              </Link>
+            )}
+            <span className="px-3 text-[13px] tabular-nums text-[var(--codex-faint)]">
+              Page {page} of {totalPages}
+            </span>
+            {page < totalPages && (
+              <Link
+                href={pageUrl(page + 1)}
+                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+              >
+                Next →
+              </Link>
+            )}
+          </div>
+        )}
 
         <Footer />
       </div>

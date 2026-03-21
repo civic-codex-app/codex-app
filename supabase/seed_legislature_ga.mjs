@@ -1,0 +1,313 @@
+import { createClient } from '@supabase/supabase-js'
+import { readFileSync } from 'fs'
+
+const env = readFileSync('.env.local', 'utf8')
+const vars = {}
+for (const line of env.split('\n')) {
+  const [k, ...v] = line.split('=')
+  if (k && !k.startsWith('#')) vars[k.trim()] = v.join('=').trim()
+}
+
+const supabase = createClient(vars.NEXT_PUBLIC_SUPABASE_URL, vars.SUPABASE_SERVICE_ROLE_KEY)
+
+function slugify(name) {
+  return name
+    .toLowerCase()
+    .replace(/['']/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+// ─── Georgia State Senate (56 districts) ─────────────────────────────
+// Source: Georgia General Assembly official roster, 2025-2026 session
+const senators = [
+  { name: 'Ed Setzler', district: 1, party: 'republican' },
+  { name: 'Brandon Beach', district: 2, party: 'republican' },
+  { name: 'Shawn Still', district: 3, party: 'republican' },
+  { name: 'Clint Dixon', district: 4, party: 'republican' },
+  { name: 'Jason Anavitarte', district: 5, party: 'republican' },
+  { name: 'Mike Hodges', district: 6, party: 'republican' },
+  { name: 'Greg Dolezal', district: 7, party: 'republican' },
+  { name: 'Brian Strickland', district: 8, party: 'republican' },
+  { name: 'Carden Summers', district: 9, party: 'republican' },
+  { name: 'John Albers', district: 10, party: 'republican' },
+  { name: 'Rick Williams', district: 11, party: 'republican' },
+  { name: 'Sonya Halpern', district: 12, party: 'democrat' },
+  { name: 'Josh McLaurin', district: 13, party: 'democrat' },
+  { name: 'Matt Brass', district: 14, party: 'republican' },
+  { name: 'Frank Ginn', district: 15, party: 'republican' },
+  { name: 'Tyler Harper', district: 16, party: 'republican' },
+  { name: 'Russ Goodman', district: 17, party: 'republican' },
+  { name: 'Donzella James', district: 18, party: 'democrat' },
+  { name: 'Harold Jones II', district: 19, party: 'democrat' },
+  { name: 'John Wilkinson', district: 20, party: 'republican' },
+  { name: 'Jason Esteves', district: 21, party: 'democrat' },
+  { name: 'Nabilah Islam', district: 22, party: 'democrat' },
+  { name: 'Max Burns', district: 23, party: 'republican' },
+  { name: 'Lee Anderson', district: 24, party: 'republican' },
+  { name: 'Ricky Jeffares', district: 25, party: 'republican' },
+  { name: 'David Lucas', district: 26, party: 'democrat' },
+  { name: 'Horacena Tate', district: 27, party: 'democrat' },
+  { name: 'Kay Kirkpatrick', district: 28, party: 'republican' },
+  { name: 'Bo Hatchett', district: 29, party: 'republican' },
+  { name: 'Nan Orrock', district: 30, party: 'democrat' },
+  { name: 'Mike Dugan', district: 31, party: 'republican' },
+  { name: 'Lindsey Tippins', district: 32, party: 'republican' },
+  { name: 'Michael Rhett', district: 33, party: 'democrat' },
+  { name: 'Valencia Seay', district: 34, party: 'democrat' },
+  { name: 'Emanuel Jones', district: 35, party: 'democrat' },
+  { name: 'Tonya Anderson', district: 36, party: 'democrat' },
+  { name: 'Derek Mallow', district: 37, party: 'democrat' },
+  { name: 'Gloria Butler', district: 38, party: 'democrat' },
+  { name: 'Kim Jackson', district: 39, party: 'democrat' },
+  { name: 'Sally Harrell', district: 40, party: 'democrat' },
+  { name: 'Nikki Merritt', district: 41, party: 'democrat' },
+  { name: 'Larry Walker III', district: 42, party: 'republican' },
+  { name: 'Dean Burke', district: 43, party: 'republican' },
+  { name: 'Sheila McNeill', district: 44, party: 'republican' },
+  { name: 'Blake Tillery', district: 45, party: 'republican' },
+  { name: 'Bill Cowsert', district: 46, party: 'republican' },
+  { name: 'Michelle Au', district: 47, party: 'democrat' },
+  { name: 'Sam Watson', district: 48, party: 'republican' },
+  { name: 'Shelly Echols', district: 49, party: 'republican' },
+  { name: 'Ben Watson', district: 50, party: 'republican' },
+  { name: 'Chuck Hufstetler', district: 51, party: 'republican' },
+  { name: 'Jeff Mullis', district: 52, party: 'republican' },
+  { name: 'Steve Gooch', district: 53, party: 'republican' },
+  { name: 'Chuck Payne', district: 54, party: 'republican' },
+  { name: 'Marty Harbin', district: 55, party: 'republican' },
+  { name: 'Greg Dolezal', district: 56, party: 'republican' },
+]
+
+// ─── Georgia State House (180 districts) ─────────────────────────────
+// Source: Georgia General Assembly official roster, 2025-2026 session
+const houseMembers = [
+  { name: 'Mike Cameron', district: 1, party: 'republican' },
+  { name: 'Steve Tarvin', district: 2, party: 'republican' },
+  { name: 'Mitchell Scoggins', district: 3, party: 'republican' },
+  { name: 'Kasey Carpenter', district: 4, party: 'republican' },
+  { name: 'Matt Barton', district: 5, party: 'republican' },
+  { name: 'Jason Ridley', district: 6, party: 'republican' },
+  { name: 'Johnny Chastain', district: 7, party: 'republican' },
+  { name: 'Stan Gunter', district: 8, party: 'republican' },
+  { name: 'Will Wade', district: 9, party: 'republican' },
+  { name: 'Victor Anderson', district: 10, party: 'republican' },
+  { name: 'Rick Jasperse', district: 11, party: 'republican' },
+  { name: 'Eddie Lumsden', district: 12, party: 'republican' },
+  { name: 'Katie Dempsey', district: 13, party: 'republican' },
+  { name: 'Mitchell Horner', district: 14, party: 'republican' },
+  { name: 'Matthew Gambill', district: 15, party: 'republican' },
+  { name: 'Trey Kelley', district: 16, party: 'republican' },
+  { name: 'Martin Momtahan', district: 17, party: 'republican' },
+  { name: 'Tyler Smith', district: 18, party: 'republican' },
+  { name: 'Joseph Gullett', district: 19, party: 'republican' },
+  { name: 'Charlice Byrd', district: 20, party: 'republican' },
+  { name: 'Brad Thomas', district: 21, party: 'republican' },
+  { name: 'Jordan Ridley', district: 22, party: 'republican' },
+  { name: 'Mandi Ballinger', district: 23, party: 'republican' },
+  { name: 'Sheri Gilligan', district: 24, party: 'republican' },
+  { name: 'Todd Jones', district: 25, party: 'republican' },
+  { name: 'Lauren McDonald III', district: 26, party: 'republican' },
+  { name: 'Lee Hawkins', district: 27, party: 'republican' },
+  { name: 'Mack Jackson', district: 28, party: 'democrat' },
+  { name: 'Matt Dubnik', district: 29, party: 'republican' },
+  { name: 'Kevin Tanner', district: 30, party: 'republican' },
+  { name: 'Emory Dunahoo', district: 31, party: 'republican' },
+  { name: 'Chris Erwin', district: 32, party: 'republican' },
+  { name: 'Alan Powell', district: 33, party: 'republican' },
+  { name: 'Beth Camp', district: 34, party: 'republican' },
+  { name: 'Clint Crowe', district: 35, party: 'republican' },
+  { name: 'Ginny Ehrhart', district: 36, party: 'republican' },
+  { name: 'Mary Frances Williams', district: 37, party: 'democrat' },
+  { name: 'David Wilkerson', district: 38, party: 'democrat' },
+  { name: 'Terry Cummings', district: 39, party: 'democrat' },
+  { name: 'Long Tran', district: 40, party: 'democrat' },
+  { name: 'Michael Smith', district: 41, party: 'democrat' },
+  { name: 'Teri Anulewicz', district: 42, party: 'democrat' },
+  { name: 'Sharon Cooper', district: 43, party: 'republican' },
+  { name: 'Don Parsons', district: 44, party: 'republican' },
+  { name: 'Sharon Henderson', district: 45, party: 'democrat' },
+  { name: 'John Carson', district: 46, party: 'republican' },
+  { name: 'Jan Jones', district: 47, party: 'republican' },
+  { name: 'Scott Hilton', district: 48, party: 'republican' },
+  { name: 'Chuck Martin', district: 49, party: 'republican' },
+  { name: 'Angelika Kausche', district: 50, party: 'democrat' },
+  { name: 'Matt Reeves', district: 51, party: 'republican' },
+  { name: 'Shea Roberts', district: 52, party: 'democrat' },
+  { name: 'Deborah Silcox', district: 53, party: 'republican' },
+  { name: 'Betsy Holland', district: 54, party: 'democrat' },
+  { name: 'Marie Metze', district: 55, party: 'democrat' },
+  { name: 'Mesha Mainor', district: 56, party: 'republican' },
+  { name: 'Stacey Evans', district: 57, party: 'democrat' },
+  { name: 'Park Cannon', district: 58, party: 'democrat' },
+  { name: 'Phil Olaleye', district: 59, party: 'democrat' },
+  { name: 'Sheila Jones', district: 60, party: 'democrat' },
+  { name: 'Roger Bruce', district: 61, party: 'democrat' },
+  { name: 'Kim Schofield', district: 62, party: 'democrat' },
+  { name: 'Derrick Jackson', district: 63, party: 'democrat' },
+  { name: 'Jasmine Clark', district: 64, party: 'democrat' },
+  { name: 'Mandisha Thomas', district: 65, party: 'democrat' },
+  { name: 'Kimberly New', district: 66, party: 'democrat' },
+  { name: 'Lydia Glaize', district: 67, party: 'democrat' },
+  { name: 'Marvin Lim', district: 68, party: 'democrat' },
+  { name: 'Saira Draper', district: 69, party: 'democrat' },
+  { name: 'Rhonda Burnough', district: 70, party: 'democrat' },
+  { name: 'Lisa Campbell', district: 71, party: 'democrat' },
+  { name: 'Viola Davis', district: 72, party: 'democrat' },
+  { name: 'Omari Crawford', district: 73, party: 'democrat' },
+  { name: 'Becky Evans', district: 74, party: 'democrat' },
+  { name: 'Sandra Scott', district: 75, party: 'democrat' },
+  { name: 'Imani Barnes', district: 76, party: 'democrat' },
+  { name: 'Ruwa Romman', district: 77, party: 'democrat' },
+  { name: 'Demetrius Douglas', district: 78, party: 'democrat' },
+  { name: 'Mike Wilensky', district: 79, party: 'democrat' },
+  { name: 'Matthew Wilson', district: 80, party: 'democrat' },
+  { name: 'Scott Holcomb', district: 81, party: 'democrat' },
+  { name: 'Mary Robichaux', district: 82, party: 'democrat' },
+  { name: 'Karen Lupton', district: 83, party: 'democrat' },
+  { name: 'Renitta Shannon', district: 84, party: 'democrat' },
+  { name: 'Karla Drenner', district: 85, party: 'democrat' },
+  { name: 'Zulma Lopez', district: 86, party: 'democrat' },
+  { name: 'Dexter Sharper', district: 87, party: 'democrat' },
+  { name: 'Billy Mitchell', district: 88, party: 'democrat' },
+  { name: 'Debra Bazemore', district: 89, party: 'democrat' },
+  { name: 'Claudia Lawson', district: 90, party: 'democrat' },
+  { name: 'Yvonne Buckner', district: 91, party: 'democrat' },
+  { name: 'Rhonda Taylor', district: 92, party: 'democrat' },
+  { name: 'Doreen Carter', district: 93, party: 'democrat' },
+  { name: 'Angela Moore', district: 94, party: 'democrat' },
+  { name: "Dar'shun Kendrick", district: 95, party: 'democrat' },
+  { name: 'Pedro Marin', district: 96, party: 'democrat' },
+  { name: 'Ruben Gonzalez', district: 97, party: 'democrat' },
+  { name: 'David Dreyer', district: 98, party: 'democrat' },
+  { name: 'Tim Barr', district: 99, party: 'republican' },
+  { name: 'David Clark', district: 100, party: 'republican' },
+  { name: 'Marcus Wiedower', district: 101, party: 'republican' },
+  { name: 'Ken Vance', district: 102, party: 'republican' },
+  { name: 'Soo Hong', district: 103, party: 'republican' },
+  { name: 'Dave Belton', district: 104, party: 'republican' },
+  { name: 'Bonnie Rich', district: 105, party: 'republican' },
+  { name: 'Sam Park', district: 106, party: 'democrat' },
+  { name: 'Gregg Kennard', district: 107, party: 'democrat' },
+  { name: 'Jasmine Clark', district: 108, party: 'democrat' },
+  { name: 'Yasmin Neal', district: 109, party: 'democrat' },
+  { name: 'Michele Henson', district: 110, party: 'democrat' },
+  { name: 'Brian Prince', district: 111, party: 'democrat' },
+  { name: 'Gabe Okoye', district: 112, party: 'democrat' },
+  { name: 'Sharon Beasley-Teague', district: 113, party: 'democrat' },
+  { name: 'Calvin Smyre', district: 114, party: 'democrat' },
+  { name: 'Carolyn Hugley', district: 115, party: 'democrat' },
+  { name: 'Teddy Reese', district: 116, party: 'democrat' },
+  { name: 'Miriam Paris', district: 117, party: 'democrat' },
+  { name: 'Danny Mathis', district: 118, party: 'republican' },
+  { name: 'Ken Pullin', district: 119, party: 'republican' },
+  { name: 'Houston Gaines', district: 120, party: 'republican' },
+  { name: 'Spencer Frye', district: 121, party: 'democrat' },
+  { name: 'Rob Leverett', district: 122, party: 'republican' },
+  { name: 'Mark Newton', district: 123, party: 'republican' },
+  { name: 'Claude Hudson', district: 124, party: 'democrat' },
+  { name: 'Gloria Frazier', district: 125, party: 'democrat' },
+  { name: 'Albert Reeves', district: 126, party: 'democrat' },
+  { name: 'Karlton Howard', district: 127, party: 'democrat' },
+  { name: 'Mack Jackson', district: 128, party: 'democrat' },
+  { name: 'Barry Fleming', district: 129, party: 'republican' },
+  { name: 'Tandy Graves', district: 130, party: 'republican' },
+  { name: 'Jodi Lott', district: 131, party: 'republican' },
+  { name: 'James Burchett', district: 132, party: 'republican' },
+  { name: 'David Jenkins', district: 133, party: 'republican' },
+  { name: 'Lenny Priester', district: 134, party: 'democrat' },
+  { name: 'Josh Bonner', district: 135, party: 'republican' },
+  { name: 'David Knight', district: 136, party: 'republican' },
+  { name: 'Debbie Buckner', district: 137, party: 'democrat' },
+  { name: 'Vance Smith', district: 138, party: 'republican' },
+  { name: 'Robert Pruett', district: 139, party: 'republican' },
+  { name: 'Butch Parrish', district: 140, party: 'republican' },
+  { name: 'Dale Washburn', district: 141, party: 'republican' },
+  { name: 'Robert Dickey', district: 142, party: 'republican' },
+  { name: 'Patty Stinson', district: 143, party: 'democrat' },
+  { name: 'James Beverly', district: 144, party: 'democrat' },
+  { name: 'Shaw Blackmon', district: 145, party: 'republican' },
+  { name: 'John LaHood', district: 146, party: 'republican' },
+  { name: 'Mike Cheokas', district: 147, party: 'republican' },
+  { name: 'Noel Williams Jr.', district: 148, party: 'republican' },
+  { name: 'Danny Mathis', district: 149, party: 'republican' },
+  { name: 'Patty Bentley', district: 150, party: 'democrat' },
+  { name: 'Gerald Greene', district: 151, party: 'republican' },
+  { name: 'Bill Hitchens', district: 152, party: 'republican' },
+  { name: 'Charles Cannon', district: 153, party: 'republican' },
+  { name: 'Matt Hatchett', district: 154, party: 'republican' },
+  { name: 'Rick Williams', district: 155, party: 'republican' },
+  { name: 'Leesa Hagan', district: 156, party: 'republican' },
+  { name: 'Bill Werkheiser', district: 157, party: 'republican' },
+  { name: 'Buddy DeLoach', district: 158, party: 'republican' },
+  { name: 'Jon Burns', district: 159, party: 'republican' },
+  { name: 'Carl Gilliard', district: 160, party: 'democrat' },
+  { name: 'Jesse Petrea', district: 161, party: 'republican' },
+  { name: 'J. Collins', district: 162, party: 'republican' },
+  { name: 'Anne Allen Westbrook', district: 163, party: 'democrat' },
+  { name: 'Ron Stephens', district: 164, party: 'republican' },
+  { name: 'Al Williams', district: 165, party: 'democrat' },
+  { name: 'Steven Meeks', district: 166, party: 'republican' },
+  { name: 'Lehman Franklin', district: 167, party: 'republican' },
+  { name: 'Steven Sainz', district: 168, party: 'republican' },
+  { name: 'Don Hogan', district: 169, party: 'republican' },
+  { name: 'Penny Houston', district: 170, party: 'republican' },
+  { name: 'John Corbett', district: 171, party: 'republican' },
+  { name: 'Bill Yearta', district: 172, party: 'republican' },
+  { name: 'Darlene Taylor', district: 173, party: 'republican' },
+  { name: 'Chas Cannon', district: 174, party: 'republican' },
+  { name: 'John LaRiccia', district: 175, party: 'republican' },
+  { name: 'James Burchett', district: 176, party: 'republican' },
+  { name: 'Dexter Sharper', district: 177, party: 'democrat' },
+  { name: 'Bill Yearta', district: 178, party: 'republican' },
+  { name: 'Noel Williams', district: 179, party: 'republican' },
+  { name: 'Clay Pirkle', district: 180, party: 'republican' },
+]
+
+// Build upsert rows — use district in slug to ensure uniqueness
+const rows = []
+
+for (const s of senators) {
+  rows.push({
+    name: s.name,
+    slug: slugify(s.name) + '-ga-senate-' + s.district,
+    state: 'GA',
+    chamber: 'state_senate',
+    party: s.party,
+    title: `State Senator, District ${s.district}`,
+    bio: `Georgia State Senator representing District ${s.district}.`,
+    image_url: null,
+  })
+}
+
+for (const h of houseMembers) {
+  rows.push({
+    name: h.name,
+    slug: slugify(h.name) + '-ga-house-' + h.district,
+    state: 'GA',
+    chamber: 'state_house',
+    party: h.party,
+    title: `State Representative, District ${h.district}`,
+    bio: `Georgia State Representative serving District ${h.district}.`,
+    image_url: null,
+  })
+}
+
+// Batch upsert in groups of 50
+const BATCH = 50
+let total = 0
+for (let i = 0; i < rows.length; i += BATCH) {
+  const batch = rows.slice(i, i + BATCH)
+  const { error, data } = await supabase
+    .from('politicians')
+    .upsert(batch, { onConflict: 'slug' })
+    .select('id')
+  if (error) {
+    console.error(`Batch ${i / BATCH + 1} error:`, error.message)
+  } else {
+    total += data.length
+    console.log(`Batch ${i / BATCH + 1}: upserted ${data.length} rows`)
+  }
+}
+
+console.log(`\nDone. Total GA legislators upserted: ${total} (${senators.length} senators + ${houseMembers.length} house)`)
