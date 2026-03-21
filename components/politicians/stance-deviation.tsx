@@ -24,19 +24,26 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
       if (!expected) return false
       if (s.stance === expected) return false
 
-      // Only count as a break if the DIRECTION differs (supports vs opposes)
-      // Same direction but different intensity is not a break
+      // Only count as a break if they go in truly OPPOSITE directions
+      // supports ↔ opposes = real break
+      // supports ↔ neutral/mixed = not a real break (just less intense)
+      // neutral ↔ opposes = not a real break
       const actualBucket = stanceBucket(s.stance)
       const expectedBucket = stanceBucket(expected)
 
       // Skip unknowns
       if (actualBucket === 'unknown' || expectedBucket === 'unknown') return false
 
-      // Same bucket = not a real break
+      // Same bucket = not a break
       if (actualBucket === expectedBucket) return false
 
-      // Mixed/neutral vs supports/opposes = a meaningful break
-      return true
+      // Only flag if one supports and the other opposes (true directional conflict)
+      const isActualSupport = actualBucket === 'supports'
+      const isActualOppose = actualBucket === 'opposes'
+      const isExpectedSupport = expectedBucket === 'supports'
+      const isExpectedOppose = expectedBucket === 'opposes'
+
+      return (isActualSupport && isExpectedOppose) || (isActualOppose && isExpectedSupport)
     })
     .map((s) => ({
       ...s,
