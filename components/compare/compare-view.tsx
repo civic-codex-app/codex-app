@@ -6,6 +6,7 @@ import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { stanceBucket, stanceStyle } from '@/lib/utils/stances'
+import { IssueRadar } from '@/components/visualizations/issue-radar'
 
 interface CompareViewProps {
   polA: any
@@ -128,6 +129,31 @@ export function CompareView({
           </div>
         </div>
       )}
+
+      {/* Radar chart */}
+      {comparableIssues.length > 0 && (() => {
+        const radarIssues = comparableIssues
+          .filter(i => i.icon)
+          .map(i => ({ slug: i.slug, name: i.name, icon: i.icon! }))
+        const stancesMapA: Record<string, string> = {}
+        const stancesMapB: Record<string, string> = {}
+        for (const i of comparableIssues) {
+          if (i.a) stancesMapA[i.slug] = i.a
+          if (i.b) stancesMapB[i.slug] = i.b
+        }
+        return radarIssues.length >= 3 ? (
+          <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
+            <h2 className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+              Stance Radar
+            </h2>
+            <IssueRadar
+              politician1={{ name: polA.name, party: polA.party, stances: stancesMapA }}
+              politician2={{ name: polB.name, party: polB.party, stances: stancesMapB }}
+              issues={radarIssues}
+            />
+          </div>
+        ) : null
+      })()}
 
       {/* Issue-by-issue comparison */}
       {comparableIssues.length > 0 && (

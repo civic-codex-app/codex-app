@@ -28,31 +28,66 @@ const VOTE_CONFIG: Record<string, { label: string; color: string }> = {
   not_voting: { label: 'Not Voting', color: '#6B7280' },
 }
 
+function formatDate(dateStr: string): string {
+  return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params
   const supabase = createServiceRoleClient()
-  const { data } = await supabase.from('bills').select('title, number').eq('id', id).single()
-  if (!data) return { title: 'Not Found — Codex' }
-  return { title: `${data.number}: ${data.title} — Codex` }
+  const { data } = await supabase
+    .from('bills')
+    .select('title, number, summary, status, congress_session')
+    .eq('id', id)
+    .single()
+
+  if (!data) return { title: 'Not Found -- Codex' }
+
+  const description = data.summary?.slice(0, 160) || `Track votes and details for ${data.number}`
+  const statusLabel = STATUS_CONFIG[data.status]?.label ?? data.status
+  const ogUrl = `/api/og?title=${encodeURIComponent(data.number)}&subtitle=${encodeURIComponent(data.title)}&type=bill`
+
+  return {
+    title: `${data.number}: ${data.title} -- Codex`,
+    description,
+    openGraph: {
+      title: `${data.number}: ${data.title}`,
+      description,
+      type: 'article',
+      url: `https://codexapp.org/bills/${id}`,
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${data.number}: ${data.title} (${statusLabel})`,
+      images: [ogUrl],
+    },
+  }
 }
 
 export default async function BillDetailPage({ params }: PageProps) {
   const { id } = await params
   const supabase = createServiceRoleClient()
 
-  const { data: bill } = await supabase.from('bills').select('*').eq('id', id).single()
+  // Run both queries in parallel
+  const [billResult, votesResult] = await Promise.all([
+    supabase.from('bills').select('*').eq('id', id).single(),
+    supabase
+      .from('voting_records')
+      .select('*, politician:politician_id(id, name, slug, party, state, chamber, image_url)')
+      .eq('bill_id', id)
+      .order('vote')
+      .order('created_at'),
+  ])
+
+  const bill = billResult.data
   if (!bill) notFound()
 
-  // Fetch voting records with politician info
-  const { data: votes } = await supabase
-    .from('voting_records')
-    .select('*, politician:politician_id(id, name, slug, party, state, chamber, image_url)')
-    .eq('bill_id', bill.id)
-    .order('vote')
-    .order('created_at')
-
-  const voteList = votes ?? []
-
+  const voteList = votesResult.data ?? []
   const sc = STATUS_CONFIG[bill.status] ?? { label: bill.status, color: '#6B7280', bg: '#6B728018' }
 
   // Vote tallies
@@ -61,8 +96,11 @@ export default async function BillDetailPage({ params }: PageProps) {
   const abstain = voteList.filter((v: any) => v.vote === 'abstain').length
   const notVoting = voteList.filter((v: any) => v.vote === 'not_voting').length
   const total = voteList.length
+  const yeaPct = total > 0 ? Math.round((yea / total) * 100) : 0
+  const nayPct = total > 0 ? Math.round((nay / total) * 100) : 0
 
   // Party breakdown
+  const partyOrder = ['democrat', 'republican', 'independent', 'green']
   const partyVotes: Record<string, { yea: number; nay: number; other: number }> = {}
   for (const v of voteList as any[]) {
     const party = v.politician?.party ?? 'unknown'
@@ -72,11 +110,36 @@ export default async function BillDetailPage({ params }: PageProps) {
     else partyVotes[party].other++
   }
 
+  // Sort parties in canonical order
+  const sortedParties = Object.keys(partyVotes).sort((a, b) => {
+    const ai = partyOrder.indexOf(a)
+    const bi = partyOrder.indexOf(b)
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
+  })
+
   // Group votes by type for display
   const voteGroups = ['yea', 'nay', 'abstain', 'not_voting']
 
+  // JSON-LD structured data
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Legislation',
+    name: bill.title,
+    legislationIdentifier: bill.number,
+    description: bill.summary,
+    legislationDate: bill.introduced_date,
+    url: `https://codexapp.org/bills/${bill.id}`,
+    legislationPassedBy: bill.congress_session
+      ? { '@type': 'Organization', name: `${bill.congress_session} United States Congress` }
+      : undefined,
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <div className="mx-auto max-w-[900px] px-6 md:px-10">
         <Link
@@ -115,35 +178,46 @@ export default async function BillDetailPage({ params }: PageProps) {
         {/* Dates */}
         <div className="mb-8 flex flex-wrap gap-6 text-[13px] text-[var(--codex-faint)]">
           {bill.introduced_date && (
-            <span>
-              Introduced:{' '}
-              {new Date(bill.introduced_date + 'T00:00:00').toLocaleDateString('en-US', {
-                month: 'long', day: 'numeric', year: 'numeric',
-              })}
-            </span>
+            <span>Introduced: {formatDate(bill.introduced_date)}</span>
           )}
           {bill.last_action_date && (
-            <span>
-              Last Action:{' '}
-              {new Date(bill.last_action_date + 'T00:00:00').toLocaleDateString('en-US', {
-                month: 'long', day: 'numeric', year: 'numeric',
-              })}
-            </span>
+            <span>Last Action: {formatDate(bill.last_action_date)}</span>
           )}
         </div>
 
         {/* Vote summary */}
         {total > 0 && (
           <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
-            <h2 className="mb-4 text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
               Vote Tally
             </h2>
 
             {/* Big vote bar */}
             <div className="mb-3 flex h-4 overflow-hidden rounded-full">
-              {yea > 0 && <div style={{ width: `${(yea / total) * 100}%`, background: '#22C55ECC' }} />}
-              {nay > 0 && <div style={{ width: `${(nay / total) * 100}%`, background: '#EF4444CC' }} />}
-              {(abstain + notVoting) > 0 && <div style={{ width: `${((abstain + notVoting) / total) * 100}%`, background: 'var(--codex-border)' }} />}
+              {yea > 0 && (
+                <div
+                  className="transition-all"
+                  style={{ width: `${(yea / total) * 100}%`, background: '#22C55ECC' }}
+                />
+              )}
+              {nay > 0 && (
+                <div
+                  className="transition-all"
+                  style={{ width: `${(nay / total) * 100}%`, background: '#EF4444CC' }}
+                />
+              )}
+              {(abstain + notVoting) > 0 && (
+                <div
+                  className="transition-all"
+                  style={{ width: `${((abstain + notVoting) / total) * 100}%`, background: 'var(--codex-border)' }}
+                />
+              )}
+            </div>
+
+            {/* Yea vs Nay percentage labels */}
+            <div className="mb-4 flex items-center justify-between text-[12px]">
+              <span className="text-green-400">{yeaPct}% Yea</span>
+              <span className="text-red-400">{nayPct}% Nay</span>
             </div>
 
             <div className="mb-5 grid grid-cols-4 gap-4">
@@ -166,26 +240,33 @@ export default async function BillDetailPage({ params }: PageProps) {
             </div>
 
             {/* Party breakdown bars */}
-            <h3 className="mb-2 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+            <h3 className="mb-3 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
               By Party
             </h3>
-            <div className="space-y-2">
-              {Object.entries(partyVotes).map(([party, counts]) => {
+            <div className="space-y-2.5">
+              {sortedParties.map((party) => {
+                const counts = partyVotes[party]
                 const partyTotal = counts.yea + counts.nay + counts.other
+                const partyYeaPct = Math.round((counts.yea / partyTotal) * 100)
                 return (
                   <div key={party} className="flex items-center gap-3">
-                    <div className="flex w-24 items-center gap-1.5">
+                    <div className="flex w-28 items-center gap-1.5">
                       <PartyIcon party={party} size={10} />
-                      <span className="text-[11px]" style={{ color: partyColor(party) }}>
+                      <span className="text-[12px] font-medium" style={{ color: partyColor(party) }}>
                         {partyLabel(party)}
                       </span>
                     </div>
-                    <div className="flex h-2 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
-                      {counts.yea > 0 && <div style={{ width: `${(counts.yea / partyTotal) * 100}%`, background: '#22C55E99' }} />}
-                      {counts.nay > 0 && <div style={{ width: `${(counts.nay / partyTotal) * 100}%`, background: '#EF444499' }} />}
+                    <div className="flex h-2.5 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                      {counts.yea > 0 && (
+                        <div style={{ width: `${(counts.yea / partyTotal) * 100}%`, background: '#22C55E99' }} />
+                      )}
+                      {counts.nay > 0 && (
+                        <div style={{ width: `${(counts.nay / partyTotal) * 100}%`, background: '#EF444499' }} />
+                      )}
                     </div>
-                    <span className="w-16 text-right text-[11px] tabular-nums text-[var(--codex-faint)]">
+                    <span className="w-20 text-right text-[11px] tabular-nums text-[var(--codex-faint)]">
                       {counts.yea}Y / {counts.nay}N
+                      <span className="ml-1 text-[var(--codex-faint)] opacity-50">({partyYeaPct}%)</span>
                     </span>
                   </div>
                 )
@@ -194,9 +275,12 @@ export default async function BillDetailPage({ params }: PageProps) {
           </div>
         )}
 
-        {/* Individual votes */}
+        {/* Individual votes grouped by vote type */}
         {total > 0 && (
           <section className="mb-10">
+            <h2 className="mb-5 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+              Individual Votes
+            </h2>
             {voteGroups.map((voteType) => {
               const groupVotes = voteList.filter((v: any) => v.vote === voteType)
               if (groupVotes.length === 0) return null
