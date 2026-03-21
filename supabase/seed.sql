@@ -1,0 +1,117 @@
+-- ============================================================
+-- Codex Seed Data — Initial 16 Politicians
+-- ============================================================
+
+insert into politicians (name, slug, state, chamber, party, title, since_year, bio, website_url, donate_url, wiki_url, image_url) values
+
+('John Fetterman', 'john-fetterman', 'PA', 'senate', 'democrat',
+ 'U.S. Senator', 2023,
+ 'Junior United States Senator from Pennsylvania. Former Lieutenant Governor and Mayor of Braddock.',
+ 'https://www.fetterman.senate.gov', 'https://www.fetterman.senate.gov',
+ 'https://en.wikipedia.org/wiki/John_Fetterman',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Sen._John_Fetterman_official_portrait%2C_118th_Congress.jpg/440px-Sen._John_Fetterman_official_portrait%2C_118th_Congress.jpg'),
+
+('Ted Cruz', 'ted-cruz', 'TX', 'senate', 'republican',
+ 'U.S. Senator', 2013,
+ 'Senior United States Senator from Texas. Previously served as the 34th Solicitor General of Texas.',
+ 'https://www.cruz.senate.gov', 'https://www.tedcruz.org',
+ 'https://en.wikipedia.org/wiki/Ted_Cruz',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Ted_Cruz_official_116th_portrait.jpg/440px-Ted_Cruz_official_116th_portrait.jpg'),
+
+('Alexandria Ocasio-Cortez', 'alexandria-ocasio-cortez', 'NY', 'house', 'democrat',
+ 'U.S. Representative', 2019,
+ 'U.S. Representative for New York''s 14th congressional district. Known for progressive policy advocacy.',
+ 'https://ocasio-cortez.house.gov', 'https://ocasiocortez.com',
+ 'https://en.wikipedia.org/wiki/Alexandria_Ocasio-Cortez',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Alexandria_Ocasio-Cortez_Official_Portrait.jpg/440px-Alexandria_Ocasio-Cortez_Official_Portrait.jpg'),
+
+('Marjorie Taylor Greene', 'marjorie-taylor-greene', 'GA', 'house', 'republican',
+ 'U.S. Representative', 2021,
+ 'U.S. Representative for Georgia''s 14th congressional district.',
+ 'https://greene.house.gov', 'https://www.greene.house.gov',
+ 'https://en.wikipedia.org/wiki/Marjorie_Taylor_Greene',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Marjorie_Taylor_Greene_117th_Congress_portrait_%28cropped%29.jpg/440px-Marjorie_Taylor_Greene_117th_Congress_portrait_%28cropped%29.jpg'),
+
+('Bernie Sanders', 'bernie-sanders', 'VT', 'senate', 'independent',
+ 'U.S. Senator', 2007,
+ 'Senior U.S. Senator from Vermont. Longest-serving independent member of Congress in American history.',
+ 'https://www.sanders.senate.gov', 'https://berniesanders.com',
+ 'https://en.wikipedia.org/wiki/Bernie_Sanders',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Bernie_Sanders.jpg/440px-Bernie_Sanders.jpg'),
+
+('Ron DeSantis', 'ron-desantis', 'FL', 'governor', 'republican',
+ 'Governor of Florida', 2019,
+ '46th Governor of Florida. Former member of the United States House of Representatives.',
+ 'https://www.flgov.com', 'https://www.rondesantis.com',
+ 'https://en.wikipedia.org/wiki/Ron_DeSantis',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Ron_DeSantis_at_CPAC_2023_%28cropped%29.jpg/440px-Ron_DeSantis_at_CPAC_2023_%28cropped%29.jpg'),
+
+('Gavin Newsom', 'gavin-newsom', 'CA', 'governor', 'democrat',
+ 'Governor of California', 2019,
+ '40th Governor of California. Former Mayor of San Francisco and Lieutenant Governor of California.',
+ 'https://www.gov.ca.gov', 'https://gavinnewsom.com',
+ 'https://en.wikipedia.org/wiki/Gavin_Newsom',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Official_Photo_of_Governor_Gavin_Newsom_%28cropped%29.jpg/440px-Official_Photo_of_Governor_Gavin_Newsom_%28cropped%29.jpg'),
+
+('Josh Hawley', 'josh-hawley', 'MO', 'senate', 'republican',
+ 'U.S. Senator', 2019,
+ 'Junior United States Senator from Missouri. Former Attorney General of Missouri.',
+ 'https://www.hawley.senate.gov', 'https://joshhawley.com',
+ 'https://en.wikipedia.org/wiki/Josh_Hawley',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Josh_Hawley_official_portrait_%28cropped%29.jpg/440px-Josh_Hawley_official_portrait_%28cropped%29.jpg'),
+
+('Katie Porter', 'katie-porter', 'CA', 'house', 'democrat',
+ 'Former U.S. Representative', 2019,
+ 'American politician and law professor who served as U.S. representative for California''s 47th district.',
+ 'https://katieporter.com', 'https://katieporter.com',
+ 'https://en.wikipedia.org/wiki/Katie_Porter',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Katie_Porter_117th_Congress_portrait.jpg/440px-Katie_Porter_117th_Congress_portrait.jpg'),
+
+('Greg Abbott', 'greg-abbott', 'TX', 'governor', 'republican',
+ 'Governor of Texas', 2015,
+ '48th Governor of Texas. Previously served as the 50th Attorney General of Texas.',
+ 'https://gov.texas.gov', 'https://www.gregabbott.com',
+ 'https://en.wikipedia.org/wiki/Greg_Abbott',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Greg_Abbott_official_portrait.jpg/440px-Greg_Abbott_official_portrait.jpg'),
+
+('JD Vance', 'jd-vance', 'OH', 'senate', 'republican',
+ 'Vice President of the United States', 2025,
+ '49th Vice President of the United States. Author of Hillbilly Elegy. Former U.S. Senator from Ohio.',
+ 'https://www.whitehouse.gov/administration/vice-president-vance', null,
+ 'https://en.wikipedia.org/wiki/JD_Vance',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/J.D._Vance_official_Senate_portrait_%28cropped%29.jpg/440px-J.D._Vance_official_Senate_portrait_%28cropped%29.jpg'),
+
+('Hakeem Jeffries', 'hakeem-jeffries', 'NY', 'house', 'democrat',
+ 'House Minority Leader', 2013,
+ 'House Minority Leader and U.S. Representative for New York''s 8th congressional district.',
+ 'https://jeffries.house.gov', 'https://hakeemjeffries.com',
+ 'https://en.wikipedia.org/wiki/Hakeem_Jeffries',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Hakeem_Jeffries_118th_Congress_portrait.jpg/440px-Hakeem_Jeffries_118th_Congress_portrait.jpg'),
+
+('Mike Johnson', 'mike-johnson', 'LA', 'house', 'republican',
+ 'Speaker of the House', 2017,
+ '56th Speaker of the United States House of Representatives. Represents Louisiana''s 4th congressional district.',
+ 'https://mikejohnson.house.gov', 'https://mikejohnsonforcongress.com',
+ 'https://en.wikipedia.org/wiki/Mike_Johnson',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Speaker_Mike_Johnson_Official_Portrait_%28cropped%29.jpg/440px-Speaker_Mike_Johnson_Official_Portrait_%28cropped%29.jpg'),
+
+('Chuck Schumer', 'chuck-schumer', 'NY', 'senate', 'democrat',
+ 'Senate Minority Leader', 1999,
+ 'Senate Minority Leader. Senior United States Senator from New York.',
+ 'https://www.schumer.senate.gov', 'https://www.chuckschumer.com',
+ 'https://en.wikipedia.org/wiki/Chuck_Schumer',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Sen._Chuck_Schumer_official_portrait%2C_118th_Congress.jpg/440px-Sen._Chuck_Schumer_official_portrait%2C_118th_Congress.jpg'),
+
+('John Thune', 'john-thune', 'SD', 'senate', 'republican',
+ 'Senate Majority Leader', 2005,
+ 'Senate Majority Leader and senior United States Senator from South Dakota.',
+ 'https://www.thune.senate.gov', 'https://www.johnthune.com',
+ 'https://en.wikipedia.org/wiki/John_Thune',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/John_Thune_official_photo_%28cropped%29.jpg/440px-John_Thune_official_photo_%28cropped%29.jpg'),
+
+('Gretchen Whitmer', 'gretchen-whitmer', 'MI', 'governor', 'democrat',
+ 'Governor of Michigan', 2019,
+ '49th Governor of Michigan. Previously served in the Michigan Senate and House of Representatives.',
+ 'https://www.michigan.gov/whitmer', 'https://gretchenwhitmer.com',
+ 'https://en.wikipedia.org/wiki/Gretchen_Whitmer',
+ 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Gretchen_Whitmer_%28cropped%29.jpg/440px-Gretchen_Whitmer_%28cropped%29.jpg');

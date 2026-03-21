@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Dark theme (default) */
+  :root {
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 8%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 8%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 85% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 0 0% 45%;
+    --radius: 0.5rem;
+
+    /* Codex brand tokens */
+    --codex-bg: #050505;
+    --codex-card: #0A0A0A;
+    --codex-text: #ffffff;
+    --codex-sub: rgba(255, 255, 255, 0.55);
+    --codex-faint: rgba(255, 255, 255, 0.38);
+    --codex-subtle: rgba(255, 255, 255, 0.50);
+    --codex-border: rgba(255, 255, 255, 0.08);
+    --codex-hover: rgba(255, 255, 255, 0.04);
+    --codex-input-bg: rgba(255, 255, 255, 0.03);
+    --codex-input-border: rgba(255, 255, 255, 0.10);
+    --codex-input-focus: rgba(255, 255, 255, 0.25);
+    --codex-overlay: rgba(0, 0, 0, 0.7);
+    --codex-badge-bg: rgba(255, 255, 255, 0.08);
+    --codex-badge-text: rgba(255, 255, 255, 0.45);
+    --codex-grid-opacity: 0.025;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-[var(--codex-bg)] text-[var(--codex-text)] antialiased;
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* Light theme — outside @layer for higher specificity */
+:root.light {
+  --background: 40 20% 98%;
+  --foreground: 0 0% 7%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 7%;
+  --primary: 0 0% 7%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 7%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 50%;
+  --accent: 0 0% 96%;
+  --accent-foreground: 0 0% 7%;
+  --destructive: 0 85% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 92%;
+  --input: 0 0% 92%;
+  --ring: 0 0% 50%;
+
+  --codex-bg: #FAFAF8;
+  --codex-card: #FFFFFF;
+  --codex-text: #111111;
+  --codex-sub: rgba(0, 0, 0, 0.55);
+  --codex-faint: rgba(0, 0, 0, 0.40);
+  --codex-subtle: rgba(0, 0, 0, 0.50);
+  --codex-border: rgba(0, 0, 0, 0.08);
+  --codex-hover: rgba(0, 0, 0, 0.03);
+  --codex-input-bg: rgba(0, 0, 0, 0.03);
+  --codex-input-border: rgba(0, 0, 0, 0.12);
+  --codex-input-focus: rgba(0, 0, 0, 0.30);
+  --codex-overlay: rgba(0, 0, 0, 0.25);
+  --codex-badge-bg: rgba(0, 0, 0, 0.05);
+  --codex-badge-text: rgba(0, 0, 0, 0.45);
+  --codex-grid-opacity: 0.04;
+}
+
+:root.light ::selection {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Focus styles for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--codex-input-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--codex-border);
+  border-radius: 2px;
+}
