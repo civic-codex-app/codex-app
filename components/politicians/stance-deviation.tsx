@@ -1,6 +1,6 @@
 import { getPartyDefault } from '@/lib/utils/alignment'
 import { partyLabel } from '@/lib/constants/parties'
-import { stanceStyle } from '@/lib/utils/stances'
+import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
 
 interface StanceDeviationProps {
   party: string
@@ -12,14 +12,31 @@ interface StanceDeviationProps {
 
 /**
  * Shows stances where this politician breaks from their party line.
- * These are the most interesting / differentiating data points.
+ * Only shows true directional breaks — not just intensity differences.
+ * e.g., "supports" vs party default "opposes" = a break
+ *        "strongly_supports" vs party default "supports" = NOT a break (same direction)
  */
 export function StanceDeviation({ party, stances }: StanceDeviationProps) {
   const deviations = stances
     .filter((s) => {
       if (!s.issues?.slug) return false
       const expected = getPartyDefault(party, s.issues.slug)
-      return expected !== null && s.stance !== expected
+      if (!expected) return false
+      if (s.stance === expected) return false
+
+      // Only count as a break if the DIRECTION differs (supports vs opposes)
+      // Same direction but different intensity is not a break
+      const actualBucket = stanceBucket(s.stance)
+      const expectedBucket = stanceBucket(expected)
+
+      // Skip unknowns
+      if (actualBucket === 'unknown' || expectedBucket === 'unknown') return false
+
+      // Same bucket = not a real break
+      if (actualBucket === expectedBucket) return false
+
+      // Mixed/neutral vs supports/opposes = a meaningful break
+      return true
     })
     .map((s) => ({
       ...s,
@@ -36,12 +53,12 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
         Breaks from {label} Line
       </h2>
       <p className="mb-4 text-[11px] text-[var(--codex-faint)]">
-        Issues where this official diverges from the typical {label} position
+        Issues where this official takes a different direction than the typical {label} position
       </p>
       <div className="grid gap-2">
         {deviations.map((d) => {
-          const expectedColors = stanceStyle(d.expected).color
-          const actualColor = stanceStyle(d.stance).color
+          const expectedStyle = stanceStyle(d.expected)
+          const actualStyle = stanceStyle(d.stance)
 
           return (
             <div
@@ -54,16 +71,16 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
               <div className="flex items-center gap-2">
                 <span
                   className="text-[11px] uppercase tracking-[0.06em] line-through opacity-40"
-                  style={{ color: expectedColors }}
+                  style={{ color: expectedStyle.color }}
                 >
-                  {stanceStyle(d.expected).shortLabel}
+                  {expectedStyle.shortLabel}
                 </span>
                 <span className="text-[11px] text-[var(--codex-faint)]">→</span>
                 <span
                   className="rounded-sm px-1.5 py-0.5 text-[11px] uppercase tracking-[0.06em]"
-                  style={{ color: actualColor, background: `${actualColor}18` }}
+                  style={{ color: actualStyle.color, background: `${actualStyle.color}18` }}
                 >
-                  {stanceStyle(d.stance).shortLabel}
+                  {actualStyle.shortLabel}
                 </span>
               </div>
             </div>
