@@ -95,7 +95,7 @@ export default async function HomePage({ searchParams }: PageProps) {
       .from('politician_issues')
       .select('politician_id, stance, issues:issue_id(slug)')
       .in('politician_id', visibleIds)
-    stancesData = (data ?? []) as typeof stancesData
+    stancesData = (data ?? []) as unknown as typeof stancesData
   }
 
   // Build per-politician stance data
