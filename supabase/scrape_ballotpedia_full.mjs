@@ -116,20 +116,20 @@ for (let i = 0; i < toProcess.length; i++) {
   let html = '';
   try {
     html = execSync(
-      `curl -sL -H "User-Agent: CodexApp/1.0 (civic-engagement-platform)" "${bpUrl}" --max-time 10`,
+      `curl -sL -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" "${bpUrl}" --max-time 10`,
       { maxBuffer: 5 * 1024 * 1024, timeout: 15000 }
     ).toString();
   } catch (e) {
     failed++;
     if ((i + 1) % 100 === 0) console.log(`  === [${i+1}/${toProcess.length}] img=${imgSuccess} data=${dataSuccess} failed=${failed} ===`);
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 3000 + Math.random() * 2000));
     continue;
   }
 
   if (!html || html.length < 1000 || html.includes('There is currently no Ballotpedia article')) {
     failed++;
     if ((i + 1) % 100 === 0) console.log(`  === [${i+1}/${toProcess.length}] img=${imgSuccess} data=${dataSuccess} failed=${failed} ===`);
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 3000 + Math.random() * 2000));
     continue;
   }
 
@@ -204,7 +204,7 @@ for (let i = 0; i < toProcess.length; i++) {
   if ((i + 1) % 100 === 0)
     console.log(`  === [${i+1}/${toProcess.length}] img=${imgSuccess} data=${dataSuccess} failed=${failed} ===`);
 
-  await new Promise(r => setTimeout(r, 1000));
+  await new Promise(r => setTimeout(r, 3000 + Math.random() * 2000));
 }
 
 console.log(`\n=== DONE ===`);
