@@ -6,14 +6,13 @@ import { Footer } from '@/components/layout/footer'
 import { StatsBar } from '@/components/directory/stats-bar'
 import { SearchInput } from '@/components/directory/search-input'
 import { ChamberTabs } from '@/components/directory/chamber-tabs'
-import { PoliticianCard } from '@/components/directory/politician-card'
+import { PoliticianList } from '@/components/directory/politician-list'
 import { StateFilter } from '@/components/filters/state-filter'
 import { PartyFilter } from '@/components/filters/party-filter'
 import { SortFilter } from '@/components/filters/sort-filter'
 import type { Politician } from '@/lib/types/politician'
 import { computeAlignment } from '@/lib/utils/alignment'
 import { stanceBucket } from '@/lib/utils/stances'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Codex - U.S. Politician Directory & Civic Engagement Platform',
@@ -134,20 +133,24 @@ export default async function HomePage({ searchParams }: PageProps) {
   }
 
   const hasFilters = !!(params.q || params.chamber || params.state || params.party)
-  const totalPages = Math.ceil(totalCount / PAGE_SIZE)
+  const hasMorePages = offset + PAGE_SIZE < totalCount
 
-  // Build pagination URL helper
-  function pageUrl(p: number) {
-    const sp = new URLSearchParams()
-    if (params.q) sp.set('q', params.q)
-    if (params.chamber) sp.set('chamber', params.chamber)
-    if (params.state) sp.set('state', params.state)
-    if (params.party) sp.set('party', params.party)
-    if (params.sort) sp.set('sort', params.sort)
-    if (p > 1) sp.set('page', String(p))
-    const qs = sp.toString()
-    return qs ? `/?${qs}` : '/'
+  // Build stances/alignments as plain objects for client component
+  const stancesObj: Record<string, { supports: number; opposes: number; mixed: number }> = {}
+  const alignmentsObj: Record<string, number> = {}
+  for (const pol of politicians) {
+    const data = stancesByPol.get(pol.id)
+    if (data) stancesObj[pol.id] = { supports: data.supports, opposes: data.opposes, mixed: data.mixed }
+    const a = alignmentMap.get(pol.id)
+    if (a !== undefined) alignmentsObj[pol.id] = a
   }
+
+  const filterParams: Record<string, string> = {}
+  if (params.q) filterParams.q = params.q
+  if (params.chamber) filterParams.chamber = params.chamber
+  if (params.state) filterParams.state = params.state
+  if (params.party) filterParams.party = params.party
+  if (params.sort) filterParams.sort = params.sort
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -231,55 +234,15 @@ export default async function HomePage({ searchParams }: PageProps) {
           </div>
         )}
 
-        {/* List */}
-        <div className="animate-fade-up">
-          {politicians.map((pol) => {
-            const data = stancesByPol.get(pol.id)
-            return (
-              <PoliticianCard
-                key={pol.id}
-                politician={pol}
-                alignment={alignmentMap.get(pol.id)}
-                stances={
-                  data
-                    ? { supports: data.supports, opposes: data.opposes, mixed: data.mixed }
-                    : undefined
-                }
-              />
-            )
-          })}
-          {politicians.length === 0 && (
-            <div className="py-20 text-center text-[var(--codex-faint)]">
-              <div className="mb-2 font-serif text-2xl">No results</div>
-              <div className="text-sm">Try adjusting your filters or search query</div>
-            </div>
-          )}
-        </div>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 border-t border-[var(--codex-border)] py-8">
-            {page > 1 && (
-              <Link
-                href={pageUrl(page - 1)}
-                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
-              >
-                ← Prev
-              </Link>
-            )}
-            <span className="px-3 text-[13px] tabular-nums text-[var(--codex-faint)]">
-              Page {page} of {totalPages}
-            </span>
-            {page < totalPages && (
-              <Link
-                href={pageUrl(page + 1)}
-                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
-              >
-                Next →
-              </Link>
-            )}
-          </div>
-        )}
+        {/* Infinite scroll list */}
+        <PoliticianList
+          initialPoliticians={politicians}
+          initialStances={stancesObj}
+          initialAlignments={alignmentsObj}
+          totalCount={totalCount}
+          filterParams={filterParams}
+          hasMore={hasMorePages}
+        />
 
         <Footer />
       </div>

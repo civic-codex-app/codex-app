@@ -55,6 +55,9 @@ export function useTheme() {
       root.classList.add('light')
       root.classList.remove('dark')
     }
+    // Update theme-color meta for browser chrome
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (meta) meta.setAttribute('content', mode === 'dark' ? '#050505' : '#FAFAF8')
   }, [mode])
 
   return { mode, toggle }

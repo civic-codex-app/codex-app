@@ -1,6 +1,8 @@
 'use client'
 
 import { useTheme } from '@/lib/hooks/use-theme'
+import { BottomTabs } from '@/components/layout/bottom-tabs'
+import { BackToTop } from '@/components/ui/back-to-top'
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   // Initialize theme on the public layout
@@ -18,9 +20,11 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           backgroundSize: '80px 80px',
         }}
       />
-      <main id="main-content">
+      <main id="main-content" className="pb-[72px] sm:pb-0">
         {children}
       </main>
+      <BackToTop />
+      <BottomTabs />
     </div>
   )
 }

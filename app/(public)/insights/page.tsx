@@ -23,10 +23,12 @@ export const metadata: Metadata = {
 export default async function InsightsPage() {
   const supabase = createServiceRoleClient()
 
-  // Fetch all politicians with their stances
+  // Fetch federal/statewide politicians for insights (scoped for performance)
+  const INSIGHT_CHAMBERS = ['senate', 'house', 'governor', 'presidential']
   const { data: allPoliticians, error: politiciansError } = await supabase
     .from('politicians')
     .select('id, name, slug, party, state, chamber, image_url, title')
+    .in('chamber', INSIGHT_CHAMBERS)
     .order('name')
   if (politiciansError) console.error('Failed to fetch politicians for insights:', politiciansError.message)
 
@@ -49,31 +51,46 @@ export default async function InsightsPage() {
 
   const politicians = allPoliticians as any as InsightsPoliticianRow[]
 
-  // Fetch all stances with issue info -- paginate past 1000-row limit
-  const stances: InsightsStanceRow[] = []
-  {
-    let from = 0
-    const PAGE = 1000
-    while (true) {
-      const { data } = await supabase
-        .from('politician_issues')
-        .select('politician_id, stance, issues:issue_id(id, name, slug, icon, category)')
-        .range(from, from + PAGE - 1)
-      if (!data || data.length === 0) break
-      stances.push(...(data as any as InsightsStanceRow[]))
-      if (data.length < PAGE) break
-      from += PAGE
-    }
-  }
-
-  // Fetch all issues
-  const { data: allIssues, error: issuesError } = await supabase
+  // Fetch issues first (small query)
+  const { data: allIssues } = await supabase
     .from('issues')
     .select('id, name, slug, icon, category')
     .order('name')
-  if (issuesError) console.error('Failed to fetch issues for insights:', issuesError.message)
-
   const issues = (allIssues ?? []) as any as InsightsIssueRow[]
+  const issueMap = new Map(issues.map(i => [i.id, i]))
+
+  // Fetch stances WITHOUT join (much faster) — paginate through scoped politician IDs
+  const polIds = politicians.map(p => p.id)
+  const BATCH = 100 // 100 pols × 14 issues = 1400 rows, over 1000 limit. Use 70.
+  const SAFE_BATCH = 70 // 70 × 14 = 980, under 1000-row limit
+  const stancePromises = []
+  for (let i = 0; i < polIds.length; i += SAFE_BATCH) {
+    const batch = polIds.slice(i, i + SAFE_BATCH)
+    stancePromises.push(
+      supabase
+        .from('politician_issues')
+        .select('politician_id, stance, issue_id')
+        .in('politician_id', batch)
+    )
+  }
+  const stanceResults = await Promise.all(stancePromises)
+
+  // Reconstruct with issue info from the map
+  const stances: InsightsStanceRow[] = []
+  for (const result of stanceResults) {
+    if (result.data) {
+      for (const row of result.data) {
+        const issue = issueMap.get(row.issue_id)
+        if (issue) {
+          stances.push({
+            politician_id: row.politician_id,
+            stance: row.stance,
+            issues: issue,
+          } as InsightsStanceRow)
+        }
+      }
+    }
+  }
 
   // -- Chamber Composition --
   const chamberData = (chamber: string) => {
@@ -97,48 +114,59 @@ export default async function InsightsPage() {
   const houseData = chamberData('House')
   const govData = chamberData('Governors')
 
-  // -- Issue Heatmap --
-  // Map Lucide icon names to emojis for the heatmap
+  // -- Pre-index all data for fast lookups --
+  const polPartyMap = new Map<string, string>()
+  politicians.forEach((p) => polPartyMap.set(p.id, (p.party ?? 'independent').toLowerCase()))
+
+  // Group stances by politician and by issue+party in one pass
+  const polStanceMap: Record<string, InsightsStanceRow[]> = {}
+  // heatmap index: issueSlug -> party -> bucket -> count
+  type BucketCounts = { supports: number; opposes: number; neutral: number; mixed: number }
+  const heatIndex = new Map<string, Map<string, BucketCounts>>()
+
+  for (const s of stances) {
+    // Per-politician grouping
+    if (!polStanceMap[s.politician_id]) polStanceMap[s.politician_id] = []
+    polStanceMap[s.politician_id].push(s)
+
+    // Heatmap indexing
+    const issueSlug = s.issues?.slug
+    if (!issueSlug) continue
+    if (!heatIndex.has(issueSlug)) heatIndex.set(issueSlug, new Map())
+    const partyMap = heatIndex.get(issueSlug)!
+    const party = polPartyMap.get(s.politician_id) ?? 'independent'
+    if (!partyMap.has(party)) partyMap.set(party, { supports: 0, opposes: 0, neutral: 0, mixed: 0 })
+    const counts = partyMap.get(party)!
+    const bucket = stanceBucket(s.stance)
+    if (bucket === 'supports') counts.supports++
+    else if (bucket === 'opposes') counts.opposes++
+    else if (bucket === 'neutral') counts.neutral++
+    else counts.mixed++
+  }
+
+  // -- Issue Heatmap (from pre-indexed data) --
   const iconToEmoji: Record<string, string> = {
     briefcase: '\uD83D\uDCBC', 'heart-pulse': '\uD83C\uDFE5', globe: '\uD83C\uDF0D', 'graduation-cap': '\uD83C\uDF93',
     shield: '\uD83D\uDEE1\uFE0F', leaf: '\uD83C\uDF3F', scale: '\u2696\uFE0F', landmark: '\uD83C\uDFDB\uFE0F', cpu: '\uD83D\uDCBB',
     users: '\uD83D\uDC65', target: '\uD83C\uDFAF', 'hard-hat': '\uD83C\uDFD7\uFE0F', home: '\uD83C\uDFE0', zap: '\u26A1',
   }
 
-  // Build fast politician party lookup
-  const polPartyMap = new Map<string, string>()
-  politicians.forEach((p) => polPartyMap.set(p.id, (p.party ?? 'independent').toLowerCase()))
-
+  const EMPTY_COUNTS: BucketCounts = { supports: 0, opposes: 0, neutral: 0, mixed: 0 }
   const heatmapData = issues.map((issue) => {
-    const issueStances = stances.filter((s) => s.issues?.slug === issue.slug)
-    const partyBreakdown = (party: string) => {
-      const partyStances = issueStances.filter((s) => polPartyMap.get(s.politician_id) === party)
-      return {
-        supports: partyStances.filter((s) => stanceBucket(s.stance) === 'supports').length,
-        opposes: partyStances.filter((s) => stanceBucket(s.stance) === 'opposes').length,
-        neutral: partyStances.filter((s) => stanceBucket(s.stance) === 'neutral').length,
-        mixed: partyStances.filter((s) => stanceBucket(s.stance) === 'mixed').length,
-      }
-    }
-
+    const partyMap = heatIndex.get(issue.slug)
     return {
       issue: issue.name,
       issueSlug: issue.slug,
       icon: iconToEmoji[issue.icon] ?? '\uD83D\uDCCB',
       parties: {
-        democrat: partyBreakdown('democrat'),
-        republican: partyBreakdown('republican'),
-        independent: partyBreakdown('independent'),
+        democrat: partyMap?.get('democrat') ?? { ...EMPTY_COUNTS },
+        republican: partyMap?.get('republican') ?? { ...EMPTY_COUNTS },
+        independent: partyMap?.get('independent') ?? { ...EMPTY_COUNTS },
       },
     }
   })
 
   // -- Alignment Spectrum --
-  const polStanceMap: Record<string, InsightsStanceRow[]> = {}
-  stances.forEach((s) => {
-    if (!polStanceMap[s.politician_id]) polStanceMap[s.politician_id] = []
-    polStanceMap[s.politician_id].push(s)
-  })
 
   const spectrumData = politicians
     .map((p) => {
