@@ -30,7 +30,7 @@ export function Header() {
         <div className="flex items-center gap-3.5">
           <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Codex Home">
             <ElephantIcon size={18} color="var(--codex-text)" />
-            <DonkeyIcon size={18} color="var(--codex-text)" className="scale-x-[-1]" />
+            <DonkeyIcon size={18} color="var(--codex-text)" />
           </Link>
           <nav className="ml-4 hidden items-center gap-4 sm:flex" aria-label="Main navigation">
             {NAV_LINKS.map((link) => {
