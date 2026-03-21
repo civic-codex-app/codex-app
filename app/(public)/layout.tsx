@@ -1,13 +1,7 @@
-'use client'
-
-import { useTheme } from '@/lib/hooks/use-theme'
 import { BottomTabs } from '@/components/layout/bottom-tabs'
 import { BackToTop } from '@/components/ui/back-to-top'
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
-  // Initialize theme on the public layout
-  useTheme()
-
   return (
     <div className="relative min-h-screen transition-colors duration-400">
       {/* Grid background */}

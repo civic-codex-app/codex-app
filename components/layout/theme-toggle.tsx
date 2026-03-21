@@ -1,9 +1,39 @@
 'use client'
 
-import { useTheme } from '@/lib/hooks/use-theme'
+import { useEffect, useState } from 'react'
+import { useThemeStore } from '@/lib/hooks/use-theme'
 
 export function ThemeToggle() {
-  const { mode, toggle } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const { mode, toggle, setMode } = useThemeStore()
+
+  useEffect(() => {
+    // Initialize theme from localStorage
+    const saved = localStorage.getItem('codex-theme') as 'dark' | 'light' | null
+    if (saved) {
+      setMode(saved)
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      setMode(prefersDark ? 'dark' : 'light')
+    }
+    setMounted(true)
+  }, [setMode])
+
+  useEffect(() => {
+    if (!mounted) return
+    const root = document.documentElement
+    root.classList.toggle('dark', mode === 'dark')
+    root.classList.toggle('light', mode !== 'dark')
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (meta) meta.setAttribute('content', mode === 'dark' ? '#050505' : '#FAFAF8')
+  }, [mode, mounted])
+
+  // Don't render until mounted to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <div style={{ width: '80px', height: '32px' }} />
+    )
+  }
 
   return (
     <button
