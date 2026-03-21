@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 const TABS = [
   {
@@ -53,18 +53,6 @@ const TABS = [
       </svg>
     ),
   },
-  {
-    href: '#more',
-    label: 'More',
-    match: [],
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="1" />
-        <circle cx="12" cy="5" r="1" />
-        <circle cx="12" cy="19" r="1" />
-      </svg>
-    ),
-  },
 ]
 
 const MORE_LINKS = [
@@ -77,28 +65,52 @@ export function BottomTabs() {
   const pathname = usePathname()
   const [moreOpen, setMoreOpen] = useState(false)
 
+  const toggleMore = useCallback(() => {
+    setMoreOpen(prev => !prev)
+  }, [])
+
+  const closeMore = useCallback(() => {
+    setMoreOpen(false)
+  }, [])
+
   return (
     <>
       {/* More panel overlay */}
       {moreOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/40 sm:hidden"
-          onClick={() => setMoreOpen(false)}
+          className="fixed inset-0 z-30 sm:hidden"
+          style={{ backgroundColor: 'rgba(0,0,0,0.4)', cursor: 'pointer' }}
+          onClick={closeMore}
+          onTouchEnd={closeMore}
         />
       )}
 
       {/* More panel */}
       {moreOpen && (
         <div
-          className="fixed bottom-[calc(56px+var(--safe-bottom))] left-0 right-0 z-50 border-t border-[var(--codex-border)] bg-[var(--codex-bg)] px-6 py-4 sm:hidden"
+          className="fixed left-0 right-0 z-50 border-t sm:hidden"
+          style={{
+            bottom: 'calc(56px + var(--safe-bottom, 0px))',
+            backgroundColor: 'var(--codex-bg)',
+            borderColor: 'var(--codex-border)',
+            padding: '16px 24px',
+          }}
         >
-          <div className="flex flex-col gap-1">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {MORE_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setMoreOpen(false)}
-                className="touch-feedback rounded-lg px-4 py-3 text-[14px] font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                onClick={closeMore}
+                style={{
+                  display: 'block',
+                  padding: '12px 16px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: 'var(--codex-text)',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                }}
               >
                 {link.label}
               </Link>
@@ -109,59 +121,74 @@ export function BottomTabs() {
 
       {/* Tab bar */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--codex-border)] bg-[var(--codex-bg)] backdrop-blur-md sm:hidden"
-        style={{ paddingBottom: 'var(--safe-bottom)' }}
+        className="fixed bottom-0 left-0 right-0 z-40 sm:hidden"
+        style={{
+          backgroundColor: 'var(--codex-bg)',
+          borderTop: '1px solid var(--codex-border)',
+          paddingBottom: 'var(--safe-bottom, 0px)',
+        }}
         aria-label="Mobile navigation"
       >
-        <div className="flex h-14 items-stretch">
+        <div style={{ display: 'flex', height: '56px', alignItems: 'stretch' }}>
           {TABS.map((tab) => {
-            const isMore = tab.href === '#more'
-            const isActive = isMore
-              ? moreOpen
-              : tab.match.some((m) =>
-                  m === '/' ? pathname === '/' : pathname.startsWith(m)
-                )
-
-            if (isMore) {
-              return (
-                <button
-                  key="more"
-                  type="button"
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setMoreOpen(!moreOpen) }}
-                  className="touch-feedback flex flex-1 flex-col items-center justify-center gap-0.5"
-                >
-                  <span style={{ color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)' }}>
-                    {tab.icon}
-                  </span>
-                  <span
-                    className="text-[10px] font-medium"
-                    style={{ color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)' }}
-                  >
-                    {tab.label}
-                  </span>
-                </button>
-              )
-            }
+            const isActive = tab.match.some((m) =>
+              m === '/' ? pathname === '/' : pathname.startsWith(m)
+            )
 
             return (
               <Link
                 key={tab.href}
                 href={tab.href}
-                onClick={() => setMoreOpen(false)}
-                className="touch-feedback flex flex-1 flex-col items-center justify-center gap-0.5 no-underline"
+                onClick={closeMore}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '2px',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)',
+                }}
               >
-                <span style={{ color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)' }}>
-                  {tab.icon}
-                </span>
-                <span
-                  className="text-[10px] font-medium"
-                  style={{ color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)' }}
-                >
+                {tab.icon}
+                <span style={{ fontSize: '10px', fontWeight: 500 }}>
                   {tab.label}
                 </span>
               </Link>
             )
           })}
+
+          {/* More button — separate from the map to use button element */}
+          <button
+            type="button"
+            onClick={toggleMore}
+            onTouchEnd={(e) => { e.preventDefault(); toggleMore() }}
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '2px',
+              border: 'none',
+              background: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              color: moreOpen ? 'var(--codex-text)' : 'var(--codex-faint)',
+              WebkitAppearance: 'none',
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="12" cy="5" r="1" />
+              <circle cx="12" cy="19" r="1" />
+            </svg>
+            <span style={{ fontSize: '10px', fontWeight: 500 }}>
+              More
+            </span>
+          </button>
         </div>
       </nav>
     </>
