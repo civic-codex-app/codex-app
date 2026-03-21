@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { PollStatusToggle } from '@/components/admin/poll-status-toggle'
 
 export default async function AdminPollsPage() {
   const supabase = createServiceRoleClient()
   const { data } = await supabase
     .from('polls')
-    .select('*, poll_options(id), poll_votes(id)')
+    .select('*, poll_options(id, label, sort_order), poll_votes(id)')
     .order('created_at', { ascending: false })
 
   const polls = data ?? []
@@ -23,6 +24,23 @@ export default async function AdminPollsPage() {
         >
           + Create Poll
         </Link>
+      </div>
+
+      {/* Status filter tabs */}
+      <div className="mb-6 flex gap-6 border-b border-[var(--codex-border)]">
+        {['all', 'active', 'closed', 'draft'].map((status) => {
+          const count = status === 'all'
+            ? polls.length
+            : polls.filter((p: any) => p.status === status).length
+          return (
+            <span
+              key={status}
+              className="border-b-2 border-transparent pb-2 text-[12px] font-medium uppercase tracking-wider text-[var(--codex-sub)]"
+            >
+              {status} ({count})
+            </span>
+          )
+        })}
       </div>
 
       <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">
@@ -62,17 +80,7 @@ export default async function AdminPollsPage() {
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`rounded-sm px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] ${
-                      poll.status === 'active'
-                        ? 'bg-green-500/10 text-green-400'
-                        : poll.status === 'closed'
-                          ? 'bg-red-500/10 text-red-400'
-                          : 'bg-yellow-500/10 text-yellow-400'
-                    }`}
-                  >
-                    {poll.status}
-                  </span>
+                  <PollStatusToggle pollId={poll.id} currentStatus={poll.status} />
                 </td>
                 <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">
                   {(poll.poll_options as any[])?.length ?? 0}
@@ -80,7 +88,7 @@ export default async function AdminPollsPage() {
                 <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">
                   {(poll.poll_votes as any[])?.length ?? 0}
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-4 py-3 text-right space-x-3">
                   <Link
                     href={`/admin/polls/${poll.id}`}
                     className="text-xs text-[var(--codex-sub)] hover:text-[var(--codex-text)]"

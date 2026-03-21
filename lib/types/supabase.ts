@@ -188,7 +188,7 @@ export interface IssueWithStancesRow {
   icon: string | null
   description: string | null
   category: string
-  politician_issues: Array<{ id: string; stance: string }>
+  politician_issues: Array<{ id: string; stance: string; politicians: { party: string } | null }>
 }
 
 // ──────────────────────────────────────────────

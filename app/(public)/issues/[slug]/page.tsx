@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/footer'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { IssueDetailFilters } from '@/components/filters/issue-detail-filters'
+import { stanceBucket, STANCE_STYLES, STANCE_ORDER } from '@/lib/utils/stances'
 import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
 
 interface PageProps {
@@ -43,7 +44,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-import { STANCE_STYLES, STANCE_ORDER } from '@/lib/utils/stances'
 const STANCE_CONFIG = STANCE_STYLES
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -81,13 +81,38 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     .order('stance')
   if (stancesError) console.error('Failed to fetch stances for issue:', stancesError.message)
 
+  // All stances before filtering (for stats)
+  const allStances = (stances ?? []) as any as IssueStanceWithPoliticianRow[]
+
   // Apply client-side party/chamber filters
-  let stanceList = (stances ?? []) as any as IssueStanceWithPoliticianRow[]
+  let stanceList = [...allStances]
   if (sp.party) {
     stanceList = stanceList.filter((s) => s.politicians?.party === sp.party)
   }
   if (sp.chamber) {
     stanceList = stanceList.filter((s) => s.politicians?.chamber === sp.chamber)
+  }
+
+  // Compute summary stats from all stances (before filtering)
+  const totalAll = allStances.length
+  const supportsAll = allStances.filter((s) => stanceBucket(s.stance) === 'supports').length
+  const opposesAll = allStances.filter((s) => stanceBucket(s.stance) === 'opposes').length
+  const mixedAll = allStances.filter((s) => {
+    const b = stanceBucket(s.stance)
+    return b === 'mixed' || b === 'neutral'
+  }).length
+
+  // Party breakdown stats (from all stances)
+  const partyStats: Record<string, { total: number; supports: number; opposes: number; mixed: number }> = {}
+  for (const s of allStances) {
+    const p = s.politicians?.party
+    if (!p) continue
+    if (!partyStats[p]) partyStats[p] = { total: 0, supports: 0, opposes: 0, mixed: 0 }
+    partyStats[p].total++
+    const bucket = stanceBucket(s.stance)
+    if (bucket === 'supports') partyStats[p].supports++
+    else if (bucket === 'opposes') partyStats[p].opposes++
+    else partyStats[p].mixed++
   }
 
   // Group by stance
@@ -99,6 +124,8 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
   }
 
   const stanceOrder = STANCE_ORDER
+
+  const hasFilters = !!(sp.party || sp.chamber)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -138,7 +165,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
             {CATEGORY_LABELS[issue.category] ?? issue.category}
           </span>
           <span className="text-[11px] text-[var(--codex-faint)]">
-            {stanceList.length} politician{stanceList.length !== 1 ? 's' : ''}
+            {totalAll} politician{totalAll !== 1 ? 's' : ''}
           </span>
         </div>
 
@@ -148,13 +175,91 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         </h1>
 
         {issue.description && (
-          <p className="mb-8 text-[15px] leading-[1.7] text-[var(--codex-sub)]">{issue.description}</p>
+          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">{issue.description}</p>
+        )}
+
+        {/* Summary stats */}
+        {totalAll > 0 && (
+          <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
+              <div className="font-serif text-2xl text-green-400">{supportsAll}</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Support</div>
+            </div>
+            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
+              <div className="font-serif text-2xl text-red-400">{opposesAll}</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Oppose</div>
+            </div>
+            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
+              <div className="font-serif text-2xl text-yellow-400">{mixedAll}</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Mixed / Neutral</div>
+            </div>
+            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
+              <div className="font-serif text-2xl text-[var(--codex-text)]">{totalAll}</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total</div>
+            </div>
+          </div>
+        )}
+
+        {/* Party breakdown */}
+        {Object.keys(partyStats).length > 0 && (
+          <div className="mb-8 rounded-md border border-[var(--codex-border)] p-4">
+            <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--codex-faint)]">
+              Party Breakdown
+            </div>
+            <div className="space-y-3">
+              {(['democrat', 'republican', 'independent', 'green'] as const)
+                .filter((p) => partyStats[p])
+                .map((party) => {
+                  const stats = partyStats[party]
+                  const supportPct = Math.round((stats.supports / stats.total) * 100)
+                  const opposePct = Math.round((stats.opposes / stats.total) * 100)
+                  const mixedPct = 100 - supportPct - opposePct
+                  const color = partyColor(party)
+
+                  return (
+                    <div key={party}>
+                      <div className="mb-1.5 flex items-center justify-between">
+                        <span className="text-[12px] font-medium" style={{ color }}>
+                          {partyLabel(party)}
+                        </span>
+                        <span className="text-[11px] tabular-nums text-[var(--codex-faint)]">
+                          {stats.total} official{stats.total !== 1 ? 's' : ''}
+                        </span>
+                      </div>
+                      <div className="mb-1 flex h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                        {supportPct > 0 && (
+                          <div className="bg-green-500/70" style={{ width: `${supportPct}%` }} />
+                        )}
+                        {mixedPct > 0 && (
+                          <div className="bg-yellow-500/50" style={{ width: `${mixedPct}%` }} />
+                        )}
+                        {opposePct > 0 && (
+                          <div className="bg-red-500/70" style={{ width: `${opposePct}%` }} />
+                        )}
+                      </div>
+                      <div className="flex gap-4 text-[10px] text-[var(--codex-faint)]">
+                        <span className="text-green-400/70">{supportPct}% support</span>
+                        <span className="text-yellow-400/70">{mixedPct}% mixed</span>
+                        <span className="text-red-400/70">{opposePct}% oppose</span>
+                      </div>
+                    </div>
+                  )
+                })}
+            </div>
+          </div>
         )}
 
         {/* Filters */}
         <Suspense>
           <IssueDetailFilters />
         </Suspense>
+
+        {/* Filtered count */}
+        {hasFilters && (
+          <div className="mb-4 text-[11px] text-[var(--codex-faint)]">
+            Showing {stanceList.length} of {totalAll} stances
+          </div>
+        )}
 
         {stanceOrder.map((stance) => {
           const items = grouped[stance]
