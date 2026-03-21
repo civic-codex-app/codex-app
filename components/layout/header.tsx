@@ -29,8 +29,8 @@ export function Header() {
       <div className="mb-8 flex items-center justify-between border-b border-[var(--codex-border)] pb-4 sm:mb-10 md:mb-14">
         <div className="flex items-center gap-3.5">
           <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Codex Home">
-            <ElephantIcon size={18} color="var(--codex-text)" />
-            <DonkeyIcon size={18} color="var(--codex-text)" />
+            <ElephantIcon size={22} color="#DC2626" />
+            <DonkeyIcon size={22} color="#2563EB" />
           </Link>
           <nav className="ml-4 hidden items-center gap-4 sm:flex" aria-label="Main navigation">
             {NAV_LINKS.map((link) => {
