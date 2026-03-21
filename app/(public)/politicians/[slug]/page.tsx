@@ -412,37 +412,47 @@ export default async function PoliticianPage({ params }: PageProps) {
                 <p className="mb-4 text-[11px] text-[var(--codex-faint)]">
                   Positions based on voting record, public statements, and party platform
                 </p>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {politicianStances.map((s) => {
                     const sc = stanceStyle(s.stance)
                     const isEstimated = !s.is_verified
+                    const hasRealSummary = s.summary && !s.summary.includes('key aspects') && !s.summary.includes('Estimated position') && !s.summary.includes('generally been')
                     return (
                       <div
                         key={s.id}
-                        className="rounded-md border border-[var(--codex-border)] px-4 py-3"
+                        className="overflow-hidden rounded-lg border border-[var(--codex-border)]"
+                        style={{ borderLeftWidth: '3px', borderLeftColor: sc.color }}
                       >
-                        <div className="flex items-center justify-between">
-                          <Link
-                            href={`/issues/${s.issues?.slug}`}
-                            className="flex items-center gap-2 text-sm font-medium hover:text-[var(--codex-text)]"
-                          >
-                            {s.issues?.icon && <IssueIcon icon={s.issues.icon} size={16} className="text-[var(--codex-sub)]" />}
-                            {s.issues?.name}
-                          </Link>
-                          <div className="flex items-center gap-2">
-                            {isEstimated && (
-                              <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] text-[var(--codex-faint)]" title="Based on party platform -- not yet verified from voting record or public statements">
-                                Est.
+                        <div className="px-4 py-3">
+                          <div className="flex items-center justify-between gap-3">
+                            <Link
+                              href={`/issues/${s.issues?.slug}`}
+                              className="flex items-center gap-2 text-[14px] font-medium hover:text-[var(--codex-text)]"
+                            >
+                              {s.issues?.icon && <IssueIcon icon={s.issues.icon} size={15} className="text-[var(--codex-sub)]" />}
+                              {s.issues?.name}
+                            </Link>
+                            <div className="flex shrink-0 items-center gap-2">
+                              {isEstimated && (
+                                <span className="rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-[var(--codex-faint)]" title="Based on party platform — not yet verified">
+                                  Est.
+                                </span>
+                              )}
+                              <span
+                                className="rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em]"
+                                style={{ color: sc.color, backgroundColor: `${sc.color}15` }}
+                              >
+                                {sc.label}
                               </span>
-                            )}
-                            <span className={`rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em] ${sc.bg} ${sc.text}`}>
-                              {sc.label}
-                            </span>
+                            </div>
                           </div>
+                          {hasRealSummary && (
+                            <p className="mt-2 text-[13px] leading-[1.6] text-[var(--codex-sub)]">{s.summary}</p>
+                          )}
+                          {isEstimated && !hasRealSummary && (
+                            <p className="mt-1.5 text-[11px] italic text-[var(--codex-faint)]">Estimated from party affiliation — not yet verified</p>
+                          )}
                         </div>
-                        {s.summary && (
-                          <p className="mt-1.5 text-[13px] leading-[1.6] text-[var(--codex-sub)]">{s.summary}</p>
-                        )}
                       </div>
                     )
                   })}
