@@ -50,36 +50,38 @@ export default async function IssuesPage({ searchParams }: PageProps) {
     )
   }
 
-  // Fetch stance counts per issue using parallel queries (fast, no 1000-row limit)
+  // Fetch stances per issue in parallel — each issue paginates independently
   const issueIds = issues.map(i => i.id)
 
-  // Fetch ALL stances with full pagination (no 1000-row limit)
-  const allStances: { issue_id: string; stance: string; party: string }[] = []
-  const issueTotalCounts = new Map<string, number>()
-
-  // Paginate through all stances
-  let from = 0
-  while (true) {
-    const { data } = await supabase
-      .from('politician_issues')
-      .select('issue_id, stance, politicians:politician_id(party)')
-      .in('issue_id', issueIds)
-      .range(from, from + 999)
-    if (!data || !data.length) break
-    for (const row of data as any[]) {
-      allStances.push({
-        issue_id: row.issue_id,
-        stance: row.stance,
-        party: row.politicians?.party ?? 'independent',
-      })
+  async function fetchAllStancesForIssue(issueId: string) {
+    const stances: { stance: string; party: string }[] = []
+    let from = 0
+    while (true) {
+      const { data } = await supabase
+        .from('politician_issues')
+        .select('stance, politicians:politician_id(party)')
+        .eq('issue_id', issueId)
+        .range(from, from + 999)
+      if (!data || !data.length) break
+      for (const row of data as any[]) {
+        stances.push({ stance: row.stance, party: row.politicians?.party ?? 'independent' })
+      }
+      if (data.length < 1000) break
+      from += 1000
     }
-    if (data.length < 1000) break
-    from += 1000
+    return stances
   }
 
-  // Count per issue
-  for (const s of allStances) {
-    issueTotalCounts.set(s.issue_id, (issueTotalCounts.get(s.issue_id) ?? 0) + 1)
+  // Run all 14 issue queries in parallel
+  const issueStancesArr = await Promise.all(issueIds.map(id => fetchAllStancesForIssue(id)))
+
+  const allStances: { issue_id: string; stance: string; party: string }[] = []
+  const issueTotalCounts = new Map<string, number>()
+  for (let i = 0; i < issueIds.length; i++) {
+    issueTotalCounts.set(issueIds[i], issueStancesArr[i].length)
+    for (const s of issueStancesArr[i]) {
+      allStances.push({ issue_id: issueIds[i], ...s })
+    }
   }
 
   // Build per-issue stats
