@@ -100,6 +100,7 @@ export function RaceCard({ race }: RaceCardProps) {
                     alt={c.name}
                     size={28}
                     fallbackColor={partyColor(c.party)}
+                    party={c.party}
                   />
                 ) : (
                   <div

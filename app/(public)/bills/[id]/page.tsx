@@ -230,6 +230,7 @@ export default async function BillDetailPage({ params }: PageProps) {
                               src={pol.image_url}
                               alt={pol.name}
                               size={28}
+                              party={pol.party}
                               fallbackColor={partyColor(pol.party)}
                             />
                           </div>

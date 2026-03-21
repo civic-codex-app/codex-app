@@ -183,6 +183,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                           src={pol.image_url}
                           alt={pol.name}
                           size={40}
+                          party={pol.party}
                           fallbackColor={partyColor(pol.party)}
                         />
                       </div>

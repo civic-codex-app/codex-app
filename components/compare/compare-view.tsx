@@ -263,6 +263,7 @@ function ProfileCard({
             alt={pol.name}
             size={56}
             fallbackColor={color}
+            party={pol.party}
             className="h-full w-full object-cover"
           />
         </div>

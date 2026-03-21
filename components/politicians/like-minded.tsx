@@ -45,6 +45,7 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
                   alt={p.name}
                   size={32}
                   fallbackColor={color}
+                  party={p.party}
                 />
               </div>
 

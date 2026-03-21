@@ -71,6 +71,7 @@ export function BipartisanScoreCard({
                   src={p.imageUrl || ''}
                   alt={p.name}
                   size={32}
+                  party={p.party}
                   fallbackColor={color}
                 />
               </div>

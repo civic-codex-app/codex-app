@@ -228,6 +228,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                             src={candidate.image_url || pol?.image_url || null}
                             alt={candidate.name}
                             size={64}
+                            party={candidate.party}
                             fallbackColor={color}
                           />
                         </div>
