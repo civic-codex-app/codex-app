@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 const TABS = [
   {
@@ -63,10 +63,7 @@ const MORE_LINKS = [
 
 export function BottomTabs() {
   const pathname = usePathname()
-  const [mounted, setMounted] = useState(false)
   const [moreOpen, setMoreOpen] = useState(false)
-
-  useEffect(() => { setMounted(true) }, [])
 
   const toggleMore = useCallback(() => {
     setMoreOpen(prev => !prev)
@@ -75,9 +72,6 @@ export function BottomTabs() {
   const closeMore = useCallback(() => {
     setMoreOpen(false)
   }, [])
-
-  // All hooks called above — safe to return null now
-  if (!mounted) return null
 
   return (
     <>
