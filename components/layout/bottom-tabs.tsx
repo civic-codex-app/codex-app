@@ -82,7 +82,7 @@ export function BottomTabs() {
       {/* More panel overlay */}
       {moreOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 sm:hidden"
+          className="fixed inset-0 z-30 bg-black/40 sm:hidden"
           onClick={() => setMoreOpen(false)}
         />
       )}
