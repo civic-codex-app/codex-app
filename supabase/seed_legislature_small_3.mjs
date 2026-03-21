@@ -260,7 +260,7 @@ const ndSenators = [
   { name: 'Jay Elkin', district: 10, party: 'republican' },
   { name: 'Jeff Magrum', district: 8, party: 'republican' },
   { name: 'Janne Myrdal', district: 10, party: 'republican' },
-  { name: 'Kent Weston', district: prior, party: 'republican' },
+  { name: 'Kent Weston', district: 9, party: 'republican' },
   { name: 'Larry Luick', district: 25, party: 'republican' },
   { name: 'Mark Weber', district: 22, party: 'republican' },
   { name: 'Nicole Poolman', district: 7, party: 'republican' },
