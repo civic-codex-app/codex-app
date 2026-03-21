@@ -54,14 +54,16 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
               className="h-full w-full object-cover grayscale-[40%] transition-[filter] duration-300 group-hover:grayscale-0"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center font-serif text-[20px] text-[var(--codex-text)] opacity-40 sm:text-[22px]" aria-hidden="true">
-              {politician.name.charAt(0)}
+            <div className="flex h-full w-full items-center justify-center" style={{ background: `${color}08` }}>
+              <PartyIcon party={politician.party} size={20} />
             </div>
           )}
         </div>
-        <div className="absolute -bottom-0.5 -right-0.5 flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 border-[var(--codex-bg)] bg-[var(--codex-bg)] sm:h-[22px] sm:w-[22px]">
-          <PartyIcon party={politician.party} size={11} />
-        </div>
+        {politician.image_url && (
+          <div className="absolute -bottom-0.5 -right-0.5 flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 border-[var(--codex-bg)] bg-[var(--codex-bg)] sm:h-[22px] sm:w-[22px]">
+            <PartyIcon party={politician.party} size={11} />
+          </div>
+        )}
       </div>
 
       {/* Info */}
