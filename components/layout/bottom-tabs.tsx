@@ -109,7 +109,7 @@ export function BottomTabs() {
 
       {/* Tab bar */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--codex-border)] bg-[var(--codex-bg)]/95 backdrop-blur-md sm:hidden"
+        className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--codex-border)] bg-[var(--codex-bg)] backdrop-blur-md sm:hidden"
         style={{ paddingBottom: 'var(--safe-bottom)' }}
         aria-label="Mobile navigation"
       >
@@ -126,8 +126,9 @@ export function BottomTabs() {
               return (
                 <button
                   key="more"
-                  onClick={() => setMoreOpen(!moreOpen)}
-                  className="touch-feedback flex flex-1 flex-col items-center justify-center gap-0.5 no-underline"
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); setMoreOpen(!moreOpen) }}
+                  className="touch-feedback flex flex-1 flex-col items-center justify-center gap-0.5"
                 >
                   <span style={{ color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)' }}>
                     {tab.icon}
