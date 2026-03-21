@@ -74,15 +74,27 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
   const issue = issueData as any as IssueRow
 
-  const { data: stances, error: stancesError } = await supabase
-    .from('politician_issues')
-    .select('*, politicians:politician_id(id, name, slug, party, chamber, state, title, image_url)')
-    .eq('issue_id', issue.id)
-    .order('stance')
-  if (stancesError) console.error('Failed to fetch stances for issue:', stancesError.message)
+  // Paginate all stances (avoid 1000-row default limit)
+  const stancesArr: any[] = []
+  {
+    let from = 0
+    while (true) {
+      const { data, error } = await supabase
+        .from('politician_issues')
+        .select('*, politicians:politician_id(id, name, slug, party, chamber, state, title, image_url)')
+        .eq('issue_id', issue.id)
+        .order('stance')
+        .range(from, from + 999)
+      if (error) { console.error('Failed to fetch stances:', error.message); break }
+      if (!data || !data.length) break
+      stancesArr.push(...data)
+      if (data.length < 1000) break
+      from += 1000
+    }
+  }
 
   // All stances before filtering (for stats)
-  const allStances = (stances ?? []) as any as IssueStanceWithPoliticianRow[]
+  const allStances = stancesArr as any as IssueStanceWithPoliticianRow[]
 
   // Apply client-side party/chamber filters
   let stanceList = [...allStances]

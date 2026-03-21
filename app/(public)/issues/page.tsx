@@ -53,28 +53,33 @@ export default async function IssuesPage({ searchParams }: PageProps) {
   // Fetch stance counts per issue using parallel queries (fast, no 1000-row limit)
   const issueIds = issues.map(i => i.id)
 
-  // Get stances per issue + total count in parallel
-  const countPromises = issueIds.map(id =>
-    Promise.all([
-      supabase.from('politician_issues').select('stance, politicians:politician_id(party)').eq('issue_id', id).limit(1000),
-      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', id),
-    ])
-  )
-  const countResults = await Promise.all(countPromises)
-
+  // Fetch ALL stances with full pagination (no 1000-row limit)
   const allStances: { issue_id: string; stance: string; party: string }[] = []
   const issueTotalCounts = new Map<string, number>()
-  for (let i = 0; i < issueIds.length; i++) {
-    const [stanceResult, countResult] = countResults[i]
-    const data = stanceResult.data as any[] ?? []
-    issueTotalCounts.set(issueIds[i], countResult.count ?? data.length)
-    for (const row of data) {
+
+  // Paginate through all stances
+  let from = 0
+  while (true) {
+    const { data } = await supabase
+      .from('politician_issues')
+      .select('issue_id, stance, politicians:politician_id(party)')
+      .in('issue_id', issueIds)
+      .range(from, from + 999)
+    if (!data || !data.length) break
+    for (const row of data as any[]) {
       allStances.push({
-        issue_id: issueIds[i],
+        issue_id: row.issue_id,
         stance: row.stance,
         party: row.politicians?.party ?? 'independent',
       })
     }
+    if (data.length < 1000) break
+    from += 1000
+  }
+
+  // Count per issue
+  for (const s of allStances) {
+    issueTotalCounts.set(s.issue_id, (issueTotalCounts.get(s.issue_id) ?? 0) + 1)
   }
 
   // Build per-issue stats
