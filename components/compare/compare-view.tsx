@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import Image from 'next/image'
+import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
 import { IssueIcon } from '@/components/icons/issue-icon'
+import { stanceBucket, stanceStyle } from '@/lib/utils/stances'
 
 interface CompareViewProps {
   polA: any
@@ -13,13 +14,6 @@ interface CompareViewProps {
   stancesB: any[]
   committeesA: any[]
   committeesB: any[]
-}
-
-const STANCE_COLORS: Record<string, { color: string; label: string }> = {
-  supports: { color: '#22C55E', label: 'Supports' },
-  opposes: { color: '#EF4444', label: 'Opposes' },
-  mixed: { color: '#EAB308', label: 'Mixed' },
-  unknown: { color: '#6B7280', label: 'Unknown' },
 }
 
 export function CompareView({
@@ -65,16 +59,26 @@ export function CompareView({
       }
     }
   }
-  const issues = Array.from(issueMap.values())
+  const allIssues = Array.from(issueMap.values())
 
-  // Count agreements / disagreements
+  // Filter out issues where BOTH are unknown — not meaningful to compare
+  const comparableIssues = allIssues.filter(issue => {
+    const bucketA = stanceBucket(issue.a ?? 'unknown')
+    const bucketB = stanceBucket(issue.b ?? 'unknown')
+    // Keep if at least one side has a known stance
+    return bucketA !== 'unknown' || bucketB !== 'unknown'
+  })
+
+  // Count agreements / disagreements using buckets (not raw stance values)
   let agree = 0
   let disagree = 0
-  for (const issue of issues) {
-    if (issue.a && issue.b) {
-      if (issue.a === issue.b) agree++
-      else disagree++
-    }
+  for (const issue of comparableIssues) {
+    const bucketA = stanceBucket(issue.a ?? 'unknown')
+    const bucketB = stanceBucket(issue.b ?? 'unknown')
+    // Skip if either is unknown — can't compare
+    if (bucketA === 'unknown' || bucketB === 'unknown') continue
+    if (bucketA === bucketB) agree++
+    else disagree++
   }
   const total = agree + disagree
   const agreePct = total > 0 ? Math.round((agree / total) * 100) : 0
@@ -126,64 +130,78 @@ export function CompareView({
       )}
 
       {/* Issue-by-issue comparison */}
-      <div className="mb-8">
-        <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
-          Issue-by-Issue Comparison
-        </h2>
-        <div className="space-y-1">
-          {/* Header row */}
-          <div className="hidden gap-2 px-4 pb-2 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_100px_100px]">
-            <span>Issue</span>
-            <span className="text-center">{polA.name.split(' ').pop()}</span>
-            <span className="text-center">{polB.name.split(' ').pop()}</span>
-          </div>
-          {issues.map((issue) => {
-            const scA = STANCE_COLORS[issue.a ?? 'unknown'] ?? STANCE_COLORS.unknown
-            const scB = STANCE_COLORS[issue.b ?? 'unknown'] ?? STANCE_COLORS.unknown
-            const match = issue.a && issue.b && issue.a === issue.b
+      {comparableIssues.length > 0 && (
+        <div className="mb-8">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            Issue-by-Issue Comparison
+          </h2>
+          <div className="space-y-1">
+            {/* Header row */}
+            <div className="hidden gap-2 px-4 pb-2 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_120px_120px]">
+              <span>Issue</span>
+              <span className="text-center">{polA.name.split(' ').pop()}</span>
+              <span className="text-center">{polB.name.split(' ').pop()}</span>
+            </div>
+            {comparableIssues.map((issue) => {
+              const styleA = stanceStyle(issue.a ?? 'unknown')
+              const styleB = stanceStyle(issue.b ?? 'unknown')
+              const bucketA = stanceBucket(issue.a ?? 'unknown')
+              const bucketB = stanceBucket(issue.b ?? 'unknown')
+              const match = bucketA !== 'unknown' && bucketB !== 'unknown' && bucketA === bucketB
 
-            return (
-              <div
-                key={issue.slug}
-                className="rounded-md px-4 py-2.5 sm:grid sm:grid-cols-[1fr_100px_100px] sm:items-center sm:gap-2"
-                style={{
-                  background: match ? '#22C55E08' : undefined,
-                  border: `1px solid ${match ? '#22C55E18' : 'var(--codex-border)'}`,
-                }}
-              >
-                <Link
-                  href={`/issues/${issue.slug}`}
-                  className="flex items-center gap-2 text-[13px] font-medium hover:text-[var(--codex-text)]"
+              return (
+                <div
+                  key={issue.slug}
+                  className="rounded-md px-4 py-2.5 sm:grid sm:grid-cols-[1fr_120px_120px] sm:items-center sm:gap-2"
+                  style={{
+                    background: match ? '#22C55E08' : undefined,
+                    border: `1px solid ${match ? '#22C55E18' : 'var(--codex-border)'}`,
+                  }}
                 >
-                  {issue.icon && (
-                    <IssueIcon icon={issue.icon} size={14} className="text-[var(--codex-sub)]" />
-                  )}
-                  {issue.name}
-                </Link>
-                <div className="mt-2 flex items-center gap-3 sm:mt-0 sm:contents">
-                  <div className="flex sm:justify-center">
-                    <span
-                      className="rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em]"
-                      style={{ color: scA.color, background: `${scA.color}18` }}
-                    >
-                      {scA.label}
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-[var(--codex-faint)] sm:hidden">vs</span>
-                  <div className="flex sm:justify-center">
-                    <span
-                      className="rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em]"
-                      style={{ color: scB.color, background: `${scB.color}18` }}
-                    >
-                      {scB.label}
-                    </span>
+                  <Link
+                    href={`/issues/${issue.slug}`}
+                    className="flex items-center gap-2 text-[13px] font-medium hover:text-[var(--codex-text)]"
+                  >
+                    {issue.icon && (
+                      <IssueIcon icon={issue.icon} size={14} className="text-[var(--codex-sub)]" />
+                    )}
+                    {issue.name}
+                  </Link>
+                  <div className="mt-2 flex items-center gap-3 sm:mt-0 sm:contents">
+                    <div className="flex sm:justify-center">
+                      <span
+                        className="rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em]"
+                        style={{ color: styleA.color, background: `${styleA.color}18` }}
+                      >
+                        {styleA.shortLabel || styleA.label}
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-[var(--codex-faint)] sm:hidden">vs</span>
+                    <div className="flex sm:justify-center">
+                      <span
+                        className="rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em]"
+                        style={{ color: styleB.color, background: `${styleB.color}18` }}
+                      >
+                        {styleB.shortLabel || styleB.label}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* No comparable stances */}
+      {comparableIssues.length === 0 && (
+        <div className="mb-8 rounded-md border border-[var(--codex-border)] px-6 py-10 text-center">
+          <div className="mb-2 font-serif text-lg text-[var(--codex-faint)]">No stance data to compare</div>
+          <p className="text-[13px] text-[var(--codex-faint)]">
+            Neither official has verified stances on record yet.
+          </p>
+        </div>
+      )}
 
       {/* Shared committees */}
       {sharedCommittees.length > 0 && (
@@ -240,21 +258,13 @@ function ProfileCard({
           className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)] sm:h-14 sm:w-14"
           style={{ border: `2px solid ${color}66` }}
         >
-          {pol.image_url ? (
-            <Image
-              src={pol.image_url}
-              alt={pol.name}
-              width={48}
-              height={48}
-              unoptimized
-              className="h-full w-full object-cover"
-              style={{ filter: 'grayscale(20%)' }}
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center font-serif text-lg text-[var(--codex-faint)] sm:text-xl">
-              {pol.name.charAt(0)}
-            </div>
-          )}
+          <AvatarImage
+            src={pol.image_url}
+            alt={pol.name}
+            size={56}
+            fallbackColor={color}
+            className="h-full w-full object-cover"
+          />
         </div>
         <div className="min-w-0">
           <Link
@@ -308,7 +318,7 @@ function ProfileCard({
           )}
         </div>
 
-        {/* Label — hidden on mobile to prevent cramming */}
+        {/* Label */}
         <div className="hidden sm:block">
           <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
             Type
