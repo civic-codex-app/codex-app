@@ -68,8 +68,6 @@ export function BottomTabs() {
 
   useEffect(() => { setMounted(true) }, [])
 
-  if (!mounted) return null
-
   const toggleMore = useCallback(() => {
     setMoreOpen(prev => !prev)
   }, [])
@@ -77,6 +75,9 @@ export function BottomTabs() {
   const closeMore = useCallback(() => {
     setMoreOpen(false)
   }, [])
+
+  // All hooks called above — safe to return null now
+  if (!mounted) return null
 
   return (
     <>
@@ -114,6 +115,7 @@ export function BottomTabs() {
                   color: 'var(--codex-text)',
                   textDecoration: 'none',
                   borderRadius: '8px',
+                  cursor: 'pointer',
                 }}
               >
                 {link.label}
@@ -164,7 +166,7 @@ export function BottomTabs() {
             )
           })}
 
-          {/* More button — separate from the map to use button element */}
+          {/* More button */}
           <button
             type="button"
             onClick={toggleMore}
