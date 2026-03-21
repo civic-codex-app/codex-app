@@ -9,7 +9,6 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      onTouchEnd={(e) => { e.preventDefault(); toggle() }}
       aria-label={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}
       style={{
         display: 'flex',

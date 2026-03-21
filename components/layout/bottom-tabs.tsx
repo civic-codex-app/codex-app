@@ -81,7 +81,6 @@ export function BottomTabs() {
           className="fixed inset-0 z-30 sm:hidden"
           style={{ backgroundColor: 'rgba(0,0,0,0.4)', cursor: 'pointer' }}
           onClick={closeMore}
-          onTouchEnd={closeMore}
         />
       )}
 
@@ -164,7 +163,6 @@ export function BottomTabs() {
           <button
             type="button"
             onClick={toggleMore}
-            onTouchEnd={(e) => { e.preventDefault(); toggleMore() }}
             style={{
               flex: 1,
               display: 'flex',
