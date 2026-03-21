@@ -1,14 +1,19 @@
 import { Suspense } from 'react'
+import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ElectionFilters } from '@/components/elections/election-filters'
+import { ElectionCountdown } from '@/components/elections/election-countdown'
 import { RaceSection } from '@/components/elections/race-section'
+import { AvatarImage } from '@/components/ui/avatar-image'
+import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS } from '@/lib/constants/chambers'
+import { partyColor, partyLabel } from '@/lib/constants/parties'
 
 export const metadata = {
-  title: 'Elections — Codex',
-  description: 'Track upcoming elections — Senate, House, Governor, and local races across the country.',
+  title: 'Elections -- Codex',
+  description: 'Track upcoming elections -- Senate, House, Governor, and local races across the country.',
 }
 
 const CHAMBER_ORDER = [
@@ -157,12 +162,24 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
 
   const hasFilters = !!(params.chamber || params.state)
 
+  // Key races: races with the most candidates (competitive) — pick up to 6
+  const keyRaces = [...raceList]
+    .filter((r) => (r.candidates?.length ?? 0) >= 2)
+    .sort((a, b) => (b.candidates?.length ?? 0) - (a.candidates?.length ?? 0))
+    .slice(0, 6)
+
+  // Count total candidates across all races
+  const totalCandidates = raceList.reduce((sum, r) => sum + (r.candidates?.length ?? 0), 0)
+
+  // Count unique states
+  const uniqueStates = new Set(raceList.map((r: any) => r.state)).size
+
   return (
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         {/* Hero */}
-        <div className="mb-10 max-w-[600px]">
+        <div className="mb-6 max-w-[600px]">
           <h1 className="mb-4 animate-fade-up font-serif text-[clamp(32px,4vw,52px)] font-normal leading-[1.1]">
             {election.name.split(' ').slice(0, -1).join(' ')}{' '}
             <span className="italic text-[var(--codex-subtle)]">
@@ -174,12 +191,29 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
           </p>
         </div>
 
+        {/* Countdown */}
+        <div className="mb-8">
+          <ElectionCountdown electionDate={election.election_date} />
+        </div>
+
         {/* Stats bar */}
         <div className="mb-8 flex flex-wrap gap-6 border-y border-[var(--codex-border)] py-4">
           <div className="flex items-baseline gap-2">
             <span className="font-serif text-2xl">{totalRaces}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               Total Races
+            </span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="font-serif text-2xl">{totalCandidates}</span>
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+              Candidates
+            </span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="font-serif text-2xl">{uniqueStates}</span>
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+              States
             </span>
           </div>
           {CHAMBER_ORDER.map((chamber) => {
@@ -200,6 +234,103 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
             </span>
           </div>
         </div>
+
+        {/* Key Races */}
+        {keyRaces.length > 0 && !hasFilters && (
+          <section className="mb-12">
+            <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+              Key Races
+              <span className="ml-2 text-[var(--codex-faint)]">Most competitive</span>
+            </h2>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {keyRaces.map((race) => {
+                const candidates = race.candidates ?? []
+                const chamberLabel = CHAMBER_LABELS[race.chamber as keyof typeof CHAMBER_LABELS] ?? race.chamber
+
+                // Party breakdown for bar
+                const partyGroups: Record<string, number> = {}
+                for (const c of candidates) {
+                  partyGroups[c.party] = (partyGroups[c.party] || 0) + 1
+                }
+
+                return (
+                  <Link
+                    key={race.id}
+                    href={`/elections/${race.slug}`}
+                    className="group relative block overflow-hidden rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all hover:border-[var(--codex-input-border)]"
+                  >
+                    {/* Gradient accent */}
+                    <div className="absolute inset-x-0 top-0 flex h-1 overflow-hidden">
+                      {Object.entries(partyGroups).map(([party, count]) => (
+                        <div
+                          key={party}
+                          style={{
+                            width: `${(count / candidates.length) * 100}%`,
+                            background: partyColor(party),
+                            opacity: 0.6,
+                          }}
+                        />
+                      ))}
+                    </div>
+
+                    <div className="mb-2 flex items-center gap-2">
+                      <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+                        {chamberLabel}
+                      </span>
+                      <span className="text-[11px] text-[var(--codex-faint)]">
+                        {race.state}{race.district ? ` - D${race.district}` : ''}
+                      </span>
+                    </div>
+
+                    <h3 className="mb-3 font-serif text-base transition-colors group-hover:text-[var(--codex-text)]">
+                      {race.name}
+                    </h3>
+
+                    {/* Candidate avatars */}
+                    <div className="mb-2 flex items-center gap-2">
+                      <div className="flex -space-x-2">
+                        {candidates.slice(0, 4).map((c: any) => (
+                          <div
+                            key={c.id}
+                            className="h-7 w-7 overflow-hidden rounded-full bg-[var(--codex-bg)]"
+                            style={{ border: `2px solid ${partyColor(c.party)}44` }}
+                            title={`${c.name} (${partyLabel(c.party)})`}
+                          >
+                            {c.image_url ? (
+                              <AvatarImage
+                                src={c.image_url}
+                                alt={c.name}
+                                size={28}
+                                party={c.party}
+                                fallbackColor={partyColor(c.party)}
+                              />
+                            ) : (
+                              <div
+                                className="flex h-full w-full items-center justify-center text-[9px] font-medium"
+                                style={{ color: partyColor(c.party), background: `${partyColor(c.party)}12` }}
+                              >
+                                {c.name.charAt(0)}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {Object.keys(partyGroups).map((party) => (
+                          <PartyIcon key={party} party={party} size={10} />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="text-[11px] text-[var(--codex-faint)]">
+                      {candidates.length} candidate{candidates.length !== 1 ? 's' : ''}
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Filters */}
         <Suspense>
