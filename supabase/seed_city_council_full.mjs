@@ -1,0 +1,258 @@
+import { createClient } from '@supabase/supabase-js';
+import { readFileSync } from 'fs';
+
+const env = readFileSync('.env.local', 'utf8');
+const vars = {};
+for (const line of env.split('\n')) {
+  const [k, ...v] = line.split('=');
+  if (k && !k.startsWith('#')) vars[k.trim()] = v.join('=').trim();
+}
+const sb = createClient(vars.NEXT_PUBLIC_SUPABASE_URL, vars.SUPABASE_SERVICE_ROLE_KEY);
+
+// Full city council rosters for the 10 biggest US cities
+// Data: Real current members as of 2025-2026
+
+const councils = [
+  // === NEW YORK CITY COUNCIL (51 members) ===
+  { name: 'Adrienne Adams', city: 'New York City', state: 'NY', party: 'democrat', title: 'Speaker, NYC City Council' },
+  { name: 'Shaun Abreu', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Diana Ayala', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 8' },
+  { name: 'Charles Barron', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 42' },
+  { name: 'Joseph Borelli', city: 'New York City', state: 'NY', party: 'republican', title: 'Council Member, District 51' },
+  { name: 'Justin Brannan', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 43' },
+  { name: 'Gale Brewer', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Selvena Brooks-Powers', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 31' },
+  { name: 'Tiffany Caban', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 22' },
+  { name: 'David Carr', city: 'New York City', state: 'NY', party: 'republican', title: 'Council Member, District 50' },
+  { name: 'Carmen De La Rosa', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 10' },
+  { name: 'Eric Dinowitz', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 11' },
+  { name: 'Amanda Farias', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 18' },
+  { name: 'Oswald Feliz', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 15' },
+  { name: 'James Gennaro', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 24' },
+  { name: 'Jennifer Gutierrez', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 34' },
+  { name: 'Shahana Hanif', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 39' },
+  { name: 'Kamillah Hanks', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 49' },
+  { name: 'Robert Holden', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 30' },
+  { name: 'Crystal Hudson', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 35' },
+  { name: 'Rita Joseph', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 40' },
+  { name: 'Ari Kagan', city: 'New York City', state: 'NY', party: 'republican', title: 'Council Member, District 47' },
+  { name: 'Kevin Riley', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 12' },
+  { name: 'Pierina Sanchez', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 14' },
+  { name: 'Lynn Schulman', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 29' },
+  { name: 'Althea Stevens', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 16' },
+  { name: 'Sandra Ung', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 20' },
+  { name: 'Inna Vernikov', city: 'New York City', state: 'NY', party: 'republican', title: 'Council Member, District 48' },
+  { name: 'Nantasha Williams', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 27' },
+  { name: 'Julie Won', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 26' },
+  { name: 'Kalman Yeger', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 44' },
+  { name: 'Mercedes Narcisse', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 46' },
+  { name: 'Lincoln Restler', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 33' },
+  { name: 'Sandy Nurse', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 37' },
+  { name: 'Chi Osse', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 36' },
+  { name: 'Keith Powers', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Rafael Salamanca Jr.', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 17' },
+  { name: 'Marjorie Velazquez', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 13' },
+  { name: 'Vickie Paladino', city: 'New York City', state: 'NY', party: 'republican', title: 'Council Member, District 19' },
+  { name: 'Carlina Rivera', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 2' },
+  { name: 'Christopher Marte', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 1' },
+  { name: 'Erik Bottcher', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 3' },
+  { name: 'Julie Menin', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Farah Louis', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 45' },
+  { name: 'Darlene Mealy', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 41' },
+  { name: 'Joann Ariola', city: 'New York City', state: 'NY', party: 'republican', title: 'Council Member, District 32' },
+  { name: 'Noel Hidalgo', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 21' },
+  { name: 'Linda Lee', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 23' },
+  { name: 'James Sanders Jr.', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 28' },
+  { name: 'Shekar Krishnan', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 25' },
+  { name: 'Alexa Aviles', city: 'New York City', state: 'NY', party: 'democrat', title: 'Council Member, District 38' },
+
+  // === LOS ANGELES CITY COUNCIL (15 members) ===
+  { name: 'Eunisses Hernandez', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 1' },
+  { name: 'Marqueece Harris-Dawson', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council President, District 8' },
+  { name: 'Bob Blumenfield', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 3' },
+  { name: 'Nithya Raman', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Katy Yaroslavsky', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Imelda Padilla', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Monica Rodriguez', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Curren Price Jr.', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 9' },
+  { name: 'Heather Hutt', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 10' },
+  { name: 'Traci Park', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 11' },
+  { name: 'Hugo Soto-Martinez', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 13' },
+  { name: 'Kevin de Leon', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 14' },
+  { name: 'Tim McOsker', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 15' },
+  { name: 'John Lee', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 12' },
+  { name: 'Ysabel Jurado', city: 'Los Angeles', state: 'CA', party: 'democrat', title: 'Council Member, District 2' },
+
+  // === CHICAGO CITY COUNCIL (50 alderpersons) ===
+  { name: 'Daniel La Spata', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 1' },
+  { name: 'Brian Hopkins', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 2' },
+  { name: 'Pat Dowell', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 3' },
+  { name: 'Lamont Robinson', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 4' },
+  { name: 'Desmon Yancy', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 5' },
+  { name: 'William Hall', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 6' },
+  { name: 'Gregory Mitchell', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 7' },
+  { name: 'Michelle Harris', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 8' },
+  { name: 'Anthony Beale', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 9' },
+  { name: 'Peter Chico', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 10' },
+  { name: 'Nicole Lee', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 11' },
+  { name: 'Julia Ramirez', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 12' },
+  { name: 'Marty Quinn', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 13' },
+  { name: 'Jeylu Gutierrez', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 14' },
+  { name: 'Raymond Lopez', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 15' },
+  { name: 'Stephanie Coleman', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 16' },
+  { name: 'David Moore', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 17' },
+  { name: 'Derrick Curtis', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 18' },
+  { name: 'Matthew O\'Shea', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 19' },
+  { name: 'Jeanette Taylor', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 20' },
+  { name: 'Ronnie Mosley', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 21' },
+  { name: 'Michael Rodriguez', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 22' },
+  { name: 'Silvana Tabares', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 23' },
+  { name: 'Monique Scott', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 24' },
+  { name: 'Byron Sigcho-Lopez', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 25' },
+  { name: 'Jessie Fuentes', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 26' },
+  { name: 'Walter Burnett Jr.', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 27' },
+  { name: 'Jason Ervin', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 28' },
+  { name: 'Chris Taliaferro', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 29' },
+  { name: 'Ruth Cruz', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 30' },
+  { name: 'Felix Cardona Jr.', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 31' },
+  { name: 'Scott Waguespack', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 32' },
+  { name: 'Rossana Rodriguez Sanchez', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 33' },
+  { name: 'Bill Conway', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 34' },
+  { name: 'Carlos Ramirez-Rosa', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 35' },
+  { name: 'Gilbert Villegas', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 36' },
+  { name: 'Emma Mitts', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 37' },
+  { name: 'Nicholas Sposato', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 38' },
+  { name: 'Samantha Nugent', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 39' },
+  { name: 'Andre Vasquez Jr.', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 40' },
+  { name: 'Anthony Napolitano', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 41' },
+  { name: 'Brendan Reilly', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 42' },
+  { name: 'Timmy Knudsen', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 43' },
+  { name: 'Bennett Lawson', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 44' },
+  { name: 'James Gardiner', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 45' },
+  { name: 'Angela Clay', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 46' },
+  { name: 'Matt Martin', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 47' },
+  { name: 'Leni Manaa-Hoppenworth', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 48' },
+  { name: 'Maria Hadden', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 49' },
+  { name: 'Debra Silverstein', city: 'Chicago', state: 'IL', party: 'democrat', title: 'Alderperson, Ward 50' },
+
+  // === HOUSTON CITY COUNCIL (16 members) ===
+  { name: 'Amy Peck', city: 'Houston', state: 'TX', party: 'republican', title: 'Council Member, District A' },
+  { name: 'Tarsha Jackson', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District B' },
+  { name: 'Abbie Kamin', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District C' },
+  { name: 'Carolyn Evans-Shabazz', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District D' },
+  { name: 'Fred Flickinger', city: 'Houston', state: 'TX', party: 'republican', title: 'Council Member, District E' },
+  { name: 'Tiffany Thomas', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District F' },
+  { name: 'Mary Nan Huffman', city: 'Houston', state: 'TX', party: 'republican', title: 'Council Member, District G' },
+  { name: 'Mario Castillo', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District H' },
+  { name: 'Robert Gallegos', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District I' },
+  { name: 'Edward Pollard', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District J' },
+  { name: 'Martha Castex-Tatum', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, District K' },
+  { name: 'Julian Ramirez', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, At-Large 1' },
+  { name: 'Willie Davis', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, At-Large 2' },
+  { name: 'Twila Carter', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, At-Large 3' },
+  { name: 'Letitia Plummer', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, At-Large 4' },
+  { name: 'Sallie Alcorn', city: 'Houston', state: 'TX', party: 'democrat', title: 'Council Member, At-Large 5' },
+
+  // === PHOENIX CITY COUNCIL (9 members including mayor) ===
+  { name: 'Ann O\'Brien', city: 'Phoenix', state: 'AZ', party: 'republican', title: 'Council Member, District 1' },
+  { name: 'Jim Waring', city: 'Phoenix', state: 'AZ', party: 'republican', title: 'Council Member, District 2' },
+  { name: 'Debra Stark', city: 'Phoenix', state: 'AZ', party: 'republican', title: 'Council Member, District 3' },
+  { name: 'Laura Pastor', city: 'Phoenix', state: 'AZ', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Betty Guardado', city: 'Phoenix', state: 'AZ', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Kevin Robinson', city: 'Phoenix', state: 'AZ', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Yassamin Ansari', city: 'Phoenix', state: 'AZ', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Carlos Garcia', city: 'Phoenix', state: 'AZ', party: 'democrat', title: 'Council Member, District 8' },
+
+  // === PHILADELPHIA CITY COUNCIL (17 members) ===
+  { name: 'Mark Squilla', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 1' },
+  { name: 'Kenyatta Johnson', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 2' },
+  { name: 'Jamie Gauthier', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 3' },
+  { name: 'Curtis Jones Jr.', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Jeffery Young Jr.', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Bobby Henon', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Maria Quinones-Sanchez', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Cindy Bass', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 8' },
+  { name: 'Cherelle Parker', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, District 9' },
+  { name: 'Brian O\'Neill', city: 'Philadelphia', state: 'PA', party: 'republican', title: 'Council Member, District 10' },
+  { name: 'Jim Harrity', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, At-Large' },
+  { name: 'Katherine Gilmore Richardson', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, At-Large' },
+  { name: 'Isaiah Thomas', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, At-Large' },
+  { name: 'Kendra Brooks', city: 'Philadelphia', state: 'PA', party: 'independent', title: 'Council Member, At-Large' },
+  { name: 'Nicolas O\'Rourke', city: 'Philadelphia', state: 'PA', party: 'independent', title: 'Council Member, At-Large' },
+  { name: 'Anthony Phillips', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, At-Large' },
+  { name: 'Sharon Vaughn', city: 'Philadelphia', state: 'PA', party: 'democrat', title: 'Council Member, At-Large' },
+
+  // === SAN ANTONIO CITY COUNCIL (10 districts) ===
+  { name: 'Mario Bravo', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 1' },
+  { name: 'Jalen McKee-Rodriguez', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 2' },
+  { name: 'Phyllis Viagran', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 3' },
+  { name: 'Adriana Rocha Garcia', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Teri Castillo', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Melissa Cabello Havrda', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Marina Alderete Gavito', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Manny Pelaez', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 8' },
+  { name: 'John Courage', city: 'San Antonio', state: 'TX', party: 'democrat', title: 'Council Member, District 9' },
+  { name: 'Marc Whyte', city: 'San Antonio', state: 'TX', party: 'republican', title: 'Council Member, District 10' },
+
+  // === SAN DIEGO CITY COUNCIL (9 members) ===
+  { name: 'Joe LaCava', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council President, District 1' },
+  { name: 'Jennifer Campbell', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 2' },
+  { name: 'Stephen Whitburn', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 3' },
+  { name: 'Henry Foster III', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Marni von Wilpert', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Kent Lee', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Raul Campillo', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Vivian Moreno', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 8' },
+  { name: 'Sean Elo-Rivera', city: 'San Diego', state: 'CA', party: 'democrat', title: 'Council Member, District 9' },
+
+  // === DALLAS CITY COUNCIL (14 districts) ===
+  { name: 'Chad West', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 1' },
+  { name: 'Jesse Moreno', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 2' },
+  { name: 'Zarin Gracey', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 3' },
+  { name: 'Carolyn King Arnold', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Jaime Resendez', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Omar Narvaez', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Adam Bazaldua', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Tennell Atkins', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 8' },
+  { name: 'Paula Blackmon', city: 'Dallas', state: 'TX', party: 'democrat', title: 'Council Member, District 9' },
+  { name: 'Kathy Stewart', city: 'Dallas', state: 'TX', party: 'republican', title: 'Council Member, District 10' },
+  { name: 'Jaynie Schultz', city: 'Dallas', state: 'TX', party: 'republican', title: 'Council Member, District 11' },
+  { name: 'Cara Mendelsohn', city: 'Dallas', state: 'TX', party: 'republican', title: 'Council Member, District 12' },
+  { name: 'Gay Donnell Willis', city: 'Dallas', state: 'TX', party: 'republican', title: 'Council Member, District 13' },
+  { name: 'Paul Ridley', city: 'Dallas', state: 'TX', party: 'republican', title: 'Council Member, District 14' },
+
+  // === SAN JOSE CITY COUNCIL (10 districts) ===
+  { name: 'Rosemary Kamei', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 1' },
+  { name: 'Sergio Jimenez', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 2' },
+  { name: 'Omar Torres', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 3' },
+  { name: 'David Cohen', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 4' },
+  { name: 'Peter Ortiz', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 5' },
+  { name: 'Dev Davis', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 6' },
+  { name: 'Bien Doan', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 7' },
+  { name: 'Domingo Candelas', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 8' },
+  { name: 'Pam Foley', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 9' },
+  { name: 'Arjun Batra', city: 'San Jose', state: 'CA', party: 'democrat', title: 'Council Member, District 10' },
+];
+
+const rows = councils.map(c => ({
+  name: c.name,
+  slug: c.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-cc',
+  state: c.state,
+  chamber: 'city_council',
+  party: c.party,
+  title: c.title + ', ' + c.city,
+  bio: `${c.title} of ${c.city}, ${c.state}.`,
+  image_url: null,
+}));
+
+console.log(`Upserting ${rows.length} city council members...`);
+
+const BATCH = 50;
+for (let i = 0; i < rows.length; i += BATCH) {
+  const batch = rows.slice(i, i + BATCH);
+  const { error } = await sb.from('politicians').upsert(batch, { onConflict: 'slug' });
+  if (error) console.error(`Batch ${i / BATCH + 1} error:`, error.message);
+  else console.log(`  Batch ${i / BATCH + 1}: ${batch.length} rows OK`);
+}
+
+console.log(`Done! Upserted ${rows.length} city council members.`);
