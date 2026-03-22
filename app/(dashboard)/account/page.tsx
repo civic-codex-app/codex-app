@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { AccountForm } from '@/components/account/account-form'
 import { ChangePasswordForm } from '@/components/account/change-password-form'
+import { DeleteAccount } from '@/components/account/delete-account'
 
 export default async function AccountPage() {
   const supabase = await createClient()
@@ -28,11 +29,18 @@ export default async function AccountPage() {
         <AccountForm profile={profile} />
       </div>
 
-      <div>
+      <div className="mb-10">
         <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
           Change Password
         </h2>
         <ChangePasswordForm />
+      </div>
+
+      <div>
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          Danger Zone
+        </h2>
+        <DeleteAccount />
       </div>
     </div>
   )
