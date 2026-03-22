@@ -60,7 +60,7 @@ export function QuizForm({ issues }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [results, setResults] = useState<MatchResult[] | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [sliderValue, setSliderValue] = useState<number | null>(null)
+  const [sliderValue, setSliderValue] = useState<number>(3)
 
   const total = issues.length
   const issue = issues[currentStep]
@@ -131,7 +131,7 @@ export function QuizForm({ issues }: Props) {
     setCurrentStep(0)
     setResults(null)
     setError(null)
-    setSliderValue(null)
+    setSliderValue(3)
   }
 
   if (results) {
@@ -141,7 +141,7 @@ export function QuizForm({ issues }: Props) {
   if (!issue) return null
 
   const content = QUIZ_CONTENT[issue.slug]
-  const currentStance = sliderValue !== null ? SLIDER_STANCES[sliderValue] : null
+  const currentStance = SLIDER_STANCES[sliderValue]
   const currentStyle = currentStance ? STANCE_STYLES[currentStance] : null
 
   return (
@@ -181,7 +181,7 @@ export function QuizForm({ issues }: Props) {
       {/* Examples cards */}
       {content && (
         <div className="mb-6 grid grid-cols-2 gap-3">
-          <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-3">
+          <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-3">
             <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-green-500">
               For looks like
             </div>
@@ -189,7 +189,7 @@ export function QuizForm({ issues }: Props) {
               {content.supportsMeans}
             </p>
           </div>
-          <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3">
+          <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-3">
             <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-red-500">
               Against looks like
             </div>
@@ -204,18 +204,12 @@ export function QuizForm({ issues }: Props) {
       <div className="mx-auto max-w-lg">
         {/* Current selection label */}
         <div className="mb-4 flex h-10 items-center justify-center">
-          {currentStyle ? (
-            <div
-              className="rounded-full px-5 py-1.5 text-sm font-semibold text-white transition-all"
-              style={{ backgroundColor: currentStyle.color }}
-            >
-              {currentStyle.label}
-            </div>
-          ) : (
-            <div className="text-sm text-[var(--codex-faint)]">
-              Drag the slider or tap a position
-            </div>
-          )}
+          <div
+            className="rounded-full px-5 py-1.5 text-sm font-semibold text-white transition-all"
+            style={{ backgroundColor: currentStyle?.color ?? '#9CA3AF' }}
+          >
+            {currentStyle?.label ?? 'Neutral'}
+          </div>
         </div>
 
         {/* Slider track */}
@@ -236,7 +230,7 @@ export function QuizForm({ issues }: Props) {
             ))}
 
             {/* Thumb */}
-            {sliderValue !== null && (
+            {(
               <div
                 className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200"
                 style={{ left: `${(sliderValue / 6) * 100}%`, zIndex: 3 }}
@@ -285,7 +279,7 @@ export function QuizForm({ issues }: Props) {
           min={0}
           max={6}
           step={1}
-          value={sliderValue ?? 3}
+          value={sliderValue}
           onChange={(e) => selectStance(Number(e.target.value))}
           className="mt-1 w-full cursor-pointer opacity-0"
           style={{ height: '32px', margin: '-32px 0 0 0', position: 'relative', zIndex: 10 }}
