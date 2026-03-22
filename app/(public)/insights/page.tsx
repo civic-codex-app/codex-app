@@ -147,19 +147,13 @@ export default async function InsightsPage() {
   }
 
   // -- Issue Heatmap (from pre-indexed data) --
-  const iconToEmoji: Record<string, string> = {
-    briefcase: '\uD83D\uDCBC', 'heart-pulse': '\uD83C\uDFE5', globe: '\uD83C\uDF0D', 'graduation-cap': '\uD83C\uDF93',
-    shield: '\uD83D\uDEE1\uFE0F', leaf: '\uD83C\uDF3F', scale: '\u2696\uFE0F', landmark: '\uD83C\uDFDB\uFE0F', cpu: '\uD83D\uDCBB',
-    users: '\uD83D\uDC65', target: '\uD83C\uDFAF', 'hard-hat': '\uD83C\uDFD7\uFE0F', home: '\uD83C\uDFE0', zap: '\u26A1',
-  }
-
   const EMPTY_COUNTS: BucketCounts = { supports: 0, opposes: 0, neutral: 0, mixed: 0 }
   const heatmapData = issues.map((issue) => {
     const partyMap = heatIndex.get(issue.slug)
     return {
       issue: issue.name,
       issueSlug: issue.slug,
-      icon: iconToEmoji[issue.icon] ?? '\uD83D\uDCCB',
+      icon: issue.icon ?? '',
       parties: {
         democrat: partyMap?.get('democrat') ?? { ...EMPTY_COUNTS },
         republican: partyMap?.get('republican') ?? { ...EMPTY_COUNTS },

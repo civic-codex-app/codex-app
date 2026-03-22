@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { FlameIcon } from '@/components/icons/badge-icons'
 
 interface StreakWidgetProps {
   initialStreak: number
@@ -76,7 +77,7 @@ export function StreakWidget({ initialStreak, longestStreak }: StreakWidgetProps
               : 'var(--codex-hover)',
           }}
         >
-          {streak > 0 ? '\u{1F525}' : '\u{1F4A4}'}
+          <FlameIcon size={24} className={streak > 0 ? 'text-orange-400' : 'text-[var(--codex-faint)]'} />
         </div>
         <div>
           <div className="flex items-baseline gap-1.5">

@@ -123,8 +123,8 @@ export function IssueForm({ issue }: Props) {
             <input name="name" required defaultValue={issue?.name ?? ''} className={fieldClass} />
           </div>
           <div>
-            <label className={labelClass}>Icon (emoji)</label>
-            <input name="icon" defaultValue={issue?.icon ?? ''} placeholder="e.g. 💰" className={fieldClass} />
+            <label className={labelClass}>Icon (Lucide name)</label>
+            <input name="icon" defaultValue={issue?.icon ?? ''} placeholder="e.g. briefcase" className={fieldClass} />
           </div>
         </div>
 

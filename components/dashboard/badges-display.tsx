@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { BADGES } from '@/lib/constants/badges'
+import { BadgeIcon, LockIcon } from '@/components/icons/badge-icons'
 
 interface BadgesDisplayProps {
   earnedBadges: string[]
@@ -41,11 +42,11 @@ export function BadgesDisplay({ earnedBadges }: BadgesDisplayProps) {
                     : 'none',
                 }}
               >
-                <div className="relative text-2xl leading-none">
-                  {badge.icon}
+                <div className="relative flex items-center justify-center">
+                  <BadgeIcon badgeId={badge.id} size={24} className={earned ? 'text-[var(--codex-text)]' : 'text-[var(--codex-faint)]'} />
                   {!earned && (
-                    <div className="absolute -bottom-0.5 -right-1 text-[11px]">
-                      {'\u{1F512}'}
+                    <div className="absolute -bottom-0.5 -right-1">
+                      <LockIcon size={11} className="text-[var(--codex-faint)]" />
                     </div>
                   )}
                 </div>

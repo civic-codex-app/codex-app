@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { IssueIcon } from '@/components/icons/issue-icon'
 
 interface PartyStanceData {
   supports: number   // includes strongly_supports, supports, leans_support
@@ -128,9 +129,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
               >
                 {/* Issue label */}
                 <div className="flex items-center gap-2 pr-3">
-                  <span className="text-[15px]" role="img" aria-label={row.issue}>
-                    {row.icon}
-                  </span>
+                  <IssueIcon icon={row.icon} size={15} className="flex-shrink-0 text-[var(--codex-sub)]" />
                   <span className="truncate text-[13px] font-semibold text-[var(--codex-sub)]">
                     {row.issue}
                   </span>

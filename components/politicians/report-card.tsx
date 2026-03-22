@@ -51,11 +51,27 @@ function dimensionInsight(key: string, value: number): string {
   }
 }
 
-const DIMENSIONS: { key: 'bipartisanship' | 'engagement' | 'transparency' | 'effectiveness'; label: string; icon: string }[] = [
-  { key: 'bipartisanship', label: 'Bipartisanship', icon: '🤝' },
-  { key: 'engagement', label: 'Engagement', icon: '🗳️' },
-  { key: 'transparency', label: 'Transparency', icon: '🔍' },
-  { key: 'effectiveness', label: 'Effectiveness', icon: '⚡' },
+function DimIcon({ name, size = 16 }: { name: string; size?: number }) {
+  const props = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
+  switch (name) {
+    case 'bipartisanship':
+      return <svg {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+    case 'engagement':
+      return <svg {...props}><path d="M5 21h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z" /><path d="m9 12 2 2 4-4" /></svg>
+    case 'transparency':
+      return <svg {...props}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+    case 'effectiveness':
+      return <svg {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+    default:
+      return null
+  }
+}
+
+const DIMENSIONS: { key: 'bipartisanship' | 'engagement' | 'transparency' | 'effectiveness'; label: string }[] = [
+  { key: 'bipartisanship', label: 'Bipartisanship' },
+  { key: 'engagement', label: 'Engagement' },
+  { key: 'transparency', label: 'Transparency' },
+  { key: 'effectiveness', label: 'Effectiveness' },
 ]
 
 export function PoliticianReportCard({
@@ -170,7 +186,7 @@ export function PoliticianReportCard({
             <div key={dim.key} className="rounded-md border border-[var(--codex-border)] px-4 py-3">
               <div className="mb-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm">{dim.icon}</span>
+                  <DimIcon name={dim.key} />
                   <span className="text-[13px] font-medium text-[var(--codex-text)]">{dim.label}</span>
                 </div>
                 <span className="text-[15px] font-semibold font-semibold" style={{ color: dimColor }}>
