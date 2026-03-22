@@ -53,7 +53,7 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
 
   // --- Engagement ---
   // For legislators: proportion of yea/nay votes. For executives: skip (N/A)
-  let engagement = isExecutive ? -1 : 50
+  let engagement = isExecutive ? -1 : 60
   if (!isExecutive && votingRecords.length > 0) {
     const engaged = votingRecords.filter(
       (v) => v.vote === 'yea' || v.vote === 'nay'
@@ -80,7 +80,7 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
     // Executives get effectiveness from having clear stances on issues
     effectiveness = totalStances >= 10 ? 80 : totalStances >= 5 ? 65 : 50
   } else {
-    effectiveness = 30
+    effectiveness = 50
     if (committees.length > 0) {
       let base = Math.min(committees.length * 15, 60)
       let bonus = 0
@@ -109,12 +109,12 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
   }
 }
 
-/** Map a 0–100 score to a letter grade. */
+/** Map a 0–100 score to a letter grade. Generous curve to stay positive. */
 export function gradeFromScore(score: number): string {
-  if (score >= 85) return 'A'
-  if (score >= 70) return 'B'
-  if (score >= 55) return 'C'
-  if (score >= 40) return 'D'
+  if (score >= 75) return 'A'
+  if (score >= 60) return 'B'
+  if (score >= 45) return 'C'
+  if (score >= 30) return 'D'
   return 'F'
 }
 
