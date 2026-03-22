@@ -42,7 +42,7 @@ export function QuizProgressCard() {
               className="h-full rounded-full transition-all"
               style={{
                 width: `${(progress.answered / progress.total) * 100}%`,
-                background: 'linear-gradient(90deg, #22C55E, #16A34A)',
+                background: 'linear-gradient(90deg, #3B82F6, #2563EB)',
               }}
             />
           </div>
