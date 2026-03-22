@@ -9,6 +9,7 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { CHAMBER_LABELS } from '@/lib/constants/chambers'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
+import { RaceComparison } from '@/components/elections/race-comparison'
 import type {
   RaceDetailRow,
   CandidateRow,
@@ -184,6 +185,32 @@ export default async function RaceDetailPage({ params }: PageProps) {
             </div>
           </div>
         )}
+
+        {/* Side-by-side issue comparison */}
+        {candidateList.length >= 2 && (() => {
+          // Build stances by candidate ID (using politician stances for linked candidates)
+          const stancesByCandidate = new Map<string, Array<{ stance: string; issues: { slug: string; name: string; icon?: string } }>>()
+          for (const c of candidateList) {
+            if (c.politician?.id) {
+              const polStances = stancesByPol.get(c.politician.id) ?? []
+              stancesByCandidate.set(c.id, polStances.map((s: any) => ({
+                stance: s.stance,
+                issues: s.issues ?? { slug: '', name: '' },
+              })))
+            }
+          }
+          const compCandidates = candidateList
+            .filter((c) => stancesByCandidate.has(c.id) && (stancesByCandidate.get(c.id)?.length ?? 0) > 0)
+            .map((c) => ({
+              id: c.id,
+              name: c.name,
+              party: c.party,
+              politician: c.politician ? { id: c.politician.id, slug: c.politician.slug } : null,
+            }))
+          return compCandidates.length >= 2 ? (
+            <RaceComparison candidates={compCandidates} stancesByCandidate={stancesByCandidate} />
+          ) : null
+        })()}
 
         {/* Candidates */}
         <section className="mb-10">

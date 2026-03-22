@@ -232,13 +232,33 @@ export function MatchResults({ results, onRetake }: Props) {
         </>
       )}
 
-      {/* Retake */}
-      <div className="mt-10 text-center">
+      {/* Actions */}
+      <div className="mt-10 flex items-center justify-center gap-3">
         <button
           onClick={onRetake}
           className="rounded-lg border border-[var(--codex-border)] px-6 py-2.5 text-[14px] font-medium text-[var(--codex-sub)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
         >
           Retake Quiz
+        </button>
+        <button
+          onClick={() => {
+            const top = results[0]
+            if (!top) return
+            const ogUrl = `${window.location.origin}/api/og/match?score=${top.score}&name=${encodeURIComponent(top.politician.name)}&party=${top.politician.party}&matched=${top.matchedIssues}`
+            if (navigator.share) {
+              navigator.share({
+                title: `I'm ${top.score}% aligned with ${top.politician.name}`,
+                text: `Take the Voter Match quiz on Codex!`,
+                url: window.location.origin + '/match',
+              }).catch(() => {})
+            } else {
+              navigator.clipboard.writeText(`I'm ${top.score}% aligned with ${top.politician.name}! Take the quiz: ${window.location.origin}/match`)
+              alert('Link copied to clipboard!')
+            }
+          }}
+          className="rounded-lg bg-[var(--codex-text)] px-6 py-2.5 text-[14px] font-medium text-[var(--codex-card)] transition-opacity hover:opacity-90"
+        >
+          Share Results
         </button>
       </div>
     </div>
