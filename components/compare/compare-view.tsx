@@ -4,9 +4,12 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
-import { IssueIcon } from '@/components/icons/issue-icon'
 import { stanceBucket, stanceStyle } from '@/lib/utils/stances'
-import { IssueRadar } from '@/components/visualizations/issue-radar'
+import { StanceScale } from '@/components/compare/stance-scale'
+import { BackgroundComparison } from '@/components/compare/background-comparison'
+import { FinanceComparison } from '@/components/compare/finance-comparison'
+import { VotingOverlap } from '@/components/compare/voting-overlap'
+import { ElectionComparison } from '@/components/compare/election-comparison'
 
 interface CompareViewProps {
   polA: any
@@ -15,6 +18,12 @@ interface CompareViewProps {
   stancesB: any[]
   committeesA: any[]
   committeesB: any[]
+  financeA: any[]
+  financeB: any[]
+  votingA: any[]
+  votingB: any[]
+  electionsA: any[]
+  electionsB: any[]
 }
 
 export function CompareView({
@@ -24,6 +33,12 @@ export function CompareView({
   stancesB,
   committeesA,
   committeesB,
+  financeA,
+  financeB,
+  votingA,
+  votingB,
+  electionsA,
+  electionsB,
 }: CompareViewProps) {
   const colorA = partyColor(polA.party)
   const colorB = partyColor(polB.party)
@@ -62,21 +77,19 @@ export function CompareView({
   }
   const allIssues = Array.from(issueMap.values())
 
-  // Filter out issues where BOTH are unknown — not meaningful to compare
+  // Filter out issues where BOTH are unknown
   const comparableIssues = allIssues.filter(issue => {
     const bucketA = stanceBucket(issue.a ?? 'unknown')
     const bucketB = stanceBucket(issue.b ?? 'unknown')
-    // Keep if at least one side has a known stance
     return bucketA !== 'unknown' || bucketB !== 'unknown'
   })
 
-  // Count agreements / disagreements using buckets (not raw stance values)
+  // Count agreements / disagreements
   let agree = 0
   let disagree = 0
   for (const issue of comparableIssues) {
     const bucketA = stanceBucket(issue.a ?? 'unknown')
     const bucketB = stanceBucket(issue.b ?? 'unknown')
-    // Skip if either is unknown — can't compare
     if (bucketA === 'unknown' || bucketB === 'unknown') continue
     if (bucketA === bucketB) agree++
     else disagree++
@@ -90,7 +103,7 @@ export function CompareView({
 
   return (
     <div className="animate-fade-up">
-      {/* Header cards */}
+      {/* Profile cards */}
       <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
         <ProfileCard pol={polA} color={colorA} alignment={alignA} meta={metaA} stances={stancesA} />
         <ProfileCard pol={polB} color={colorB} alignment={alignB} meta={metaB} stances={stancesB} />
@@ -130,93 +143,13 @@ export function CompareView({
         </div>
       )}
 
-      {/* Radar chart */}
-      {comparableIssues.length > 0 && (() => {
-        const radarIssues = comparableIssues
-          .filter(i => i.icon)
-          .map(i => ({ slug: i.slug, name: i.name, icon: i.icon! }))
-        const stancesMapA: Record<string, string> = {}
-        const stancesMapB: Record<string, string> = {}
-        for (const i of comparableIssues) {
-          if (i.a) stancesMapA[i.slug] = i.a
-          if (i.b) stancesMapB[i.slug] = i.b
-        }
-        return radarIssues.length >= 3 ? (
-          <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
-            <h2 className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
-              Stance Radar
-            </h2>
-            <IssueRadar
-              politician1={{ name: polA.name, party: polA.party, stances: stancesMapA }}
-              politician2={{ name: polB.name, party: polB.party, stances: stancesMapB }}
-              issues={radarIssues}
-            />
-          </div>
-        ) : null
-      })()}
-
-      {/* Issue-by-issue comparison */}
+      {/* Stance Scale (replaces radar + issue table) */}
       {comparableIssues.length > 0 && (
-        <div className="mb-8">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
-            Issue-by-Issue Comparison
-          </h2>
-          <div className="space-y-1">
-            {/* Header row */}
-            <div className="hidden gap-2 px-4 pb-2 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_120px_120px]">
-              <span>Issue</span>
-              <span className="text-center">{polA.name.split(' ').pop()}</span>
-              <span className="text-center">{polB.name.split(' ').pop()}</span>
-            </div>
-            {comparableIssues.map((issue) => {
-              const styleA = stanceStyle(issue.a ?? 'unknown')
-              const styleB = stanceStyle(issue.b ?? 'unknown')
-              const bucketA = stanceBucket(issue.a ?? 'unknown')
-              const bucketB = stanceBucket(issue.b ?? 'unknown')
-              const match = bucketA !== 'unknown' && bucketB !== 'unknown' && bucketA === bucketB
-
-              return (
-                <div
-                  key={issue.slug}
-                  className="rounded-md px-4 py-2.5 sm:grid sm:grid-cols-[1fr_120px_120px] sm:items-center sm:gap-2"
-                  style={{
-                    background: match ? '#22C55E08' : undefined,
-                    border: `1px solid ${match ? '#22C55E18' : 'var(--codex-border)'}`,
-                  }}
-                >
-                  <Link
-                    href={`/issues/${issue.slug}`}
-                    className="flex items-center gap-2 text-[13px] font-medium hover:text-[var(--codex-text)]"
-                  >
-                    {issue.icon && (
-                      <IssueIcon icon={issue.icon} size={14} className="text-[var(--codex-sub)]" />
-                    )}
-                    {issue.name}
-                  </Link>
-                  <div className="mt-2 flex items-center gap-3 sm:mt-0 sm:contents">
-                    <div className="flex sm:justify-center">
-                      <span
-                        className="rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em]"
-                        style={{ color: styleA.color, background: `${styleA.color}18` }}
-                      >
-                        {styleA.shortLabel || styleA.label}
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-[var(--codex-faint)] sm:hidden">vs</span>
-                    <div className="flex sm:justify-center">
-                      <span
-                        className="rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em]"
-                        style={{ color: styleB.color, background: `${styleB.color}18` }}
-                      >
-                        {styleB.shortLabel || styleB.label}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
+        <StanceScale
+          issues={comparableIssues}
+          polA={{ name: polA.name, party: polA.party }}
+          polB={{ name: polB.name, party: polB.party }}
+        />
       )}
 
       {/* No comparable stances */}
@@ -228,6 +161,18 @@ export function CompareView({
           </p>
         </div>
       )}
+
+      {/* Background */}
+      <BackgroundComparison polA={polA} polB={polB} />
+
+      {/* Campaign Finance */}
+      <FinanceComparison financeA={financeA} financeB={financeB} polA={polA} polB={polB} />
+
+      {/* Voting Record Overlap */}
+      <VotingOverlap votingA={votingA} votingB={votingB} polA={polA} polB={polB} />
+
+      {/* Election History */}
+      <ElectionComparison electionsA={electionsA} electionsB={electionsB} polA={polA} polB={polB} />
 
       {/* Shared committees */}
       {sharedCommittees.length > 0 && (
@@ -271,7 +216,6 @@ function ProfileCard({
 
   return (
     <div className="rounded-md border border-[var(--codex-border)] p-4 sm:p-5">
-      {/* Top color accent */}
       <div className="mb-4 h-1 w-full rounded-full" style={{ background: `${color}44` }}>
         <div
           className="h-full rounded-full"
@@ -311,9 +255,7 @@ function ProfileCard({
         </div>
       </div>
 
-      {/* Stats row */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {/* Alignment */}
         <div>
           <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
             Alignment
@@ -327,7 +269,6 @@ function ProfileCard({
           )}
         </div>
 
-        {/* Stance breakdown */}
         <div>
           <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
             Stances
@@ -345,7 +286,6 @@ function ProfileCard({
           )}
         </div>
 
-        {/* Label */}
         <div className="hidden sm:block">
           <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
             Type
@@ -363,7 +303,6 @@ function ProfileCard({
         </div>
       </div>
 
-      {/* Mini stance bar */}
       {total > 0 && (
         <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
           {supports > 0 && (

@@ -8,6 +8,7 @@ import { ThemeToggle } from '@/components/layout/theme-toggle'
 const NAV_LINKS = [
   { href: '/', label: 'Directory' },
   { href: '/compare', label: 'Compare' },
+  { href: '/match', label: 'Match' },
   { href: '/bills', label: 'Bills' },
   { href: '/elections', label: 'Elections' },
   { href: '/issues', label: 'Issues' },

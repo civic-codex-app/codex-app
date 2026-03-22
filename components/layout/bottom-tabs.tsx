@@ -57,6 +57,7 @@ const TABS = [
 
 const MORE_LINKS = [
   { href: '/compare', label: 'Compare' },
+  { href: '/match', label: 'Voter Match' },
   { href: '/bills', label: 'Bills' },
   { href: '/polls', label: 'Polls' },
 ]

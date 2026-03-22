@@ -7,7 +7,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Compare Politicians — Codex',
-  description: 'Compare politicians side by side on issues, alignment, and committees.',
+  description: 'Compare politicians side by side on issues, alignment, committees, campaign finance, and voting records.',
 }
 
 interface PageProps {
@@ -18,13 +18,9 @@ export default async function ComparePage({ searchParams }: PageProps) {
   const params = await searchParams
   const supabase = createServiceRoleClient()
 
-  // If both slugs are provided, fetch full data
+  // Fetch both politicians by slug
   let polA = null
   let polB = null
-  let stancesA: any[] = []
-  let stancesB: any[] = []
-  let committeesA: any[] = []
-  let committeesB: any[] = []
 
   if (params.a) {
     const { data } = await supabase.from('politicians').select('*').eq('slug', params.a).single()
@@ -35,30 +31,68 @@ export default async function ComparePage({ searchParams }: PageProps) {
     polB = data
   }
 
-  if (polA) {
-    const { data } = await supabase
-      .from('politician_issues')
-      .select('*, issues:issue_id(id, name, slug, icon, category)')
-      .eq('politician_id', polA.id)
-    stancesA = data ?? []
-    const { data: cm } = await supabase
-      .from('politician_committees')
-      .select('role, committees:committee_id(id, name, slug)')
-      .eq('politician_id', polA.id)
-    committeesA = cm ?? []
-  }
+  // Fetch all comparison data in parallel when both are selected
+  let stancesA: any[] = []
+  let stancesB: any[] = []
+  let committeesA: any[] = []
+  let committeesB: any[] = []
+  let financeA: any[] = []
+  let financeB: any[] = []
+  let votingA: any[] = []
+  let votingB: any[] = []
+  let electionsA: any[] = []
+  let electionsB: any[] = []
 
-  if (polB) {
-    const { data } = await supabase
-      .from('politician_issues')
-      .select('*, issues:issue_id(id, name, slug, icon, category)')
-      .eq('politician_id', polB.id)
-    stancesB = data ?? []
-    const { data: cm } = await supabase
-      .from('politician_committees')
-      .select('role, committees:committee_id(id, name, slug)')
-      .eq('politician_id', polB.id)
-    committeesB = cm ?? []
+  if (polA && polB) {
+    const [
+      stA, stB, cmA, cmB, fnA, fnB, vtA, vtB, elA, elB,
+    ] = await Promise.all([
+      supabase.from('politician_issues')
+        .select('*, issues:issue_id(id, name, slug, icon, category)')
+        .eq('politician_id', polA.id),
+      supabase.from('politician_issues')
+        .select('*, issues:issue_id(id, name, slug, icon, category)')
+        .eq('politician_id', polB.id),
+      supabase.from('politician_committees')
+        .select('role, committees:committee_id(id, name, slug)')
+        .eq('politician_id', polA.id),
+      supabase.from('politician_committees')
+        .select('role, committees:committee_id(id, name, slug)')
+        .eq('politician_id', polB.id),
+      supabase.from('campaign_finance')
+        .select('*').eq('politician_id', polA.id)
+        .order('cycle', { ascending: false }),
+      supabase.from('campaign_finance')
+        .select('*').eq('politician_id', polB.id)
+        .order('cycle', { ascending: false }),
+      supabase.from('voting_records')
+        .select('id, bill_name, bill_number, bill_id, vote, vote_date')
+        .eq('politician_id', polA.id)
+        .order('vote_date', { ascending: false })
+        .limit(500),
+      supabase.from('voting_records')
+        .select('id, bill_name, bill_number, bill_id, vote, vote_date')
+        .eq('politician_id', polB.id)
+        .order('vote_date', { ascending: false })
+        .limit(500),
+      supabase.from('election_results')
+        .select('*').eq('politician_id', polA.id)
+        .order('election_year', { ascending: false }),
+      supabase.from('election_results')
+        .select('*').eq('politician_id', polB.id)
+        .order('election_year', { ascending: false }),
+    ])
+
+    stancesA = stA.data ?? []
+    stancesB = stB.data ?? []
+    committeesA = cmA.data ?? []
+    committeesB = cmB.data ?? []
+    financeA = fnA.data ?? []
+    financeB = fnB.data ?? []
+    votingA = vtA.data ?? []
+    votingB = vtB.data ?? []
+    electionsA = elA.data ?? []
+    electionsB = elB.data ?? []
   }
 
   return (
@@ -71,7 +105,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
             <span className="italic text-[var(--codex-subtle)]">Officials</span>
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
-            See how two politicians stack up on the issues, party alignment, and committee roles.
+            See how two politicians stack up on the issues, campaign finance, voting records, and more.
           </p>
         </div>
 
@@ -90,6 +124,12 @@ export default async function ComparePage({ searchParams }: PageProps) {
             stancesB={stancesB}
             committeesA={committeesA}
             committeesB={committeesB}
+            financeA={financeA}
+            financeB={financeB}
+            votingA={votingA}
+            votingB={votingB}
+            electionsA={electionsA}
+            electionsB={electionsB}
           />
         )}
 

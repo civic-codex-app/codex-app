@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import { partyColor } from '@/lib/constants/parties'
 import { STANCE_NUMERIC, MAX_STANCE_VALUE, stanceStyle } from '@/lib/utils/stances'
+import { IssueIcon } from '@/components/icons/issue-icon'
 
 interface PoliticianRadarData {
   name: string
@@ -30,11 +31,11 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
   const [hoveredAxis, setHoveredAxis] = useState<string | null>(null)
   const [hoveredPolitician, setHoveredPolitician] = useState<1 | 2 | null>(null)
 
-  const size = 400
+  const size = 550
   const cx = size / 2
   const cy = size / 2
-  const maxRadius = size * 0.35
-  const labelRadius = size * 0.46
+  const maxRadius = size * 0.28
+  const labelRadius = size * 0.38
 
   const angleStep = (2 * Math.PI) / issues.length
   const startAngle = -Math.PI / 2 // Start from top
@@ -233,16 +234,23 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                 onMouseLeave={() => setHoveredAxis(null)}
                 className="cursor-default"
               >
-                <text
-                  x={pt.x}
-                  y={pt.y - 7}
-                  textAnchor={textAnchor}
-                  fill={isHovered ? 'var(--codex-text)' : 'var(--codex-sub)'}
-                  fontSize={14}
-                  className="transition-colors duration-150"
+                <foreignObject
+                  x={textAnchor === 'end' ? pt.x - 20 : textAnchor === 'start' ? pt.x : pt.x - 10}
+                  y={pt.y - 20}
+                  width={20}
+                  height={20}
+                  className="pointer-events-none"
                 >
-                  {issue.icon}
-                </text>
+                  <div
+                    className="flex h-full w-full items-center transition-colors duration-150"
+                    style={{
+                      color: isHovered ? 'var(--codex-text)' : 'var(--codex-sub)',
+                      justifyContent: textAnchor === 'end' ? 'flex-end' : textAnchor === 'start' ? 'flex-start' : 'center',
+                    }}
+                  >
+                    <IssueIcon icon={issue.icon} size={14} />
+                  </div>
+                </foreignObject>
                 <text
                   x={pt.x}
                   y={pt.y + 8}
@@ -253,7 +261,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                   style={{ letterSpacing: '0.02em' }}
                   className="transition-colors duration-150"
                 >
-                  {issue.name.length > 14 ? issue.name.slice(0, 12) + '...' : issue.name}
+                  {issue.name}
                 </text>
 
                 {/* Hover detail */}
