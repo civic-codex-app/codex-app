@@ -7,150 +7,109 @@
 // ─── Issue Subtitles (1-line plain language) ──────────────────────────────────
 
 export const ISSUE_SUBTITLES: Record<string, string> = {
-  'gun-policy': 'Should there be more rules about who can buy and carry guns?',
-  'healthcare': 'Should the government help everyone get health care?',
-  'immigration': 'Should it be easier or harder to come to the U.S.?',
-  'climate-change': 'Is the planet getting too hot? What should we do?',
-  'economy': 'What should the government do about jobs and pay?',
-  'education': 'How do we make schools better and college cheaper?',
-  'criminal-justice': 'How should police, courts, and jails work?',
-  'foreign-policy': 'How much should we get involved with other countries?',
-  'abortion': 'Should abortion be legal or not?',
-  'lgbtq-rights': 'Should LGBTQ+ people have the same rights as everyone?',
-  'drug-policy': 'What should we do about drugs like marijuana?',
-  'taxes': 'Who should pay more in taxes and who should pay less?',
-  'technology': 'Should there be more rules for big tech companies and AI?',
-  'housing': 'What should we do about high rent and home prices?',
-  'defense': 'Should we spend more or less on the military?',
-  'energy': 'Should we use more solar and wind or more oil and gas?',
-  'infrastructure': 'How should we pay to fix roads, bridges, and internet?',
-  'social-security': 'How do we make sure seniors get their retirement checks?',
-  'voting-rights': 'How easy or hard should it be to vote?',
-  'environment': 'How should we protect nature, water, and public land?',
+  'gun-policy-and-2nd-amendment': 'Should there be more rules about who can buy and carry guns?',
+  'healthcare-and-medicare': 'Should the government help everyone get health care?',
+  'immigration-and-border-security': 'Should it be easier or harder to come to the U.S.?',
+  'climate-and-environment': 'Is the planet getting too hot? What should we do?',
+  'economy-and-jobs': 'What should the government do about jobs and pay?',
+  'education-and-student-debt': 'How do we make schools better and college cheaper?',
+  'criminal-justice-reform': 'How should police, courts, and jails work?',
+  'foreign-policy-and-diplomacy': 'How much should we get involved with other countries?',
+  'technology-and-ai-regulation': 'Should there be more rules for big tech companies and AI?',
+  'housing-and-affordability': 'What should we do about high rent and home prices?',
+  'national-defense-and-military': 'Should we spend more or less on the military?',
+  'energy-policy-and-oil-gas': 'Should we use more solar and wind or more oil and gas?',
+  'infrastructure-and-transportation': 'How should we pay to fix roads, bridges, and internet?',
+  'social-security-and-medicare': 'How do we make sure seniors get their retirement checks?',
 }
 
 // ─── Issue Explainers (for issue detail pages) ───────────────────────────────
 
 export interface IssueExplainer {
-  /** 1-2 sentence plain language explanation */
   description: string
-  /** What it means when a politician "supports" this issue */
   supportsExplainer: string
-  /** What it means when a politician "opposes" this issue */
   opposesExplainer: string
 }
 
 export const ISSUE_EXPLAINERS: Record<string, IssueExplainer> = {
-  'gun-policy': {
+  'gun-policy-and-2nd-amendment': {
     description: 'Gun policy is about the rules for buying, selling, and carrying guns. This includes background checks and bans on certain weapons.',
     supportsExplainer: 'Wants more rules on guns. Thinks background checks and weapon bans make people safer.',
     opposesExplainer: 'Wants fewer rules on guns. Believes people have the right to own guns freely.',
   },
-  'healthcare': {
+  'healthcare-and-medicare': {
     description: 'Health care policy is about how people see doctors and pay for medicine. It covers insurance, drug prices, and government health plans.',
     supportsExplainer: 'Wants the government to help more people get health care at lower prices.',
     opposesExplainer: 'Wants less government in health care. Thinks people should shop for their own plans.',
   },
-  'immigration': {
+  'immigration-and-border-security': {
     description: 'Immigration is about who can come to the U.S. and who gets to stay. It covers border security, visas, and paths to become a citizen.',
     supportsExplainer: 'Wants to help people already here get a legal path to stay. Supports letting in more people.',
     opposesExplainer: 'Wants stronger borders and fewer people coming in. Supports sending back those here without papers.',
   },
-  'climate-change': {
+  'climate-and-environment': {
     description: 'Climate policy is about what to do as the Earth gets warmer. It covers clean energy, pollution rules, and protecting nature.',
     supportsExplainer: 'Wants strong action to cut pollution and switch to clean energy like solar and wind.',
     opposesExplainer: 'Thinks climate rules hurt businesses and cost too much. Puts jobs and cheap energy first.',
   },
-  'economy': {
+  'economy-and-jobs': {
     description: 'The economy is about jobs, pay, and how much things cost. This covers the lowest pay allowed, trade, and taxes.',
     supportsExplainer: 'Wants the government to create jobs and raise pay for workers.',
     opposesExplainer: 'Wants the government to step back and let businesses decide pay and hiring.',
   },
-  'education': {
+  'education-and-student-debt': {
     description: 'Education is about schools, teachers, and college costs. It covers how schools get money and what happens with student loans.',
     supportsExplainer: 'Wants more money for public schools. Supports help with student loans.',
     opposesExplainer: 'Wants parents to pick their kids\' school. Thinks the federal government should do less in education.',
   },
-  'criminal-justice': {
+  'criminal-justice-reform': {
     description: 'Criminal justice is about how police, courts, and jails work. It covers how long people go to prison and how police do their jobs.',
     supportsExplainer: 'Wants changes like shorter sentences and more focus on helping people get back on their feet.',
     opposesExplainer: 'Wants tougher punishments and more money for police.',
   },
-  'foreign-policy': {
+  'foreign-policy-and-diplomacy': {
     description: 'Foreign policy is about how the U.S. deals with other countries. This covers trade deals, military alliances, and sending aid overseas.',
     supportsExplainer: 'Wants the U.S. to work closely with other countries and help allies.',
     opposesExplainer: 'Wants to focus on problems at home. Thinks we spend too much on other countries.',
   },
-  'abortion': {
-    description: 'Abortion policy is about whether ending a pregnancy should be legal. It covers who decides - the states or the federal government.',
-    supportsExplainer: 'Wants abortion to stay legal. Believes it is a personal choice.',
-    opposesExplainer: 'Wants to limit or ban abortion. Often supports state-level bans.',
-  },
-  'lgbtq-rights': {
-    description: 'LGBTQ+ rights are about equal treatment for gay, lesbian, and transgender people. This covers marriage, adoption, and protection from being fired.',
-    supportsExplainer: 'Wants equal rights and protections for LGBTQ+ people.',
-    opposesExplainer: 'Wants fewer federal rules on these issues. May support traditional marriage only.',
-  },
-  'drug-policy': {
-    description: 'Drug policy is about what drugs are legal and how we treat people who use them. It covers marijuana, the opioid crisis, and rehab programs.',
-    supportsExplainer: 'Wants to make marijuana legal. Thinks we should treat addiction, not just punish it.',
-    opposesExplainer: 'Wants strict drug laws and tough punishment for drug crimes.',
-  },
-  'taxes': {
-    description: 'Tax policy is about how much people and companies pay to the government. That money pays for roads, schools, the military, and more.',
-    supportsExplainer: 'Wants rich people and big companies to pay more in taxes.',
-    opposesExplainer: 'Wants lower taxes for everyone, especially businesses, to help the economy grow.',
-  },
-  'technology': {
+  'technology-and-ai-regulation': {
     description: 'Tech policy is about rules for companies like Google, Apple, and Meta. It covers your personal data, AI tools, and social media.',
     supportsExplainer: 'Wants new laws to protect your data. Wants rules on how AI is used.',
     opposesExplainer: 'Wants fewer rules so tech companies can keep inventing new things.',
   },
-  'housing': {
+  'housing-and-affordability': {
     description: 'Housing is about the cost of rent and homes. It covers building affordable places to live and helping people who are homeless.',
     supportsExplainer: 'Wants the government to build affordable housing and help with rent.',
     opposesExplainer: 'Wants fewer building rules so the market can bring prices down on its own.',
   },
-  'defense': {
+  'national-defense-and-military': {
     description: 'Defense is about how much we spend on the military. It covers troops, weapons, veterans, and bases around the world.',
     supportsExplainer: 'Wants a strong military with enough money to stay ready.',
     opposesExplainer: 'Wants to spend less on the military and use that money for things at home.',
   },
-  'energy': {
+  'energy-policy-and-oil-gas': {
     description: 'Energy policy is about where we get our power. It covers oil, gas, solar, wind, and nuclear energy.',
     supportsExplainer: 'Wants to switch to solar and wind. Wants to use less oil and gas.',
     opposesExplainer: 'Wants to drill for more oil and gas at home to keep prices low.',
   },
-  'infrastructure': {
+  'infrastructure-and-transportation': {
     description: 'Infrastructure is about the things we all use every day: roads, bridges, water pipes, internet, and buses or trains.',
     supportsExplainer: 'Wants the government to spend big on fixing roads, bridges, and internet.',
     opposesExplainer: 'Wants private companies to handle more of it. Worried about spending too much.',
   },
-  'social-security': {
+  'social-security-and-medicare': {
     description: 'Social Security is money the government pays to people when they retire or cannot work. The money comes from everyone\'s paychecks.',
     supportsExplainer: 'Wants to protect these payments and maybe make them bigger.',
     opposesExplainer: 'Thinks the program costs too much. May want to raise the retirement age.',
   },
-  'voting-rights': {
-    description: 'Voting rights are about how people sign up to vote and cast their ballots. It covers ID rules, mail-in voting, and early voting.',
-    supportsExplainer: 'Wants to make voting easier with more ways to vote early or by mail.',
-    opposesExplainer: 'Wants stricter ID checks to prevent cheating at the polls.',
-  },
-  'environment': {
-    description: 'The environment is about keeping our air, water, and land clean. It covers pollution rules, national parks, and wildlife.',
-    supportsExplainer: 'Wants stronger rules to stop pollution and protect nature.',
-    opposesExplainer: 'Thinks too many rules hurt businesses and cost jobs.',
-  },
 }
 
 // ─── Stance Context for Politician Profiles ──────────────────────────────────
-// Maps issue slug + stance bucket to a brief explanation of what that position means
 
 export function getStanceContext(issueSlug: string, stance: string): string | null {
   const explainer = ISSUE_EXPLAINERS[issueSlug]
   if (!explainer) return null
 
-  // Determine bucket
   const supportStances = ['strongly_supports', 'supports', 'leans_support']
   const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
 

@@ -12,7 +12,7 @@ export interface QuizIssueContent {
 }
 
 export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
-  'climate-environment': {
+  'climate-and-environment': {
     question: 'Is the planet getting too hot? What should we do about it?',
     whyItMatters:
       'This affects your energy bills and the air you breathe. It also changes how ready your town is for big storms.',
@@ -30,7 +30,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Tougher punishment for crimes. Give police more money. Keep the system mostly as it is.',
   },
-  'economy-jobs': {
+  'economy-and-jobs': {
     question: 'What should the government do about jobs and money?',
     whyItMatters:
       'This changes how much you earn. It affects prices at the store and how much you pay in taxes.',
@@ -39,7 +39,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Cut taxes and rules for businesses. Spend less government money. Let the market set pay.',
   },
-  'education-student-debt': {
+  'education-and-student-debt': {
     question: 'Should college be cheaper? What about student loans?',
     whyItMatters:
       'This affects how good your local schools are. It also decides if you or your kids will owe money for college.',
@@ -48,7 +48,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'No free college. Let parents pick their kids\' school with vouchers. Shrink the federal role in schools.',
   },
-  'energy-policy': {
+  'energy-policy-and-oil-gas': {
     question: 'Should we switch to clean energy or stick with oil and gas?',
     whyItMatters:
       'This affects your electric bill and gas prices. It also changes what jobs are available in your area.',
@@ -57,7 +57,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Drill for more oil and gas. Build nuclear plants. Approve new pipelines. Put American energy first.',
   },
-  'foreign-policy': {
+  'foreign-policy-and-diplomacy': {
     question: 'How much should the U.S. get involved in other countries?',
     whyItMatters:
       'This affects where our troops go. It also changes prices on things we buy from other countries.',
@@ -66,7 +66,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Stop spending money on other countries. Focus on problems at home. Make better trade deals for us.',
   },
-  'gun-policy': {
+  'gun-policy-and-2nd-amendment': {
     question: 'Should there be more rules about buying and owning guns?',
     whyItMatters:
       'This affects how safe you feel in schools and public places. It also decides your rights as a gun owner.',
@@ -75,7 +75,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'No new gun laws. Let people carry guns without a permit. Protect gun makers from being sued.',
   },
-  'healthcare-medicare': {
+  'healthcare-and-medicare': {
     question: 'How should people get their health care?',
     whyItMatters:
       'This decides what you pay for doctor visits and medicine. It affects whether your job controls your health plan.',
@@ -84,7 +84,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Get rid of Obamacare. Let people shop for their own insurance. Use savings accounts for health costs.',
   },
-  'housing-affordability': {
+  'housing-and-affordability': {
     question: 'What should we do about the cost of rent and homes?',
     whyItMatters:
       'This affects how much you pay for rent. It decides whether you can afford to buy a house.',
@@ -93,7 +93,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Cut building rules so more homes get built. Stop government housing programs. Let the market set prices.',
   },
-  'immigration-border-security': {
+  'immigration-and-border-security': {
     question: 'Should it be easier or harder for people to move to the U.S.?',
     whyItMatters:
       'This affects border towns and jobs. It also decides what happens to people already living here without papers.',
@@ -102,7 +102,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Build a border wall. Send more people back. End cities that protect undocumented people.',
   },
-  'infrastructure-transportation': {
+  'infrastructure-and-transportation': {
     question: 'Should the government spend more on roads, bridges, and internet?',
     whyItMatters:
       'This affects your drive to work. It decides if you can get fast internet and clean water at home.',
@@ -111,7 +111,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Let private companies handle it. Spend less federal money. Let states and cities decide.',
   },
-  'national-defense-military': {
+  'national-defense-and-military': {
     question: 'Should we spend more or less on the military?',
     whyItMatters:
       'This affects how much money goes to the military vs. things like schools and roads.',
@@ -120,7 +120,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Spend less on the military. Close bases overseas. Use that money for things at home.',
   },
-  'social-security-medicare': {
+  'social-security-and-medicare': {
     question: 'How do we make sure seniors get their retirement money?',
     whyItMatters:
       'This decides if your parents and grandparents can afford to retire. It also affects what comes out of your paycheck.',
@@ -129,7 +129,7 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
     opposesMeans:
       'Let people invest their own retirement money. Raise the age you can retire. Spend less on these programs.',
   },
-  'technology-ai-regulation': {
+  'technology-and-ai-regulation': {
     question: 'Should the government have more control over big tech and AI?',
     whyItMatters:
       'This affects who sees your personal info online. It also decides the rules for AI at work and in schools.',
