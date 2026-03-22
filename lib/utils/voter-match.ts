@@ -1,12 +1,13 @@
 /**
  * Voter Match scoring utility.
  *
- * Computes how closely a user's issue stances align with a politician's
- * recorded stances using the same distance-decay curve as party alignment.
+ * Three weighting factors:
+ * 1. CONVICTION — how strongly the USER feels (strongly = 3x, regular = 2x, lean = 1x, neutral = 0.5x)
+ *    Issues you care about deeply count more than ones you barely have an opinion on.
+ * 2. SIMILARITY — how close the politician's stance is to yours (distance-decay curve)
+ * 3. VERIFICATION — verified stances count more than estimated party defaults (1.0x vs 0.5x)
  *
- * Verified stances get full weight (1.0x) while estimated/unverified
- * stances get reduced weight (0.5x) so politicians with real, verified
- * positions rank higher than those with generic party defaults.
+ * Final score = sum(conviction * similarity * verification) / sum(conviction * verification) * 100
  */
 
 import { STANCE_NUMERIC } from './stances'
@@ -18,26 +19,31 @@ export interface VoterMatchResult {
   totalIssues: number
 }
 
+/** How much the user's conviction level weights each issue */
+const CONVICTION_WEIGHT: Record<string, number> = {
+  strongly_supports: 3.0,
+  strongly_opposes: 3.0,
+  supports: 2.0,
+  opposes: 2.0,
+  leans_support: 1.0,
+  leans_oppose: 1.0,
+  neutral: 0.5,
+  mixed: 0.5,
+}
+
 /** Weight multiplier for verified vs estimated stances */
 const VERIFIED_WEIGHT = 1.0
 const ESTIMATED_WEIGHT = 0.5
 
 /**
- * Compute a 0-100 match score between user stances and politician stances.
+ * Compute a 0-100 score between user stances and politician stances.
  *
- * Distance-decay weights (same as computeAlignment):
- *   0 distance = 1.0
+ * Distance-decay similarity:
+ *   0 distance = 1.0 (exact same position)
  *   1 step     = 0.85
  *   2 steps    = 0.55
  *   3 steps    = 0.25
- *   4+ steps   = 0.0
- *
- * Only counts issues where BOTH sides have a valid numeric stance
- * (not unknown, not null, not missing).
- *
- * @param userStances       Map of issue slug -> stance string
- * @param politicianStances Map of issue slug -> stance string
- * @param verifiedMap       Optional map of issue slug -> boolean (true = verified)
+ *   4+ steps   = 0.0 (opposite ends)
  */
 export function computeVoterMatch(
   userStances: Record<string, string>,
@@ -49,7 +55,8 @@ export function computeVoterMatch(
   let matched = 0
 
   for (const slug of Object.keys(userStances)) {
-    const userVal = STANCE_NUMERIC[userStances[slug]]
+    const userStance = userStances[slug]
+    const userVal = STANCE_NUMERIC[userStance]
     const polVal = STANCE_NUMERIC[politicianStances[slug]]
 
     // Skip if either side is missing or unknown (-1)
@@ -65,12 +72,16 @@ export function computeVoterMatch(
     else if (distance === 3) similarity = 0.25
     // 4+ = 0
 
-    // Apply verification weight
-    const isVerified = verifiedMap ? (verifiedMap[slug] ?? false) : true
-    const weight = isVerified ? VERIFIED_WEIGHT : ESTIMATED_WEIGHT
+    // Conviction weight — how strongly the user feels about this issue
+    const conviction = CONVICTION_WEIGHT[userStance] ?? 1.0
 
-    weighted += similarity * weight
-    totalWeight += weight
+    // Verification weight — verified positions count more
+    const isVerified = verifiedMap ? (verifiedMap[slug] ?? false) : true
+    const verification = isVerified ? VERIFIED_WEIGHT : ESTIMATED_WEIGHT
+
+    const issueWeight = conviction * verification
+    weighted += similarity * issueWeight
+    totalWeight += issueWeight
   }
 
   if (matched === 0 || totalWeight === 0) return { score: 0, matched: 0, total: 0 }
