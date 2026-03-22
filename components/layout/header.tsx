@@ -14,6 +14,7 @@ const NAV_LINKS = [
   { href: '/bills', label: 'Bills' },
   { href: '/elections', label: 'Elections' },
   { href: '/issues', label: 'Issues' },
+  { href: '/report-cards', label: 'Grades' },
   { href: '/polls', label: 'Polls' },
   { href: '/insights', label: 'Insights' },
 ]
@@ -63,9 +64,17 @@ export function Header() {
             })}
           </nav>
         </div>
-        {/* Theme toggle on mobile (replaces hamburger), hidden on desktop (footer has it) */}
-        <div className="sm:hidden">
-          <ThemeToggle />
+        {/* Auth link + theme toggle */}
+        <div className="flex items-center gap-3">
+          <Link
+            href={isLoggedIn ? '/dashboard' : '/login'}
+            className="hidden text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)] no-underline transition-colors hover:text-[var(--codex-text)] sm:inline"
+          >
+            {isLoggedIn ? 'Account' : 'Sign In'}
+          </Link>
+          <div className="sm:hidden">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>

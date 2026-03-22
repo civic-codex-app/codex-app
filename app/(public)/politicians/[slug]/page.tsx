@@ -28,6 +28,8 @@ import { computeAlignment } from '@/lib/utils/alignment'
 import { AlignmentGauge } from '@/components/politicians/alignment-gauge'
 import { LikeMinded, type LikeMindedPolitician } from '@/components/politicians/like-minded'
 import { StanceDeviation } from '@/components/politicians/stance-deviation'
+import { PoliticianReportCard } from '@/components/politicians/report-card'
+import { computeReportCard } from '@/lib/utils/report-card'
 import { VotingHistory } from '@/components/politicians/voting-history'
 import { CampaignFinance } from '@/components/politicians/campaign-finance'
 import { ElectionHistory } from '@/components/politicians/election-history'
@@ -120,6 +122,17 @@ export default async function PoliticianPage({ params }: PageProps) {
 
   // Compute party alignment score
   const alignmentScore = computeAlignment(pol.party, politicianStances)
+
+  // Compute report card
+  const verifiedCount = politicianStances.filter((s: any) => s.is_verified).length
+  const reportCard = computeReportCard({
+    party: pol.party,
+    stances: politicianStances,
+    votingRecords: votingRecords.map((v: any) => ({ vote: v.vote })),
+    committees: committees.map((c: any) => ({ role: c.role })),
+    verifiedStances: verifiedCount,
+    totalStances: politicianStances.length,
+  })
 
   // Build stance map for this politician: issue_id -> stance
   const stanceMap = new Map<string, string>()
@@ -366,6 +379,11 @@ export default async function PoliticianPage({ params }: PageProps) {
                 <AlignmentGauge score={alignmentScore} party={pol.party} />
               </div>
             )}
+
+            {/* Report Card */}
+            <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
+              <PoliticianReportCard {...reportCard} />
+            </div>
 
             {/* Breaks from Party Line */}
             <StanceDeviation party={pol.party} stances={politicianStances as any} />
