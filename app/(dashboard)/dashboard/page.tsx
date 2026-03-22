@@ -174,7 +174,7 @@ export default async function DashboardPage() {
           </h2>
           {userState && (
             <Link
-              href={`/politicians?state=${userState}`}
+              href={`/report-cards`}
               className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
             >
               View all &rarr;

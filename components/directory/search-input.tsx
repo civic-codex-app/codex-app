@@ -60,7 +60,7 @@ export function SearchInput() {
       } catch {
         // Aborted or network error — ignore
       }
-    }, 200)
+    }, 100)
   }, [])
 
   // Directory filtering (existing behavior)
@@ -221,7 +221,7 @@ export function SearchInput() {
               {s.image_url ? (
                 <img
                   src={s.image_url}
-                  alt=""
+                  alt={s.name}
                   className="h-8 w-8 rounded-full object-cover"
                 />
               ) : (

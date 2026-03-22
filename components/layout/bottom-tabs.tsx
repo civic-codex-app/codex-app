@@ -171,6 +171,7 @@ export function BottomTabs() {
                 key={tab.href}
                 href={tab.href}
                 onClick={closeMore}
+                aria-current={isActive ? 'page' : undefined}
                 style={{
                   flex: 1,
                   display: 'flex',
