@@ -18,14 +18,6 @@ export default async function ComparePage({ searchParams }: PageProps) {
   const params = await searchParams
   const supabase = createServiceRoleClient()
 
-  // Fetch all politicians for the selector dropdowns
-  const { data: allPols } = await supabase
-    .from('politicians')
-    .select('id, name, slug, party, state, chamber, image_url, title')
-    .order('name')
-
-  const politicians = allPols ?? []
-
   // If both slugs are provided, fetch full data
   let polA = null
   let polB = null
@@ -84,9 +76,10 @@ export default async function ComparePage({ searchParams }: PageProps) {
         </div>
 
         <CompareSelector
-          politicians={politicians}
           selectedA={params.a ?? ''}
           selectedB={params.b ?? ''}
+          nameA={polA?.name}
+          nameB={polB?.name}
         />
 
         {polA && polB && (
@@ -103,7 +96,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
         {(!polA || !polB) && (
           <div className="py-20 text-center text-[var(--codex-faint)]">
             <div className="mb-2 font-serif text-2xl">Select two officials to compare</div>
-            <div className="text-sm">Choose from the dropdowns above</div>
+            <div className="text-sm">Search by name above to find officials</div>
           </div>
         )}
 
