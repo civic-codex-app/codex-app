@@ -23,6 +23,8 @@ export async function GET(request: NextRequest) {
   if (state) query = query.eq('state', state)
   if (party) query = query.eq('party', party)
   if (q) query = query.or(`name.ilike.%${q}%,state.ilike.%${q}%,title.ilike.%${q}%`)
+  const letter = sp.get('letter')
+  if (letter) query = query.ilike('name', `${letter}%`)
 
   const sort = sp.get('sort') ?? 'name'
   if (sort === 'name-desc') {

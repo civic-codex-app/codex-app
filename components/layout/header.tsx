@@ -19,14 +19,14 @@ export function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="mx-auto max-w-[1200px] px-6 pt-5 sm:pt-7 md:px-10 md:pt-9">
+    <header className="sticky top-0 z-40 border-b border-[var(--codex-border)] bg-[var(--codex-bg)] backdrop-blur-sm">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded-md focus:bg-[var(--codex-card)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--codex-text)] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--codex-input-focus)]"
       >
         Skip to main content
       </a>
-      <div className="mb-8 flex items-center justify-between border-b border-[var(--codex-border)] pb-4 sm:mb-10 md:mb-14">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3 md:px-10 md:py-4">
         <div className="flex items-center gap-3.5">
           <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Codex Home">
             <ElephantIcon size={22} color="#DC2626" />
