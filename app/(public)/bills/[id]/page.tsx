@@ -7,6 +7,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { FollowBillButton } from '@/components/bills/follow-bill-button'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -165,6 +166,7 @@ export default async function BillDetailPage({ params }: PageProps) {
               {bill.congress_session} Congress
             </span>
           )}
+          <FollowBillButton billId={bill.id} className="ml-auto" />
         </div>
 
         <h1 className="mb-3 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.1]">

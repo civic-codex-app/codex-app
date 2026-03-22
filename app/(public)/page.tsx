@@ -10,6 +10,7 @@ import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
+import { Trending } from '@/components/directory/trending'
 
 export const revalidate = 300
 
@@ -107,6 +108,9 @@ export default async function HomePage() {
             <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Independent</div>
           </div>
         </div>
+
+        {/* Trending */}
+        <Trending />
 
         {/* Featured Officials */}
         <div className="mb-12">

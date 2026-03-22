@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PoliticianCard } from '@/components/directory/politician-card'
+import { ElectionCountdown } from '@/components/elections/election-countdown'
 import type { Politician } from '@/lib/types/politician'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
@@ -157,6 +159,37 @@ export default async function DashboardPage() {
     }
   }
 
+  // Get followed bills
+  const { data: billFollows } = await supabase
+    .from('bill_follows')
+    .select('bill_id')
+    .eq('user_id', user!.id)
+
+  const followedBillIds = (billFollows ?? []).map((f: any) => f.bill_id)
+
+  let followedBills: Array<{ id: string; title: string; number: string; status: string; last_action_date: string | null }> = []
+  if (followedBillIds.length > 0) {
+    const serviceClient = createServiceRoleClient()
+    const { data } = await serviceClient
+      .from('bills')
+      .select('id, title, number, status, last_action_date')
+      .in('id', followedBillIds)
+      .order('last_action_date', { ascending: false })
+    followedBills = (data ?? []) as any
+  }
+
+  // Get upcoming election
+  const serviceClient = createServiceRoleClient()
+  const todayStr = new Date().toISOString().split('T')[0]
+  const { data: upcomingElection } = await serviceClient
+    .from('elections')
+    .select('name, slug, election_date')
+    .eq('is_active', true)
+    .gte('election_date', todayStr)
+    .order('election_date')
+    .limit(1)
+    .maybeSingle()
+
   const stateName = userState ? STATE_NAMES[userState] ?? userState : null
 
   return (
@@ -307,6 +340,101 @@ export default async function DashboardPage() {
               </div>
             ))}
           </div>
+        </section>
+      )}
+
+      {/* Followed Bills */}
+      <section className="mb-10">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            Saved Bills ({followedBills.length})
+          </h2>
+          <Link
+            href="/bills"
+            className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+          >
+            Browse bills &rarr;
+          </Link>
+        </div>
+
+        {followedBills.length > 0 ? (
+          <div className="divide-y divide-[var(--codex-border)] rounded-md border border-[var(--codex-border)]">
+            {followedBills.map((bill) => {
+              const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
+                signed_into_law: { label: 'Signed', color: '#22C55E', bg: '#22C55E18' },
+                passed_house: { label: 'Passed House', color: '#3B82F6', bg: '#3B82F618' },
+                passed_senate: { label: 'Passed Senate', color: '#3B82F6', bg: '#3B82F618' },
+                in_committee: { label: 'In Committee', color: '#EAB308', bg: '#EAB30818' },
+                failed: { label: 'Failed', color: '#EF4444', bg: '#EF444418' },
+                vetoed: { label: 'Vetoed', color: '#F97316', bg: '#F9731618' },
+              }
+              const sc = statusConfig[bill.status] ?? { label: bill.status, color: '#6B7280', bg: '#6B728018' }
+
+              return (
+                <Link
+                  key={bill.id}
+                  href={`/bills/${bill.id}`}
+                  className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--codex-badge-text)]">
+                        {bill.number}
+                      </span>
+                      <span
+                        className="rounded-sm px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em]"
+                        style={{ color: sc.color, background: sc.bg }}
+                      >
+                        {sc.label}
+                      </span>
+                    </div>
+                    <div className="mt-1 truncate text-sm text-[var(--codex-text)]">
+                      {bill.title}
+                    </div>
+                  </div>
+                  {bill.last_action_date && (
+                    <span className="flex-shrink-0 text-[11px] text-[var(--codex-faint)]">
+                      {new Date(bill.last_action_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </span>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="rounded-md border border-[var(--codex-border)] py-10 text-center">
+            <p className="mb-2 text-sm text-[var(--codex-sub)]">
+              No saved bills yet
+            </p>
+            <p className="text-xs text-[var(--codex-faint)]">
+              Bookmark bills to track their progress here
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* Upcoming Election */}
+      {upcomingElection && (
+        <section className="mb-10">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            Upcoming Election
+          </h2>
+          <Link
+            href={`/elections`}
+            className="block rounded-md border border-[var(--codex-border)] p-5 no-underline transition-colors hover:border-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
+          >
+            <div className="mb-1 font-serif text-lg text-[var(--codex-text)]">
+              {upcomingElection.name}
+            </div>
+            <div className="mb-3 text-xs text-[var(--codex-faint)]">
+              {new Date(upcomingElection.election_date + 'T00:00:00').toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })}
+            </div>
+            <ElectionCountdown electionDate={upcomingElection.election_date} />
+          </Link>
         </section>
       )}
 

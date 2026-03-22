@@ -10,6 +10,7 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { CHAMBER_LABELS } from '@/lib/constants/chambers'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
 import { RaceComparison } from '@/components/elections/race-comparison'
+import { ElectionCountdown } from '@/components/elections/election-countdown'
 import type {
   RaceDetailRow,
   CandidateRow,
@@ -147,6 +148,12 @@ export default async function RaceDetailPage({ params }: PageProps) {
         <h1 className="mb-3 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.1]">
           {race.name}
         </h1>
+
+        {election?.election_date && (
+          <div className="mb-4">
+            <ElectionCountdown electionDate={election.election_date} />
+          </div>
+        )}
 
         {race.description && (
           <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">
