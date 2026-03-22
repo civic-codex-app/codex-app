@@ -75,6 +75,25 @@ export default async function ElectionsPage() {
   // Election date for countdown
   const electionDate = stateElections[0]?.election_date || national?.election_date || '2026-11-03'
 
+  // Fetch party counts per state for map coloring
+  const partyCounts: Record<string, { dem: number; gop: number }> = {}
+  let pFrom = 0
+  while (true) {
+    const { data: pols } = await supabase
+      .from('politicians')
+      .select('state, party')
+      .in('chamber', ['senate', 'house', 'governor'])
+      .range(pFrom, pFrom + 999)
+    if (!pols || pols.length === 0) break
+    for (const p of pols) {
+      if (!partyCounts[p.state]) partyCounts[p.state] = { dem: 0, gop: 0 }
+      if (p.party === 'democrat') partyCounts[p.state].dem++
+      else if (p.party === 'republican') partyCounts[p.state].gop++
+    }
+    if (pols.length < 1000) break
+    pFrom += 1000
+  }
+
   return (
     <>
       <Header />
@@ -116,12 +135,15 @@ export default async function ElectionsPage() {
             stateElections={stateElections.map(el => {
               const counts = raceCounts[el.id] || { total: 0, senate: 0, house: 0, governor: 0, local: 0 }
               const stateCode = el.slug.split('-')[0]?.toUpperCase()
+              const pc = partyCounts[stateCode] || { dem: 0, gop: 0 }
               return {
                 slug: el.slug,
                 stateCode,
                 raceCount: counts.total,
                 hasSenate: counts.senate > 0,
                 hasGovernor: counts.governor > 0,
+                demCount: pc.dem,
+                gopCount: pc.gop,
               }
             })}
           />
