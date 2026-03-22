@@ -1,7 +1,7 @@
 /**
- * Educational content for the voter match quiz.
- * Maps each issue slug to plain-language framing, real-world examples,
- * and a "why it matters" blurb so voters understand what they're choosing.
+ * Quiz content for the voter match quiz.
+ * Written at a middle school reading level.
+ * No jargon. Short sentences. Everyday words.
  */
 
 export interface QuizIssueContent {
@@ -13,129 +13,129 @@ export interface QuizIssueContent {
 
 export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
   'climate-environment': {
-    question: 'How aggressively should the government act on climate change?',
+    question: 'Is the planet getting too hot? What should we do about it?',
     whyItMatters:
-      'Climate policy shapes energy costs, air quality, disaster preparedness, and the long-term economy of your community.',
+      'This affects your energy bills and the air you breathe. It also changes how ready your town is for big storms.',
     supportsMeans:
-      'Rejoin Paris Agreement, subsidize renewables, regulate emissions, ban new fossil fuel leases',
+      'Push for solar and wind power. More rules to keep air and water clean. Stop new oil drilling on public land.',
     opposesMeans:
-      'Prioritize energy independence, reduce EPA regulations, expand oil and gas drilling, let markets decide',
+      'Drill for more oil and gas at home. Get rid of rules that make energy cost more. Let businesses decide.',
   },
   'criminal-justice-reform': {
-    question: 'Should the criminal justice system be reformed?',
+    question: 'Should we change how the justice system works?',
     whyItMatters:
-      'These policies determine sentencing, policing practices, and whether rehabilitation or punishment is prioritized in your community.',
+      'This decides how police work in your town. It also affects who goes to jail and for how long.',
     supportsMeans:
-      'End cash bail, ban private prisons, decriminalize marijuana, invest in mental health response teams',
+      'Stop making people pay to get out of jail. Close for-profit prisons. Send mental health workers to some 911 calls.',
     opposesMeans:
-      'Tougher sentencing, more police funding, keep cash bail, oppose decriminalizing drugs',
+      'Tougher punishment for crimes. Give police more money. Keep the system mostly as it is.',
   },
   'economy-jobs': {
-    question: 'What role should the government play in the economy?',
+    question: 'What should the government do about jobs and money?',
     whyItMatters:
-      'Economic policy directly affects your wages, job opportunities, cost of living, and how much you pay in taxes.',
+      'This changes how much you earn. It affects prices at the store and how much you pay in taxes.',
     supportsMeans:
-      'Raise the minimum wage, strengthen unions, increase taxes on corporations, expand worker protections',
+      'Raise the lowest pay workers can get. Make it easier to join a union. Make big companies pay more in taxes.',
     opposesMeans:
-      'Cut taxes and regulations, reduce government spending, let free markets set wages, shrink federal agencies',
+      'Cut taxes and rules for businesses. Spend less government money. Let the market set pay.',
   },
   'education-student-debt': {
-    question: 'How should the government handle education and student debt?',
+    question: 'Should college be cheaper? What about student loans?',
     whyItMatters:
-      'Education policy affects school quality, college affordability, and whether student loan debt shapes your financial future.',
+      'This affects how good your local schools are. It also decides if you or your kids will owe money for college.',
     supportsMeans:
-      'Cancel student debt, make public college free, increase K-12 funding, expand Pell Grants',
+      'Wipe out student loan debt. Make public college free. Put more money into K-12 schools.',
     opposesMeans:
-      'No loan forgiveness, promote school choice and vouchers, reduce federal role in education, cut Department of Education',
+      'No free college. Let parents pick their kids\' school with vouchers. Shrink the federal role in schools.',
   },
   'energy-policy': {
-    question: 'Should the U.S. transition away from fossil fuels?',
+    question: 'Should we switch to clean energy or stick with oil and gas?',
     whyItMatters:
-      'Energy policy affects your utility bills, gas prices, job markets in energy sectors, and national security.',
+      'This affects your electric bill and gas prices. It also changes what jobs are available in your area.',
     supportsMeans:
-      'Invest in solar and wind, phase out coal, EV incentives, green infrastructure spending',
+      'Build more solar and wind farms. Help people buy electric cars. Slowly stop using coal.',
     opposesMeans:
-      'Expand oil, gas, and nuclear, remove renewable mandates, approve pipelines, energy independence first',
+      'Drill for more oil and gas. Build nuclear plants. Approve new pipelines. Put American energy first.',
   },
   'foreign-policy': {
-    question: 'How involved should the U.S. be in world affairs?',
+    question: 'How much should the U.S. get involved in other countries?',
     whyItMatters:
-      'Foreign policy decisions affect military deployments, trade prices, alliances, and how safe you feel at home.',
+      'This affects where our troops go. It also changes prices on things we buy from other countries.',
     supportsMeans:
-      'Strengthen NATO, increase foreign aid, support international institutions, diplomacy first',
+      'Work closely with allies. Give aid to countries in need. Talk things out before using force.',
     opposesMeans:
-      'Reduce foreign commitments, cut foreign aid, renegotiate trade deals, America-first approach',
+      'Stop spending money on other countries. Focus on problems at home. Make better trade deals for us.',
   },
   'gun-policy': {
-    question: 'How should the government handle guns?',
+    question: 'Should there be more rules about buying and owning guns?',
     whyItMatters:
-      'Gun policy affects public safety, mass shooting prevention, self-defense rights, and law enforcement in your area.',
+      'This affects how safe you feel in schools and public places. It also decides your rights as a gun owner.',
     supportsMeans:
-      'Universal background checks, ban assault weapons, red flag laws, close gun show loopholes',
+      'Check backgrounds on all gun sales. Ban military-style weapons. Let courts take guns from dangerous people.',
     opposesMeans:
-      'No new gun laws, constitutional carry nationwide, arm teachers, protect gun manufacturers from lawsuits',
+      'No new gun laws. Let people carry guns without a permit. Protect gun makers from being sued.',
   },
   'healthcare-medicare': {
-    question: 'How should Americans get their healthcare?',
+    question: 'How should people get their health care?',
     whyItMatters:
-      'Healthcare policy determines what you pay for insurance, prescriptions, and doctor visits, and whether coverage depends on your employer.',
+      'This decides what you pay for doctor visits and medicine. It affects whether your job controls your health plan.',
     supportsMeans:
-      'Expand ACA or create public option, cap drug prices, move toward universal coverage',
+      'Let more people use government health plans. Put a cap on drug prices. Work toward covering everyone.',
     opposesMeans:
-      'Repeal ACA, market-based insurance, health savings accounts, reduce government role in healthcare',
+      'Get rid of Obamacare. Let people shop for their own insurance. Use savings accounts for health costs.',
   },
   'housing-affordability': {
-    question: 'What should the government do about housing costs?',
+    question: 'What should we do about the cost of rent and homes?',
     whyItMatters:
-      'Housing policy affects rent prices, your ability to buy a home, homelessness in your city, and neighborhood development.',
+      'This affects how much you pay for rent. It decides whether you can afford to buy a house.',
     supportsMeans:
-      'Build public housing, expand rent assistance, fund affordable construction, regulate corporate landlords',
+      'Build more affordable housing. Help people pay rent. Put limits on big landlord companies.',
     opposesMeans:
-      'Reduce zoning regulations, cut housing subsidies, let the market set prices, limit public housing programs',
+      'Cut building rules so more homes get built. Stop government housing programs. Let the market set prices.',
   },
   'immigration-border-security': {
-    question: 'How should the U.S. handle immigration?',
+    question: 'Should it be easier or harder for people to move to the U.S.?',
     whyItMatters:
-      'Immigration policy affects border communities, labor markets, refugee protections, and the path to citizenship for millions.',
+      'This affects border towns and jobs. It also decides what happens to people already living here without papers.',
     supportsMeans:
-      'Path to citizenship for undocumented, protect DACA, increase refugee admissions, reform legal immigration',
+      'Give a path to stay for people already here. Protect Dreamers. Let in more people fleeing danger.',
     opposesMeans:
-      'Build border wall, increase deportations, end sanctuary cities, reduce legal immigration levels',
+      'Build a border wall. Send more people back. End cities that protect undocumented people.',
   },
   'infrastructure-transportation': {
-    question: 'How much should the government invest in infrastructure?',
+    question: 'Should the government spend more on roads, bridges, and internet?',
     whyItMatters:
-      'Infrastructure spending affects your commute, internet access, water quality, and whether bridges and roads in your area get fixed.',
+      'This affects your drive to work. It decides if you can get fast internet and clean water at home.',
     supportsMeans:
-      'Major federal spending on roads, bridges, broadband, and public transit; green infrastructure',
+      'Big spending to fix roads and bridges. Bring fast internet everywhere. Build more buses and trains.',
     opposesMeans:
-      'Limit federal spending, privatize infrastructure, state and local control, reduce regulations on projects',
+      'Let private companies handle it. Spend less federal money. Let states and cities decide.',
   },
   'national-defense-military': {
-    question: 'How much should the U.S. spend on the military?',
+    question: 'Should we spend more or less on the military?',
     whyItMatters:
-      'Defense spending affects the federal budget, veterans services, military readiness, and how resources are split between defense and domestic needs.',
+      'This affects how much money goes to the military vs. things like schools and roads.',
     supportsMeans:
-      'Increase defense budget, expand military capabilities, invest in veterans, maintain global presence',
+      'Spend more on the military. Take better care of veterans. Keep troops and bases around the world.',
     opposesMeans:
-      'Cut defense spending, close overseas bases, redirect funds to domestic programs, reduce military interventions',
+      'Spend less on the military. Close bases overseas. Use that money for things at home.',
   },
   'social-security-medicare': {
-    question: 'How should Social Security and Medicare be protected?',
+    question: 'How do we make sure seniors get their retirement money?',
     whyItMatters:
-      'These programs determine retirement security and healthcare for seniors, and their funding affects payroll taxes you pay today.',
+      'This decides if your parents and grandparents can afford to retire. It also affects what comes out of your paycheck.',
     supportsMeans:
-      'Expand benefits, raise the income cap on payroll taxes, lower Medicare eligibility age',
+      'Give bigger checks to seniors. Make rich people pay more into the system. Let younger people use Medicare.',
     opposesMeans:
-      'Privatize Social Security, raise the retirement age, means-test benefits, reduce program spending',
+      'Let people invest their own retirement money. Raise the age you can retire. Spend less on these programs.',
   },
   'technology-ai-regulation': {
-    question: 'How should the government regulate big tech and AI?',
+    question: 'Should the government have more control over big tech and AI?',
     whyItMatters:
-      'Tech regulation affects your data privacy, social media content, AI in hiring and policing, and whether tech monopolies are kept in check.',
+      'This affects who sees your personal info online. It also decides the rules for AI at work and in schools.',
     supportsMeans:
-      'Federal data privacy law, regulate AI, break up tech monopolies, protect kids online',
+      'Pass a law to protect your data. Put rules on AI. Break up the biggest tech companies. Keep kids safe online.',
     opposesMeans:
-      'Light-touch regulation, let innovation lead, industry self-regulation, avoid stifling growth',
+      'Let tech companies make their own rules. Do not slow down new inventions. Less government control.',
   },
 }

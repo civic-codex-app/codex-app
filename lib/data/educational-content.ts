@@ -1,32 +1,32 @@
 /**
- * Centralized educational content for voter education.
- * All plain-language explainers, tooltips, and helper text live here
- * so they're easy to update in one place.
+ * Educational content for voter education.
+ * Written at a middle school reading level.
+ * No jargon. Short sentences. Everyday words.
  */
 
 // ─── Issue Subtitles (1-line plain language) ──────────────────────────────────
 
 export const ISSUE_SUBTITLES: Record<string, string> = {
-  'gun-policy': 'Should the government regulate who can buy and carry firearms?',
-  'healthcare': 'Should the government help ensure all Americans have health coverage?',
-  'immigration': 'How should the U.S. handle border security and paths to citizenship?',
-  'climate-change': 'Should the government do more to fight climate change?',
-  'economy': 'What role should government play in jobs, wages, and the economy?',
-  'education': 'How should public schools and college affordability be handled?',
-  'criminal-justice': 'How should the justice system handle policing, sentencing, and prisons?',
-  'foreign-policy': 'How should the U.S. engage with other countries and global conflicts?',
-  'abortion': 'Should abortion access be protected or restricted by law?',
-  'lgbtq-rights': 'Should LGBTQ+ individuals have equal legal protections?',
-  'drug-policy': 'How should the government handle marijuana and drug laws?',
-  'taxes': 'Who should pay more or less in taxes, and how should tax revenue be used?',
-  'technology': 'How should the government regulate Big Tech, AI, and data privacy?',
-  'housing': 'What should government do about housing costs and homelessness?',
-  'defense': 'How much should the U.S. spend on military and national defense?',
-  'energy': 'Should the U.S. invest more in renewable energy or fossil fuels?',
-  'infrastructure': 'How should roads, bridges, broadband, and public transit be funded?',
-  'social-security': 'How should the government fund retirement and disability benefits?',
-  'voting-rights': 'How easy or hard should it be to register and vote?',
-  'environment': 'How should the government protect natural resources and public lands?',
+  'gun-policy': 'Should there be more rules about who can buy and carry guns?',
+  'healthcare': 'Should the government help everyone get health care?',
+  'immigration': 'Should it be easier or harder to come to the U.S.?',
+  'climate-change': 'Is the planet getting too hot? What should we do?',
+  'economy': 'What should the government do about jobs and pay?',
+  'education': 'How do we make schools better and college cheaper?',
+  'criminal-justice': 'How should police, courts, and jails work?',
+  'foreign-policy': 'How much should we get involved with other countries?',
+  'abortion': 'Should abortion be legal or not?',
+  'lgbtq-rights': 'Should LGBTQ+ people have the same rights as everyone?',
+  'drug-policy': 'What should we do about drugs like marijuana?',
+  'taxes': 'Who should pay more in taxes and who should pay less?',
+  'technology': 'Should there be more rules for big tech companies and AI?',
+  'housing': 'What should we do about high rent and home prices?',
+  'defense': 'Should we spend more or less on the military?',
+  'energy': 'Should we use more solar and wind or more oil and gas?',
+  'infrastructure': 'How should we pay to fix roads, bridges, and internet?',
+  'social-security': 'How do we make sure seniors get their retirement checks?',
+  'voting-rights': 'How easy or hard should it be to vote?',
+  'environment': 'How should we protect nature, water, and public land?',
 }
 
 // ─── Issue Explainers (for issue detail pages) ───────────────────────────────
@@ -42,104 +42,104 @@ export interface IssueExplainer {
 
 export const ISSUE_EXPLAINERS: Record<string, IssueExplainer> = {
   'gun-policy': {
-    description: 'Gun policy covers laws about who can purchase firearms, background checks, assault weapon bans, and concealed carry permits.',
-    supportsExplainer: 'Favors stronger gun regulations like expanded background checks and restrictions on certain weapons.',
-    opposesExplainer: 'Favors fewer gun restrictions, emphasizing Second Amendment rights and individual gun ownership.',
+    description: 'Gun policy is about the rules for buying, selling, and carrying guns. This includes background checks and bans on certain weapons.',
+    supportsExplainer: 'Wants more rules on guns. Thinks background checks and weapon bans make people safer.',
+    opposesExplainer: 'Wants fewer rules on guns. Believes people have the right to own guns freely.',
   },
   'healthcare': {
-    description: 'Healthcare policy involves insurance coverage, prescription drug costs, Medicare/Medicaid funding, and whether the government should provide universal coverage.',
-    supportsExplainer: 'Favors expanding government-backed health coverage and lowering costs through regulation.',
-    opposesExplainer: 'Favors market-based solutions and less government involvement in healthcare.',
+    description: 'Health care policy is about how people see doctors and pay for medicine. It covers insurance, drug prices, and government health plans.',
+    supportsExplainer: 'Wants the government to help more people get health care at lower prices.',
+    opposesExplainer: 'Wants less government in health care. Thinks people should shop for their own plans.',
   },
   'immigration': {
-    description: 'Immigration policy covers border security, deportation rules, paths to citizenship for undocumented residents, and visa programs.',
-    supportsExplainer: 'Favors pathways to legal status, protections for immigrants, and reform over enforcement-only approaches.',
-    opposesExplainer: 'Favors stricter enforcement, border security, and limiting immigration levels.',
+    description: 'Immigration is about who can come to the U.S. and who gets to stay. It covers border security, visas, and paths to become a citizen.',
+    supportsExplainer: 'Wants to help people already here get a legal path to stay. Supports letting in more people.',
+    opposesExplainer: 'Wants stronger borders and fewer people coming in. Supports sending back those here without papers.',
   },
   'climate-change': {
-    description: 'Climate policy involves reducing carbon emissions, transitioning to clean energy, and setting environmental regulations on businesses.',
-    supportsExplainer: 'Favors aggressive action to reduce emissions, invest in clean energy, and regulate polluters.',
-    opposesExplainer: 'Prioritizes economic growth and energy independence over climate-focused regulations.',
+    description: 'Climate policy is about what to do as the Earth gets warmer. It covers clean energy, pollution rules, and protecting nature.',
+    supportsExplainer: 'Wants strong action to cut pollution and switch to clean energy like solar and wind.',
+    opposesExplainer: 'Thinks climate rules hurt businesses and cost too much. Puts jobs and cheap energy first.',
   },
   'economy': {
-    description: 'Economic policy covers minimum wage, trade deals, government spending, job creation programs, and how wealth is distributed.',
-    supportsExplainer: 'Favors government action to create jobs, raise wages, and reduce inequality.',
-    opposesExplainer: 'Favors free-market approaches with less government regulation and lower taxes on businesses.',
+    description: 'The economy is about jobs, pay, and how much things cost. This covers the lowest pay allowed, trade, and taxes.',
+    supportsExplainer: 'Wants the government to create jobs and raise pay for workers.',
+    opposesExplainer: 'Wants the government to step back and let businesses decide pay and hiring.',
   },
   'education': {
-    description: 'Education policy involves public school funding, teacher pay, college tuition, student loans, and school choice programs.',
-    supportsExplainer: 'Favors more public education funding, student debt relief, and universal access to pre-K.',
-    opposesExplainer: 'Favors school choice, charter schools, and reducing federal involvement in education.',
+    description: 'Education is about schools, teachers, and college costs. It covers how schools get money and what happens with student loans.',
+    supportsExplainer: 'Wants more money for public schools. Supports help with student loans.',
+    opposesExplainer: 'Wants parents to pick their kids\' school. Thinks the federal government should do less in education.',
   },
   'criminal-justice': {
-    description: 'Criminal justice policy covers policing practices, sentencing reform, private prisons, bail reform, and rehabilitation programs.',
-    supportsExplainer: 'Favors reforms like reduced sentences for nonviolent offenses, police accountability, and rehabilitation.',
-    opposesExplainer: 'Favors tougher sentencing, more law enforcement funding, and a stronger policing presence.',
+    description: 'Criminal justice is about how police, courts, and jails work. It covers how long people go to prison and how police do their jobs.',
+    supportsExplainer: 'Wants changes like shorter sentences and more focus on helping people get back on their feet.',
+    opposesExplainer: 'Wants tougher punishments and more money for police.',
   },
   'foreign-policy': {
-    description: 'Foreign policy involves how the U.S. engages with other nations through diplomacy, trade agreements, military alliances, and foreign aid.',
-    supportsExplainer: 'Favors active international engagement, diplomacy, alliances, and foreign aid.',
-    opposesExplainer: 'Favors a more restrained approach, prioritizing domestic interests over international commitments.',
+    description: 'Foreign policy is about how the U.S. deals with other countries. This covers trade deals, military alliances, and sending aid overseas.',
+    supportsExplainer: 'Wants the U.S. to work closely with other countries and help allies.',
+    opposesExplainer: 'Wants to focus on problems at home. Thinks we spend too much on other countries.',
   },
   'abortion': {
-    description: 'Abortion policy covers whether and when abortion should be legal, government funding for reproductive services, and state vs. federal authority.',
-    supportsExplainer: 'Favors protecting access to abortion as a legal right.',
-    opposesExplainer: 'Favors restricting or banning abortion, often supporting state-level limits.',
+    description: 'Abortion policy is about whether ending a pregnancy should be legal. It covers who decides - the states or the federal government.',
+    supportsExplainer: 'Wants abortion to stay legal. Believes it is a personal choice.',
+    opposesExplainer: 'Wants to limit or ban abortion. Often supports state-level bans.',
   },
   'lgbtq-rights': {
-    description: 'LGBTQ+ policy involves anti-discrimination protections, marriage equality, transgender rights, and adoption rights.',
-    supportsExplainer: 'Favors legal protections against discrimination and equal rights for LGBTQ+ individuals.',
-    opposesExplainer: 'Favors traditional definitions of marriage and fewer federal mandates on LGBTQ+ protections.',
+    description: 'LGBTQ+ rights are about equal treatment for gay, lesbian, and transgender people. This covers marriage, adoption, and protection from being fired.',
+    supportsExplainer: 'Wants equal rights and protections for LGBTQ+ people.',
+    opposesExplainer: 'Wants fewer federal rules on these issues. May support traditional marriage only.',
   },
   'drug-policy': {
-    description: 'Drug policy covers marijuana legalization, the opioid crisis, decriminalization of certain substances, and treatment vs. punishment.',
-    supportsExplainer: 'Favors decriminalization or legalization and a treatment-focused approach to addiction.',
-    opposesExplainer: 'Favors strict drug enforcement and penalties, with concerns about legalization.',
+    description: 'Drug policy is about what drugs are legal and how we treat people who use them. It covers marijuana, the opioid crisis, and rehab programs.',
+    supportsExplainer: 'Wants to make marijuana legal. Thinks we should treat addiction, not just punish it.',
+    opposesExplainer: 'Wants strict drug laws and tough punishment for drug crimes.',
   },
   'taxes': {
-    description: 'Tax policy covers income tax rates, corporate taxes, capital gains taxes, and how the government collects and spends revenue.',
-    supportsExplainer: 'Favors higher taxes on corporations and wealthy individuals to fund public programs.',
-    opposesExplainer: 'Favors lower tax rates across the board, especially for businesses, to stimulate growth.',
+    description: 'Tax policy is about how much people and companies pay to the government. That money pays for roads, schools, the military, and more.',
+    supportsExplainer: 'Wants rich people and big companies to pay more in taxes.',
+    opposesExplainer: 'Wants lower taxes for everyone, especially businesses, to help the economy grow.',
   },
   'technology': {
-    description: 'Technology policy involves Big Tech regulation, data privacy laws, AI oversight, social media rules, and net neutrality.',
-    supportsExplainer: 'Favors regulating tech companies, protecting user data privacy, and AI oversight.',
-    opposesExplainer: 'Favors a lighter regulatory touch to encourage innovation and free-market competition.',
+    description: 'Tech policy is about rules for companies like Google, Apple, and Meta. It covers your personal data, AI tools, and social media.',
+    supportsExplainer: 'Wants new laws to protect your data. Wants rules on how AI is used.',
+    opposesExplainer: 'Wants fewer rules so tech companies can keep inventing new things.',
   },
   'housing': {
-    description: 'Housing policy covers affordable housing, rent control, homelessness, zoning reform, and homeownership programs.',
-    supportsExplainer: 'Favors government investment in affordable housing, rent protections, and homelessness programs.',
-    opposesExplainer: 'Favors market-based housing solutions and reducing government regulations on development.',
+    description: 'Housing is about the cost of rent and homes. It covers building affordable places to live and helping people who are homeless.',
+    supportsExplainer: 'Wants the government to build affordable housing and help with rent.',
+    opposesExplainer: 'Wants fewer building rules so the market can bring prices down on its own.',
   },
   'defense': {
-    description: 'Defense policy involves military spending, troop deployments, veterans\' benefits, and weapons programs.',
-    supportsExplainer: 'Favors strong military funding and maintaining global military readiness.',
-    opposesExplainer: 'Favors reducing military spending and redirecting funds to domestic programs.',
+    description: 'Defense is about how much we spend on the military. It covers troops, weapons, veterans, and bases around the world.',
+    supportsExplainer: 'Wants a strong military with enough money to stay ready.',
+    opposesExplainer: 'Wants to spend less on the military and use that money for things at home.',
   },
   'energy': {
-    description: 'Energy policy covers renewable energy investment, oil and gas drilling, nuclear power, and energy independence.',
-    supportsExplainer: 'Favors transitioning to renewable energy sources and reducing fossil fuel dependence.',
-    opposesExplainer: 'Favors expanding domestic oil, gas, and coal production for energy independence.',
+    description: 'Energy policy is about where we get our power. It covers oil, gas, solar, wind, and nuclear energy.',
+    supportsExplainer: 'Wants to switch to solar and wind. Wants to use less oil and gas.',
+    opposesExplainer: 'Wants to drill for more oil and gas at home to keep prices low.',
   },
   'infrastructure': {
-    description: 'Infrastructure policy involves roads, bridges, public transit, broadband internet, water systems, and how to pay for upgrades.',
-    supportsExplainer: 'Favors major government investment in rebuilding and modernizing infrastructure.',
-    opposesExplainer: 'Favors private-sector involvement and is cautious about large government spending bills.',
+    description: 'Infrastructure is about the things we all use every day: roads, bridges, water pipes, internet, and buses or trains.',
+    supportsExplainer: 'Wants the government to spend big on fixing roads, bridges, and internet.',
+    opposesExplainer: 'Wants private companies to handle more of it. Worried about spending too much.',
   },
   'social-security': {
-    description: 'Social Security policy covers retirement benefits, disability payments, and how the program is funded long-term.',
-    supportsExplainer: 'Favors protecting and expanding Social Security benefits.',
-    opposesExplainer: 'Favors restructuring the program, potentially raising the retirement age or adjusting benefits.',
+    description: 'Social Security is money the government pays to people when they retire or cannot work. The money comes from everyone\'s paychecks.',
+    supportsExplainer: 'Wants to protect these payments and maybe make them bigger.',
+    opposesExplainer: 'Thinks the program costs too much. May want to raise the retirement age.',
   },
   'voting-rights': {
-    description: 'Voting rights policy covers voter ID laws, mail-in voting, early voting, gerrymandering, and election security.',
-    supportsExplainer: 'Favors expanding voting access through easier registration, early voting, and mail-in ballots.',
-    opposesExplainer: 'Favors stricter voter ID requirements and tighter election security measures.',
+    description: 'Voting rights are about how people sign up to vote and cast their ballots. It covers ID rules, mail-in voting, and early voting.',
+    supportsExplainer: 'Wants to make voting easier with more ways to vote early or by mail.',
+    opposesExplainer: 'Wants stricter ID checks to prevent cheating at the polls.',
   },
   'environment': {
-    description: 'Environmental policy covers pollution regulations, national park protections, clean water rules, and wildlife conservation.',
-    supportsExplainer: 'Favors stronger environmental protections and regulations on pollution.',
-    opposesExplainer: 'Favors reducing environmental regulations that may restrict business and development.',
+    description: 'The environment is about keeping our air, water, and land clean. It covers pollution rules, national parks, and wildlife.',
+    supportsExplainer: 'Wants stronger rules to stop pollution and protect nature.',
+    opposesExplainer: 'Thinks too many rules hurt businesses and cost jobs.',
   },
 }
 
@@ -162,48 +162,48 @@ export function getStanceContext(issueSlug: string, stance: string): string | nu
 // ─── Party Explainers ────────────────────────────────────────────────────────
 
 export const PARTY_EXPLAINERS: Record<string, string> = {
-  democrat: 'Generally favors social programs, environmental regulation, and civil rights expansion.',
-  republican: 'Generally favors lower taxes, limited government, and traditional values.',
-  independent: 'Not affiliated with a major party. Positions vary by individual.',
-  green: 'Focuses on environmental issues, social justice, and grassroots democracy.',
+  democrat: 'Usually wants more government help for people. Supports clean energy and equal rights.',
+  republican: 'Usually wants lower taxes and less government. Supports traditional values and strong military.',
+  independent: 'Not part of a big party. Their views are different for each person.',
+  green: 'Cares most about the environment and fairness. Wants power in the hands of regular people.',
 }
 
 // ─── Chamber / Race Type Explainers ──────────────────────────────────────────
 
 export const CHAMBER_EXPLAINERS: Record<string, string> = {
-  senate: 'One of two senators who represent your entire state in Washington, D.C. Senators serve 6-year terms.',
-  house: 'Represents a specific congressional district in your state. House members serve 2-year terms.',
-  governor: 'The chief executive of a state, similar to a president at the state level. Governors typically serve 4-year terms.',
-  presidential: 'The president leads the executive branch and serves as commander-in-chief. Presidential terms last 4 years.',
-  mayor: 'The top elected leader of a city or town, responsible for local services like police, fire, and public works.',
-  city_council: 'Local legislators who make decisions about city budgets, zoning, and local laws.',
-  state_senate: 'Members of the upper chamber of your state legislature. They help write and pass state laws.',
-  state_house: 'Members of the lower chamber of your state legislature. They help write and pass state laws.',
-  county: 'Elected officials who oversee county-level services like roads, public health, and property records.',
-  school_board: 'Elected members who oversee local public schools, set budgets, and hire superintendents.',
-  other_local: 'A local government position that handles community-level decisions and services.',
+  senate: 'One of two people who speak for your whole state in Washington, D.C. They serve for 6 years.',
+  house: 'Speaks for one area of your state in Washington, D.C. They serve for 2 years.',
+  governor: 'The leader of your state, kind of like a president but just for your state. Usually serves 4 years.',
+  presidential: 'The leader of the whole country. Runs the government and the military. Serves for 4 years.',
+  mayor: 'The top leader of your city or town. In charge of things like police, fire trucks, and trash pickup.',
+  city_council: 'Local leaders who decide how your city spends money and what rules your city has.',
+  state_senate: 'Part of your state\'s lawmaking team. Helps write and vote on state laws.',
+  state_house: 'Part of your state\'s lawmaking team. Helps write and vote on state laws.',
+  county: 'Runs county services like local roads, health departments, and property records.',
+  school_board: 'The people who run your local public schools. They set budgets and hire leaders.',
+  other_local: 'A local government job that handles decisions for your community.',
 }
 
 // ─── Bill Status Explainers ──────────────────────────────────────────────────
 
 export const BILL_STATUS_EXPLAINERS: Record<string, string> = {
-  introduced: 'A member of Congress has formally proposed this bill. It hasn\'t been voted on yet.',
-  in_committee: 'The bill is being reviewed by a smaller group of lawmakers who specialize in its topic.',
-  passed_house: 'The House of Representatives voted to approve this bill. It still needs Senate approval.',
-  passed_senate: 'The Senate voted to approve this bill. It still needs House approval.',
-  signed_into_law: 'The president signed this bill, making it an official law.',
-  failed: 'The bill did not get enough votes to pass. It can be reintroduced in a future session.',
-  vetoed: 'The president rejected this bill. Congress can override a veto with a two-thirds vote.',
+  introduced: 'Someone in Congress wrote this idea for a new law. No one has voted on it yet.',
+  in_committee: 'A small group of lawmakers is looking at this idea closely before everyone votes.',
+  passed_house: 'The House voted yes on this. It still needs the Senate to say yes too.',
+  passed_senate: 'The Senate voted yes on this. It still needs the House to say yes too.',
+  signed_into_law: 'The president signed it. It is now a real law.',
+  failed: 'Not enough people voted yes. The idea can come back later.',
+  vetoed: 'The president said no. Congress can still override that if enough people vote yes.',
 }
 
 export const BILL_PROCESS_EXPLAINER =
-  'A bill is a proposed law. It must pass both the House and Senate, then be signed by the president to become law. Most bills start in committee, where lawmakers debate and amend them before a full vote.'
+  'A bill is an idea for a new law. It has to pass the House and the Senate. Then the president signs it to make it a real law. Most bills start with a small group who looks at the details first.'
 
 // ─── Vote Type Explainers ────────────────────────────────────────────────────
 
 export const VOTE_EXPLAINERS: Record<string, string> = {
-  yea: 'Voted in favor of the bill.',
-  nay: 'Voted against the bill.',
-  abstain: 'Chose not to vote. This can be a strategic or principled decision.',
-  not_voting: 'Was absent or did not cast a vote. This may be due to absence or a conflict of interest.',
+  yea: 'Voted yes on this.',
+  nay: 'Voted no on this.',
+  abstain: 'Chose not to vote. Sometimes this is done on purpose.',
+  not_voting: 'Was not there to vote. Could have been away or had a conflict.',
 }
