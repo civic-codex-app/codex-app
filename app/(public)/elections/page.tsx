@@ -86,7 +86,7 @@ export default async function ElectionsPage() {
           <p className="mb-4 max-w-lg text-[15px] leading-relaxed text-[var(--codex-sub)]">
             Every race happening on November 3, 2026 — find your state to see what's on your ballot.
           </p>
-          <ElectionCountdown targetDate={electionDate} />
+          <ElectionCountdown electionDate={electionDate} />
         </div>
 
         {/* Quick stats */}
