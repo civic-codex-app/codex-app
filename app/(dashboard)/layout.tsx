@@ -241,7 +241,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       >
         <div style={{ display: 'flex', height: '56px', alignItems: 'stretch' }}>
           {ACCOUNT_TABS.map((tab) => {
-            const isActive = tab.match.some((m) => pathname.startsWith(m))
+            const isActive = !moreOpen && tab.match.some((m) => pathname.startsWith(m))
 
             return (
               <Link

@@ -185,7 +185,7 @@ export function BottomTabs() {
       >
         <div style={{ display: 'flex', height: '56px', alignItems: 'stretch' }}>
           {TABS.map((tab) => {
-            const isActive = tab.match.some((m) =>
+            const isActive = !moreOpen && tab.match.some((m) =>
               m === '/' ? pathname === '/' : pathname.startsWith(m)
             )
 
