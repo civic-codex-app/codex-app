@@ -33,24 +33,20 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }>
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const supabase = createServiceRoleClient()
-  const { data, error } = await supabase.from('races').select('name, state').eq('slug', slug).single()
-  if (error) console.error('Failed to fetch race metadata:', error.message)
-  if (!data) return { title: 'Not Found -- Codex' }
 
-  const ogUrl = `/api/og?title=${encodeURIComponent(data.name)}&subtitle=${encodeURIComponent(data.state)}&type=election`
+  // Check if it's a state election first
+  const { data: election } = await supabase.from('elections').select('name').eq('slug', slug).single()
+  if (election) {
+    return { title: `${election.name} -- Codex` }
+  }
+
+  // Otherwise it's a race slug
+  const { data } = await supabase.from('races').select('name, state').eq('slug', slug).single()
+  if (!data) return { title: 'Not Found -- Codex' }
 
   return {
     title: `${data.name} -- Codex Elections`,
-    openGraph: {
-      title: data.name,
-      description: `${data.name} - ${data.state} election race`,
-      images: [{ url: ogUrl, width: 1200, height: 630 }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: data.name,
-      images: [ogUrl],
-    },
+    openGraph: { title: data.name, description: `${data.name} - ${data.state}` },
   }
 }
 
