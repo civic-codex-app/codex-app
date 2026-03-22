@@ -7,6 +7,7 @@ import Link from 'next/link'
 interface Stance {
   issue_slug: string
   stance: string
+  is_verified?: boolean
 }
 
 interface Props {
@@ -15,7 +16,11 @@ interface Props {
   politicianStances: Stance[]
 }
 
-/** Distance-decay scoring — same algorithm as the match API */
+/**
+ * Distance-decay scoring — same algorithm as the match API.
+ * Verified stances get full weight (1.0x), estimated stances get 0.5x
+ * so politicians with real positions rank higher than party defaults.
+ */
 function computeScore(userAnswers: Record<string, string>, politicianStances: Stance[]): { score: number; matched: number } {
   const NUMERIC: Record<string, number> = {
     strongly_supports: 6, supports: 5, leans_support: 4,
@@ -23,6 +28,10 @@ function computeScore(userAnswers: Record<string, string>, politicianStances: St
     leans_oppose: 2, opposes: 1, strongly_opposes: 0,
   }
 
+  const VERIFIED_WEIGHT = 1.0
+  const ESTIMATED_WEIGHT = 0.5
+
+  let weightedSum = 0
   let totalWeight = 0
   let matched = 0
 
@@ -35,12 +44,15 @@ function computeScore(userAnswers: Record<string, string>, politicianStances: St
 
     matched++
     const distance = Math.abs(uVal - pVal)
-    const weight = distance === 0 ? 1.0 : distance === 1 ? 0.85 : distance === 2 ? 0.55 : distance === 3 ? 0.25 : 0.0
-    totalWeight += weight
+    const similarity = distance === 0 ? 1.0 : distance === 1 ? 0.85 : distance === 2 ? 0.55 : distance === 3 ? 0.25 : 0.0
+
+    const vWeight = ps.is_verified ? VERIFIED_WEIGHT : ESTIMATED_WEIGHT
+    weightedSum += similarity * vWeight
+    totalWeight += vWeight
   }
 
-  if (matched === 0) return { score: 0, matched: 0 }
-  return { score: Math.round((totalWeight / matched) * 100), matched }
+  if (matched === 0 || totalWeight === 0) return { score: 0, matched: 0 }
+  return { score: Math.round((weightedSum / totalWeight) * 100), matched }
 }
 
 function scoreColor(score: number): string {

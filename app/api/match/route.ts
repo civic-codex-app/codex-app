@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     // Fetch stances only for federal politicians on the user's issues
-    let allRows: Array<{ politician_id: string; stance: string; issues: any }> = []
+    let allRows: Array<{ politician_id: string; stance: string; is_verified: boolean | null; issues: any }> = []
     from = 0
 
     // Process in chunks of 200 politician IDs to stay under URL limits
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       while (true) {
         const { data, error } = await supabase
           .from('politician_issues')
-          .select('politician_id, stance, issues!inner(slug)')
+          .select('politician_id, stance, is_verified, issues!inner(slug)')
           .in('politician_id', chunk)
           .in('issues.slug', issueSlugs)
           .range(chunkFrom, chunkFrom + PAGE_SIZE - 1)
@@ -79,8 +79,9 @@ export async function POST(request: Request) {
       }
     }
 
-    // Group stances by politician_id
+    // Group stances and verification status by politician_id
     const byPolitician = new Map<string, Record<string, string>>()
+    const verifiedByPolitician = new Map<string, Record<string, boolean>>()
     for (const row of allRows) {
       // Supabase !inner join can return issues as object or array
       const issueData = Array.isArray(row.issues) ? row.issues[0] : row.issues
@@ -93,13 +94,21 @@ export async function POST(request: Request) {
         byPolitician.set(row.politician_id, map)
       }
       map[slug] = row.stance
+
+      let vmap = verifiedByPolitician.get(row.politician_id)
+      if (!vmap) {
+        vmap = {}
+        verifiedByPolitician.set(row.politician_id, vmap)
+      }
+      vmap[slug] = row.is_verified === true
     }
 
     // Compute match scores
     const scored: Array<{ politicianId: string; score: number; matched: number; total: number }> = []
 
     for (const [politicianId, polStances] of byPolitician) {
-      const result = computeVoterMatch(stances, polStances)
+      const verifiedMap = verifiedByPolitician.get(politicianId)
+      const result = computeVoterMatch(stances, polStances, verifiedMap)
       // Require minimum matching issues
       if (result.matched >= MIN_MATCHING_ISSUES) {
         scored.push({ politicianId, ...result })

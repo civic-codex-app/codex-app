@@ -388,6 +388,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 politicianStances={politicianStances.map((s: any) => ({
                   issue_slug: s.issues?.slug ?? '',
                   stance: s.stance,
+                  is_verified: s.is_verified === true,
                 }))}
               />
             </div>

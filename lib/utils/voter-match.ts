@@ -3,6 +3,10 @@
  *
  * Computes how closely a user's issue stances align with a politician's
  * recorded stances using the same distance-decay curve as party alignment.
+ *
+ * Verified stances get full weight (1.0x) while estimated/unverified
+ * stances get reduced weight (0.5x) so politicians with real, verified
+ * positions rank higher than those with generic party defaults.
  */
 
 import { STANCE_NUMERIC } from './stances'
@@ -13,6 +17,10 @@ export interface VoterMatchResult {
   matchedIssues: number
   totalIssues: number
 }
+
+/** Weight multiplier for verified vs estimated stances */
+const VERIFIED_WEIGHT = 1.0
+const ESTIMATED_WEIGHT = 0.5
 
 /**
  * Compute a 0-100 match score between user stances and politician stances.
@@ -26,13 +34,19 @@ export interface VoterMatchResult {
  *
  * Only counts issues where BOTH sides have a valid numeric stance
  * (not unknown, not null, not missing).
+ *
+ * @param userStances       Map of issue slug -> stance string
+ * @param politicianStances Map of issue slug -> stance string
+ * @param verifiedMap       Optional map of issue slug -> boolean (true = verified)
  */
 export function computeVoterMatch(
   userStances: Record<string, string>,
-  politicianStances: Record<string, string>
+  politicianStances: Record<string, string>,
+  verifiedMap?: Record<string, boolean>
 ): { score: number; matched: number; total: number } {
-  let total = 0
+  let totalWeight = 0
   let weighted = 0
+  let matched = 0
 
   for (const slug of Object.keys(userStances)) {
     const userVal = STANCE_NUMERIC[userStances[slug]]
@@ -41,21 +55,29 @@ export function computeVoterMatch(
     // Skip if either side is missing or unknown (-1)
     if (userVal == null || polVal == null || userVal < 0 || polVal < 0) continue
 
-    total++
+    matched++
     const distance = Math.abs(userVal - polVal)
 
-    if (distance === 0) weighted += 1.0
-    else if (distance === 1) weighted += 0.85
-    else if (distance === 2) weighted += 0.55
-    else if (distance === 3) weighted += 0.25
+    let similarity = 0
+    if (distance === 0) similarity = 1.0
+    else if (distance === 1) similarity = 0.85
+    else if (distance === 2) similarity = 0.55
+    else if (distance === 3) similarity = 0.25
     // 4+ = 0
+
+    // Apply verification weight
+    const isVerified = verifiedMap ? (verifiedMap[slug] ?? false) : true
+    const weight = isVerified ? VERIFIED_WEIGHT : ESTIMATED_WEIGHT
+
+    weighted += similarity * weight
+    totalWeight += weight
   }
 
-  if (total === 0) return { score: 0, matched: 0, total: 0 }
+  if (matched === 0 || totalWeight === 0) return { score: 0, matched: 0, total: 0 }
 
   return {
-    score: Math.round((weighted / total) * 100),
-    matched: total,
+    score: Math.round((weighted / totalWeight) * 100),
+    matched,
     total: Object.keys(userStances).length,
   }
 }

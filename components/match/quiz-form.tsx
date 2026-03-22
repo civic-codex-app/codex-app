@@ -4,7 +4,8 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { MatchResults } from './match-results'
 import { QUIZ_CONTENT, type QuizPosition } from '@/lib/data/quiz-content'
-import { saveQuizAnswers, loadQuizAnswers, saveQuizStep, loadQuizStep, clearQuizProgress } from '@/lib/utils/quiz-storage'
+import { saveQuizAnswers, loadQuizAnswers, saveQuizStep, loadQuizStep, clearQuizProgress, syncQuizToServer, loadQuizFromServer, mergeQuizAnswers } from '@/lib/utils/quiz-storage'
+import { createClient } from '@/lib/supabase/client'
 
 interface Issue {
   id: string
@@ -82,6 +83,40 @@ export function QuizForm({ issues }: Props) {
   const [slideDir, setSlideDir] = useState<'left' | 'right' | null>(null)
 
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isLoggedIn = useRef(false)
+
+  // On mount: check auth and load from server if logged in
+  useEffect(() => {
+    let cancelled = false
+    async function init() {
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user || cancelled) return
+        isLoggedIn.current = true
+
+        const serverAnswers = await loadQuizFromServer()
+        if (cancelled) return
+
+        const local = loadQuizAnswers()
+        const merged = mergeQuizAnswers(local, serverAnswers)
+
+        if (Object.keys(merged).length > 0) {
+          setAnswers(merged)
+          saveQuizAnswers(merged)
+          // Push merged result back to server if local had newer data
+          if (Object.keys(local).length > Object.keys(serverAnswers ?? {}).length) {
+            syncQuizToServer(merged)
+          }
+        }
+      } catch {
+        // Not logged in or network error — continue with localStorage only
+      }
+    }
+    init()
+    return () => { cancelled = true }
+  }, [])
 
   const total = issues.length
   const issue = issues[currentStep]
@@ -90,7 +125,10 @@ export function QuizForm({ issues }: Props) {
   const againstCount = answeredCount - forCount
 
   useEffect(() => {
-    return () => { if (advanceTimer.current) clearTimeout(advanceTimer.current) }
+    return () => {
+      if (advanceTimer.current) clearTimeout(advanceTimer.current)
+      if (syncTimer.current) clearTimeout(syncTimer.current)
+    }
   }, [])
 
   useEffect(() => {
@@ -111,6 +149,11 @@ export function QuizForm({ issues }: Props) {
     setAnswers(prev => {
       const next = { ...prev, [issue.slug]: stance }
       saveQuizAnswers(next)
+      // Debounced server sync (1 second)
+      if (isLoggedIn.current) {
+        if (syncTimer.current) clearTimeout(syncTimer.current)
+        syncTimer.current = setTimeout(() => syncQuizToServer(next), 1000)
+      }
       return next
     })
     setShowCheck(true)
@@ -175,6 +218,7 @@ export function QuizForm({ issues }: Props) {
   function retake() {
     setAnswers({})
     clearQuizProgress()
+    if (isLoggedIn.current) syncQuizToServer({})
     setCurrentStep(0)
     setResults(null)
     setError(null)
