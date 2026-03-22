@@ -92,7 +92,7 @@ export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
         Money Map
       </h1>
       <p className="mb-6 text-[14px] leading-relaxed text-[var(--codex-sub)]">
-        Campaign finance totals by state. Click a state to see individual politician breakdowns.
+        See how much money politicians raise and spend in each state. Click a state to see individual politician breakdowns.
       </p>
 
       {/* Metric selector */}
@@ -125,6 +125,9 @@ export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
             { color: 'var(--codex-hover)', label: 'No Data' },
           ]}
         />
+        <p className="mt-2 text-center text-[12px] text-[var(--codex-faint)]">
+          Darker color = more money
+        </p>
       </div>
 
       {/* State detail panel */}
@@ -147,15 +150,15 @@ export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
           {/* State totals */}
           <div className="mb-4 grid grid-cols-3 gap-4">
             <div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total Raised</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Money Raised</div>
               <div className="text-lg font-semibold text-[var(--codex-text)]">{formatMoney(selectedData.raised)}</div>
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total Spent</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Money Spent</div>
               <div className="text-lg font-semibold text-[var(--codex-text)]">{formatMoney(selectedData.spent)}</div>
             </div>
             <div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Cash on Hand</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Money Left to Spend</div>
               <div className="text-lg font-semibold text-[var(--codex-text)]">{formatMoney(selectedData.cash)}</div>
             </div>
           </div>
