@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PoliticianCard } from '@/components/directory/politician-card'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
+import { RecentActivityFeed, type ActivityItem } from '@/components/dashboard/recent-activity-feed'
 import type { Politician } from '@/lib/types/politician'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
@@ -130,33 +131,77 @@ export default async function DashboardPage() {
     followedPoliticians = (data ?? []) as Politician[]
   }
 
-  // Get recent votes from followed politicians (activity feed)
-  let recentActivity: Array<{ politician_name: string; politician_slug: string; politician_party: string; bill_name: string; bill_number: string; vote: string; vote_date: string }> = []
+  // Build recent activity feed: votes + stance updates from followed politicians (last 30 days)
+  let activityFeed: ActivityItem[] = []
   if (followedIds.length > 0) {
+    const polMap = new Map(followedPoliticians.map(p => [p.id, p]))
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    const cutoff = thirtyDaysAgo.toISOString().split('T')[0]
+
+    // Fetch recent votes
     const { data: recentVotes } = await supabase
       .from('voting_records')
       .select('bill_name, bill_number, vote, vote_date, politician_id')
-      .in('politician_id', followedIds.slice(0, 20)) // Limit to avoid URL length issues
+      .in('politician_id', followedIds.slice(0, 20))
+      .gte('vote_date', cutoff)
       .order('vote_date', { ascending: false })
-      .limit(10)
+      .limit(20)
 
     if (recentVotes) {
-      const polMap = new Map(followedPoliticians.map(p => [p.id, p]))
-      recentActivity = recentVotes
-        .filter((v: any) => v.bill_name && !/^[0-9a-f]{8}-/.test(v.bill_name)) // Skip UUID bill names
-        .map((v: any) => {
-          const pol = polMap.get(v.politician_id)
-          return {
-            politician_name: pol?.name ?? 'Unknown',
-            politician_slug: pol?.slug ?? '',
-            politician_party: pol?.party ?? '',
-            bill_name: v.bill_name,
-            bill_number: v.bill_number ?? '',
-            vote: v.vote,
-            vote_date: v.vote_date,
-          }
+      for (const v of recentVotes) {
+        if (!v.bill_name || /^[0-9a-f]{8}-/.test(v.bill_name)) continue
+        const pol = polMap.get(v.politician_id)
+        if (!pol) continue
+        activityFeed.push({
+          type: 'vote',
+          politician_id: pol.id,
+          politician_name: pol.name,
+          politician_slug: pol.slug,
+          politician_party: pol.party,
+          politician_image_url: pol.image_url,
+          bill_name: v.bill_name,
+          bill_number: v.bill_number ?? '',
+          vote: v.vote,
+          date: v.vote_date,
         })
+      }
     }
+
+    // Fetch recent stance positions (use service role to avoid RLS issues)
+    const serviceForStances = createServiceRoleClient()
+    const { data: recentStances } = await serviceForStances
+      .from('politician_issues')
+      .select('politician_id, stance, updated_at, issue_id, issues(name, slug)')
+      .in('politician_id', followedIds.slice(0, 20))
+      .gte('updated_at', thirtyDaysAgo.toISOString())
+      .order('updated_at', { ascending: false })
+      .limit(20)
+
+    if (recentStances) {
+      for (const s of recentStances as any[]) {
+        const pol = polMap.get(s.politician_id)
+        if (!pol) continue
+        const issue = s.issues as { name: string; slug: string } | null
+        if (!issue) continue
+        activityFeed.push({
+          type: 'stance',
+          politician_id: pol.id,
+          politician_name: pol.name,
+          politician_slug: pol.slug,
+          politician_party: pol.party,
+          politician_image_url: pol.image_url,
+          issue_name: issue.name,
+          issue_slug: issue.slug,
+          stance: s.stance,
+          date: s.updated_at.split('T')[0],
+        })
+      }
+    }
+
+    // Sort merged feed by date descending, take top 15
+    activityFeed.sort((a, b) => (b.date > a.date ? 1 : b.date < a.date ? -1 : 0))
+    activityFeed = activityFeed.slice(0, 15)
   }
 
   // Get followed bills
@@ -304,41 +349,13 @@ export default async function DashboardPage() {
       </section>
 
       {/* Recent Activity Feed */}
-      {recentActivity.length > 0 && (
+      {followedIds.length > 0 && (
         <section className="mb-10">
           <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
             Recent Activity
           </h2>
-          <div className="space-y-2">
-            {recentActivity.map((item, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-md border border-[var(--codex-border)] px-4 py-3">
-                <span
-                  className="flex-shrink-0 rounded-sm px-1.5 py-0.5 text-[10px] font-medium uppercase"
-                  style={{
-                    color: item.vote === 'yea' ? '#22C55E' : item.vote === 'nay' ? '#EF4444' : '#9CA3AF',
-                    background: item.vote === 'yea' ? '#22C55E18' : item.vote === 'nay' ? '#EF444418' : '#9CA3AF18',
-                  }}
-                >
-                  {item.vote}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-[13px] text-[var(--codex-text)]">
-                    <Link href={`/politicians/${item.politician_slug}`} className="font-medium hover:underline" style={{ color: partyColor(item.politician_party) }}>
-                      {item.politician_name}
-                    </Link>
-                    {' voted on '}
-                    <span className="text-[var(--codex-sub)]">
-                      {item.bill_name}{item.bill_number ? ` (${item.bill_number})` : ''}
-                    </span>
-                  </div>
-                </div>
-                {item.vote_date && (
-                  <span className="flex-shrink-0 text-[11px] text-[var(--codex-faint)]">
-                    {new Date(item.vote_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  </span>
-                )}
-              </div>
-            ))}
+          <div className="rounded-md border border-[var(--codex-border)] px-4 py-3">
+            <RecentActivityFeed items={activityFeed} />
           </div>
         </section>
       )}
