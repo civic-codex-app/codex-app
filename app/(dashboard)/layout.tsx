@@ -27,7 +27,7 @@ const SECONDARY_NAV = [
 const ACCOUNT_TABS = [
   {
     href: '/dashboard',
-    label: 'Home',
+    label: 'Dashboard',
     match: ['/dashboard'],
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
