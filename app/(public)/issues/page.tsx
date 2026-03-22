@@ -42,7 +42,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
     return (
       <>
         <Header />
-        <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+        <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
             <div className="mb-3 text-2xl font-bold">Something went wrong</div>
           </div>
@@ -111,7 +111,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Political Issues

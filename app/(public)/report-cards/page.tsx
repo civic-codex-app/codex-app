@@ -78,7 +78,7 @@ export default async function ReportCardsPage() {
     return (
       <>
         <Header />
-        <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+        <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
             <div className="mb-3 text-2xl font-bold text-[var(--codex-text)]">
               Something went wrong
@@ -189,7 +189,7 @@ export default async function ReportCardsPage() {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-[1200px] px-6 pb-16 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         {/* Page title */}
         <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight text-[var(--codex-text)]">
           Civic Profiles

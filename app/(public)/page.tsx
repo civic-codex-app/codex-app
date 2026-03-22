@@ -54,7 +54,7 @@ export default async function HomePage() {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
         <div className="mb-10 max-w-[740px]">
           <h1 className="mb-5 animate-fade-up text-[clamp(36px,5vw,60px)] font-bold leading-[1.08]">

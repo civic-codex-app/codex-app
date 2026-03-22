@@ -250,7 +250,7 @@ export default async function PoliticianPage({ params }: PageProps) {
       />
       <Header />
 
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
           href="/"
           className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] print:hidden"
@@ -395,23 +395,54 @@ export default async function PoliticianPage({ params }: PageProps) {
                   yearsInOffice={pol.since_year ? new Date().getFullYear() - pol.since_year : undefined}
                 />
               ) : (
-                <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-6 text-center">
-                  <h3 className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
-                    Civic Profile
-                  </h3>
-                  <div className="mb-3 text-lg font-semibold text-[var(--codex-text)]">
-                    Sign up to see the full civic profile
+                <div className="relative overflow-hidden rounded-lg border border-[var(--codex-border)]">
+                  {/* Blurred preview of the real report card */}
+                  <div className="pointer-events-none select-none" aria-hidden="true" style={{ filter: 'blur(6px)' }}>
+                    <PoliticianReportCard
+                      {...reportCard}
+                      stanceCount={politicianStances.length}
+                      voteCount={votingRecords.length}
+                      committeeCount={committees.length}
+                      yearsInOffice={pol.since_year ? new Date().getFullYear() - pol.since_year : undefined}
+                    />
                   </div>
-                  <p className="mb-4 text-[13px] text-[var(--codex-faint)]">
-                    Get detailed scores on bipartisanship, transparency, and effectiveness
-                  </p>
-                  <Link
-                    href="/signup"
-                    className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-[14px] font-semibold text-white no-underline transition-opacity hover:opacity-90"
-                    style={{ background: color }}
+
+                  {/* Gradient overlay + CTA */}
+                  <div
+                    className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+                    style={{
+                      background: `linear-gradient(180deg, transparent 0%, var(--codex-card) 40%, var(--codex-card) 100%)`,
+                    }}
                   >
-                    Create Free Account
-                  </Link>
+                    <div
+                      className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full"
+                      style={{ background: `${color}15`, color }}
+                    >
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                      </svg>
+                    </div>
+                    <h3 className="mb-1.5 text-[18px] font-bold text-[var(--codex-text)]">
+                      Civic Profile
+                    </h3>
+                    <p className="mb-5 max-w-[320px] text-[13px] leading-[1.6] text-[var(--codex-sub)]">
+                      Unlock detailed scores on bipartisanship, transparency, engagement, and effectiveness
+                    </p>
+                    <Link
+                      href="/signup"
+                      className="inline-flex items-center justify-center rounded-full px-8 py-3 text-[14px] font-semibold text-white no-underline shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl"
+                      style={{
+                        background: `linear-gradient(135deg, ${color}, ${color}dd)`,
+                        boxShadow: `0 4px 14px ${color}40`,
+                      }}
+                    >
+                      Create Free Account
+                    </Link>
+                    <p className="mt-3 text-[11px] text-[var(--codex-faint)]">
+                      Free forever. No credit card required.
+                    </p>
+                  </div>
                 </div>
               )}
             </div>

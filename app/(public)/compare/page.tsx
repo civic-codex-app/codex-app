@@ -98,7 +98,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Compare Officials

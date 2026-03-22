@@ -56,8 +56,9 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
               </Link>
 
               {/* Stance badges */}
-              <div className="mt-2 flex items-center gap-3 sm:mt-0 sm:contents">
-                <div className="flex sm:justify-center">
+              <div className="mt-2 flex flex-wrap items-center gap-2 sm:mt-0 sm:contents">
+                <div className="flex items-center gap-1.5 sm:justify-center">
+                  <span className="text-[10px] text-[var(--codex-faint)] sm:hidden">{lastA}:</span>
                   <span
                     className="rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em]"
                     style={{ color: styleA.color, background: `${styleA.color}18` }}
@@ -66,7 +67,8 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
                   </span>
                 </div>
                 <span className="text-[11px] text-[var(--codex-faint)] sm:hidden">vs</span>
-                <div className="flex sm:justify-center">
+                <div className="flex items-center gap-1.5 sm:justify-center">
+                  <span className="text-[10px] text-[var(--codex-faint)] sm:hidden">{lastB}:</span>
                   <span
                     className="rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em]"
                     style={{ color: styleB.color, background: `${styleB.color}18` }}

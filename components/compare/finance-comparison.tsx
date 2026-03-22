@@ -66,8 +66,14 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
       <div className="space-y-4 rounded-md border border-[var(--codex-border)] p-4 sm:p-5">
         {/* Cycle labels */}
         <div className="flex items-center justify-between text-[11px] text-[var(--codex-faint)]">
-          <span>{latestA ? `${polA.name.split(' ').pop()} (${latestA.cycle})` : '—'}</span>
-          <span>{latestB ? `${polB.name.split(' ').pop()} (${latestB.cycle})` : '—'}</span>
+          <div className="flex items-center gap-1.5">
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: colorA }} />
+            <span>{latestA ? `${polA.name.split(' ').pop()} (${latestA.cycle})` : '—'}</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="inline-block h-2 w-2 rounded-full" style={{ background: colorB }} />
+            <span>{latestB ? `${polB.name.split(' ').pop()} (${latestB.cycle})` : '—'}</span>
+          </div>
         </div>
 
         {metrics.map((m) => {
@@ -87,7 +93,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
                     style={{ width: `${pctA}%`, background: colorA }}
                   />
                 </div>
-                <span className="w-16 text-right text-[12px] tabular-nums text-[var(--codex-text)]">
+                <span className="w-16 shrink-0 text-right text-[12px] tabular-nums text-[var(--codex-text)]">
                   {m.keyA > 0 ? formatMoney(m.keyA) : '—'}
                 </span>
               </div>
@@ -100,7 +106,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
                     style={{ width: `${pctB}%`, background: colorB }}
                   />
                 </div>
-                <span className="w-16 text-right text-[12px] tabular-nums text-[var(--codex-text)]">
+                <span className="w-16 shrink-0 text-right text-[12px] tabular-nums text-[var(--codex-text)]">
                   {m.keyB > 0 ? formatMoney(m.keyB) : '—'}
                 </span>
               </div>

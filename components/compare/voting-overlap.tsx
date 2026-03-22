@@ -114,45 +114,47 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
       )}
 
       {/* Shared bill votes */}
-      <div className="space-y-1">
-        {/* Header */}
-        <div className="hidden gap-2 px-4 pb-1 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_80px_80px]">
-          <span>Bill</span>
-          <span className="text-center">{polA.name.split(' ').pop()}</span>
-          <span className="text-center">{polB.name.split(' ').pop()}</span>
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <div className="min-w-[340px] space-y-1">
+          {/* Header */}
+          <div className="hidden gap-2 px-4 pb-1 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_80px_80px]">
+            <span>Bill</span>
+            <span className="text-center">{polA.name.split(' ').pop()}</span>
+            <span className="text-center">{polB.name.split(' ').pop()}</span>
+          </div>
+
+          {display.map((s, i) => {
+            const vcA = VOTE_COLORS[s.voteA] ?? VOTE_COLORS.abstain
+            const vcB = VOTE_COLORS[s.voteB] ?? VOTE_COLORS.abstain
+
+            return (
+              <div
+                key={i}
+                className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-md border border-[var(--codex-border)] px-4 py-2 sm:grid-cols-[1fr_80px_80px]"
+              >
+                <span className="truncate text-[13px] text-[var(--codex-text)]">
+                  {s.label}
+                </span>
+                <div className="flex justify-center">
+                  <span
+                    className="rounded-sm px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.06em]"
+                    style={{ color: vcA.text, background: vcA.bg }}
+                  >
+                    {s.voteA}
+                  </span>
+                </div>
+                <div className="flex justify-center">
+                  <span
+                    className="rounded-sm px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.06em]"
+                    style={{ color: vcB.text, background: vcB.bg }}
+                  >
+                    {s.voteB}
+                  </span>
+                </div>
+              </div>
+            )
+          })}
         </div>
-
-        {display.map((s, i) => {
-          const vcA = VOTE_COLORS[s.voteA] ?? VOTE_COLORS.abstain
-          const vcB = VOTE_COLORS[s.voteB] ?? VOTE_COLORS.abstain
-
-          return (
-            <div
-              key={i}
-              className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-md border border-[var(--codex-border)] px-4 py-2 sm:grid-cols-[1fr_80px_80px]"
-            >
-              <span className="truncate text-[13px] text-[var(--codex-text)]">
-                {s.label}
-              </span>
-              <div className="flex justify-center">
-                <span
-                  className="rounded-sm px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.06em]"
-                  style={{ color: vcA.text, background: vcA.bg }}
-                >
-                  {s.voteA}
-                </span>
-              </div>
-              <div className="flex justify-center">
-                <span
-                  className="rounded-sm px-2 py-0.5 text-[11px] font-medium uppercase tracking-[0.06em]"
-                  style={{ color: vcB.text, background: vcB.bg }}
-                >
-                  {s.voteB}
-                </span>
-              </div>
-            </div>
-          )
-        })}
       </div>
 
       {shared.length > 10 && (

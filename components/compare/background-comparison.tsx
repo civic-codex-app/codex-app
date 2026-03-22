@@ -52,24 +52,26 @@ export function BackgroundComparison({ polA, polB }: BackgroundComparisonProps) 
         {rows.map((row, i) => (
           <div
             key={row.label}
-            className="grid grid-cols-[100px_1fr_1fr] items-center gap-2 px-4 py-2.5 text-[13px] sm:grid-cols-[140px_1fr_1fr]"
+            className="flex flex-col gap-1 px-4 py-2.5 text-[13px] sm:grid sm:grid-cols-[140px_1fr_1fr] sm:items-center sm:gap-2"
             style={{
               borderTop: i > 0 ? '1px solid var(--codex-border)' : undefined,
             }}
           >
-            <span className="text-[12px] text-[var(--codex-faint)]">{row.label}</span>
-            <span
-              className="truncate text-[var(--codex-text)]"
-              style={row.colorA ? { color: row.colorA } : undefined}
-            >
-              {row.a}
-            </span>
-            <span
-              className="truncate text-[var(--codex-text)]"
-              style={row.colorB ? { color: row.colorB } : undefined}
-            >
-              {row.b}
-            </span>
+            <span className="text-[12px] font-medium text-[var(--codex-faint)]">{row.label}</span>
+            <div className="flex items-center justify-between gap-2 sm:contents">
+              <span
+                className="truncate text-[var(--codex-text)]"
+                style={row.colorA ? { color: row.colorA } : undefined}
+              >
+                {row.a}
+              </span>
+              <span
+                className="truncate text-[var(--codex-text)] text-right sm:text-left"
+                style={row.colorB ? { color: row.colorB } : undefined}
+              >
+                {row.b}
+              </span>
+            </div>
           </div>
         ))}
       </div>

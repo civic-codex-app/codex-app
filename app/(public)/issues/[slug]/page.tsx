@@ -225,7 +225,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <div className="mx-auto max-w-[800px] px-6 md:px-10">
+      <div className="mx-auto max-w-[800px] px-6 pt-6 md:px-10">
         <Link
           href="/issues"
           className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"

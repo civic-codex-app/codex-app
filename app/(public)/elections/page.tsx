@@ -118,7 +118,7 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
     return (
       <>
         <Header />
-        <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+        <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center text-[var(--codex-faint)]">
             <div className="mb-2 text-2xl font-bold">No active elections</div>
             <div className="text-sm">Check back soon for upcoming election coverage</div>
@@ -179,7 +179,7 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-[1200px] px-6 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
         <div className="mb-6 max-w-[600px]">
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
