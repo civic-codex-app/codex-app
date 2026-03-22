@@ -224,7 +224,7 @@ export default async function InsightsPage() {
         {/* Section 1: Chamber Composition */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
               Chamber Composition
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
@@ -259,7 +259,7 @@ export default async function InsightsPage() {
         {/* Section 2: Issue Consensus Heatmap */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
               Issue Consensus Heatmap
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
@@ -276,7 +276,7 @@ export default async function InsightsPage() {
         {/* Section 3: Political Spectrum */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
               Political Spectrum
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
@@ -291,7 +291,7 @@ export default async function InsightsPage() {
         {/* Section 4: Bipartisan Rankings */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
               Bipartisan Index
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
@@ -322,7 +322,7 @@ export default async function InsightsPage() {
 
         {/* Explore More */}
         <section className="mb-16">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
             Explore More
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">

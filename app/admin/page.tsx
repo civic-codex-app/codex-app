@@ -94,7 +94,7 @@ export default async function AdminOverviewPage() {
 
       {/* Quick Actions */}
       <div className="mt-10">
-        <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
           Quick Actions
         </h2>
         <div className="flex flex-wrap gap-3">
@@ -114,7 +114,7 @@ export default async function AdminOverviewPage() {
         {/* Recent Politicians */}
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
               Recently Added Officials
             </h2>
             <Link
@@ -148,7 +148,7 @@ export default async function AdminOverviewPage() {
         {/* Active Polls */}
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
               Active Polls
             </h2>
             <Link

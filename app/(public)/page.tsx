@@ -5,7 +5,6 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SearchInput } from '@/components/directory/search-input'
-import { ChamberTabs } from '@/components/directory/chamber-tabs'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
@@ -40,80 +39,104 @@ export default async function HomePage() {
   const featuredMap = new Map((featuredData ?? []).map(p => [p.slug, p]))
   const featured = FEATURED_SLUGS.map(s => featuredMap.get(s)).filter(Boolean) as NonNullable<typeof featuredData>
 
-  // Quick stats + chamber counts
-  const chambers = ['senate', 'house', 'governor', 'presidential', 'state_senate', 'state_house'] as const
-  const [totalRes, demRes, gopRes, indRes, ...chamberResults] = await Promise.all([
-    supabase.from('politicians').select('id', { count: 'exact', head: true }),
+  // Quick stats
+  const [demRes, gopRes, indRes] = await Promise.all([
     supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'democrat'),
     supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'republican'),
     supabase.from('politicians').select('id', { count: 'exact', head: true }).not('party', 'in', '("democrat","republican")'),
-    ...chambers.map(ch => supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('chamber', ch)),
   ])
-  const chamberCounts: Record<string, number> = {}
-  for (let i = 0; i < chambers.length; i++) {
-    const count = chamberResults[i].count ?? 0
-    if (count > 0) chamberCounts[chambers[i]] = count
-  }
 
-  const total = totalRes.count ?? 0
   const dem = demRes.count ?? 0
   const gop = gopRes.count ?? 0
   const ind = indRes.count ?? 0
+  const total = dem + gop + ind
 
   return (
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         {/* Hero */}
-        <div className="mb-12 max-w-[740px]">
-          <h1 className="mb-5 animate-fade-up text-[clamp(40px,5.5vw,68px)] font-bold leading-[1.05]">
-            Every elected official. One directory.
+        <div className="mb-10 max-w-[740px]">
+          <h1 className="mb-5 animate-fade-up text-[clamp(36px,5vw,60px)] font-bold leading-[1.08]">
+            Track Every Politician in America
           </h1>
-          <p className="max-w-[500px] animate-fade-up text-[15.5px] leading-[1.7] text-[var(--codex-subtle)]">
-            Search {total.toLocaleString()} politicians. Compare stances, track voting records, and find your match.
+          <p className="max-w-[520px] animate-fade-up text-[15.5px] leading-[1.7] text-[var(--codex-subtle)]">
+            Search {total.toLocaleString()} officials. Compare stances. Find your match.
           </p>
         </div>
 
-        {/* Search */}
+        {/* Search — hero element */}
         <Suspense>
-          <SearchInput />
+          <div className="mb-10 animate-fade-up">
+            <SearchInput size="lg" />
+          </div>
         </Suspense>
 
-        {/* Quick stats */}
-        <div className="mb-12 grid animate-fade-up grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
-            <div className="text-2xl font-bold text-[var(--codex-text)]">{total.toLocaleString()}</div>
-            <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total Officials</div>
-          </div>
-          <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
-            <div className="flex items-center justify-center gap-1.5">
-              <PartyIcon party="democrat" size={14} />
+        {/* Party stats — 3 colored cards */}
+        <div className="mb-12 grid animate-fade-up grid-cols-3 gap-3">
+          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('democrat')}12` }}>
+            <div className="flex items-center justify-center gap-2">
+              <PartyIcon party="democrat" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('democrat') }}>{dem.toLocaleString()}</span>
             </div>
-            <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Democratic</div>
+            <div className="mt-1 text-[12px] font-medium text-[var(--codex-sub)]">Democrats</div>
           </div>
-          <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
-            <div className="flex items-center justify-center gap-1.5">
-              <PartyIcon party="republican" size={14} />
+          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('republican')}12` }}>
+            <div className="flex items-center justify-center gap-2">
+              <PartyIcon party="republican" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('republican') }}>{gop.toLocaleString()}</span>
             </div>
-            <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Republican</div>
+            <div className="mt-1 text-[12px] font-medium text-[var(--codex-sub)]">Republicans</div>
           </div>
-          <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
-            <div className="flex items-center justify-center gap-1.5">
-              <PartyIcon party="independent" size={14} />
+          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('independent')}12` }}>
+            <div className="flex items-center justify-center gap-2">
+              <PartyIcon party="independent" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('independent') }}>{ind.toLocaleString()}</span>
             </div>
-            <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Independent</div>
+            <div className="mt-1 text-[12px] font-medium text-[var(--codex-sub)]">Independents</div>
           </div>
         </div>
 
-        {/* Trending */}
-        <Trending />
+        {/* Quick Actions — above the fold */}
+        <div className="mb-12">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <Link href="/match" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
+              <div className="text-[15px] font-bold text-[var(--codex-text)]">Find Your Match</div>
+              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Discover officials who align with your views</p>
+            </Link>
+            <Link href="/compare" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <div className="text-[15px] font-bold text-[var(--codex-text)]">Compare Officials</div>
+              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Side-by-side on issues, finance, and votes</p>
+            </Link>
+            <Link href="/issues" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <div className="text-[15px] font-bold text-[var(--codex-text)]">Explore Issues</div>
+              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">See where every politician stands on key topics</p>
+            </Link>
+            <Link href="/elections" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div className="text-[15px] font-bold text-[var(--codex-text)]">Track Elections</div>
+              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Follow races and candidates across the country</p>
+            </Link>
+          </div>
+        </div>
+
+        {/* Trending — only renders if enough follows */}
+        <Trending minTotalFollows={10} />
 
         {/* Featured Officials */}
         <div className="mb-12">
-          <h2 className="mb-5 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          <h2 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
             Featured Officials
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -124,8 +147,8 @@ export default async function HomePage() {
                   key={pol.id}
                   href={`/politicians/${pol.slug}`}
                   className="group overflow-hidden rounded-lg border border-[var(--codex-border)] no-underline transition-all hover:border-[var(--codex-text)]"
+                  style={{ borderLeftWidth: '4px', borderLeftColor: color }}
                 >
-                  <div className="h-1" style={{ background: `${color}66` }} />
                   <div className="flex items-center gap-4 p-4">
                     <div
                       className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]"
@@ -141,7 +164,7 @@ export default async function HomePage() {
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-[15px] font-semibold font-medium text-[var(--codex-text)] transition-colors group-hover:text-[var(--codex-text)]">
+                      <div className="truncate text-[15px] font-semibold text-[var(--codex-text)] transition-colors group-hover:text-[var(--codex-text)]">
                         {pol.name}
                       </div>
                       <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-[var(--codex-sub)]">
@@ -158,31 +181,6 @@ export default async function HomePage() {
                 </Link>
               )
             })}
-          </div>
-        </div>
-
-        {/* Quick Links */}
-        <div className="mb-12">
-          <h2 className="mb-5 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
-            Explore
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link href="/match" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Voter Match</div>
-              <p className="text-[12px] text-[var(--codex-faint)]">Find politicians who align with your views</p>
-            </Link>
-            <Link href="/compare" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Compare</div>
-              <p className="text-[12px] text-[var(--codex-faint)]">Side-by-side on issues, finance, and votes</p>
-            </Link>
-            <Link href="/report-cards" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Civic Profiles</div>
-              <p className="text-[12px] text-[var(--codex-faint)]">Activity scores for every politician</p>
-            </Link>
-            <Link href="/issues/map" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Issue Map</div>
-              <p className="text-[12px] text-[var(--codex-faint)]">How each state leans on key issues</p>
-            </Link>
           </div>
         </div>
 

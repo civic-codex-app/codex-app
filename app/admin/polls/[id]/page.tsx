@@ -38,7 +38,7 @@ export default async function EditPollPage({ params }: PageProps) {
       {/* Vote Summary */}
       {totalVotes > 0 && (
         <div className="mb-8 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-          <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          <div className="mb-3 text-sm font-semibold text-[var(--codex-sub)]">
             Vote Results ({totalVotes} total votes)
           </div>
           <div className="space-y-3">

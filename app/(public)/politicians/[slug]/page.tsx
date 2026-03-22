@@ -364,22 +364,13 @@ export default async function PoliticianPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Stats grid */}
-            <div className="border-t border-[var(--codex-border)] pt-6">
-              <div className="grid grid-cols-3 gap-4">
-                {[
-                  ['State', pol.state],
-                  ['Chamber', CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber],
-                  ['Since', pol.since_year?.toString() ?? '--'],
-                ].map(([label, value]) => (
-                  <div key={label}>
-                    <div className="mb-1 text-[11px] uppercase tracking-[0.1em] text-[var(--codex-sub)]">
-                      {label}
-                    </div>
-                    <div className="text-xl font-semibold">{value}</div>
-                  </div>
-                ))}
-              </div>
+            {/* Metadata line */}
+            <div className="text-sm text-[var(--codex-sub)]">
+              {[
+                CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber,
+                pol.state,
+                pol.since_year ? `Since ${pol.since_year}` : null,
+              ].filter(Boolean).join(' \u00b7 ')}
             </div>
 
             {/* Party Alignment Gauge */}
@@ -401,18 +392,19 @@ export default async function PoliticianPage({ params }: PageProps) {
                 />
               ) : (
                 <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-6 text-center">
-                  <h3 className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
-                    Report Card
+                  <h3 className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
+                    Civic Profile
                   </h3>
                   <div className="mb-3 text-lg font-semibold text-[var(--codex-text)]">
-                    Sign up to see the full report card
+                    Sign up to see the full civic profile
                   </div>
                   <p className="mb-4 text-[13px] text-[var(--codex-faint)]">
                     Get detailed scores on bipartisanship, transparency, and effectiveness
                   </p>
                   <Link
                     href="/signup"
-                    className="inline-block rounded-md bg-[var(--codex-text)] px-5 py-2 text-[13px] font-medium text-[var(--codex-card)] no-underline transition-opacity hover:opacity-90"
+                    className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-[14px] font-semibold text-white no-underline transition-opacity hover:opacity-90"
+                    style={{ background: color }}
                   >
                     Create Free Account
                   </Link>
@@ -429,7 +421,7 @@ export default async function PoliticianPage({ params }: PageProps) {
             {/* Committee Memberships */}
             {committees.length > 0 && (
               <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+                <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
                   Committee Memberships
                 </h2>
                 <div className="space-y-2">
@@ -461,7 +453,7 @@ export default async function PoliticianPage({ params }: PageProps) {
             {/* Issues & Stances */}
             {politicianStances.length > 0 && (
               <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-                <h2 className="mb-1 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+                <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
                   Issues & Stances
                 </h2>
                 <p className="mb-4 text-[11px] text-[var(--codex-faint)]">

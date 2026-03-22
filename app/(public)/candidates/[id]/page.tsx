@@ -166,7 +166,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {totalStances > 0 && (
           <div className="mb-8 rounded-md border border-[var(--codex-border)] p-4">
             <div className="mb-3 flex items-center justify-between">
-              <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+              <span className="text-sm font-semibold text-[var(--codex-sub)]">
                 Party Alignment
               </span>
               {alignMeta && (
@@ -223,7 +223,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Race info */}
         {race && (
           <section className="mb-8">
-            <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <div className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
               Race
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-4">
@@ -254,7 +254,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Bio */}
         {candidate.bio && (
           <section className="mb-8">
-            <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <div className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
               About
             </div>
             <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">
@@ -266,7 +266,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Issues & Stances */}
         {candidateStances.length > 0 && (
           <section className="mb-8">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
               Issues & Stances
             </h2>
             <div className="space-y-3">
@@ -302,7 +302,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Campaign website */}
         {candidate.website_url && (
           <section className="mb-10">
-            <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <div className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
               Links
             </div>
             <a

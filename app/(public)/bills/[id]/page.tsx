@@ -190,7 +190,7 @@ export default async function BillDetailPage({ params }: PageProps) {
         {/* Vote summary */}
         {total > 0 && (
           <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
               Vote Tally
             </h2>
 
@@ -242,7 +242,7 @@ export default async function BillDetailPage({ params }: PageProps) {
             </div>
 
             {/* Party breakdown bars */}
-            <h3 className="mb-3 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <h3 className="mb-3 text-sm font-semibold text-[var(--codex-sub)]">
               By Party
             </h3>
             <div className="space-y-2.5">
@@ -280,7 +280,7 @@ export default async function BillDetailPage({ params }: PageProps) {
         {/* Individual votes grouped by vote type */}
         {total > 0 && (
           <section className="mb-10">
-            <h2 className="mb-5 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <h2 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
               Individual Votes
             </h2>
             {voteGroups.map((voteType) => {

@@ -99,3 +99,27 @@ export function stanceBucket(stance: string): 'supports' | 'opposes' | 'neutral'
       return 'unknown'
   }
 }
+
+/**
+ * Simplified 3-tier stance display for the redesigned UI.
+ * Collapses 7-point scale into For / Mixed / Against / Unknown.
+ */
+export interface StanceDisplay {
+  label: 'For' | 'Mixed' | 'Against' | 'Unknown'
+  color: string
+  bgColor: string
+}
+
+export function getStanceDisplay(stance: string): StanceDisplay {
+  switch (stanceBucket(stance)) {
+    case 'supports':
+      return { label: 'For', color: '#10B981', bgColor: '#ECFDF5' }
+    case 'opposes':
+      return { label: 'Against', color: '#EF4444', bgColor: '#FEF2F2' }
+    case 'neutral':
+    case 'mixed':
+      return { label: 'Mixed', color: '#F59E0B', bgColor: '#FFFBEB' }
+    default:
+      return { label: 'Unknown', color: '#9CA3AF', bgColor: '#F3F4F6' }
+  }
+}

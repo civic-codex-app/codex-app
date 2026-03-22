@@ -17,7 +17,7 @@ interface TrendingPolitician {
   follow_count: number
 }
 
-export function Trending() {
+export function Trending({ minTotalFollows = 0 }: { minTotalFollows?: number }) {
   const [data, setData] = useState<TrendingPolitician[] | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -26,12 +26,18 @@ export function Trending() {
       .then((res) => res.json())
       .then((json) => {
         if (Array.isArray(json) && json.length > 0) {
+          // Check minimum total follows threshold
+          const totalFollows = json.reduce((sum: number, p: TrendingPolitician) => sum + p.follow_count, 0)
+          if (minTotalFollows > 0 && totalFollows < minTotalFollows) {
+            // Below threshold — hide section
+            return
+          }
           setData(json)
         }
       })
       .catch(() => {})
       .finally(() => setLoading(false))
-  }, [])
+  }, [minTotalFollows])
 
   // Loading skeleton
   if (loading) {

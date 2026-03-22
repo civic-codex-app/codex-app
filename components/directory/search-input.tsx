@@ -15,7 +15,7 @@ interface Suggestion {
   image_url: string | null
 }
 
-export function SearchInput() {
+export function SearchInput({ size = 'default' }: { size?: 'default' | 'lg' }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -169,7 +169,11 @@ export function SearchInput() {
         autoCorrect="off"
         autoCapitalize="off"
         autoComplete="off"
-        className="w-full rounded-xl border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-5 py-3.5 pr-12 font-sans text-[15px] text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-input-focus)] focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)] sm:py-4 sm:text-[14.5px]"
+        className={`w-full rounded-xl border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] pr-12 font-sans text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-input-focus)] focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)] ${
+          size === 'lg'
+            ? 'h-12 px-5 text-base sm:h-14 sm:text-[16px]'
+            : 'px-5 py-3.5 text-[15px] sm:py-4 sm:text-[14.5px]'
+        }`}
       />
       {/* Clear button */}
       {value && !isPending && (
