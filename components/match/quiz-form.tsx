@@ -444,15 +444,15 @@ export function QuizForm({ issues }: Props) {
             className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-xl border-2 border-blue-500 bg-blue-500/10"
             style={{ opacity: swipeOpacityFor }}
           >
-            <span className="text-[20px] font-bold text-blue-500">FOR</span>
+            <span className="text-[20px] font-bold text-blue-500">SIDE A</span>
           </div>
         )}
         {swipeOpacityAgainst > 0 && (
           <div
-            className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-xl border-2 border-orange-500 bg-orange-500/10"
+            className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-xl border-2 border-red-500 bg-red-500/10"
             style={{ opacity: swipeOpacityAgainst }}
           >
-            <span className="text-[20px] font-bold text-orange-500">AGAINST</span>
+            <span className="text-[20px] font-bold text-red-500">SIDE B</span>
           </div>
         )}
 
@@ -468,13 +468,11 @@ export function QuizForm({ issues }: Props) {
         >
           {/* Card header */}
           <div className="mb-3 flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-500/20">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-500/20 text-[13px] font-bold text-blue-500">
+              A
             </div>
             <span className="text-[13px] font-bold uppercase tracking-wider text-blue-500">
-              For
+              Side A
             </span>
           </div>
 
@@ -514,16 +512,12 @@ export function QuizForm({ issues }: Props) {
             </div>
           )}
 
-          {/* Checkmark animation */}
+          {/* Selected indicator */}
           {showCheck && selectedSide === 'for' && (
             <div
-              className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500"
+              className="absolute right-3 top-3 h-4 w-4 rounded-full bg-blue-500"
               style={{ animation: 'checkPop 0.3s ease forwards' }}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
+            />
           )}
         </button>
 
@@ -532,21 +526,18 @@ export function QuizForm({ issues }: Props) {
           onClick={() => pickSide('against')}
           className={`quiz-card relative cursor-pointer rounded-xl border-2 p-4 text-left ${
             selectedSide === 'against'
-              ? 'quiz-card-selected border-orange-500 bg-orange-500/10'
-              : 'border-orange-500/20 bg-orange-500/5 hover:border-orange-500/40'
+              ? 'quiz-card-selected border-red-500 bg-red-500/10'
+              : 'border-red-500/20 bg-red-500/5 hover:border-red-500/40'
           }`}
           style={{ background: 'none', font: 'inherit' }}
         >
           {/* Card header */}
           <div className="mb-3 flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-500/20">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#EA580C" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-red-500/20 text-[13px] font-bold text-red-500">
+              B
             </div>
-            <span className="text-[13px] font-bold uppercase tracking-wider text-orange-500">
-              Against
+            <span className="text-[13px] font-bold uppercase tracking-wider text-red-500">
+              Side B
             </span>
           </div>
 
@@ -554,7 +545,7 @@ export function QuizForm({ issues }: Props) {
           <ul className="space-y-2">
             {againstBullets.map((bullet, i) => (
               <li key={i} className="flex items-start gap-2 text-[13px] leading-[1.5] text-[var(--codex-sub)]">
-                <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500/50" />
+                <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-red-500/50" />
                 {bullet}
               </li>
             ))}
@@ -562,8 +553,8 @@ export function QuizForm({ issues }: Props) {
 
           {/* Intensity selector - appears inside card when selected */}
           {selectedSide === 'against' && (
-            <div className="mt-4 border-t border-orange-500/20 pt-3">
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-orange-600">
+            <div className="mt-4 border-t border-red-500/20 pt-3">
+              <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-red-600">
                 How strongly?
               </p>
               <div className="flex gap-2">
@@ -576,7 +567,7 @@ export function QuizForm({ issues }: Props) {
                         e.stopPropagation()
                         selectIntensity('against', intensity)
                       }}
-                      className="intensity-btn flex-1 rounded-lg border border-orange-500/30 bg-orange-500/10 px-2 py-2 text-[12px] font-semibold text-orange-600 hover:bg-orange-500/20"
+                      className="intensity-btn flex-1 rounded-lg border border-red-500/30 bg-red-500/10 px-2 py-2 text-[12px] font-semibold text-red-600 hover:bg-red-500/20"
                     >
                       {labels[intensity]}
                     </button>
@@ -586,16 +577,12 @@ export function QuizForm({ issues }: Props) {
             </div>
           )}
 
-          {/* Checkmark animation */}
+          {/* Selected indicator */}
           {showCheck && selectedSide === 'against' && (
             <div
-              className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-orange-500"
+              className="absolute right-3 top-3 h-4 w-4 rounded-full bg-red-500"
               style={{ animation: 'checkPop 0.3s ease forwards' }}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
+            />
           )}
         </button>
       </div>
@@ -608,7 +595,7 @@ export function QuizForm({ issues }: Props) {
             const isCurrent = i === currentStep
             let dotColor = 'bg-[var(--codex-border)]' // unanswered
             if (ans) {
-              dotColor = isForSide(ans) ? 'bg-blue-500' : 'bg-orange-500'
+              dotColor = isForSide(ans) ? 'bg-blue-500' : 'bg-red-500'
             }
             return (
               <button
@@ -635,7 +622,7 @@ export function QuizForm({ issues }: Props) {
               Halfway there! You lean{' '}
               <span className="font-semibold text-blue-500">for</span> on {forCount} issue
               {forCount !== 1 ? 's' : ''},{' '}
-              <span className="font-semibold text-orange-500">against</span> on {againstCount}
+              <span className="font-semibold text-red-500">against</span> on {againstCount}
             </p>
           ) : answeredCount >= 3 ? (
             <p className="text-[var(--codex-faint)]">Your profile is taking shape...</p>

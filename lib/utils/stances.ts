@@ -27,18 +27,18 @@ export interface StanceStyle {
 }
 
 /** Full stance style config for every stance type
- *  Uses a neutral blue↔orange spectrum to avoid green=good/red=bad bias.
- *  Labels use "For/Against" not "Supports/Opposes" to stay impartial.
+ *  Uses a blue↔red political spectrum — how blue or red is this position?
+ *  No good/bad judgment, just where on the spectrum it falls.
  */
 export const STANCE_STYLES: Record<string, StanceStyle> = {
-  strongly_supports: { bg: 'bg-blue-600/15',    text: 'text-blue-400',    label: 'Strongly For',    color: '#2563EB', shortLabel: 'Strong For' },
+  strongly_supports: { bg: 'bg-blue-600/15',    text: 'text-blue-400',    label: 'Strongly For',    color: '#1D4ED8', shortLabel: 'Strong For' },
   supports:          { bg: 'bg-blue-500/10',     text: 'text-blue-400',    label: 'For',             color: '#3B82F6', shortLabel: 'For' },
-  leans_support:     { bg: 'bg-sky-500/10',      text: 'text-sky-400',     label: 'Leans For',       color: '#0EA5E9', shortLabel: 'Leans For' },
+  leans_support:     { bg: 'bg-blue-400/10',     text: 'text-blue-300',    label: 'Leans For',       color: '#60A5FA', shortLabel: 'Leans For' },
   neutral:           { bg: 'bg-gray-500/10',     text: 'text-gray-400',    label: 'Neutral',         color: '#9CA3AF', shortLabel: 'Neutral' },
-  mixed:             { bg: 'bg-amber-500/10',    text: 'text-amber-400',   label: 'Mixed',           color: '#F59E0B', shortLabel: 'Mixed' },
-  leans_oppose:      { bg: 'bg-orange-500/10',   text: 'text-orange-400',  label: 'Leans Against',   color: '#F97316', shortLabel: 'Leans Against' },
-  opposes:           { bg: 'bg-orange-600/10',   text: 'text-orange-400',  label: 'Against',         color: '#EA580C', shortLabel: 'Against' },
-  strongly_opposes:  { bg: 'bg-orange-700/15',   text: 'text-orange-300',  label: 'Strongly Against', color: '#C2410C', shortLabel: 'Strong Against' },
+  mixed:             { bg: 'bg-purple-500/10',   text: 'text-purple-400',  label: 'Mixed',           color: '#A855F7', shortLabel: 'Mixed' },
+  leans_oppose:      { bg: 'bg-red-400/10',      text: 'text-red-300',     label: 'Leans Against',   color: '#F87171', shortLabel: 'Leans Against' },
+  opposes:           { bg: 'bg-red-500/10',      text: 'text-red-400',     label: 'Against',         color: '#EF4444', shortLabel: 'Against' },
+  strongly_opposes:  { bg: 'bg-red-600/15',      text: 'text-red-400',     label: 'Strongly Against', color: '#DC2626', shortLabel: 'Strong Against' },
   unknown:           { bg: 'bg-[var(--codex-badge-bg)]', text: 'text-[var(--codex-faint)]', label: 'Unknown', color: '#6B7280', shortLabel: 'Unknown' },
 }
 
