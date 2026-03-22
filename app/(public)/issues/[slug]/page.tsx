@@ -95,11 +95,21 @@ const GENERIC_PATTERNS = [
   /^has\s+(a\s+)?(mixed|neutral|unknown)\s+(stance|position)/i,
   /^no\s+(known\s+)?(stance|position)/i,
   /^position\s+(is\s+)?(unclear|unknown)/i,
+  /supports?\s+key\s+aspects?\s+of/i,
+  /opposes?\s+key\s+aspects?\s+of/i,
+  /generally\s+(supports?|opposes?|favors?)/i,
+  /estimated\s+position/i,
+  /based\s+on\s+party/i,
+  /^\w+\s+\w+\s+supports?\s+key\s+aspects/i, // "[Name] supports key aspects"
+  /^\w+\s+\w+\s+opposes?\s+key\s+aspects/i,
+  /^\w+\s+\w+\s+has\s+(a\s+)?(mixed|neutral)/i,
+  /^\w+\s+\w+\s+generally\s+(supports?|opposes?)/i,
 ]
 
 function isGenericSummary(summary: string | null): boolean {
   if (!summary || summary.trim().length === 0) return true
   if (summary.trim().length < 20) return true
+  // Also treat as generic if it's a very common summary seen many times
   return GENERIC_PATTERNS.some((p) => p.test(summary.trim()))
 }
 
@@ -164,7 +174,14 @@ function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]) {
       if (isGenericSummary(s.summary)) {
         noSummaryPols.push(polData)
       } else {
+        // Normalize: lowercase, strip trailing punctuation, collapse whitespace,
+        // remove common filler words to catch near-identical summaries
         const key = s.summary!.trim().toLowerCase()
+          .replace(/[.,;:!?]+$/g, '')
+          .replace(/\s+/g, ' ')
+          .replace(/\b(the|a|an|of|and|in|on|for|to|is|has|with|their|this|that)\b/g, '')
+          .replace(/\s+/g, ' ')
+          .trim()
         const existing = summaryMap.get(key)
         if (existing) {
           existing.politicians.push(polData)
