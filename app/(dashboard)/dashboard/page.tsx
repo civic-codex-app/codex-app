@@ -10,6 +10,7 @@ import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { STATE_NAMES } from '@/lib/constants/us-states'
+import { QuizProgressCard } from '@/components/dashboard/quiz-progress-card'
 
 const QUICK_LINKS = [
   {
@@ -356,7 +357,8 @@ export default async function DashboardPage() {
           Quick Links
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {QUICK_LINKS.map((link) => (
+          <QuizProgressCard />
+          {QUICK_LINKS.filter(l => l.href !== '/quiz').map((link) => (
             <Link
               key={link.href}
               href={link.href}
