@@ -216,8 +216,7 @@ export default async function InsightsPage() {
             Political Insights
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
-            Data-driven analysis of political positions, party alignment, and bipartisan cooperation
-            across the American political landscape.
+            See how politicians vote, where the money goes, and who works together.
           </p>
         </div>
 
@@ -228,7 +227,7 @@ export default async function InsightsPage() {
               Chamber Composition
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
-              Current party breakdown by chamber
+              Which party has the most seats in each part of government
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -263,7 +262,7 @@ export default async function InsightsPage() {
               Issue Consensus Heatmap
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
-              How party members break on each issue
+              Where the two parties agree and disagree the most
             </p>
           </div>
           <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
@@ -280,7 +279,7 @@ export default async function InsightsPage() {
               Political Spectrum
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
-              Where each politician falls on the party alignment scale
+              How closely each politician votes with their own party
             </p>
           </div>
           <Suspense fallback={<ChartSkeleton />}>
@@ -295,7 +294,7 @@ export default async function InsightsPage() {
               Bipartisan Index
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
-              Who works across the aisle most -- and least
+              Which politicians work with the other party the most -- and the least
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2">
@@ -303,7 +302,8 @@ export default async function InsightsPage() {
               <Suspense fallback={<ChartSkeleton />}>
                 <BipartisanScoreCard
                   politicians={mostBipartisan}
-                  title="Most Bipartisan"
+                  title="Works with both sides"
+                  subtitle="Ranked by how often they work with the other party"
                   limit={10}
                 />
               </Suspense>
@@ -312,7 +312,8 @@ export default async function InsightsPage() {
               <Suspense fallback={<ChartSkeleton />}>
                 <BipartisanScoreCard
                   politicians={mostPartisan}
-                  title="Most Partisan"
+                  title="Sticks with their own party"
+                  subtitle="Ranked by how often they only vote with their own side"
                   limit={10}
                 />
               </Suspense>

@@ -34,9 +34,9 @@ function formatMoney(amount: number): string {
 }
 
 const METRIC_LABELS: Record<Metric, string> = {
-  raised: 'Total Raised',
-  spent: 'Total Spent',
-  cash: 'Cash on Hand',
+  raised: 'Money Raised',
+  spent: 'Money Spent',
+  cash: 'Money Left to Spend',
 }
 
 export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {

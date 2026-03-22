@@ -21,11 +21,11 @@ interface PartyAlignmentSpectrumProps {
 type ChamberFilter = 'all' | 'senate' | 'house'
 
 const SPECTRUM_LABELS = [
-  { position: 0, label: 'Maverick' },
+  { position: 0, label: 'Goes their own way' },
   { position: 25, label: '' },
-  { position: 50, label: 'Moderate' },
+  { position: 50, label: 'Sometimes breaks away' },
   { position: 75, label: '' },
-  { position: 100, label: 'Party Loyalist' },
+  { position: 100, label: 'Always with their party' },
 ]
 
 export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumProps) {
@@ -271,6 +271,11 @@ export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumPr
           })}
         </svg>
       </div>
+
+      {/* Histogram explainer */}
+      <p className="mt-2 text-[12px] text-[var(--codex-faint)]">
+        Taller bars = more politicians at that score
+      </p>
 
       {/* Party legend */}
       <div className="mt-3 flex flex-wrap items-center gap-4">

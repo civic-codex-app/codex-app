@@ -197,7 +197,10 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
           <span style={{ color: partyColor(majority.party) }}>
             {partyLabel(majority.party)}
           </span>
-          {' '}majority{margin > 0 ? ` (+${margin})` : ''} | {majorityThreshold} needed
+          {margin > 0
+            ? ` is in charge \u2014 they have ${margin} more seats than they need`
+            : ' majority'}
+          <div className="mt-0.5">They need {majorityThreshold} seats to be in charge</div>
         </div>
       )}
     </div>

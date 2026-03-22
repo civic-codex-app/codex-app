@@ -14,6 +14,7 @@ import { FollowButton } from '@/components/directory/follow-button'
 import { LikeButton } from '@/components/directory/like-button'
 import { AnnotationList } from '@/components/annotations/annotation-list'
 import { SubmitAnnotation } from '@/components/annotations/submit-annotation'
+import { YourAlignment } from '@/components/politicians/your-alignment'
 export const revalidate = 600 // 10 minutes
 
 import type { Politician } from '@/lib/types/politician'
@@ -377,6 +378,18 @@ export default async function PoliticianPage({ params }: PageProps) {
                 pol.state,
                 pol.since_year ? `Since ${pol.since_year}` : null,
               ].filter(Boolean).join(' \u00b7 ')}
+            </div>
+
+            {/* Your Alignment — shows if user took the quiz */}
+            <div className="mt-6">
+              <YourAlignment
+                politicianName={pol.name}
+                politicianSlug={pol.slug}
+                politicianStances={politicianStances.map((s: any) => ({
+                  issue_slug: s.issues?.slug ?? '',
+                  stance: s.stance,
+                }))}
+              />
             </div>
 
             {/* Party Alignment Gauge */}

@@ -17,12 +17,14 @@ interface PoliticianScore {
 interface BipartisanScoreCardProps {
   politicians: PoliticianScore[]
   title?: string
+  subtitle?: string
   limit?: number
 }
 
 export function BipartisanScoreCard({
   politicians,
   title = 'Bipartisan Index',
+  subtitle,
   limit = 10,
 }: BipartisanScoreCardProps) {
   const [mounted, setMounted] = useState(false)
@@ -40,7 +42,11 @@ export function BipartisanScoreCard({
 
   return (
     <div className="w-full">
-      <h3 className="mb-5 text-lg font-semibold text-[var(--codex-text)]">{title}</h3>
+      <h3 className="mb-1 text-lg font-semibold text-[var(--codex-text)]">{title}</h3>
+      {subtitle && (
+        <p className="mb-5 text-[13px] text-[var(--codex-faint)]">{subtitle}</p>
+      )}
+      {!subtitle && <div className="mb-5" />}
 
       <div className="space-y-1">
         {sorted.map((p, i) => {
