@@ -40,6 +40,7 @@ import { CampaignFinance } from '@/components/politicians/campaign-finance'
 import { ElectionHistory } from '@/components/politicians/election-history'
 import { stanceStyle } from '@/lib/utils/stances'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
+import { getStanceContext } from '@/lib/data/educational-content'
 
 interface PageProps {
   params: Promise<{ slug: string }>

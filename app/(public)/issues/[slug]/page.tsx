@@ -11,6 +11,7 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { IssueDetailFilters } from '@/components/filters/issue-detail-filters'
 import { stanceBucket, STANCE_STYLES, STANCE_ORDER } from '@/lib/utils/stances'
 import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
+import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
 
 export const revalidate = 600 // 10 minutes
 
@@ -249,6 +250,28 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
         {issue.description && (
           <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">{issue.description}</p>
+        )}
+
+        {/* What this means — educational explainer */}
+        {ISSUE_EXPLAINERS[slug] && (
+          <div className="mb-6 rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-4">
+            <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--codex-faint)]">
+              What This Means
+            </div>
+            <p className="mb-3 text-[13px] leading-[1.6] text-[var(--codex-sub)]">
+              {ISSUE_EXPLAINERS[slug].description}
+            </p>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-md bg-green-500/5 px-3 py-2">
+                <span className="text-[11px] font-medium text-green-400">Supports</span>
+                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].supportsExplainer}</p>
+              </div>
+              <div className="rounded-md bg-red-500/5 px-3 py-2">
+                <span className="text-[11px] font-medium text-red-400">Opposes</span>
+                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].opposesExplainer}</p>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Summary stats */}

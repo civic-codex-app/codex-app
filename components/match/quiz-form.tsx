@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { STANCE_STYLES } from '@/lib/utils/stances'
+import { QUIZ_CONTENT } from '@/lib/data/quiz-content'
 import { MatchResults } from './match-results'
 
 interface Issue {
@@ -143,45 +144,69 @@ export function QuizForm({ issues }: Props) {
       </div>
 
       {/* Issue header */}
-      <div className="mb-8 text-center">
-        <div className="mb-3 flex items-center justify-center gap-2 text-[var(--codex-sub)]">
-          <IssueIcon icon={issue.icon} size={20} />
-        </div>
-        <h2 className="text-[clamp(1.25rem,3vw,1.75rem)] font-semibold text-[var(--codex-text)]">
-          {issue.name}
-        </h2>
-        {issue.description && (
-          <p className="mt-2 text-[14px] leading-relaxed text-[var(--codex-sub)]">
-            {issue.description}
-          </p>
-        )}
-      </div>
+      {(() => {
+        const content = QUIZ_CONTENT[issue.slug]
+        return (
+          <>
+            <div className="mb-8 text-center">
+              <div className="mb-3 flex items-center justify-center gap-2 text-[var(--codex-sub)]">
+                <IssueIcon icon={issue.icon} size={20} />
+                <span className="text-[12px] font-medium uppercase tracking-[0.15em]">
+                  {issue.name}
+                </span>
+              </div>
+              <h2 className="text-[clamp(1.25rem,3vw,1.75rem)] font-semibold text-[var(--codex-text)]">
+                {content?.question ?? issue.name}
+              </h2>
+              {content?.whyItMatters && (
+                <p className="mt-2 text-[14px] leading-relaxed text-[var(--codex-sub)]">
+                  {content.whyItMatters}
+                </p>
+              )}
+            </div>
 
-      {/* Stance buttons */}
-      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-2">
-        {QUIZ_STANCES.map((stance) => {
-          const style = STANCE_STYLES[stance]
-          const isSelected = selected === stance
-          return (
-            <button
-              key={stance}
-              onClick={() => selectStance(stance)}
-              className={`rounded-lg border px-4 py-2.5 text-[14px] font-medium transition-all sm:px-3 sm:py-2 ${
-                isSelected
-                  ? 'border-transparent text-white'
-                  : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:border-[var(--codex-input-border)] hover:text-[var(--codex-text)]'
-              }`}
-              style={
-                isSelected
-                  ? { backgroundColor: style.color }
-                  : undefined
-              }
-            >
-              {style.label}
-            </button>
-          )
-        })}
-      </div>
+            {/* Stance buttons */}
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-2">
+              {QUIZ_STANCES.map((stance) => {
+                const style = STANCE_STYLES[stance]
+                const isSelected = selected === stance
+                return (
+                  <button
+                    key={stance}
+                    onClick={() => selectStance(stance)}
+                    className={`rounded-lg border px-4 py-2.5 text-[14px] font-medium transition-all sm:px-3 sm:py-2 ${
+                      isSelected
+                        ? 'border-transparent text-white'
+                        : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:border-[var(--codex-input-border)] hover:text-[var(--codex-text)]'
+                    }`}
+                    style={
+                      isSelected
+                        ? { backgroundColor: style.color }
+                        : undefined
+                    }
+                  >
+                    {style.label}
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Real-world examples */}
+            {content && (
+              <div className="mt-4 flex justify-between gap-4 text-[12px] leading-snug text-[var(--codex-faint)]">
+                <div className="max-w-[45%]">
+                  <span className="font-medium text-[var(--codex-sub)]">Supports means: </span>
+                  {content.supportsMeans}
+                </div>
+                <div className="max-w-[45%] text-right">
+                  <span className="font-medium text-[var(--codex-sub)]">Opposes means: </span>
+                  {content.opposesMeans}
+                </div>
+              </div>
+            )}
+          </>
+        )
+      })()}
 
       {/* Skip button */}
       <div className="mt-3 text-center">

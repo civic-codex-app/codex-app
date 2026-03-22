@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { stanceBucket } from '@/lib/utils/stances'
 import { partyColor } from '@/lib/constants/parties'
 import { IssueSortSelect } from '@/components/filters/issue-sort-select'
+import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 
 export const revalidate = 600 // 10 minutes
 
@@ -164,6 +165,10 @@ export default async function IssuesPage({ searchParams }: PageProps) {
                     {issue.name}
                   </h3>
                 </div>
+
+                {ISSUE_SUBTITLES[issue.slug] && (
+                  <p className="mb-1.5 text-[12px] italic text-[var(--codex-faint)]">{ISSUE_SUBTITLES[issue.slug]}</p>
+                )}
 
                 {issue.description && (
                   <p className="mb-3 line-clamp-2 text-[13px] text-[var(--codex-sub)]">{issue.description}</p>
