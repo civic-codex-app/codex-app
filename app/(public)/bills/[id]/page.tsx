@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { FollowBillButton } from '@/components/bills/follow-bill-button'
+import { BILL_STATUS_EXPLAINERS, BILL_PROCESS_EXPLAINER, VOTE_EXPLAINERS } from '@/lib/data/educational-content'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -158,6 +159,7 @@ export default async function BillDetailPage({ params }: PageProps) {
           <span
             className="rounded-sm px-2.5 py-0.5 text-[11px] uppercase tracking-[0.06em]"
             style={{ color: sc.color, background: sc.bg }}
+            title={BILL_STATUS_EXPLAINERS[bill.status] ?? ''}
           >
             {sc.label}
           </span>
@@ -172,6 +174,12 @@ export default async function BillDetailPage({ params }: PageProps) {
         <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {bill.title}
         </h1>
+
+        {BILL_STATUS_EXPLAINERS[bill.status] && (
+          <p className="mb-3 text-[12px] leading-[1.5] text-[var(--codex-faint)]">
+            {BILL_STATUS_EXPLAINERS[bill.status]}
+          </p>
+        )}
 
         {bill.summary && (
           <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">{bill.summary}</p>
@@ -223,19 +231,19 @@ export default async function BillDetailPage({ params }: PageProps) {
             </div>
 
             <div className="mb-5 grid grid-cols-4 gap-4">
-              <div>
+              <div title={VOTE_EXPLAINERS.yea}>
                 <div className="text-2xl font-bold text-green-400">{yea}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Yea</div>
               </div>
-              <div>
+              <div title={VOTE_EXPLAINERS.nay}>
                 <div className="text-2xl font-bold text-red-400">{nay}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Nay</div>
               </div>
-              <div>
+              <div title={VOTE_EXPLAINERS.abstain}>
                 <div className="text-2xl font-bold text-yellow-400">{abstain}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Abstain</div>
               </div>
-              <div>
+              <div title={VOTE_EXPLAINERS.not_voting}>
                 <div className="text-2xl font-bold text-[var(--codex-faint)]">{notVoting}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Not Voting</div>
               </div>

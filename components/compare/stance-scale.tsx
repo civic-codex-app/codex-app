@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
+import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 
 interface StanceScaleProps {
   issues: Array<{ slug: string; name: string; icon?: string; a?: string; b?: string }>
@@ -45,15 +46,20 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
               }}
             >
               {/* Issue name */}
-              <Link
-                href={`/issues/${issue.slug}`}
-                className="flex items-center gap-2 text-[13px] font-medium text-[var(--codex-text)] hover:underline"
-              >
-                {issue.icon && (
-                  <IssueIcon icon={issue.icon} size={14} className="text-[var(--codex-sub)]" />
+              <div>
+                <Link
+                  href={`/issues/${issue.slug}`}
+                  className="flex items-center gap-2 text-[13px] font-medium text-[var(--codex-text)] hover:underline"
+                >
+                  {issue.icon && (
+                    <IssueIcon icon={issue.icon} size={14} className="text-[var(--codex-sub)]" />
+                  )}
+                  {issue.name}
+                </Link>
+                {ISSUE_SUBTITLES[issue.slug] && (
+                  <p className="mt-0.5 text-[11px] leading-[1.4] text-[var(--codex-faint)]">{ISSUE_SUBTITLES[issue.slug]}</p>
                 )}
-                {issue.name}
-              </Link>
+              </div>
 
               {/* Stance badges */}
               <div className="mt-2 flex flex-wrap items-center gap-2 sm:mt-0 sm:contents">

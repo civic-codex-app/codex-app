@@ -17,6 +17,7 @@ import type {
   ElectionJoin,
   ElectionStanceRow,
 } from '@/lib/types/supabase'
+import { CHAMBER_EXPLAINERS } from '@/lib/data/educational-content'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -148,6 +149,12 @@ export default async function RaceDetailPage({ params }: PageProps) {
         <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {race.name}
         </h1>
+
+        {CHAMBER_EXPLAINERS[race.chamber] && (
+          <p className="mb-4 text-[12px] leading-[1.5] text-[var(--codex-faint)]">
+            {CHAMBER_EXPLAINERS[race.chamber]}
+          </p>
+        )}
 
         {election?.election_date && (
           <div className="mb-4">

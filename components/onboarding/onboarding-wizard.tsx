@@ -253,12 +253,12 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
             </div>
           )}
 
-          {/* -------- Step 3: Voter Match -------- */}
+          {/* -------- Step 3: Alignment Quiz -------- */}
           {step === 3 && (
             <div className="space-y-6">
               <div className="text-center">
                 <h1 className="mb-2 text-2xl font-bold text-[var(--codex-text)]">
-                  Find your match
+                  See who agrees with you
                 </h1>
                 <p className="mx-auto max-w-sm text-sm leading-relaxed text-[var(--codex-sub)]">
                   Take a 2-minute quiz to find which politicians align with your

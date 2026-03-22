@@ -17,7 +17,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   // Default metadata when no share params
   if (!result || !score) {
     return {
-      title: 'Voter Match -- Codex',
+      title: 'Alignment Quiz -- Codex',
       description:
         'Answer questions on key political issues and find which politicians most closely match your views.',
     }
@@ -33,14 +33,14 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
   if (!politician) {
     return {
-      title: 'Voter Match -- Codex',
+      title: 'Alignment Quiz -- Codex',
       description:
         'Answer questions on key political issues and find which politicians most closely match your views.',
     }
   }
 
   const title = `${score}% Match with ${politician.name} -- Codex`
-  const description = `I'm ${score}% aligned with ${politician.name}. Take the Voter Match quiz on Codex to find your match!`
+  const description = `I'm ${score}% aligned with ${politician.name}. Take the Alignment Quiz quiz on Codex to see who agrees with you!`
 
   const ogImageUrl = `${BASE_URL}/api/og/match?${new URLSearchParams({
     name: politician.name,
@@ -90,7 +90,7 @@ export default async function MatchPage() {
       <main className="mx-auto max-w-2xl px-6 pt-6 pb-20 md:px-10">
         <div className="mb-10 text-center">
           <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight text-[var(--codex-text)]">
-            Find Your Match
+            Who Agrees With You?
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-[var(--codex-sub)]">
             Share your stance on key issues and we'll show you which politicians

@@ -536,6 +536,11 @@ export default async function PoliticianPage({ params }: PageProps) {
                           {isEstimated && !hasRealSummary && (
                             <p className="mt-1.5 text-[11px] italic text-[var(--codex-faint)]">Estimated from party affiliation — not yet verified</p>
                           )}
+                          {!hasRealSummary && s.issues?.slug && getStanceContext(s.issues.slug, s.stance) && (
+                            <p className="mt-1 text-[11px] leading-[1.5] text-[var(--codex-faint)]">
+                              {getStanceContext(s.issues.slug, s.stance)}
+                            </p>
+                          )}
                         </div>
                       </div>
                     )

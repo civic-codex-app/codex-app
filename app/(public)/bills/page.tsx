@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import Link from 'next/link'
 import type { BillRow, BillStatRow, BillVoteRow } from '@/lib/types/supabase'
+import { BILL_PROCESS_EXPLAINER, BILL_STATUS_EXPLAINERS } from '@/lib/data/educational-content'
 
 export const revalidate = 600 // 10 minutes
 
@@ -98,6 +99,9 @@ export default async function BillsPage({ searchParams }: PageProps) {
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
             Track major bills through Congress and see how your representatives voted.
           </p>
+          <p className="mt-3 animate-fade-up text-[12px] leading-[1.6] text-[var(--codex-faint)]">
+            {BILL_PROCESS_EXPLAINER}
+          </p>
         </div>
 
         {/* Stats */}
@@ -158,6 +162,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
                     <span
                       className="rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em]"
                       style={{ color: sc.color, background: sc.bg }}
+                      title={BILL_STATUS_EXPLAINERS[bill.status] ?? ''}
                     >
                       {sc.label}
                     </span>

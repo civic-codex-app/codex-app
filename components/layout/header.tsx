@@ -58,7 +58,7 @@ const NAV_ITEMS: NavItem[] = [
 
 const USER_MENU_ITEMS: DropdownItem[] = [
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/match', label: 'Voter Match' },
+  { href: '/match', label: 'Alignment Quiz' },
   { href: '/following', label: 'Following' },
   { href: '/account', label: 'Account' },
 ]
