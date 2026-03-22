@@ -15,17 +15,15 @@ export function DeleteAccount() {
     setError('')
 
     try {
+      // Server-side deletion (uses service role to delete auth user too)
+      const res = await fetch('/api/auth/delete-account', { method: 'POST' })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error ?? 'Failed to delete account')
+      }
+
+      // Sign out client-side and redirect
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('Not authenticated')
-
-      // Delete user data (cascades via foreign keys)
-      await supabase.from('follows').delete().eq('user_id', user.id)
-      await supabase.from('likes').delete().eq('user_id', user.id)
-      await supabase.from('poll_votes').delete().eq('user_id', user.id)
-      await supabase.from('profiles').delete().eq('id', user.id)
-
-      // Sign out
       await supabase.auth.signOut()
       router.push('/')
       router.refresh()
