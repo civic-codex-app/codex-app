@@ -256,7 +256,21 @@ export function QuizForm({ issues }: Props) {
     submit()
   }
 
+  // Show results if we have them (cached or fresh)
   if (results) return <MatchResults results={results} stateResults={stateResults} userState={userState} onRetake={retake} onEditAnswers={editAnswers} onUpdateResults={updateResults} />
+
+  // Show loading while checking for cached results (prevents quiz flash)
+  if (!initialLoaded) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center">
+          <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-[var(--codex-text)] border-t-transparent" />
+          <p className="text-[14px] text-[var(--codex-faint)]">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (!issue) return null
 
   const content = QUIZ_CONTENT[issue.slug]
