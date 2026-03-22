@@ -14,7 +14,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
           backgroundSize: '80px 80px',
         }}
       />
-      <main id="main-content" className="pb-[72px] sm:pb-0">
+      <main id="main-content" className="pb-[72px] sm:pb-0" style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
         {/* Data freshness disclaimer */}
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
           <div className="mb-0 mt-2 rounded-lg border border-amber-500/15 bg-amber-500/5 px-4 py-2 text-[11px] text-[var(--codex-faint)] sm:mt-0">

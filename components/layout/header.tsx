@@ -19,7 +19,9 @@ export function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="sticky top-0 z-40 mb-6 border-b border-[var(--codex-border)] bg-[var(--codex-bg)] sm:mb-8 md:mb-10">
+    <header className="sticky z-40 mb-6 border-b border-[var(--codex-border)] bg-[var(--codex-bg)] sm:mb-8 md:mb-10" style={{ top: 'env(safe-area-inset-top, 0px)' }}>
+      {/* Fixed background behind iOS status bar */}
+      <div className="fixed left-0 right-0 top-0 -z-10 bg-[var(--codex-bg)]" style={{ height: 'env(safe-area-inset-top, 0px)' }} />
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded-md focus:bg-[var(--codex-card)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--codex-text)] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--codex-input-focus)]"
