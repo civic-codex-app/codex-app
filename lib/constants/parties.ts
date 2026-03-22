@@ -1,5 +1,5 @@
 export const PARTIES = {
-  democrat: { label: 'Democrat', color: '#2563EB' },
+  democrat: { label: 'Democratic', color: '#2563EB' },
   republican: { label: 'Republican', color: '#DC2626' },
   green: { label: 'Green', color: '#16A34A' },
   independent: { label: 'Independent', color: '#7C3AED' },

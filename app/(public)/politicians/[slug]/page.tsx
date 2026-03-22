@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createClient as createServerAuthClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { PartyPill } from '@/components/directory/party-pill'
@@ -122,6 +123,14 @@ export default async function PoliticianPage({ params }: PageProps) {
 
   // Compute party alignment score
   const alignmentScore = computeAlignment(pol.party, politicianStances)
+
+  // Check if user is authenticated (for gating report card)
+  let isAuthenticated = false
+  try {
+    const authClient = await createServerAuthClient()
+    const { data: { user } } = await authClient.auth.getUser()
+    isAuthenticated = !!user
+  } catch {}
 
   // Compute report card
   const verifiedCount = politicianStances.filter((s: any) => s.is_verified).length
@@ -267,24 +276,24 @@ export default async function PoliticianPage({ params }: PageProps) {
 
           {/* Info */}
           <div className="min-w-0">
-            {/* Mobile: compact avatar + name row */}
+            {/* Mobile: large avatar + name row */}
             <div className="mb-5 flex items-center gap-4 md:hidden">
               <div
-                className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
+                className="h-40 w-40 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
                 style={{ border: `2.5px solid ${color}44` }}
               >
                 {pol.image_url ? (
                   <Image
                     src={pol.image_url}
                     alt={pol.name}
-                    width={64}
-                    height={64}
+                    width={160}
+                    height={160}
                     unoptimized
                     className="h-full w-full object-cover object-top"
                     style={{ filter: 'grayscale(20%)' }}
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center font-serif text-[32px] text-[var(--codex-text)] opacity-20" aria-hidden="true">
+                  <div className="flex h-full w-full items-center justify-center font-serif text-[64px] text-[var(--codex-text)] opacity-20" aria-hidden="true">
                     {pol.name.charAt(0)}
                   </div>
                 )}
@@ -381,9 +390,29 @@ export default async function PoliticianPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Report Card */}
+            {/* Report Card — auth-gated */}
             <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-              <PoliticianReportCard {...reportCard} />
+              {isAuthenticated ? (
+                <PoliticianReportCard {...reportCard} />
+              ) : (
+                <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-6 text-center">
+                  <h3 className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+                    Report Card
+                  </h3>
+                  <div className="mb-3 font-serif text-lg text-[var(--codex-text)]">
+                    Sign up to see the full report card
+                  </div>
+                  <p className="mb-4 text-[13px] text-[var(--codex-faint)]">
+                    Get detailed scores on bipartisanship, transparency, and effectiveness
+                  </p>
+                  <Link
+                    href="/signup"
+                    className="inline-block rounded-md bg-[var(--codex-text)] px-5 py-2 text-[13px] font-medium text-[var(--codex-card)] no-underline transition-opacity hover:opacity-90"
+                  >
+                    Create Free Account
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Breaks from Party Line */}
