@@ -151,9 +151,7 @@ export function Header() {
             <ElephantIcon size={22} color="#DC2626" />
             <DonkeyIcon size={22} color="#2563EB" />
           </Link>
-          <span className="rounded-full bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[var(--codex-badge-text)]">
-            Beta
-          </span>
+          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">Beta</span>
 
           <nav ref={navRef} className="ml-4 hidden items-center gap-1 sm:flex" aria-label="Main navigation">
             {NAV_ITEMS.map((item) => {
@@ -227,7 +225,7 @@ export function Header() {
         <div className="flex items-center gap-3">
           {/* Search icon link */}
           <Link
-            href="/search"
+            href="/"
             className="hidden text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] sm:block"
             aria-label="Search"
           >
