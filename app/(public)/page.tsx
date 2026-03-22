@@ -74,13 +74,15 @@ export default async function HomePage({ searchParams }: PageProps) {
   query = query.range(offset, offset + PAGE_SIZE - 1)
 
   // Run page query + stats in parallel
-  const [pageResult, demR, gopR, indR, totalR, chamberR] = await Promise.all([
+  const chambers = ['senate', 'house', 'governor', 'presidential', 'mayor', 'city_council', 'state_senate', 'state_house', 'county', 'school_board', 'other_local'] as const
+
+  const [pageResult, demR, gopR, indR, totalR, ...chamberResults] = await Promise.all([
     query,
     supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'democrat'),
     supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'republican'),
     supabase.from('politicians').select('id', { count: 'exact', head: true }).not('party', 'in', '("democrat","republican")'),
     supabase.from('politicians').select('id', { count: 'exact', head: true }),
-    supabase.from('politicians').select('chamber'),
+    ...chambers.map(ch => supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('chamber', ch)),
   ])
 
   const politicians = (pageResult.data ?? []) as Politician[]
@@ -126,10 +128,9 @@ export default async function HomePage({ searchParams }: PageProps) {
   const indCount = indR.count ?? 0
   const totalOfficials = totalR.count ?? 0
   const chamberCounts: Record<string, number> = {}
-  if (chamberR.data) {
-    for (const row of chamberR.data) {
-      chamberCounts[row.chamber] = (chamberCounts[row.chamber] || 0) + 1
-    }
+  for (let i = 0; i < chambers.length; i++) {
+    const count = chamberResults[i].count ?? 0
+    if (count > 0) chamberCounts[chambers[i]] = count
   }
 
   const hasFilters = !!(params.q || params.chamber || params.state || params.party)
