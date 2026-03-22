@@ -34,6 +34,7 @@ import { StanceDeviation } from '@/components/politicians/stance-deviation'
 import { PoliticianReportCard } from '@/components/politicians/report-card'
 import { computeReportCard } from '@/lib/utils/report-card'
 import { AccountabilityScore } from '@/components/politicians/accountability-score'
+import { CompareSuggestions } from '@/components/politicians/compare-suggestions'
 import { VotingHistory } from '@/components/politicians/voting-history'
 import { CampaignFinance } from '@/components/politicians/campaign-finance'
 import { ElectionHistory } from '@/components/politicians/election-history'
@@ -541,6 +542,20 @@ export default async function PoliticianPage({ params }: PageProps) {
                 </div>
               </div>
             )}
+
+            {/* Smart Compare Suggestions */}
+            <CompareSuggestions
+              politicianId={pol.id}
+              slug={pol.slug}
+              state={pol.state}
+              chamber={pol.chamber}
+              party={pol.party}
+              stances={politicianStances.map((s: any) => ({
+                issue_id: s.issue_id,
+                stance: s.stance,
+                issues: s.issues ? { slug: s.issues.slug } : null,
+              }))}
+            />
 
             {/* Voting Record */}
             {/* Votes vs Stances */}
