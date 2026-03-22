@@ -30,26 +30,53 @@ export async function POST(request: Request) {
     const supabase = createServiceRoleClient()
     const issueSlugs = Object.keys(stances)
 
-    // Fetch all politician_issues with issue slugs, paginated (1000-row limit)
-    let allRows: Array<{ politician_id: string; stance: string; issues: any }> = []
+    // First get federal politician IDs only (senate, house, governor, presidential)
+    // This drastically reduces the dataset from 7000+ to ~500
+    const FEDERAL_CHAMBERS = ['senate', 'house', 'governor', 'presidential']
+    let federalIds: string[] = []
     let from = 0
 
     while (true) {
-      const { data, error } = await supabase
-        .from('politician_issues')
-        .select('politician_id, stance, issues!inner(slug)')
-        .in('issues.slug', issueSlugs)
+      const { data } = await supabase
+        .from('politicians')
+        .select('id')
+        .in('chamber', FEDERAL_CHAMBERS)
         .range(from, from + PAGE_SIZE - 1)
 
-      if (error) {
-        console.error('Supabase error fetching politician_issues:', error)
-        return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 })
-      }
-
       if (!data || data.length === 0) break
-      allRows = allRows.concat(data as any[])
+      federalIds = federalIds.concat(data.map(p => p.id))
       if (data.length < PAGE_SIZE) break
       from += PAGE_SIZE
+    }
+
+    // Fetch stances only for federal politicians on the user's issues
+    let allRows: Array<{ politician_id: string; stance: string; issues: any }> = []
+    from = 0
+
+    // Process in chunks of 200 politician IDs to stay under URL limits
+    const CHUNK = 200
+    for (let c = 0; c < federalIds.length; c += CHUNK) {
+      const chunk = federalIds.slice(c, c + CHUNK)
+      let chunkFrom = 0
+
+      while (true) {
+        const { data, error } = await supabase
+          .from('politician_issues')
+          .select('politician_id, stance, issues!inner(slug)')
+          .in('politician_id', chunk)
+          .in('issues.slug', issueSlugs)
+          .range(chunkFrom, chunkFrom + PAGE_SIZE - 1)
+
+        if (error) {
+          console.error('Supabase error fetching politician_issues:', error)
+          return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 })
+        }
+
+        if (!data || data.length === 0) break
+        allRows = allRows.concat(data as any[])
+        if (data.length < PAGE_SIZE) break
+        chunkFrom += PAGE_SIZE
+      }
     }
 
     // Group stances by politician_id
