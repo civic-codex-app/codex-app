@@ -163,9 +163,18 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
   const stanceList = (pageData ?? []) as any as IssueStanceWithPoliticianRow[]
 
+  // Deduplicate by politician_id (a politician may have duplicate stance records)
+  const seen = new Set<string>()
+  const dedupedList = stanceList.filter((s) => {
+    const polId = (s as any).politicians?.id ?? s.id
+    if (seen.has(polId)) return false
+    seen.add(polId)
+    return true
+  })
+
   // Group by stance
   const grouped: Record<string, IssueStanceWithPoliticianRow[]> = {}
-  for (const s of stanceList) {
+  for (const s of dedupedList) {
     const key = s.stance
     if (!grouped[key]) grouped[key] = []
     grouped[key].push(s)
