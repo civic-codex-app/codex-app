@@ -30,6 +30,7 @@ export default async function IssueMapPage() {
     const { data, error } = await supabase
       .from('politicians')
       .select('id, name, slug, state, party, image_url')
+      .in('chamber', ['senate', 'house', 'governor', 'presidential'])
       .range(from, from + PAGE_SIZE - 1)
     if (error || !data || data.length === 0) break
     allPoliticians.push(...data)
@@ -38,18 +39,21 @@ export default async function IssueMapPage() {
   }
   const politicianMap = new Map(allPoliticians.map((p) => [p.id, p]))
 
-  // Fetch all politician_issues — paginated
+  // Fetch stances only for federal politicians — batch by 70 to stay under 1000 rows
   const allStances: Array<{ politician_id: string; stance: string; issue_id: string }> = []
-  from = 0
-  while (true) {
-    const { data, error } = await supabase
-      .from('politician_issues')
-      .select('politician_id, stance, issue_id')
-      .range(from, from + PAGE_SIZE - 1)
-    if (error || !data || data.length === 0) break
-    allStances.push(...(data as any[]))
-    if (data.length < PAGE_SIZE) break
-    from += PAGE_SIZE
+  const polIds = allPoliticians.map(p => p.id)
+  const BATCH = 70
+  const stancePromises = []
+  for (let i = 0; i < polIds.length; i += BATCH) {
+    stancePromises.push(
+      supabase.from('politician_issues')
+        .select('politician_id, stance, issue_id')
+        .in('politician_id', polIds.slice(i, i + BATCH))
+    )
+  }
+  const stanceResults = await Promise.all(stancePromises)
+  for (const r of stanceResults) {
+    if (r.data) allStances.push(...(r.data as any[]))
   }
 
   // Build issue id -> slug mapping
