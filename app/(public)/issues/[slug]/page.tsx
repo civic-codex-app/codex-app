@@ -118,9 +118,9 @@ function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]) {
   })
 
   const BUCKET_CONFIG = {
-    supports: { label: 'For', style: STANCE_STYLES.supports },
-    mixed: { label: 'Mixed / Neutral', style: STANCE_STYLES.mixed },
-    opposes: { label: 'Against', style: STANCE_STYLES.opposes },
+    supports: { label: 'Progressive', style: STANCE_STYLES.supports },
+    mixed: { label: 'Centrist / Mixed', style: STANCE_STYLES.mixed },
+    opposes: { label: 'Conservative', style: STANCE_STYLES.opposes },
     unknown: { label: 'Unknown', style: STANCE_STYLES.unknown },
   }
 
@@ -303,11 +303,11 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               <div className="rounded-md bg-blue-500/5 px-3 py-2">
-                <span className="text-[11px] font-medium text-blue-400">For</span>
+                <span className="text-[11px] font-medium text-blue-400">Progressive</span>
                 <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].progressiveView}</p>
               </div>
               <div className="rounded-md bg-red-500/5 px-3 py-2">
-                <span className="text-[11px] font-medium text-red-400">Against</span>
+                <span className="text-[11px] font-medium text-red-400">Conservative</span>
                 <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].conservativeView}</p>
               </div>
             </div>
@@ -319,11 +319,11 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
               <div className="text-2xl font-bold text-blue-400">{supportsAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">For</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Progressive</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
               <div className="text-2xl font-bold text-red-400">{opposesAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Against</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Conservative</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
               <div className="text-2xl font-bold text-purple-400">{mixedAll}</div>
@@ -374,9 +374,9 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                         )}
                       </div>
                       <div className="flex gap-4 text-[10px] text-[var(--codex-faint)]">
-                        <span className="text-blue-400/70">{supportPct}% for</span>
+                        <span className="text-blue-400/70">{supportPct}% progressive</span>
                         <span className="text-purple-400/70">{mixedPct}% mixed</span>
-                        <span className="text-red-400/70">{opposePct}% against</span>
+                        <span className="text-red-400/70">{opposePct}% conservative</span>
                       </div>
                     </div>
                   )
@@ -387,13 +387,13 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
         {/* Section header for notable stances */}
         <div className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
-          Notable Stances
+          Where Officials Stand
         </div>
         <p className="mb-6 text-[11px] text-[var(--codex-faint)]">
-          Politicians with unique positions on this issue. Similar stances are grouped together.
+          Officials grouped by where they land on this issue.
         </p>
 
-        {/* Stance groups: For / Mixed / Against / Unknown */}
+        {/* Stance groups: Progressive / Mixed / Conservative / Unknown */}
         {bucketOrder.map((bucket) => {
           const group = stanceGroups[bucket]
           if (!group) return null
