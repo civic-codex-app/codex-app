@@ -59,6 +59,9 @@ const TABS = [
 const MORE_LINKS = [
   { href: '/compare', label: 'Compare' },
   { href: '/match', label: 'Voter Match', authOnly: true },
+  { href: '/report-cards', label: 'Report Cards' },
+  { href: '/issues/map', label: 'Issue Map' },
+  { href: '/insights/money-map', label: 'Money Map' },
   { href: '/bills', label: 'Bills' },
   { href: '/polls', label: 'Polls' },
 ]
@@ -125,6 +128,24 @@ export function BottomTabs() {
                 {link.label}
               </Link>
             ))}
+            <div style={{ borderTop: '1px solid var(--codex-border)', marginTop: '4px', paddingTop: '4px' }}>
+              <Link
+                href={isLoggedIn ? '/dashboard' : '/login'}
+                onClick={closeMore}
+                style={{
+                  display: 'block',
+                  padding: '12px 16px',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  color: 'var(--codex-text)',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                }}
+              >
+                {isLoggedIn ? 'Account' : 'Sign In'}
+              </Link>
+            </div>
           </div>
         </div>
       )}

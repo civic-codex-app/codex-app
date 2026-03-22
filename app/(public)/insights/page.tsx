@@ -321,6 +321,27 @@ export default async function InsightsPage() {
           </div>
         </section>
 
+        {/* Explore More */}
+        <section className="mb-16">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            Explore More
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <a href="/issues/map" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
+              <div className="mb-2 font-serif text-lg">Issue Map</div>
+              <p className="text-[13px] text-[var(--codex-sub)]">See how each state&apos;s delegation leans on key issues</p>
+            </a>
+            <a href="/insights/money-map" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
+              <div className="mb-2 font-serif text-lg">Money Map</div>
+              <p className="text-[13px] text-[var(--codex-sub)]">Campaign finance totals by state</p>
+            </a>
+            <a href="/report-cards" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
+              <div className="mb-2 font-serif text-lg">Report Cards</div>
+              <p className="text-[13px] text-[var(--codex-sub)]">Every politician graded A through F</p>
+            </a>
+          </div>
+        </section>
+
         <Footer />
       </div>
     </>
