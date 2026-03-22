@@ -138,17 +138,18 @@ export default async function ReportCardsPage() {
     if (s.is_verified) entry.verified++
   }
 
-  // 4. Fetch voting records (paginated)
+  // 4. Fetch voting records (paginated, no .in() filter to avoid URL length limits)
+  const polIdSet = new Set(polIds)
   const votingRecords = await fetchAllRows<{ politician_id: string; vote: string }>(
     (from, to) =>
       supabase
         .from('voting_records')
         .select('politician_id, vote')
-        .in('politician_id', polIds)
         .range(from, to)
   )
   const votesByPol = new Map<string, { vote: string }[]>()
   for (const v of votingRecords) {
+    if (!polIdSet.has(v.politician_id)) continue
     if (!votesByPol.has(v.politician_id)) votesByPol.set(v.politician_id, [])
     votesByPol.get(v.politician_id)!.push({ vote: v.vote })
   }
@@ -159,7 +160,6 @@ export default async function ReportCardsPage() {
       supabase
         .from('politician_committees')
         .select('politician_id, role')
-        .in('politician_id', polIds)
         .range(from, to)
   )
   const committeesByPol = new Map<string, { role: string }[]>()
