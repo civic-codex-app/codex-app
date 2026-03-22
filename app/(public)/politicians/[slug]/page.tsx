@@ -12,6 +12,8 @@ import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { FollowButton } from '@/components/directory/follow-button'
 import { LikeButton } from '@/components/directory/like-button'
+import { AnnotationList } from '@/components/annotations/annotation-list'
+import { SubmitAnnotation } from '@/components/annotations/submit-annotation'
 export const revalidate = 600 // 10 minutes
 
 import type { Politician } from '@/lib/types/politician'
@@ -36,6 +38,7 @@ import { VotingHistory } from '@/components/politicians/voting-history'
 import { CampaignFinance } from '@/components/politicians/campaign-finance'
 import { ElectionHistory } from '@/components/politicians/election-history'
 import { stanceStyle } from '@/lib/utils/stances'
+import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -250,7 +253,7 @@ export default async function PoliticianPage({ params }: PageProps) {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         <Link
           href="/"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] print:hidden"
         >
           &larr; Back to directory
         </Link>
@@ -313,7 +316,7 @@ export default async function PoliticianPage({ params }: PageProps) {
               {pol.name}
             </h1>
 
-            <div className="mb-7 flex flex-wrap items-center gap-3">
+            <div className="mb-7 flex flex-wrap items-center gap-3 print:hidden">
               <FollowButton politicianId={pol.id} />
               <LikeButton politicianId={pol.id} />
               <Link
@@ -323,6 +326,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                 Compare
               </Link>
+              <ExportPdfButton />
               {pol.twitter_url && (
                 <a href={pol.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--codex-border)] text-[var(--codex-sub)] transition-all hover:border-[var(--codex-input-focus)] hover:text-[var(--codex-text)]" aria-label="X (Twitter)">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -346,7 +350,7 @@ export default async function PoliticianPage({ params }: PageProps) {
             </div>
 
             {/* Links */}
-            <div className="mb-9 grid grid-cols-2 gap-2.5">
+            <div className="mb-9 grid grid-cols-2 gap-2.5 print:hidden">
               {pol.website_url && <LinkButton href={pol.website_url} label="Official Website" icon="→" />}
               {pol.wiki_url && <LinkButton href={pol.wiki_url} label="Wikipedia" icon="W" />}
               {pol.donate_url && (
@@ -521,6 +525,10 @@ export default async function PoliticianPage({ params }: PageProps) {
 
             {/* Election History */}
             <ElectionHistory results={electionResults as any} party={pol.party} />
+
+            {/* Community Annotations */}
+            <AnnotationList politicianId={pol.id} />
+            <SubmitAnnotation politicianId={pol.id} />
           </div>
         </div>
 

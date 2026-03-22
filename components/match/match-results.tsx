@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
@@ -36,6 +37,28 @@ function scoreColor(score: number): string {
 }
 
 export function MatchResults({ results, onRetake }: Props) {
+  const [copied, setCopied] = useState(false)
+
+  const handleShare = useCallback(() => {
+    const top = results[0]
+    if (!top) return
+
+    const shareUrl = `${window.location.origin}/match?result=${top.politician.slug}&score=${top.score}`
+
+    if (navigator.share) {
+      navigator.share({
+        title: `I'm ${top.score}% aligned with ${top.politician.name}`,
+        text: 'Take the Voter Match quiz on Codex!',
+        url: shareUrl,
+      }).catch(() => {})
+    } else {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }).catch(() => {})
+    }
+  }, [results])
+
   if (results.length === 0) {
     return (
       <div className="text-center">
@@ -241,24 +264,10 @@ export function MatchResults({ results, onRetake }: Props) {
           Retake Quiz
         </button>
         <button
-          onClick={() => {
-            const top = results[0]
-            if (!top) return
-            const ogUrl = `${window.location.origin}/api/og/match?score=${top.score}&name=${encodeURIComponent(top.politician.name)}&party=${top.politician.party}&matched=${top.matchedIssues}`
-            if (navigator.share) {
-              navigator.share({
-                title: `I'm ${top.score}% aligned with ${top.politician.name}`,
-                text: `Take the Voter Match quiz on Codex!`,
-                url: window.location.origin + '/match',
-              }).catch(() => {})
-            } else {
-              navigator.clipboard.writeText(`I'm ${top.score}% aligned with ${top.politician.name}! Take the quiz: ${window.location.origin}/match`)
-              alert('Link copied to clipboard!')
-            }
-          }}
+          onClick={handleShare}
           className="rounded-lg bg-[var(--codex-text)] px-6 py-2.5 text-[14px] font-medium text-[var(--codex-card)] transition-opacity hover:opacity-90"
         >
-          Share Results
+          {copied ? 'Copied!' : 'Share Results'}
         </button>
       </div>
     </div>

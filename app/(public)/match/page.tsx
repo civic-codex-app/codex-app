@@ -1,12 +1,79 @@
+import { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { QuizForm } from '@/components/match/quiz-form'
 
-export const metadata = {
-  title: 'Voter Match -- Codex',
-  description:
-    'Answer questions on key political issues and find which politicians most closely match your views.',
+const BASE_URL = 'https://codex-app-gold.vercel.app'
+
+interface PageProps {
+  searchParams: Promise<{ result?: string; score?: string }>
+}
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const params = await searchParams
+  const { result, score } = params
+
+  // Default metadata when no share params
+  if (!result || !score) {
+    return {
+      title: 'Voter Match -- Codex',
+      description:
+        'Answer questions on key political issues and find which politicians most closely match your views.',
+    }
+  }
+
+  // Fetch politician data for the shared result
+  const supabase = createServiceRoleClient()
+  const { data: politician } = await supabase
+    .from('politicians')
+    .select('name, party, state')
+    .eq('slug', result)
+    .single()
+
+  if (!politician) {
+    return {
+      title: 'Voter Match -- Codex',
+      description:
+        'Answer questions on key political issues and find which politicians most closely match your views.',
+    }
+  }
+
+  const title = `${score}% Match with ${politician.name} -- Codex`
+  const description = `I'm ${score}% aligned with ${politician.name}. Take the Voter Match quiz on Codex to find your match!`
+
+  const ogImageUrl = `${BASE_URL}/api/og/match?${new URLSearchParams({
+    name: politician.name,
+    party: politician.party ?? '',
+    state: politician.state ?? '',
+    score,
+  }).toString()}`
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${BASE_URL}/match?result=${result}&score=${score}`,
+      siteName: 'Codex',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${score}% match with ${politician.name}`,
+        },
+      ],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
+    },
+  }
 }
 
 export default async function MatchPage() {

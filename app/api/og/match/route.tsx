@@ -5,22 +5,38 @@ export const runtime = 'edge'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
-  const score = searchParams.get('score') ?? '0'
   const name = searchParams.get('name') ?? 'Unknown'
   const party = searchParams.get('party') ?? ''
-  const matched = searchParams.get('matched') ?? '14'
+  const state = searchParams.get('state') ?? ''
+  const score = searchParams.get('score') ?? '0'
 
   const partyColors: Record<string, string> = {
-    democrat: '#3B82F6',
-    republican: '#EF4444',
-    green: '#22C55E',
-    independent: '#A855F7',
+    democrat: '#2563eb',
+    republican: '#dc2626',
+    green: '#16a34a',
+    independent: '#7c3aed',
+  }
+
+  const partyLabels: Record<string, string> = {
+    democrat: 'Democrat',
+    republican: 'Republican',
+    green: 'Green Party',
+    independent: 'Independent',
   }
 
   const scoreNum = parseInt(score)
   const scoreColor =
-    scoreNum >= 75 ? '#22C55E' : scoreNum >= 50 ? '#3B82F6' : scoreNum >= 25 ? '#EAB308' : '#EF4444'
-  const accentColor = party ? partyColors[party] ?? '#8B5CF6' : scoreColor
+    scoreNum >= 75
+      ? '#22c55e'
+      : scoreNum >= 50
+        ? '#3b82f6'
+        : scoreNum >= 25
+          ? '#eab308'
+          : '#ef4444'
+
+  const accentColor = party ? partyColors[party] ?? '#7c3aed' : scoreColor
+  const partyLabel = partyLabels[party] ?? party
+  const subtitle = [partyLabel, state].filter(Boolean).join(' · ')
 
   return new ImageResponse(
     (
@@ -58,11 +74,25 @@ export async function GET(req: NextRequest) {
             top: '30px',
             left: '60px',
             fontSize: '18px',
-            color: '#6B7280',
+            color: '#6b7280',
             letterSpacing: '0.15em',
+            fontWeight: 500,
           }}
         >
           CODEX
+        </div>
+
+        {/* "My Top Match" heading */}
+        <div
+          style={{
+            display: 'flex',
+            fontSize: '22px',
+            color: '#9ca3af',
+            marginBottom: '24px',
+            letterSpacing: '0.05em',
+          }}
+        >
+          My Top Match
         </div>
 
         {/* Score circle */}
@@ -75,7 +105,7 @@ export async function GET(req: NextRequest) {
             height: '160px',
             borderRadius: '50%',
             border: `4px solid ${scoreColor}`,
-            marginBottom: '30px',
+            marginBottom: '32px',
           }}
         >
           <div
@@ -87,7 +117,7 @@ export async function GET(req: NextRequest) {
           >
             <span
               style={{
-                fontSize: '56px',
+                fontSize: '60px',
                 fontWeight: 700,
                 color: scoreColor,
                 lineHeight: 1,
@@ -95,55 +125,73 @@ export async function GET(req: NextRequest) {
             >
               {score}
             </span>
-            <span style={{ fontSize: '16px', color: '#9CA3AF', marginTop: '4px' }}>
+            <span
+              style={{
+                fontSize: '16px',
+                color: '#9ca3af',
+                marginTop: '4px',
+              }}
+            >
               % match
             </span>
           </div>
         </div>
 
-        {/* Text */}
+        {/* Politician name */}
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '12px',
+            fontSize: name.length > 25 ? '40px' : '48px',
+            fontWeight: 700,
+            color: '#f9fafb',
+            lineHeight: 1.1,
+            marginBottom: '12px',
+            textAlign: 'center',
           }}
         >
-          <span style={{ fontSize: '22px', color: '#9CA3AF' }}>
-            My top match is
-          </span>
-          <span
-            style={{
-              fontSize: '42px',
-              fontWeight: 700,
-              color: '#F9FAFB',
-            }}
-          >
-            {name}
-          </span>
-          <span style={{ fontSize: '16px', color: '#6B7280' }}>
-            Based on {matched} issue positions
-          </span>
+          {name}
         </div>
 
-        {/* Bottom branding */}
+        {/* Party + State */}
+        {subtitle && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              fontSize: '20px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                backgroundColor: accentColor,
+              }}
+            />
+            <span style={{ color: accentColor }}>{subtitle}</span>
+          </div>
+        )}
+
+        {/* Bottom CTA */}
         <div
           style={{
             display: 'flex',
             position: 'absolute',
             bottom: '30px',
-            fontSize: '14px',
-            color: '#4B5563',
+            fontSize: '15px',
+            color: '#4b5563',
           }}
         >
-          Take the quiz at codexapp.com/match
+          Find your match at codex-app-gold.vercel.app/match
         </div>
       </div>
     ),
     {
       width: 1200,
       height: 630,
-    }
+    },
   )
 }
