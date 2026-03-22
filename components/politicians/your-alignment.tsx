@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { loadQuizAnswers, loadQuizFromServer, mergeQuizAnswers, clearQuizProgress } from '@/lib/utils/quiz-storage'
-import Link from 'next/link'
+import { loadQuizAnswers, loadQuizFromServer, mergeQuizAnswers } from '@/lib/utils/quiz-storage'
+import { STANCE_STYLES } from '@/lib/utils/stances'
 
 interface Stance {
   issue_slug: string
+  issue_name?: string
   stance: string
   is_verified?: boolean
 }
@@ -16,24 +17,25 @@ interface Props {
   politicianStances: Stance[]
 }
 
-/**
- * Distance-decay scoring — same algorithm as the match API.
- * Verified stances get full weight (1.0x), estimated stances get 0.5x
- * so politicians with real positions rank higher than party defaults.
- */
-function computeScore(userAnswers: Record<string, string>, politicianStances: Stance[]): { score: number; matched: number } {
-  const NUMERIC: Record<string, number> = {
-    strongly_supports: 6, supports: 5, leans_support: 4,
-    neutral: 3, mixed: 3,
-    leans_oppose: 2, opposes: 1, strongly_opposes: 0,
-  }
+const NUMERIC: Record<string, number> = {
+  strongly_supports: 6, supports: 5, leans_support: 4,
+  neutral: 3, mixed: 3,
+  leans_oppose: 2, opposes: 1, strongly_opposes: 0,
+}
 
-  const VERIFIED_WEIGHT = 1.0
-  const ESTIMATED_WEIGHT = 0.5
+interface IssueComparison {
+  slug: string
+  name: string
+  userStance: string
+  polStance: string
+  distance: number // 0-6
+  agree: boolean   // distance <= 1
+}
 
+function computeComparisons(userAnswers: Record<string, string>, politicianStances: Stance[]): { score: number; issues: IssueComparison[] } {
+  const issues: IssueComparison[] = []
   let weightedSum = 0
   let totalWeight = 0
-  let matched = 0
 
   for (const ps of politicianStances) {
     const userStance = userAnswers[ps.issue_slug]
@@ -42,17 +44,31 @@ function computeScore(userAnswers: Record<string, string>, politicianStances: St
     const pVal = NUMERIC[ps.stance]
     if (uVal === undefined || pVal === undefined) continue
 
-    matched++
     const distance = Math.abs(uVal - pVal)
     const similarity = distance === 0 ? 1.0 : distance === 1 ? 0.85 : distance === 2 ? 0.55 : distance === 3 ? 0.25 : 0.0
+    const vWeight = ps.is_verified ? 1.0 : 0.5
 
-    const vWeight = ps.is_verified ? VERIFIED_WEIGHT : ESTIMATED_WEIGHT
     weightedSum += similarity * vWeight
     totalWeight += vWeight
+
+    issues.push({
+      slug: ps.issue_slug,
+      name: ps.issue_name || ps.issue_slug.replace(/-and-/g, ' & ').replace(/-/g, ' '),
+      userStance,
+      polStance: ps.stance,
+      distance,
+      agree: distance <= 1,
+    })
   }
 
-  if (matched === 0 || totalWeight === 0) return { score: 0, matched: 0 }
-  return { score: Math.round((weightedSum / totalWeight) * 100), matched }
+  const score = totalWeight > 0 ? Math.round((weightedSum / totalWeight) * 100) : 0
+  // Sort: agreements first, then disagreements, both by distance
+  issues.sort((a, b) => {
+    if (a.agree !== b.agree) return a.agree ? -1 : 1
+    return a.distance - b.distance
+  })
+
+  return { score, issues }
 }
 
 function scoreColor(score: number): string {
@@ -67,87 +83,114 @@ function scoreLabel(score: number): string {
   if (score >= 60) return 'Mostly aligned'
   if (score >= 40) return 'Somewhat aligned'
   if (score >= 20) return 'Not very aligned'
-  return 'Very different'
+  return 'Very different views'
 }
 
-export function YourAlignment({ politicianName, politicianSlug, politicianStances }: Props) {
-  const [result, setResult] = useState<{ score: number; matched: number } | null>(null)
-  const [hasQuiz, setHasQuiz] = useState(false)
+export function YourAlignment({ politicianName, politicianStances }: Props) {
+  const [data, setData] = useState<{ score: number; issues: IssueComparison[] } | null>(null)
 
   useEffect(() => {
     async function load() {
       const local = loadQuizAnswers()
       const server = await loadQuizFromServer()
       const answers = mergeQuizAnswers(local, server)
-      const count = Object.keys(answers).length
-      if (count < 3) return
+      if (Object.keys(answers).length < 3) return
 
-      setHasQuiz(true)
-
-      const stances = politicianStances.map(s => ({
-      issue_slug: s.issue_slug,
-      stance: s.stance,
-    }))
-
-    const computed = computeScore(answers, stances)
-    if (computed.matched >= 3) {
-      setResult(computed)
-    }
+      const result = computeComparisons(answers, politicianStances)
+      if (result.issues.length >= 3) setData(result)
     }
     load()
   }, [politicianStances])
 
-  // Not enough quiz data
-  if (!hasQuiz) return null
+  if (!data) return null
 
-  // Quiz taken but not enough overlap with this politician
-  if (!result) return null
-
-  const color = scoreColor(result.score)
+  const color = scoreColor(data.score)
+  const agrees = data.issues.filter(i => i.agree)
+  const disagrees = data.issues.filter(i => !i.agree)
+  const lastName = politicianName.split(' ').pop()
 
   return (
-    <div className="rounded-xl border-2 p-4" style={{ borderColor: `${color}30`, backgroundColor: `${color}08` }}>
-      <div className="flex items-center gap-4">
-        {/* Score circle */}
+    <div className="rounded-xl border border-[var(--codex-border)] overflow-hidden">
+      {/* Header with score */}
+      <div className="flex items-center gap-4 p-4" style={{ backgroundColor: `${color}08` }}>
         <div className="relative flex-shrink-0">
-          <svg width="56" height="56" viewBox="0 0 56 56">
-            <circle cx="28" cy="28" r="24" fill="none" stroke="var(--codex-border)" strokeWidth="3" />
+          <svg width="52" height="52" viewBox="0 0 52 52">
+            <circle cx="26" cy="26" r="22" fill="none" stroke="var(--codex-border)" strokeWidth="3" />
             <circle
-              cx="28" cy="28" r="24" fill="none"
+              cx="26" cy="26" r="22" fill="none"
               stroke={color} strokeWidth="3" strokeLinecap="round"
-              strokeDasharray={`${(result.score / 100) * 150.8} 150.8`}
-              transform="rotate(-90 28 28)"
+              strokeDasharray={`${(data.score / 100) * 138.2} 138.2`}
+              transform="rotate(-90 26 26)"
             />
           </svg>
-          <span className="absolute inset-0 flex items-center justify-center text-[15px] font-bold" style={{ color }}>
-            {result.score}%
+          <span className="absolute inset-0 flex items-center justify-center text-[14px] font-bold" style={{ color }}>
+            {data.score}%
           </span>
         </div>
-
-        <div className="flex-1">
+        <div>
           <div className="text-[14px] font-semibold text-[var(--codex-text)]">
-            Your alignment with {politicianName.split(' ').pop()}
+            You &amp; {lastName}
           </div>
-          <div className="mt-0.5 text-[12px]" style={{ color }}>
-            {scoreLabel(result.score)} · Based on {result.matched} shared issues
+          <div className="text-[12px]" style={{ color }}>
+            {scoreLabel(data.score)}
           </div>
         </div>
       </div>
 
-      <div className="mt-3 flex gap-2">
-        <Link
-          href="/quiz"
-          className="flex-1 rounded-lg border border-[var(--codex-border)] py-2 text-center text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
-        >
-          See All Results
-        </Link>
-        <Link
-          href="/quiz"
-          onClick={() => { try { clearQuizProgress() } catch {} }}
-          className="flex-1 rounded-lg border border-[var(--codex-border)] py-2 text-center text-[12px] font-medium text-[var(--codex-faint)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-sub)]"
-        >
-          Retake
-        </Link>
+      {/* Issue breakdown */}
+      <div className="divide-y divide-[var(--codex-border)]">
+        {/* Agreements */}
+        {agrees.length > 0 && (
+          <div className="px-4 py-3">
+            <div className="mb-2 text-[11px] font-medium uppercase tracking-wider text-blue-400">
+              Agree on {agrees.length} issue{agrees.length !== 1 ? 's' : ''}
+            </div>
+            <div className="space-y-1.5">
+              {agrees.map(issue => {
+                const userStyle = STANCE_STYLES[issue.userStance]
+                return (
+                  <div key={issue.slug} className="flex items-center justify-between text-[12px]">
+                    <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ color: userStyle?.color, backgroundColor: `${userStyle?.color}15` }}>
+                        {userStyle?.shortLabel}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Disagreements */}
+        {disagrees.length > 0 && (
+          <div className="px-4 py-3">
+            <div className="mb-2 text-[11px] font-medium uppercase tracking-wider text-red-400">
+              Differ on {disagrees.length} issue{disagrees.length !== 1 ? 's' : ''}
+            </div>
+            <div className="space-y-1.5">
+              {disagrees.map(issue => {
+                const userStyle = STANCE_STYLES[issue.userStance]
+                const polStyle = STANCE_STYLES[issue.polStance]
+                return (
+                  <div key={issue.slug} className="flex items-center justify-between text-[12px]">
+                    <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
+                    <div className="flex items-center gap-1">
+                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ color: userStyle?.color, backgroundColor: `${userStyle?.color}15` }}>
+                        You
+                      </span>
+                      <span className="text-[var(--codex-faint)]">vs</span>
+                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ color: polStyle?.color, backgroundColor: `${polStyle?.color}15` }}>
+                        {lastName}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
