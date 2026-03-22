@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 }
 
 interface PageProps {
-  searchParams: Promise<{ q?: string; chamber?: string; state?: string; party?: string; sort?: string; page?: string; letter?: string }>
+  searchParams: Promise<{ q?: string; chamber?: string; state?: string; party?: string; sort?: string; page?: string }>
 }
 
 const SORT_OPTIONS = [
@@ -59,9 +59,6 @@ export default async function HomePage({ searchParams }: PageProps) {
     query = query.or(
       `name.ilike.%${params.q}%,state.ilike.%${params.q}%,title.ilike.%${params.q}%`
     )
-  }
-  if (params.letter) {
-    query = query.ilike('name', `${params.letter}%`)
   }
 
   const sort = params.sort ?? 'name'
@@ -135,7 +132,7 @@ export default async function HomePage({ searchParams }: PageProps) {
     }
   }
 
-  const hasFilters = !!(params.q || params.chamber || params.state || params.party || params.letter)
+  const hasFilters = !!(params.q || params.chamber || params.state || params.party)
   const hasMorePages = offset + PAGE_SIZE < totalCount
 
   // Build stances/alignments as plain objects for client component
@@ -154,7 +151,6 @@ export default async function HomePage({ searchParams }: PageProps) {
   if (params.state) filterParams.state = params.state
   if (params.party) filterParams.party = params.party
   if (params.sort) filterParams.sort = params.sort
-  if (params.letter) filterParams.letter = params.letter
 
   const jsonLd = {
     '@context': 'https://schema.org',

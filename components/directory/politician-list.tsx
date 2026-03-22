@@ -1,11 +1,9 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { PoliticianCard } from './politician-card'
 import type { Politician } from '@/lib/types/politician'
-
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
 interface StanceData {
   supports: number
@@ -123,81 +121,17 @@ export function PoliticianList({
     return qs ? `/?${qs}` : '/'
   }
 
-  // Track first politician index for each letter
-  const letterIndices = useMemo(() => {
-    const map = new Map<string, number>()
-    for (let i = 0; i < politicians.length; i++) {
-      const letter = politicians[i].name[0]?.toUpperCase()
-      if (letter && !map.has(letter)) map.set(letter, i)
-    }
-    return map
-  }, [politicians])
-
-  const cardRefs = useRef<Map<number, HTMLElement>>(new Map())
-  const [activeLetter, setActiveLetter] = useState<string | null>(null)
-
-  const scrollToLetter = useCallback((letter: string) => {
-    const idx = letterIndices.get(letter)
-    if (idx !== undefined) {
-      // Letter is already loaded — scroll to it
-      const el = cardRefs.current.get(idx)
-      if (el) {
-        const headerHeight = 56
-        const y = el.getBoundingClientRect().top + window.scrollY - headerHeight - 8
-        window.scrollTo({ top: y, behavior: 'smooth' })
-        setActiveLetter(letter)
-        setTimeout(() => setActiveLetter(null), 1000)
-      }
-    } else {
-      // Letter not loaded yet — navigate with letter filter
-      const params = new URLSearchParams(filterParams)
-      params.set('letter', letter)
-      params.delete('page')
-      params.delete('q')
-      window.location.href = `/?${params.toString()}`
-    }
-  }, [letterIndices, filterParams])
-
   return (
-    <div className="relative animate-fade-up">
-      {/* Alphabet sidebar — mobile only */}
-      {isMobile && politicians.length > 0 && (
-        <div className="fixed right-0.5 top-1/2 z-30 flex -translate-y-1/2 flex-col items-center">
-          {ALPHABET.map((letter) => {
-            const hasLetter = letterIndices.has(letter)
-            return (
-              <button
-                key={letter}
-                onClick={() => scrollToLetter(letter)}
-                className={`flex h-[18px] w-5 items-center justify-center text-[9px] font-semibold leading-none transition-colors ${
-                  activeLetter === letter
-                    ? 'text-[var(--codex-text)]'
-                    : hasLetter
-                      ? 'text-[var(--codex-sub)]'
-                      : 'text-[var(--codex-faint)]'
-                }`}
-                aria-label={`Jump to letter ${letter}`}
-              >
-                {letter}
-              </button>
-            )
-          })}
-        </div>
-      )}
-
-      {politicians.map((pol, idx) => {
+    <div className="animate-fade-up">
+      {politicians.map((pol) => {
         const data = stances[pol.id]
         return (
-          <div
+          <PoliticianCard
             key={pol.id}
-            ref={(el) => { if (el) cardRefs.current.set(idx, el); else cardRefs.current.delete(idx) }}
-          >
-            <PoliticianCard
-              politician={pol}
-              alignment={alignments[pol.id]}
-              stances={data}
-            />
-          </div>
+            politician={pol}
+            alignment={alignments[pol.id]}
+            stances={data}
+          />
         )
       })}
 
