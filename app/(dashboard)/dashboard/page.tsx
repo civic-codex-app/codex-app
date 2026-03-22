@@ -73,16 +73,18 @@ export default async function DashboardPage() {
 
   const userState = profile?.state as string | null
 
-  // Get state representatives if user has a state set
+  // Get statewide representatives only (senators + governor)
+  // House reps require district info which we don't have yet
   let representatives: Politician[] = []
   if (userState) {
     const { data } = await supabase
       .from('politicians')
       .select('*')
       .eq('state', userState)
-      .in('chamber', ['senate', 'house', 'governor'])
+      .in('chamber', ['senate', 'governor'])
       .order('chamber')
       .order('name')
+      .limit(10)
     representatives = (data ?? []) as Politician[]
   }
 
