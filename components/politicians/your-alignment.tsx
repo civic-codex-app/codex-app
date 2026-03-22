@@ -136,12 +136,6 @@ export function YourAlignment({ politicianName, politicianSlug, politicianStance
 
       <div className="mt-3 flex gap-2">
         <Link
-          href={`/compare?a=${politicianSlug}`}
-          className="flex-1 rounded-lg border border-[var(--codex-border)] py-2 text-center text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
-        >
-          Compare
-        </Link>
-        <Link
           href="/quiz"
           className="flex-1 rounded-lg border border-[var(--codex-border)] py-2 text-center text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
         >
