@@ -1,120 +1,31 @@
-import { Suspense } from 'react'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { ElectionFilters } from '@/components/elections/election-filters'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
-import { RaceSection } from '@/components/elections/race-section'
-import { AvatarImage } from '@/components/ui/avatar-image'
-import { PartyIcon } from '@/components/icons/party-icons'
-import { CHAMBER_LABELS } from '@/lib/constants/chambers'
-import { partyColor, partyLabel } from '@/lib/constants/parties'
 
-export const revalidate = 600 // 10 minutes
+export const revalidate = 600
 
 export const metadata = {
   title: 'Elections -- Codex',
-  description: 'Track upcoming elections -- Senate, House, Governor, and local races across the country.',
+  description: 'Track upcoming elections — Senate, House, Governor, and local races in every state.',
 }
 
-const CHAMBER_ORDER = [
-  'senate', 'house', 'governor', 'mayor', 'state_senate',
-  'state_house', 'city_council', 'county', 'school_board', 'other_local',
-]
-
-const LOCAL_CHAMBERS = ['mayor', 'city_council', 'state_senate', 'state_house', 'county', 'school_board', 'other_local']
-
-interface PageProps {
-  searchParams: Promise<{ chamber?: string; state?: string }>
+const STATE_NAMES: Record<string, string> = {
+  AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',CT:'Connecticut',DE:'Delaware',DC:'Washington D.C.',FL:'Florida',GA:'Georgia',GU:'Guam',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',PR:'Puerto Rico',RI:'Rhode Island',SC:'South Carolina',SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',VI:'Virgin Islands',WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming',MP:'Northern Mariana Islands',AS:'American Samoa'
 }
 
-/** Paginate Supabase .select() to avoid 1000-row cap */
-async function fetchAllRaces(
-  supabase: ReturnType<typeof createServiceRoleClient>,
-  electionId: string,
-  options?: { chamber?: string; state?: string }
-) {
-  const PAGE_SIZE = 500
-  let from = 0
-  const all: any[] = []
-
-  while (true) {
-    let query = supabase
-      .from('races')
-      .select(`
-        *,
-        candidates (id, name, party, is_incumbent, status, image_url, politician_id),
-        incumbent:incumbent_id (id, name, party, image_url, slug)
-      `)
-      .eq('election_id', electionId)
-
-    if (options?.chamber === 'local') {
-      query = query.in('chamber', LOCAL_CHAMBERS)
-    } else if (options?.chamber && options.chamber !== 'all') {
-      query = query.eq('chamber', options.chamber)
-    }
-    if (options?.state) {
-      query = query.eq('state', options.state)
-    }
-
-    query = query.order('state').range(from, from + PAGE_SIZE - 1)
-    const { data, error } = await query
-    if (error) {
-      console.error('Failed to fetch races:', error.message)
-      break
-    }
-    if (!data || data.length === 0) break
-    all.push(...data)
-    if (data.length < PAGE_SIZE) break
-    from += PAGE_SIZE
-  }
-
-  return all
-}
-
-/** Fetch just ids + chamber for stats (lighter query, still paginated) */
-async function fetchRaceStats(
-  supabase: ReturnType<typeof createServiceRoleClient>,
-  electionId: string
-) {
-  const PAGE_SIZE = 500
-  let from = 0
-  const all: { id: string; chamber: string }[] = []
-
-  while (true) {
-    const { data, error } = await supabase
-      .from('races')
-      .select('id, chamber')
-      .eq('election_id', electionId)
-      .range(from, from + PAGE_SIZE - 1)
-    if (error) {
-      console.error('Failed to fetch race stats:', error.message)
-      break
-    }
-    if (!data || data.length === 0) break
-    all.push(...(data as any))
-    if (data.length < PAGE_SIZE) break
-    from += PAGE_SIZE
-  }
-
-  return all
-}
-
-export default async function ElectionsPage({ searchParams }: PageProps) {
-  const params = await searchParams
+export default async function ElectionsPage() {
   const supabase = createServiceRoleClient()
 
-  // Fetch the active election
-  const { data: election } = await supabase
+  // Fetch all active elections
+  const { data: elections } = await supabase
     .from('elections')
-    .select('*')
+    .select('id, name, slug, election_date, description, is_active')
     .eq('is_active', true)
-    .order('election_date', { ascending: false })
-    .limit(1)
-    .single()
+    .order('name')
 
-  if (!election) {
+  if (!elections || elections.length === 0) {
     return (
       <>
         <Header />
@@ -129,241 +40,115 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
     )
   }
 
-  // Fetch filtered races (paginated) and all race stats in parallel
-  const [raceList, allRaceList] = await Promise.all([
-    fetchAllRaces(supabase, election.id, {
-      chamber: params.chamber,
-      state: params.state,
-    }),
-    fetchRaceStats(supabase, election.id),
-  ])
-
-  // Compute chamber counts from all races (unfiltered)
-  const chamberCounts: Record<string, number> = {}
-  for (const r of allRaceList) {
-    chamberCounts[r.chamber] = (chamberCounts[r.chamber] || 0) + 1
+  // Get race counts per election
+  const electionIds = elections.map(e => e.id)
+  const PAGE = 1000
+  let allRaces: { election_id: string; chamber: string }[] = []
+  let from = 0
+  while (true) {
+    const { data } = await supabase
+      .from('races')
+      .select('election_id, chamber')
+      .in('election_id', electionIds)
+      .range(from, from + PAGE - 1)
+    if (!data || data.length === 0) break
+    allRaces = allRaces.concat(data as any)
+    if (data.length < PAGE) break
+    from += PAGE
   }
 
-  const totalRaces = allRaceList.length
-
-  // Group filtered races by chamber
-  const grouped: Record<string, typeof raceList> = {}
-  for (const race of raceList) {
-    const key = race.chamber as string
-    if (!grouped[key]) grouped[key] = []
-    grouped[key].push(race)
+  const raceCounts: Record<string, { total: number; senate: number; house: number; governor: number; local: number }> = {}
+  for (const r of allRaces) {
+    if (!raceCounts[r.election_id]) raceCounts[r.election_id] = { total: 0, senate: 0, house: 0, governor: 0, local: 0 }
+    raceCounts[r.election_id].total++
+    if (r.chamber === 'senate') raceCounts[r.election_id].senate++
+    else if (r.chamber === 'house') raceCounts[r.election_id].house++
+    else if (r.chamber === 'governor') raceCounts[r.election_id].governor++
+    else raceCounts[r.election_id].local++
   }
 
-  // Format election date
-  const electionDate = new Date(election.election_date + 'T00:00:00')
-  const dateStr = electionDate.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-  })
+  // Separate national overview from state elections
+  const national = elections.find(e => e.slug === '2026-midterms')
+  const stateElections = elections.filter(e => e.slug !== '2026-midterms').sort((a, b) => a.name.localeCompare(b.name))
 
-  const hasFilters = !!(params.chamber || params.state)
-
-  // Key races: races with the most candidates (competitive) — pick up to 6
-  const keyRaces = [...raceList]
-    .filter((r) => (r.candidates?.length ?? 0) >= 2)
-    .sort((a, b) => (b.candidates?.length ?? 0) - (a.candidates?.length ?? 0))
-    .slice(0, 6)
-
-  // Count total candidates across all races
-  const totalCandidates = raceList.reduce((sum, r) => sum + (r.candidates?.length ?? 0), 0)
-
-  // Count unique states
-  const uniqueStates = new Set(raceList.map((r: any) => r.state)).size
+  // Election date for countdown
+  const electionDate = stateElections[0]?.election_date || national?.election_date || '2026-11-03'
 
   return (
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
-        <div className="mb-6 max-w-[600px]">
-          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
-            {election.name}
-          </h1>
-          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
-            {election.description ?? `Election day: ${dateStr}`}
-          </p>
-        </div>
-
-        {/* Countdown */}
         <div className="mb-8">
-          <ElectionCountdown electionDate={election.election_date} />
+          <h1 className="mb-3 text-[clamp(28px,4vw,44px)] font-bold leading-[1.1]">
+            2026 Elections
+          </h1>
+          <p className="mb-4 max-w-lg text-[15px] leading-relaxed text-[var(--codex-sub)]">
+            Every race happening on November 3, 2026 — find your state to see what's on your ballot.
+          </p>
+          <ElectionCountdown targetDate={electionDate} />
         </div>
 
-        {/* Stats bar */}
-        <div className="mb-8 flex flex-wrap gap-6 border-y border-[var(--codex-border)] py-4">
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold">{totalRaces}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
-              Total Races
-            </span>
+        {/* Quick stats */}
+        <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--codex-text)]">{allRaces.filter(r => r.chamber === 'senate').length}</div>
+            <div className="text-[12px] text-[var(--codex-faint)]">Senate Races</div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold">{totalCandidates}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
-              Candidates
-            </span>
+          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--codex-text)]">435</div>
+            <div className="text-[12px] text-[var(--codex-faint)]">House Races</div>
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold">{uniqueStates}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
-              States
-            </span>
+          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--codex-text)]">{allRaces.filter(r => r.chamber === 'governor').length}</div>
+            <div className="text-[12px] text-[var(--codex-faint)]">Governor Races</div>
           </div>
-          {CHAMBER_ORDER.map((chamber) => {
-            const count = chamberCounts[chamber] ?? 0
-            if (count === 0) return null
+          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--codex-text)]">{stateElections.length}</div>
+            <div className="text-[12px] text-[var(--codex-faint)]">States Voting</div>
+          </div>
+        </div>
+
+        {/* State grid */}
+        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          Find Your State
+        </h2>
+        <div className="mb-12 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {stateElections.map(election => {
+            const counts = raceCounts[election.id] || { total: 0, senate: 0, house: 0, governor: 0, local: 0 }
+            const stateCode = election.slug.split('-')[0]?.toUpperCase()
+            const stateName = STATE_NAMES[stateCode] || election.name.replace(' 2026 Elections', '')
+
+            // Build race summary chips
+            const chips: string[] = []
+            if (counts.senate > 0) chips.push('Senate')
+            if (counts.governor > 0) chips.push('Governor')
+            if (counts.house > 0) chips.push(counts.house + ' House')
+            if (counts.local > 0) chips.push(counts.local + ' Local')
+
             return (
-              <div key={chamber} className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold">{count}</span>
-                <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
-                  {CHAMBER_LABELS[chamber as keyof typeof CHAMBER_LABELS] ?? chamber}
-                </span>
-              </div>
+              <Link
+                key={election.id}
+                href={`/elections/${election.slug}`}
+                className="group rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+              >
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="text-[11px] font-bold text-[var(--codex-faint)]">{stateCode}</span>
+                  <span className="text-[14px] font-semibold text-[var(--codex-text)] group-hover:text-[var(--codex-text)]">
+                    {stateName}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {chips.map(chip => (
+                    <span key={chip} className="rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] text-[var(--codex-faint)]">
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+              </Link>
             )
           })}
-          <div className="ml-auto flex items-baseline gap-2">
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
-              {dateStr}
-            </span>
-          </div>
         </div>
-
-        {/* Key Races */}
-        {keyRaces.length > 0 && !hasFilters && (
-          <section className="mb-12">
-            <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
-              Key Races
-              <span className="ml-2 text-[var(--codex-faint)]">Most competitive</span>
-            </h2>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {keyRaces.map((race) => {
-                const candidates = race.candidates ?? []
-                const chamberLabel = CHAMBER_LABELS[race.chamber as keyof typeof CHAMBER_LABELS] ?? race.chamber
-
-                // Party breakdown for bar
-                const partyGroups: Record<string, number> = {}
-                for (const c of candidates) {
-                  partyGroups[c.party] = (partyGroups[c.party] || 0) + 1
-                }
-
-                return (
-                  <Link
-                    key={race.id}
-                    href={`/elections/${race.slug}`}
-                    className="group relative block overflow-hidden rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all hover:border-[var(--codex-input-border)]"
-                  >
-                    {/* Gradient accent */}
-                    <div className="absolute inset-x-0 top-0 flex h-1 overflow-hidden">
-                      {Object.entries(partyGroups).map(([party, count]) => (
-                        <div
-                          key={party}
-                          style={{
-                            width: `${(count / candidates.length) * 100}%`,
-                            background: partyColor(party),
-                            opacity: 0.6,
-                          }}
-                        />
-                      ))}
-                    </div>
-
-                    <div className="mb-2 flex items-center gap-2">
-                      <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
-                        {chamberLabel}
-                      </span>
-                      <span className="text-[11px] text-[var(--codex-faint)]">
-                        {race.state}{race.district ? ` - D${race.district}` : ''}
-                      </span>
-                    </div>
-
-                    <h3 className="mb-3 text-base font-semibold transition-colors group-hover:text-[var(--codex-text)]">
-                      {race.name}
-                    </h3>
-
-                    {/* Candidate avatars */}
-                    <div className="mb-2 flex items-center gap-2">
-                      <div className="flex -space-x-2">
-                        {candidates.slice(0, 4).map((c: any) => (
-                          <div
-                            key={c.id}
-                            className="h-7 w-7 overflow-hidden rounded-lg bg-[var(--codex-bg)]"
-                            style={{ border: `2px solid ${partyColor(c.party)}44` }}
-                            title={`${c.name} (${partyLabel(c.party)})`}
-                          >
-                            {c.image_url ? (
-                              <AvatarImage
-                                src={c.image_url}
-                                alt={c.name}
-                                size={28}
-                                party={c.party}
-                                fallbackColor={partyColor(c.party)}
-                              />
-                            ) : (
-                              <div
-                                className="flex h-full w-full items-center justify-center text-[9px] font-medium"
-                                style={{ color: partyColor(c.party), background: `${partyColor(c.party)}12` }}
-                              >
-                                {c.name.charAt(0)}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {Object.keys(partyGroups).map((party) => (
-                          <PartyIcon key={party} party={party} size={10} />
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="text-[11px] text-[var(--codex-faint)]">
-                      {candidates.length} candidate{candidates.length !== 1 ? 's' : ''}
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* Filters */}
-        <Suspense>
-          <ElectionFilters chamberCounts={chamberCounts} />
-        </Suspense>
-
-        {/* Result count when filtered */}
-        {hasFilters && (
-          <div className="mb-4 text-[11px] text-[var(--codex-faint)]">
-            {raceList.length} race{raceList.length !== 1 ? 's' : ''}
-          </div>
-        )}
-
-        {/* Race sections by chamber */}
-        {CHAMBER_ORDER.map((chamber) => {
-          const chamberRaces = grouped[chamber]
-          if (!chamberRaces || chamberRaces.length === 0) return null
-          const label = CHAMBER_LABELS[chamber as keyof typeof CHAMBER_LABELS] ?? chamber
-          return (
-            <RaceSection
-              key={chamber}
-              label={label}
-              races={chamberRaces}
-              initialLimit={20}
-            />
-          )
-        })}
-
-        {raceList.length === 0 && (
-          <div className="py-20 text-center text-[var(--codex-faint)]">
-            <div className="mb-2 text-2xl font-bold">No races found</div>
-            <div className="text-sm">Try adjusting your filters</div>
-          </div>
-        )}
 
         <Footer />
       </div>
