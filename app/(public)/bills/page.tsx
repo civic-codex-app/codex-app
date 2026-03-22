@@ -8,7 +8,7 @@ import { BILL_PROCESS_EXPLAINER, BILL_STATUS_EXPLAINERS } from '@/lib/data/educa
 export const revalidate = 600 // 10 minutes
 
 export const metadata = {
-  title: 'Bills & Legislation -- Codex',
+  title: 'Bills & Legislation -- Poli',
   description: 'Track major bills and how your representatives voted.',
 }
 

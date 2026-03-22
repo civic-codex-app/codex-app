@@ -147,7 +147,7 @@ export function Header() {
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3 md:px-10 md:py-4">
         {/* Left: Logo + Beta + Nav */}
         <div className="flex items-center gap-3.5">
-          <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Codex Home">
+          <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Poli Home">
             <ElephantIcon size={22} color="#DC2626" />
             <DonkeyIcon size={22} color="#2563EB" />
           </Link>

@@ -6,7 +6,7 @@ import { CompareView } from '@/components/compare/compare-view'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Compare Politicians — Codex',
+  title: 'Compare Politicians — Poli',
   description: 'Compare politicians side by side on issues, alignment, committees, campaign finance, and voting records.',
 }
 

@@ -18,7 +18,7 @@ import type {
 export const revalidate = 900 // 15 minutes
 
 export const metadata: Metadata = {
-  title: 'Insights -- Codex',
+  title: 'Insights -- Poli',
   description: 'Data-driven political insights: chamber composition, issue consensus, alignment spectrums, and bipartisan rankings.',
 }
 

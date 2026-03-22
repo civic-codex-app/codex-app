@@ -17,7 +17,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   // Default metadata when no share params
   if (!result || !score) {
     return {
-      title: 'Who Represents You -- Codex',
+      title: 'Who Represents You -- Poli',
       description:
         'Answer questions on key political issues and find which politicians most closely match your views.',
     }
@@ -33,14 +33,14 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 
   if (!politician) {
     return {
-      title: 'Who Represents You -- Codex',
+      title: 'Who Represents You -- Poli',
       description:
         'Answer questions on key political issues and find which politicians most closely match your views.',
     }
   }
 
-  const title = `${score}% Match with ${politician.name} -- Codex`
-  const description = `I'm ${score}% aligned with ${politician.name}. Take the Who Represents You quiz on Codex to see who represents you!`
+  const title = `${score}% Match with ${politician.name} -- Poli`
+  const description = `I'm ${score}% aligned with ${politician.name}. Take the Who Represents You quiz on Poli to see who represents you!`
 
   const ogImageUrl = `${BASE_URL}/api/og/quiz?${new URLSearchParams({
     name: politician.name,
@@ -56,7 +56,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       title,
       description,
       url: `${BASE_URL}/quiz?result=${result}&score=${score}`,
-      siteName: 'Codex',
+      siteName: 'Poli',
       images: [
         {
           url: ogImageUrl,

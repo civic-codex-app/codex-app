@@ -8,7 +8,7 @@ const FIELDS: { key: string; label: string; description: string; multiline?: boo
   {
     key: 'site_name',
     label: 'Site / App Name',
-    description: 'The primary name shown in the browser tab, manifest, and branding. (e.g. "Codex")',
+    description: 'The primary name shown in the browser tab, manifest, and branding. (e.g. "Poli")',
   },
   {
     key: 'site_tagline',

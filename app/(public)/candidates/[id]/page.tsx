@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .eq('id', id)
     .single()
 
-  if (!data) return { title: 'Not Found — Codex' }
+  if (!data) return { title: 'Not Found — Poli' }
 
   return {
-    title: `${data.name} — Codex`,
+    title: `${data.name} — Poli`,
     description: `${partyLabel(data.party)} candidate`,
   }
 }

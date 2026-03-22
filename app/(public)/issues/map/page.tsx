@@ -7,7 +7,7 @@ import { IssueMapView } from '@/components/issues/issue-map-view'
 export const revalidate = 600
 
 export const metadata = {
-  title: 'Issue Map — Codex',
+  title: 'Issue Map — Poli',
   description:
     'Explore how politicians across each state stand on key issues with an interactive US map.',
 }

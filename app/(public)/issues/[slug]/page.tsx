@@ -23,18 +23,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const supabase = createServiceRoleClient()
   const { data, error } = await supabase.from('issues').select('name, description').eq('slug', slug).single()
   if (error) console.error('Failed to fetch issue metadata:', error.message)
-  if (!data) return { title: 'Not Found -- Codex' }
+  if (!data) return { title: 'Not Found -- Poli' }
 
   const description = data.description?.slice(0, 160) || `Track where U.S. politicians stand on ${data.name}`
   const ogUrl = `/api/og?title=${encodeURIComponent(data.name)}&subtitle=${encodeURIComponent('Political Stances')}&type=issue`
 
   return {
-    title: `${data.name} | Codex Issues`,
+    title: `${data.name} | Poli Issues`,
     description,
     openGraph: {
       title: `${data.name} - Political Stances`,
       description,
-      url: `https://codexapp.org/issues/${slug}`,
+      url: `https://getpoli.com/issues/${slug}`,
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {
@@ -270,9 +270,9 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     '@type': 'WebPage',
     name: `${issue.name} - Political Stances`,
     description: issue.description || `Track where U.S. politicians stand on ${issue.name}`,
-    url: `https://codexapp.org/issues/${slug}`,
+    url: `https://getpoli.com/issues/${slug}`,
     about: { '@type': 'Thing', name: issue.name, description: issue.description },
-    isPartOf: { '@type': 'WebSite', name: 'Codex', url: 'https://codexapp.org' },
+    isPartOf: { '@type': 'WebSite', name: 'Poli', url: 'https://getpoli.com' },
   }
 
   const bucketOrder = ['supports', 'mixed', 'opposes', 'unknown'] as const

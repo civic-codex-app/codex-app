@@ -3,8 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { OnboardingWizard } from '@/components/onboarding/onboarding-wizard'
 
 export const metadata = {
-  title: 'Welcome -- Codex',
-  description: 'Set up your Codex profile in a few quick steps.',
+  title: 'Welcome -- Poli',
+  description: 'Set up your Poli profile in a few quick steps.',
 }
 
 export default async function OnboardingPage() {

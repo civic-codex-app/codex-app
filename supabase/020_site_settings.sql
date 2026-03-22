@@ -17,10 +17,10 @@ END $$;
 
 -- Seed defaults
 INSERT INTO site_settings (key, value) VALUES
-  ('site_name', 'Codex'),
+  ('site_name', 'Poli'),
   ('site_tagline', 'Political Directory'),
   ('site_description', 'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.'),
-  ('og_title', 'Codex — Political Directory'),
+  ('og_title', 'Poli — Political Directory'),
   ('og_description', 'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.'),
   ('homepage_title', 'U.S. Politician Directory & Civic Engagement Platform'),
   ('homepage_description', 'Track U.S. politicians, their stances on issues, voting records, campaign finance, and elections. A transparent, data-driven civic engagement platform for voters.')

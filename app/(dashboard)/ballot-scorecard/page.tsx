@@ -8,7 +8,7 @@ import { ScorecardRaceCard, type CandidateScore } from '@/components/ballot/scor
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Your Ballot Scorecard — Codex',
+  title: 'Your Ballot Scorecard — Poli',
   description: 'See how each candidate on your ballot aligns with your views.',
 }
 

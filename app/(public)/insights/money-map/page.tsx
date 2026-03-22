@@ -6,7 +6,7 @@ import { MoneyMapView } from '@/components/insights/money-map-view'
 export const revalidate = 600
 
 export const metadata = {
-  title: 'Money Map — Codex',
+  title: 'Money Map — Poli',
   description: 'See how much politicians raise and spend by state with an interactive US map.',
 }
 

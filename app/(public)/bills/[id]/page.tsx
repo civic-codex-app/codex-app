@@ -47,20 +47,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .eq('id', id)
     .single()
 
-  if (!data) return { title: 'Not Found -- Codex' }
+  if (!data) return { title: 'Not Found -- Poli' }
 
   const description = data.summary?.slice(0, 160) || `Track votes and details for ${data.number}`
   const statusLabel = STATUS_CONFIG[data.status]?.label ?? data.status
   const ogUrl = `/api/og?title=${encodeURIComponent(data.number)}&subtitle=${encodeURIComponent(data.title)}&type=bill`
 
   return {
-    title: `${data.number}: ${data.title} -- Codex`,
+    title: `${data.number}: ${data.title} -- Poli`,
     description,
     openGraph: {
       title: `${data.number}: ${data.title}`,
       description,
       type: 'article',
-      url: `https://codexapp.org/bills/${id}`,
+      url: `https://getpoli.com/bills/${id}`,
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {
@@ -130,7 +130,7 @@ export default async function BillDetailPage({ params }: PageProps) {
     legislationIdentifier: bill.number,
     description: bill.summary,
     legislationDate: bill.introduced_date,
-    url: `https://codexapp.org/bills/${bill.id}`,
+    url: `https://getpoli.com/bills/${bill.id}`,
     legislationPassedBy: bill.congress_session
       ? { '@type': 'Organization', name: `${bill.congress_session} United States Congress` }
       : undefined,

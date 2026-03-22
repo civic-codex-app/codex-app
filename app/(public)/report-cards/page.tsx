@@ -10,7 +10,7 @@ import type { Metadata } from 'next'
 export const revalidate = 900 // 15 minutes
 
 export const metadata: Metadata = {
-  title: 'Report Cards — Codex',
+  title: 'Report Cards — Poli',
   description:
     'See how every U.S. politician scores on bipartisanship, engagement, transparency, and effectiveness.',
 }

@@ -13,7 +13,7 @@ import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 export const revalidate = 600 // 10 minutes
 
 export const metadata = {
-  title: 'Issues -- Codex',
+  title: 'Issues -- Poli',
   description: 'Explore political issues and see where politicians stand.',
 }
 

@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
   appId: 'com.codex.app',
-  appName: 'Codex',
+  appName: 'Poli',
   webDir: 'public',
   server: {
     // Update this to your production URL once deployed

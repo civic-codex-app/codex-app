@@ -11,11 +11,11 @@ export interface SiteSettings {
 }
 
 const DEFAULTS: SiteSettings = {
-  site_name: 'Codex',
+  site_name: 'Poli',
   site_tagline: 'Political Directory',
   site_description:
     'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.',
-  og_title: 'Codex — Political Directory',
+  og_title: 'Poli — Political Directory',
   og_description:
     'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.',
   homepage_title: 'U.S. Politician Directory & Civic Engagement Platform',

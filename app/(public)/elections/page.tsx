@@ -8,7 +8,7 @@ import { ElectionsMap } from '@/components/elections/elections-map'
 export const revalidate = 600
 
 export const metadata = {
-  title: 'Elections -- Codex',
+  title: 'Elections -- Poli',
   description: 'Track upcoming elections — Senate, House, Governor, and local races in every state.',
 }
 

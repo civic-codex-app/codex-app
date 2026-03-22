@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
           }}
         />
 
-        {/* Codex branding */}
+        {/* Poli branding */}
         <div
           style={{
             display: 'flex',
@@ -79,7 +79,7 @@ export async function GET(req: NextRequest) {
             fontWeight: 500,
           }}
         >
-          CODEX
+          POLI
         </div>
 
         {/* "My Top Match" heading */}

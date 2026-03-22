@@ -6,7 +6,7 @@ import { PollCard } from '@/components/polls/poll-card'
 export const revalidate = 60 // 1 minute
 
 export const metadata = {
-  title: 'Polls — Codex',
+  title: 'Polls — Poli',
   description: 'Vote on political races, issues, and matchups.',
 }
 

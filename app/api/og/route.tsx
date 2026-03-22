@@ -5,7 +5,7 @@ export const runtime = 'edge'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
-  const title = searchParams.get('title') ?? 'Codex'
+  const title = searchParams.get('title') ?? 'Poli'
   const subtitle = searchParams.get('subtitle') ?? 'Civic Engagement Platform'
   const party = searchParams.get('party') // democrat, republican, etc.
   const type = searchParams.get('type') ?? 'default' // politician, issue, election
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
               fontWeight: 500,
             }}
           >
-            CODEX
+            POLI
           </div>
           {type !== 'default' && (
             <div
@@ -164,7 +164,7 @@ export async function GET(req: NextRequest) {
             color: '#4B5563',
           }}
         >
-          codexapp.org
+          getpoli.com
         </div>
       </div>
     ),

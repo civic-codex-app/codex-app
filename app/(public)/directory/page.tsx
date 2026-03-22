@@ -13,7 +13,7 @@ import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 export const revalidate = 600
 
 export const metadata: Metadata = {
-  title: 'Browse Politicians — Codex',
+  title: 'Browse Politicians — Poli',
   description: 'Browse all U.S. politicians by state, party, and chamber.',
 }
 

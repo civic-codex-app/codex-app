@@ -57,19 +57,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { data, error } = await supabase.from('politicians').select('name, title, party, state, bio').eq('slug', slug).single()
   if (error) console.error('Failed to fetch politician metadata:', error.message)
 
-  if (!data) return { title: 'Not Found -- Codex' }
+  if (!data) return { title: 'Not Found -- Poli' }
 
   const description = data.bio?.slice(0, 160) || `${data.title} from ${data.state}`
   const ogUrl = `/api/og?title=${encodeURIComponent(data.name)}&subtitle=${encodeURIComponent(data.title)}&party=${data.party}&type=politician`
 
   return {
-    title: `${data.name} - ${data.title} | Codex`,
+    title: `${data.name} - ${data.title} | Poli`,
     description,
     openGraph: {
       title: `${data.name} - ${data.title}`,
       description,
       type: 'profile',
-      url: `https://codexapp.org/politicians/${slug}`,
+      url: `https://getpoli.com/politicians/${slug}`,
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {
@@ -244,7 +244,7 @@ export default async function PoliticianPage({ params }: PageProps) {
     jobTitle: pol.title,
     description: pol.bio,
     image: pol.image_url,
-    url: `https://codexapp.org/politicians/${pol.slug}`,
+    url: `https://getpoli.com/politicians/${pol.slug}`,
     affiliation: {
       '@type': 'Organization',
       name: pol.party === 'democrat' ? 'Democratic Party' : pol.party === 'republican' ? 'Republican Party' : pol.party === 'green' ? 'Green Party' : 'Independent',

@@ -52,7 +52,7 @@ export function MatchResults({ results, stateResults = [], userState, onRetake, 
     if (navigator.share) {
       navigator.share({
         title: `I'm ${top.score}% aligned with ${top.politician.name}`,
-        text: 'Take the Who Represents You quiz on Codex!',
+        text: 'Take the Who Represents You quiz on Poli!',
         url: shareUrl,
       }).catch(() => {})
     } else {

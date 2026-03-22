@@ -8,7 +8,7 @@ import { fetchBallotRaces, raceGroup, type Race, type RaceGroup, type Candidate 
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Your Ballot Preview — Codex',
+  title: 'Your Ballot Preview — Poli',
   description: 'See the races and candidates on your ballot based on your location.',
 }
 
