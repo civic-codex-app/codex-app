@@ -58,6 +58,18 @@ export default async function RaceDetailPage({ params }: PageProps) {
   const { slug } = await params
   const supabase = createServiceRoleClient()
 
+  // First check if this is a state election slug (e.g., tx-2026-elections)
+  const { data: stateElection } = await supabase
+    .from('elections')
+    .select('id, name, slug, election_date, description')
+    .eq('slug', slug)
+    .single()
+
+  if (stateElection) {
+    return renderStateElection(supabase, stateElection)
+  }
+
+  // Otherwise treat as individual race slug
   const { data: raceData, error: raceError } = await supabase
     .from('races')
     .select(`
@@ -403,6 +415,142 @@ export default async function RaceDetailPage({ params }: PageProps) {
             </div>
           )}
         </section>
+
+        <Footer />
+      </div>
+    </>
+  )
+}
+
+/* ── State Election View ──────────────────────────────────────────── */
+
+const CHAMBER_ORDER_STATE = ['senate', 'house', 'governor', 'state_senate', 'state_house', 'mayor', 'city_council', 'county', 'school_board', 'other_local']
+const CHAMBER_DISPLAY: Record<string, string> = {
+  senate: 'U.S. Senate',
+  house: 'U.S. House',
+  governor: 'Governor',
+  state_senate: 'State Senate',
+  state_house: 'State House',
+  mayor: 'Mayor',
+  city_council: 'City Council',
+  county: 'County',
+  school_board: 'School Board',
+  other_local: 'Other',
+}
+
+async function renderStateElection(
+  supabase: ReturnType<typeof createServiceRoleClient>,
+  election: { id: string; name: string; slug: string; election_date: string; description: string | null }
+) {
+  // Fetch all races for this election, paginated
+  let allRaces: any[] = []
+  let from = 0
+  while (true) {
+    const { data } = await supabase
+      .from('races')
+      .select('id, name, slug, chamber, district, description, candidates(id, name, party, is_incumbent, image_url, politician_id)')
+      .eq('election_id', election.id)
+      .order('chamber')
+      .order('name')
+      .range(from, from + 499)
+    if (!data || data.length === 0) break
+    allRaces = allRaces.concat(data)
+    if (data.length < 500) break
+    from += 500
+  }
+
+  // Group by chamber
+  const grouped: Record<string, typeof allRaces> = {}
+  for (const race of allRaces) {
+    if (!grouped[race.chamber]) grouped[race.chamber] = []
+    grouped[race.chamber].push(race)
+  }
+
+  const stateCode = election.slug.split('-')[0]?.toUpperCase()
+  const electionDate = new Date(election.election_date + 'T00:00:00').toLocaleDateString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric',
+  })
+
+  return (
+    <>
+      <Header />
+      <div className="mx-auto max-w-[1000px] px-6 pt-6 md:px-10">
+        <Link
+          href="/elections"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+        >
+          &larr; All states
+        </Link>
+
+        <h1 className="mb-2 text-[clamp(26px,4vw,40px)] font-bold leading-[1.1]">
+          {election.name}
+        </h1>
+        <p className="mb-4 text-[14px] text-[var(--codex-sub)]">
+          {electionDate} · {allRaces.length} race{allRaces.length !== 1 ? 's' : ''}
+        </p>
+
+        <div className="mb-8">
+          <ElectionCountdown electionDate={election.election_date} />
+        </div>
+
+        {/* Race groups */}
+        {CHAMBER_ORDER_STATE.map(chamber => {
+          const races = grouped[chamber]
+          if (!races || races.length === 0) return null
+          const label = CHAMBER_DISPLAY[chamber] || chamber
+
+          return (
+            <section key={chamber} className="mb-10">
+              <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+                {label} · {races.length} race{races.length !== 1 ? 's' : ''}
+              </h2>
+              <div className="space-y-2">
+                {races.map((race: any) => {
+                  const candidates = race.candidates ?? []
+                  return (
+                    <Link
+                      key={race.id}
+                      href={`/elections/${race.slug}`}
+                      className="flex items-center justify-between rounded-lg border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                    >
+                      <div>
+                        <div className="text-[14px] font-medium text-[var(--codex-text)]">
+                          {race.name}
+                        </div>
+                        {candidates.length > 0 && (
+                          <div className="mt-1 flex items-center gap-2 text-[12px] text-[var(--codex-faint)]">
+                            {candidates.slice(0, 3).map((c: any) => (
+                              <span key={c.id} className="flex items-center gap-1">
+                                <span
+                                  className="inline-block h-2 w-2 rounded-full"
+                                  style={{ backgroundColor: partyColor(c.party) }}
+                                />
+                                {c.name}
+                              </span>
+                            ))}
+                            {candidates.length > 3 && (
+                              <span className="text-[var(--codex-faint)]">+{candidates.length - 3} more</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {candidates.length > 0 && (
+                          <span className="rounded bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] text-[var(--codex-faint)]">
+                            {candidates.length} candidate{candidates.length !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--codex-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
+            </section>
+          )
+        })}
 
         <Footer />
       </div>
