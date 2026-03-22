@@ -77,6 +77,8 @@ export function QuizForm({ issues }: Props) {
   const [currentStep, setCurrentStep] = useState(() => loadQuizStep())
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [results, setResults] = useState<MatchResult[] | null>(null)
+  const [stateResults, setStateResults] = useState<MatchResult[]>([])
+  const [userState, setUserState] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showCheck, setShowCheck] = useState(false)
   const [milestone, setMilestone] = useState<string | null>(null)
@@ -95,6 +97,10 @@ export function QuizForm({ issues }: Props) {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user || cancelled) return
         isLoggedIn.current = true
+
+        // Get user's state for location-relevant results
+        const { data: profile } = await supabase.from('profiles').select('state').eq('id', user.id).single()
+        if (profile?.state && !cancelled) setUserState(profile.state)
 
         const serverAnswers = await loadQuizFromServer()
         if (cancelled) return
@@ -203,11 +209,12 @@ export function QuizForm({ issues }: Props) {
       const res = await fetch('/api/match', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ stances: validStances }),
+        body: JSON.stringify({ stances: validStances, userState }),
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error ?? 'Something went wrong.'); return }
       setResults(data.results)
+      setStateResults(data.yourState ?? [])
     } catch {
       setError('Network error. Please try again.')
     } finally {
@@ -226,7 +233,7 @@ export function QuizForm({ issues }: Props) {
     setMilestone(null)
   }
 
-  if (results) return <MatchResults results={results} onRetake={retake} />
+  if (results) return <MatchResults results={results} stateResults={stateResults} userState={userState} onRetake={retake} />
   if (!issue) return null
 
   const content = QUIZ_CONTENT[issue.slug]

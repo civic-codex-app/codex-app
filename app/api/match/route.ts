@@ -115,23 +115,22 @@ export async function POST(request: Request) {
       }
     }
 
-    // Sort by score desc, take top 20
+    // Sort by score desc
     scored.sort((a, b) => b.score - a.score || b.matched - a.matched)
-    const top = scored.slice(0, TOP_N)
 
-    if (top.length === 0) {
+    if (scored.length === 0) {
       return NextResponse.json(
-        { results: [] },
+        { results: [], yourState: [] },
         { headers: { 'Cache-Control': 'no-store' } }
       )
     }
 
-    // Fetch politician details for top results
-    const politicianIds = top.map((t) => t.politicianId)
+    // Get all politician IDs we need details for
+    const allScoredIds = scored.slice(0, 100).map((t) => t.politicianId)
     const { data: politicians, error: polError } = await supabase
       .from('politicians')
       .select('id, name, slug, party, state, chamber, image_url, title')
-      .in('id', politicianIds)
+      .in('id', allScoredIds)
 
     if (polError) {
       console.error('Supabase error fetching politicians:', polError)
@@ -142,29 +141,54 @@ export async function POST(request: Request) {
       (politicians ?? []).map((p) => [p.id, p])
     )
 
-    const results = top
-      .map((t) => {
-        const politician = polMap.get(t.politicianId)
-        if (!politician) return null
-        return {
-          politician: {
-            name: politician.name,
-            slug: politician.slug,
-            party: politician.party,
-            state: politician.state,
-            chamber: politician.chamber,
-            image_url: politician.image_url,
-            title: politician.title,
-          },
-          score: t.score,
-          matchedIssues: t.matched,
-          totalIssues: t.total,
-        }
-      })
+    // Get user's state from profile (if logged in)
+    let userState: string | null = null
+    try {
+      const authHeader = request.headers.get('cookie')
+      if (authHeader) {
+        // Try to get user state from the request body
+        userState = body?.userState ?? null
+      }
+    } catch {}
+
+    function buildResult(t: typeof scored[0]) {
+      const politician = polMap.get(t.politicianId)
+      if (!politician) return null
+      return {
+        politician: {
+          name: politician.name,
+          slug: politician.slug,
+          party: politician.party,
+          state: politician.state,
+          chamber: politician.chamber,
+          image_url: politician.image_url,
+          title: politician.title,
+        },
+        score: t.score,
+        matchedIssues: t.matched,
+        totalIssues: t.total,
+      }
+    }
+
+    // Split into state-specific and national results
+    const yourState = userState
+      ? scored
+          .filter(t => {
+            const pol = polMap.get(t.politicianId)
+            return pol?.state === userState
+          })
+          .slice(0, 10)
+          .map(buildResult)
+          .filter(Boolean)
+      : []
+
+    const results = scored
+      .slice(0, TOP_N)
+      .map(buildResult)
       .filter(Boolean)
 
     return NextResponse.json(
-      { results },
+      { results, yourState },
       { headers: { 'Cache-Control': 'no-store' } }
     )
   } catch (err) {

@@ -26,6 +26,8 @@ interface MatchResult {
 
 interface Props {
   results: MatchResult[]
+  stateResults?: MatchResult[]
+  userState?: string | null
   onRetake: () => void
 }
 
@@ -36,7 +38,7 @@ function scoreColor(score: number): string {
   return '#EF4444'
 }
 
-export function MatchResults({ results, onRetake }: Props) {
+export function MatchResults({ results, stateResults = [], userState, onRetake }: Props) {
   const [copied, setCopied] = useState(false)
 
   const handleShare = useCallback(() => {
@@ -63,7 +65,7 @@ export function MatchResults({ results, onRetake }: Props) {
     return (
       <div className="text-center">
         <p className="text-[var(--codex-sub)]">
-          No matches found. Try answering more questions for better results.
+          No results found. Try answering more questions for better results.
         </p>
         <button
           onClick={onRetake}
@@ -81,8 +83,43 @@ export function MatchResults({ results, onRetake }: Props) {
 
   return (
     <div>
+      {/* State-specific results */}
+      {stateResults.length > 0 && userState && (
+        <div className="mb-10">
+          <h2 className="mb-2 text-center text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--codex-text)]">
+            Who Thinks Like You in {userState}
+          </h2>
+          <p className="mb-5 text-center text-[13px] text-[var(--codex-sub)]">
+            These are officials who represent your state
+          </p>
+          <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
+            {stateResults.map((r) => {
+              const color = scoreColor(r.score)
+              const pColor = partyColor(r.politician.party)
+              return (
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
+                  <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border" style={{ borderColor: pColor }}>
+                    <AvatarImage src={r.politician.image_url} alt={r.politician.name} size={36} fallbackColor={pColor} party={r.politician.party} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
+                    <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
+                      <PartyIcon party={r.politician.party} size={10} />
+                      <span>{partyLabel(r.politician.party)}</span>
+                      <span>·</span>
+                      <span>{r.politician.chamber}</span>
+                    </div>
+                  </div>
+                  <span className="text-[14px] font-semibold tabular-nums" style={{ color }}>{r.score}%</span>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       <h2 className="mb-2 text-center text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-[var(--codex-text)]">
-        Your Top Matches
+        Across the Country
       </h2>
       <p className="mb-8 text-center text-[14px] text-[var(--codex-sub)]">
         Based on {results[0]?.matchedIssues ?? 0} issues you answered
@@ -182,7 +219,7 @@ export function MatchResults({ results, onRetake }: Props) {
       {rest.length > 0 && (
         <>
           <h3 className="mb-3 text-sm font-semibold text-[var(--codex-sub)]">
-            More Matches
+            More Results
           </h3>
           <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
             {rest.map((r, i) => {
