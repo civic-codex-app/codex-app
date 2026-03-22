@@ -18,7 +18,7 @@ export function PartyPill({ party, size = 'sm' }: PartyPillProps) {
         gap: size === 'lg' ? 6 : 4,
       }}
     >
-      <PartyIcon party={party} size={size === 'lg' ? 16 : 12} />
+      <PartyIcon party={party} size={size === 'lg' ? 16 : 12} color="white" />
       {partyLabel(party)}
     </span>
   )

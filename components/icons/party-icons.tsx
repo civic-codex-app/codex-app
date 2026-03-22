@@ -91,8 +91,8 @@ export function StarIcon({ size = 16, color = '#7C3AED', className }: IconProps)
   )
 }
 
-export function PartyIcon({ party, size = 16 }: { party: string; size?: number }) {
-  const color = partyColor(party)
+export function PartyIcon({ party, size = 16, color: colorOverride }: { party: string; size?: number; color?: string }) {
+  const color = colorOverride ?? partyColor(party)
   const key = party.toLowerCase()
   if (key === 'democrat') return <DonkeyIcon size={size} color={color} />
   if (key === 'republican') return <ElephantIcon size={size} color={color} />
