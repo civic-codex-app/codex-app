@@ -272,8 +272,11 @@ export default async function BallotPreviewPage() {
   let userDistrict: string | null = null
   if (userZip) {
     try {
-      const zipMap = (await import('@/lib/data/zip-to-district.json')).default as Record<string, string>
-      userDistrict = zipMap[userZip] ?? null
+      const zipMap = (await import('@/lib/data/zip-to-district.json')).default as Record<string, { state: string; district: string }[]>
+      const entries = zipMap[userZip]
+      if (entries && entries.length > 0) {
+        userDistrict = entries[0].district
+      }
     } catch {
       // zip-to-district.json may not exist
     }
