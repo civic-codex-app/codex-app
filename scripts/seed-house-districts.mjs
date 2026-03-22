@@ -68,11 +68,28 @@ async function main() {
 
   // ── 2. Fetch congress-legislators data ────────────────────────
   console.log('Fetching congress-legislators data...')
-  const res = await fetch(
-    'https://theunitedstates.io/congress-legislators/legislators-current.json'
-  )
-  if (!res.ok) throw new Error(`Failed to fetch legislators: ${res.status}`)
-  const legislators = await res.json()
+  const URLS = [
+    'https://raw.githubusercontent.com/unitedstates/congress-legislators/gh-pages/legislators-current.json',
+    'https://theunitedstates.io/congress-legislators/legislators-current.json',
+    'https://raw.githubusercontent.com/unitedstates/congress-legislators/main/legislators-current.json',
+  ]
+
+  let legislators = null
+  for (const url of URLS) {
+    try {
+      console.log(`  Trying ${url} ...`)
+      const res = await fetch(url)
+      if (res.ok) {
+        legislators = await res.json()
+        console.log(`  ✓ Fetched from ${url}`)
+        break
+      }
+      console.log(`  ✗ HTTP ${res.status}`)
+    } catch (err) {
+      console.log(`  ✗ ${err.message}`)
+    }
+  }
+  if (!legislators) throw new Error('Failed to fetch legislators from all sources')
 
   // Filter to current House representatives
   const houseMembers = legislators.filter((leg) => {
