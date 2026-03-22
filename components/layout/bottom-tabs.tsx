@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 const TABS = [
   {
@@ -57,7 +58,7 @@ const TABS = [
 
 const MORE_LINKS = [
   { href: '/compare', label: 'Compare' },
-  { href: '/match', label: 'Voter Match' },
+  { href: '/match', label: 'Voter Match', authOnly: true },
   { href: '/bills', label: 'Bills' },
   { href: '/polls', label: 'Polls' },
 ]
@@ -65,6 +66,14 @@ const MORE_LINKS = [
 export function BottomTabs() {
   const pathname = usePathname()
   const [moreOpen, setMoreOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => {
+      setIsLoggedIn(!!data.user)
+    })
+  }, [])
 
   const toggleMore = useCallback(() => {
     setMoreOpen(prev => !prev)
@@ -97,7 +106,7 @@ export function BottomTabs() {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {MORE_LINKS.map((link) => (
+            {MORE_LINKS.filter((link) => !link.authOnly || isLoggedIn).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

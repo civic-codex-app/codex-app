@@ -1,14 +1,16 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { DonkeyIcon, ElephantIcon } from '@/components/icons/party-icons'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
+import { createClient } from '@/lib/supabase/client'
 
 const NAV_LINKS = [
   { href: '/', label: 'Directory' },
   { href: '/compare', label: 'Compare' },
-  { href: '/match', label: 'Match' },
+  { href: '/match', label: 'Match', authOnly: true },
   { href: '/bills', label: 'Bills' },
   { href: '/elections', label: 'Elections' },
   { href: '/issues', label: 'Issues' },
@@ -18,6 +20,14 @@ const NAV_LINKS = [
 
 export function Header() {
   const pathname = usePathname()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => {
+      setIsLoggedIn(!!data.user)
+    })
+  }, [])
 
   return (
     <header className="sticky z-40 mb-6 border-b border-[var(--codex-border)] bg-[var(--codex-bg)] sm:mb-8 md:mb-10" style={{ top: 'env(safe-area-inset-top, 0px)' }}>
@@ -36,7 +46,7 @@ export function Header() {
             <DonkeyIcon size={22} color="#2563EB" />
           </Link>
           <nav className="ml-4 hidden items-center gap-4 sm:flex" aria-label="Main navigation">
-            {NAV_LINKS.map((link) => {
+            {NAV_LINKS.filter((link) => !link.authOnly || isLoggedIn).map((link) => {
               const isActive = pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))
               return (
                 <Link
