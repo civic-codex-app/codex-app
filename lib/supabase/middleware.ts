@@ -33,7 +33,8 @@ export async function updateSession(request: NextRequest) {
     (request.nextUrl.pathname.startsWith('/dashboard') ||
       request.nextUrl.pathname.startsWith('/admin') ||
       request.nextUrl.pathname.startsWith('/following') ||
-      request.nextUrl.pathname.startsWith('/account'))
+      request.nextUrl.pathname.startsWith('/account') ||
+      request.nextUrl.pathname.startsWith('/onboarding'))
   ) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'

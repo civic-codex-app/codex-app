@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { fieldClass, labelClass } from '@/lib/utils'
 import { US_STATES } from '@/lib/constants/us-states'
+import Image from 'next/image'
 
 interface Profile {
   id: string
@@ -18,11 +19,67 @@ interface Profile {
   notifications_enabled: boolean
 }
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+
 export function AccountForm({ profile }: { profile: Profile | null }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
+  const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url ?? null)
+  const [uploading, setUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const userInitial = (profile?.display_name ?? profile?.email ?? 'U').charAt(0).toUpperCase()
+
+  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setError('Invalid file type. Please use JPEG, PNG, or WebP.')
+      return
+    }
+
+    // Validate file size
+    if (file.size > MAX_FILE_SIZE) {
+      setError('File too large. Maximum size is 5MB.')
+      return
+    }
+
+    setError('')
+    setUploading(true)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const res = await fetch('/api/upload/avatar', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.error ?? 'Upload failed')
+        return
+      }
+
+      // Append cache-bust to force image refresh
+      setAvatarUrl(`${data.url}?t=${Date.now()}`)
+      setSuccess(true)
+      router.refresh()
+    } catch {
+      setError('Upload failed. Please try again.')
+    } finally {
+      setUploading(false)
+      // Reset file input so the same file can be re-selected
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -62,6 +119,64 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
           Profile updated
         </div>
       )}
+
+      {/* Avatar upload */}
+      <div className="flex flex-col items-center gap-3 pb-2">
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="group relative h-20 w-20 overflow-hidden rounded-full border-2 border-[var(--codex-border)] transition-colors hover:border-[var(--codex-text)] focus:outline-none focus:ring-2 focus:ring-[var(--codex-text)] focus:ring-offset-2 focus:ring-offset-[var(--codex-bg)] disabled:opacity-50"
+          aria-label="Change profile photo"
+        >
+          {avatarUrl ? (
+            <Image
+              src={avatarUrl}
+              alt={profile?.display_name ?? 'Avatar'}
+              width={80}
+              height={80}
+              unoptimized
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
+              <span className="font-serif text-2xl text-[var(--codex-sub)]">{userInitial}</span>
+            </div>
+          )}
+
+          {/* Hover overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+            {uploading ? (
+              <svg className="h-5 w-5 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              </svg>
+            ) : (
+              <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+            )}
+          </div>
+        </button>
+
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="hidden"
+          onChange={handleAvatarChange}
+        />
+
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="text-xs text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] disabled:opacity-50"
+        >
+          {uploading ? 'Uploading...' : 'Change Photo'}
+        </button>
+      </div>
 
       <div>
         <label htmlFor="acct-email" className={labelClass}>Email</label>

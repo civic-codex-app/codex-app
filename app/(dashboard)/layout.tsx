@@ -1,9 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { useTheme } from '@/lib/hooks/use-theme'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
+import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
@@ -12,9 +15,35 @@ const NAV_ITEMS = [
   { href: '/account', label: 'Account' },
 ]
 
+interface UserProfile {
+  display_name: string | null
+  avatar_url: string | null
+  email: string | null
+}
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   useTheme()
   const pathname = usePathname()
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+
+  useEffect(() => {
+    async function loadProfile() {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data } = await supabase
+        .from('profiles')
+        .select('display_name, avatar_url, email')
+        .eq('id', user.id)
+        .single()
+
+      if (data) setProfile(data)
+    }
+    loadProfile()
+  }, [pathname]) // Re-fetch when navigating (catches avatar updates)
+
+  const userInitial = (profile?.display_name ?? profile?.email ?? 'U').charAt(0).toUpperCase()
 
   return (
     <div className="min-h-screen bg-[var(--codex-bg)]">
@@ -45,6 +74,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           </div>
           <div className="flex items-center gap-4">
+            {/* User avatar */}
+            {profile && (
+              <Link href="/account" className="no-underline">
+                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--codex-border)] transition-colors hover:border-[var(--codex-text)]">
+                  {profile.avatar_url ? (
+                    <Image
+                      src={profile.avatar_url}
+                      alt={profile.display_name ?? 'Avatar'}
+                      width={28}
+                      height={28}
+                      unoptimized
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
+                      <span className="font-serif text-xs text-[var(--codex-sub)]">{userInitial}</span>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            )}
             <ThemeToggle />
             <form action="/api/auth/signout" method="POST">
               <button
