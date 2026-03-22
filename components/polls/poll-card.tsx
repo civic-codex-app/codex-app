@@ -47,7 +47,7 @@ export function PollCard({ poll }: { poll: Poll }) {
         )}
       </div>
 
-      <h3 className="mb-2 font-serif text-xl transition-colors group-hover:text-[var(--codex-text)]">
+      <h3 className="mb-2 text-xl font-semibold transition-colors group-hover:text-[var(--codex-text)]">
         {poll.title}
       </h3>
 

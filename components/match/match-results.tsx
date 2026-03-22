@@ -58,7 +58,7 @@ export function MatchResults({ results, onRetake }: Props) {
 
   return (
     <div>
-      <h2 className="mb-2 text-center font-serif text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-[var(--codex-text)]">
+      <h2 className="mb-2 text-center text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-[var(--codex-text)]">
         Your Top Matches
       </h2>
       <p className="mb-8 text-center text-[14px] text-[var(--codex-sub)]">
@@ -79,7 +79,7 @@ export function MatchResults({ results, onRetake }: Props) {
               <div className="flex items-center gap-4">
                 {/* Rank */}
                 <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full font-serif text-[15px] font-bold"
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[15px] font-bold"
                   style={{ backgroundColor: `${color}18`, color }}
                 >
                   {i + 1}
@@ -103,7 +103,7 @@ export function MatchResults({ results, onRetake }: Props) {
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/politicians/${r.politician.slug}`}
-                    className="font-serif text-[17px] font-semibold text-[var(--codex-text)] hover:underline"
+                    className="text-[17px] font-semibold text-[var(--codex-text)] hover:underline"
                   >
                     {r.politician.name}
                   </Link>
@@ -118,7 +118,7 @@ export function MatchResults({ results, onRetake }: Props) {
                 {/* Score */}
                 <div className="shrink-0 text-right">
                   <span
-                    className="font-serif text-[28px] font-bold leading-none"
+                    className="text-[28px] font-bold leading-none"
                     style={{ color }}
                   >
                     {r.score}

@@ -147,7 +147,7 @@ export function QuizForm({ issues }: Props) {
         <div className="mb-3 flex items-center justify-center gap-2 text-[var(--codex-sub)]">
           <IssueIcon icon={issue.icon} size={20} />
         </div>
-        <h2 className="font-serif text-[clamp(1.25rem,3vw,1.75rem)] font-semibold text-[var(--codex-text)]">
+        <h2 className="text-[clamp(1.25rem,3vw,1.75rem)] font-semibold text-[var(--codex-text)]">
           {issue.name}
         </h2>
         {issue.description && (

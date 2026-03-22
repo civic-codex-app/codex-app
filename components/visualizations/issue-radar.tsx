@@ -85,7 +85,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
           aria-label={`Highlight ${politician1.name}`}
         >
           <div className="h-3 w-3 rounded-sm" style={{ background: color1, opacity: 0.8 }} />
-          <span className="font-serif text-[13px]" style={{ color: color1 }}>
+          <span className="text-[13px] font-semibold" style={{ color: color1 }}>
             {politician1.name}
           </span>
         </button>
@@ -96,7 +96,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
           aria-label={`Highlight ${politician2.name}`}
         >
           <div className="h-3 w-3 rounded-sm" style={{ background: color2, opacity: 0.8 }} />
-          <span className="font-serif text-[13px]" style={{ color: color2 }}>
+          <span className="text-[13px] font-semibold" style={{ color: color2 }}>
             {politician2.name}
           </span>
         </button>

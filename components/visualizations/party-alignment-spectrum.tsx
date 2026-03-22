@@ -179,7 +179,7 @@ export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumPr
                     textAnchor="middle"
                     fill="var(--codex-faint)"
                     fontSize={10}
-                    fontFamily="var(--font-serif, Georgia, serif)"
+                    fontFamily="var(--font-sans, sans-serif)"
                     style={{ letterSpacing: '0.04em' }}
                   >
                     {label}
@@ -251,7 +251,7 @@ export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumPr
                       textAnchor="middle"
                       fill="var(--codex-text)"
                       fontSize={11}
-                      fontFamily="var(--font-serif, Georgia, serif)"
+                      fontFamily="var(--font-sans, sans-serif)"
                     >
                       {p.name}
                     </text>

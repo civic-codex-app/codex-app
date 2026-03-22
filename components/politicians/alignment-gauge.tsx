@@ -53,7 +53,7 @@ export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
       </div>
 
       <div className="flex items-baseline justify-between">
-        <span className="font-serif text-2xl" style={{ color }}>
+        <span className="text-2xl font-bold" style={{ color }}>
           {score}%
         </span>
         <span className="text-[11px] text-[var(--codex-faint)]">

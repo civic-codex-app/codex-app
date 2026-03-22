@@ -126,8 +126,8 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
     <div className="w-full">
       {/* Header */}
       <div className="mb-3 flex items-baseline justify-between">
-        <h3 className="font-serif text-lg text-[var(--codex-text)]">{chamber}</h3>
-        <span className="font-serif text-[28px] text-[var(--codex-text)]">{total}</span>
+        <h3 className="text-lg font-semibold text-[var(--codex-text)]">{chamber}</h3>
+        <span className="text-[28px] font-bold text-[var(--codex-text)]">{total}</span>
       </div>
 
       {/* SVG hemicycle */}

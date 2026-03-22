@@ -116,7 +116,7 @@ export function CompareView({
             <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
               Issue Agreement
             </span>
-            <span className="font-serif text-xl">
+            <span className="text-xl font-semibold">
               {agreePct}%
             </span>
           </div>
@@ -155,7 +155,7 @@ export function CompareView({
       {/* No comparable stances */}
       {comparableIssues.length === 0 && (
         <div className="mb-8 rounded-md border border-[var(--codex-border)] px-6 py-10 text-center">
-          <div className="mb-2 font-serif text-lg text-[var(--codex-faint)]">No stance data to compare</div>
+          <div className="mb-2 text-lg font-semibold text-[var(--codex-faint)]">No stance data to compare</div>
           <p className="text-[13px] text-[var(--codex-faint)]">
             Neither official has verified stances on record yet.
           </p>
@@ -240,7 +240,7 @@ function ProfileCard({
         <div className="min-w-0">
           <Link
             href={`/politicians/${pol.slug}`}
-            className="block truncate font-serif text-base leading-tight hover:underline sm:text-lg"
+            className="block truncate text-base font-semibold leading-tight hover:underline sm:text-lg"
           >
             {pol.name}
           </Link>
@@ -261,11 +261,11 @@ function ProfileCard({
             Alignment
           </div>
           {alignment >= 0 ? (
-            <div className="font-serif text-lg" style={{ color }}>
+            <div className="text-lg font-semibold" style={{ color }}>
               {alignment}%
             </div>
           ) : (
-            <div className="font-serif text-lg text-[var(--codex-faint)]">—</div>
+            <div className="text-lg font-semibold text-[var(--codex-faint)]">—</div>
           )}
         </div>
 
@@ -282,7 +282,7 @@ function ProfileCard({
               <span className="text-[12px] tabular-nums text-red-400">{opposes}</span>
             </div>
           ) : (
-            <div className="font-serif text-lg text-[var(--codex-faint)]">—</div>
+            <div className="text-lg font-semibold text-[var(--codex-faint)]">—</div>
           )}
         </div>
 

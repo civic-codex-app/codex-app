@@ -88,7 +88,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
         <div className="mb-4 rounded-md border border-[var(--codex-border)] p-4">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[12px] text-[var(--codex-sub)]">Voting Agreement</span>
-            <span className="font-serif text-lg">{agreePct}%</span>
+            <span className="text-lg font-semibold">{agreePct}%</span>
           </div>
           <div className="mb-1.5 flex h-2.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
             <div

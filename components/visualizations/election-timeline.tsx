@@ -105,7 +105,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
             >
               {/* Year + result badge */}
               <div className="mb-3 flex items-center gap-3">
-                <span className="font-serif text-xl text-[var(--codex-text)]">
+                <span className="text-xl font-semibold text-[var(--codex-text)]">
                   {result.election_year}
                 </span>
                 <span
@@ -128,7 +128,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                 <div>
                   <div className="mb-1 flex items-baseline justify-between">
                     <span className="text-[11px] font-medium text-[var(--codex-sub)]">Candidate</span>
-                    <span className="font-serif text-[14px]" style={{ color }}>
+                    <span className="text-[14px] font-semibold" style={{ color }}>
                       {result.vote_percentage}%
                     </span>
                   </div>
@@ -149,7 +149,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                     <span className="text-[11px] text-[var(--codex-faint)]">
                       {result.opponent_name || 'Opponent'}
                     </span>
-                    <span className="font-serif text-[13px] text-[var(--codex-faint)]">
+                    <span className="text-[13px] text-[var(--codex-faint)]">
                       {result.opponent_vote_percentage}%
                     </span>
                   </div>

@@ -32,7 +32,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <aside className="fixed left-0 top-0 flex h-full w-56 flex-col border-r border-[var(--codex-border)] bg-[var(--codex-card)]">
         <div className="flex items-center gap-3 border-b border-[var(--codex-border)] px-5 py-5">
           <Link href="/" className="flex items-center gap-3 no-underline">
-            <div className="flex h-[26px] w-[26px] items-center justify-center border border-[var(--codex-text)] font-serif text-[13px] text-[var(--codex-text)]">
+            <div className="flex h-[26px] w-[26px] items-center justify-center border border-[var(--codex-text)] text-[13px] font-semibold text-[var(--codex-text)]">
               C
             </div>
             <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">

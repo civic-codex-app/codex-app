@@ -146,7 +146,7 @@ export function IssueMapView({
           <span>/</span>
           <span>Map</span>
         </div>
-        <h1 className="font-serif text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--codex-text)]">
+        <h1 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--codex-text)]">
           Issue Explorer Map
         </h1>
         <p className="mt-1 text-[var(--codex-sub)] text-sm max-w-2xl">
@@ -219,7 +219,7 @@ export function IssueMapView({
         <div className="mt-6 rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="font-serif text-lg font-semibold text-[var(--codex-text)]">
+              <h2 className="text-lg font-semibold font-semibold text-[var(--codex-text)]">
                 {STATE_NAMES[selectedState] ?? selectedState}
               </h2>
               <p className="text-xs text-[var(--codex-sub)]">

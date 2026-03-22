@@ -137,7 +137,7 @@ export function PoliticianList({
 
       {politicians.length === 0 && (
         <div className="py-20 text-center text-[var(--codex-faint)]">
-          <div className="mb-2 font-serif text-2xl">No results</div>
+          <div className="mb-2 text-2xl font-bold">No results</div>
           <div className="text-sm">Try adjusting your filters or search query</div>
         </div>
       )}

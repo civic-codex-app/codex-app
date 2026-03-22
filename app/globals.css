@@ -31,21 +31,39 @@
     --radius: 0.5rem;
 
     /* Codex brand tokens */
-    --codex-bg: #FAFAF8;
+    --codex-bg: #FFFFFF;
+    --codex-surface: #F9FAFB;
     --codex-card: #FFFFFF;
-    --codex-text: #111111;
-    --codex-sub: rgba(0, 0, 0, 0.55);
-    --codex-faint: rgba(0, 0, 0, 0.40);
-    --codex-subtle: rgba(0, 0, 0, 0.50);
-    --codex-border: rgba(0, 0, 0, 0.08);
-    --codex-hover: rgba(0, 0, 0, 0.03);
-    --codex-input-bg: rgba(0, 0, 0, 0.03);
-    --codex-input-border: rgba(0, 0, 0, 0.12);
-    --codex-input-focus: rgba(0, 0, 0, 0.30);
+    --codex-border: #E5E7EB;
+    --codex-hover: #F3F4F6;
+    --codex-text: #111827;
+    --codex-sub: #6B7280;
+    --codex-faint: #9CA3AF;
+    --codex-subtle: #6B7280;
+    --codex-input-bg: #FFFFFF;
+    --codex-input-border: #D1D5DB;
+    --codex-input-focus: #2563EB;
     --codex-overlay: rgba(0, 0, 0, 0.25);
-    --codex-badge-bg: rgba(0, 0, 0, 0.05);
-    --codex-badge-text: rgba(0, 0, 0, 0.45);
+    --codex-badge-bg: #F3F4F6;
+    --codex-badge-text: #6B7280;
     --codex-grid-opacity: 0.04;
+
+    /* Party colors */
+    --party-dem: #2563EB;
+    --party-gop: #DC2626;
+    --party-ind: #7C3AED;
+    --party-green: #16A34A;
+    --party-dem-bg: #EFF6FF;
+    --party-gop-bg: #FEF2F2;
+    --party-ind-bg: #F5F3FF;
+
+    /* Stance colors — 3-tier */
+    --stance-for: #10B981;
+    --stance-for-bg: #ECFDF5;
+    --stance-mixed: #F59E0B;
+    --stance-mixed-bg: #FFFBEB;
+    --stance-against: #EF4444;
+    --stance-against-bg: #FEF2F2;
   }
 
   * {
@@ -88,20 +106,21 @@
   --input: 0 0% 12%;
   --ring: 0 0% 45%;
 
-  --codex-bg: #050505;
-  --codex-card: #0A0A0A;
-  --codex-text: #ffffff;
-  --codex-sub: rgba(255, 255, 255, 0.55);
-  --codex-faint: rgba(255, 255, 255, 0.38);
-  --codex-subtle: rgba(255, 255, 255, 0.50);
-  --codex-border: rgba(255, 255, 255, 0.08);
-  --codex-hover: rgba(255, 255, 255, 0.04);
-  --codex-input-bg: rgba(255, 255, 255, 0.03);
-  --codex-input-border: rgba(255, 255, 255, 0.10);
-  --codex-input-focus: rgba(255, 255, 255, 0.25);
+  --codex-bg: #0F172A;
+  --codex-surface: #1E293B;
+  --codex-card: #1E293B;
+  --codex-border: #334155;
+  --codex-hover: #334155;
+  --codex-text: #F1F5F9;
+  --codex-sub: #94A3B8;
+  --codex-faint: #64748B;
+  --codex-subtle: #94A3B8;
+  --codex-input-bg: #1E293B;
+  --codex-input-border: #475569;
+  --codex-input-focus: #3B82F6;
   --codex-overlay: rgba(0, 0, 0, 0.7);
-  --codex-badge-bg: rgba(255, 255, 255, 0.08);
-  --codex-badge-text: rgba(255, 255, 255, 0.45);
+  --codex-badge-bg: #334155;
+  --codex-badge-text: #94A3B8;
   --codex-grid-opacity: 0.025;
 }
 

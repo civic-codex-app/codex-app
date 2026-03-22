@@ -79,7 +79,7 @@ export function RaceCard({ race }: RaceCardProps) {
         </span>
       </div>
 
-      <h3 className="mb-3 font-serif text-lg transition-colors group-hover:text-[var(--codex-text)]">
+      <h3 className="mb-3 text-lg font-semibold transition-colors group-hover:text-[var(--codex-text)]">
         {race.name}
       </h3>
 

@@ -40,7 +40,7 @@ export function BipartisanScoreCard({
 
   return (
     <div className="w-full">
-      <h3 className="mb-5 font-serif text-lg text-[var(--codex-text)]">{title}</h3>
+      <h3 className="mb-5 text-lg font-semibold text-[var(--codex-text)]">{title}</h3>
 
       <div className="space-y-1">
         {sorted.map((p, i) => {
@@ -58,7 +58,7 @@ export function BipartisanScoreCard({
               aria-label={`${p.name}, ${partyLabel(p.party)}, ${p.state} - bipartisan score ${p.bipartisanScore}%`}
             >
               {/* Rank */}
-              <span className="w-5 shrink-0 text-right font-serif text-[13px] text-[var(--codex-faint)]">
+              <span className="w-5 shrink-0 text-right text-[13px] text-[var(--codex-faint)]">
                 {i + 1}
               </span>
 
@@ -109,7 +109,7 @@ export function BipartisanScoreCard({
 
               {/* Score */}
               <span
-                className="w-12 shrink-0 text-right font-serif text-[14px] transition-colors"
+                className="w-12 shrink-0 text-right text-[14px] font-semibold transition-colors"
                 style={{ color: isHovered ? color : 'var(--codex-sub)' }}
               >
                 {p.bipartisanScore}%

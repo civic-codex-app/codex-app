@@ -142,7 +142,7 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
-              <span className="font-serif text-2xl text-[var(--codex-sub)]">{userInitial}</span>
+              <span className="text-2xl font-bold text-[var(--codex-sub)]">{userInitial}</span>
             </div>
           )}
 

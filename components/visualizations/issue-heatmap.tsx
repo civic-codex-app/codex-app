@@ -131,7 +131,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                   <span className="text-[15px]" role="img" aria-label={row.issue}>
                     {row.icon}
                   </span>
-                  <span className="truncate font-serif text-[13px] text-[var(--codex-sub)]">
+                  <span className="truncate text-[13px] font-semibold text-[var(--codex-sub)]">
                     {row.issue}
                   </span>
                 </div>

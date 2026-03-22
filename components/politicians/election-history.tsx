@@ -72,7 +72,7 @@ export function ElectionHistory({ results, party }: ElectionHistoryProps) {
               {/* Vote percentage */}
               {r.vote_percentage != null && (
                 <div className="mt-1.5 flex items-baseline gap-2">
-                  <span className="font-serif text-lg" style={{ color }}>
+                  <span className="text-lg font-semibold" style={{ color }}>
                     {r.vote_percentage}%
                   </span>
                   {r.total_votes != null && (

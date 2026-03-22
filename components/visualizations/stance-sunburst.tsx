@@ -140,7 +140,7 @@ export function StanceSunburst({ stances, size = 120 }: StanceSunburstProps) {
           dominantBaseline="middle"
           fill="var(--codex-text)"
           fontSize={size * 0.18}
-          fontFamily="var(--font-serif, Georgia, serif)"
+          fontFamily="var(--font-sans, sans-serif)"
           fontWeight="400"
         >
           {total}

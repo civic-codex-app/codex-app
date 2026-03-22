@@ -68,7 +68,7 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
 
       {/* Info */}
       <div className="min-w-0">
-        <div className="truncate font-serif text-[17px] leading-tight text-[var(--codex-text)] transition-colors duration-200 group-hover:text-[var(--codex-sub)] sm:text-[19px]">
+        <div className="truncate text-[17px] font-semibold leading-tight text-[var(--codex-text)] transition-colors duration-200 group-hover:text-[var(--codex-sub)] sm:text-[19px]">
           {politician.name}
         </div>
         <div className="mb-1 flex items-center gap-2 truncate text-[12px] text-[var(--codex-sub)] sm:mb-1.5 sm:text-[13px]">

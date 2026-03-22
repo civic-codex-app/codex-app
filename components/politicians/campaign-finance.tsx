@@ -67,7 +67,7 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
                   <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
                     Total Raised
                   </span>
-                  <span className="font-serif text-lg" style={{ color }}>
+                  <span className="text-lg font-semibold" style={{ color }}>
                     {formatMoney(r.total_raised)}
                   </span>
                 </div>
@@ -110,7 +110,7 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
                   <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
                     Cash on Hand
                   </span>
-                  <span className="font-serif text-base text-[var(--codex-text)]">
+                  <span className="text-base font-semibold text-[var(--codex-text)]">
                     {formatMoney(r.cash_on_hand)}
                   </span>
                 </div>

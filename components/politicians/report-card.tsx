@@ -109,7 +109,7 @@ export function PoliticianReportCard({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-serif text-2xl font-bold leading-none" style={{ color }}>
+            <span className="text-2xl font-bold font-bold leading-none" style={{ color }}>
               {score}
             </span>
           </div>
@@ -133,25 +133,25 @@ export function PoliticianReportCard({
         <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stanceCount != null && stanceCount > 0 && (
             <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="font-serif text-lg text-[var(--codex-text)]">{stanceCount}</div>
+              <div className="text-lg font-semibold text-[var(--codex-text)]">{stanceCount}</div>
               <div className="text-[10px] text-[var(--codex-faint)]">Issues</div>
             </div>
           )}
           {voteCount != null && voteCount > 0 && (
             <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="font-serif text-lg text-[var(--codex-text)]">{voteCount}</div>
+              <div className="text-lg font-semibold text-[var(--codex-text)]">{voteCount}</div>
               <div className="text-[10px] text-[var(--codex-faint)]">Votes Cast</div>
             </div>
           )}
           {committeeCount != null && committeeCount > 0 && (
             <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="font-serif text-lg text-[var(--codex-text)]">{committeeCount}</div>
+              <div className="text-lg font-semibold text-[var(--codex-text)]">{committeeCount}</div>
               <div className="text-[10px] text-[var(--codex-faint)]">Committees</div>
             </div>
           )}
           {yearsInOffice != null && yearsInOffice > 0 && (
             <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="font-serif text-lg text-[var(--codex-text)]">{yearsInOffice}</div>
+              <div className="text-lg font-semibold text-[var(--codex-text)]">{yearsInOffice}</div>
               <div className="text-[10px] text-[var(--codex-faint)]">Years</div>
             </div>
           )}
@@ -173,7 +173,7 @@ export function PoliticianReportCard({
                   <span className="text-sm">{dim.icon}</span>
                   <span className="text-[13px] font-medium text-[var(--codex-text)]">{dim.label}</span>
                 </div>
-                <span className="font-serif text-[15px] font-semibold" style={{ color: dimColor }}>
+                <span className="text-[15px] font-semibold font-semibold" style={{ color: dimColor }}>
                   {value}
                 </span>
               </div>

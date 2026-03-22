@@ -99,7 +99,7 @@ export function AccountabilityScore({ votes, stances }: AccountabilityScoreProps
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-serif text-lg font-bold" style={{ color }}>{alignPct}%</span>
+              <span className="text-lg font-semibold font-bold" style={{ color }}>{alignPct}%</span>
             </div>
           </div>
           <div>

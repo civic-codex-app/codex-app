@@ -36,7 +36,7 @@ export function StatsBar({ politicians }: StatsBarProps) {
             {s.icon}
             {s.label}
           </div>
-          <div className="font-serif text-[34px]" style={s.color ? { color: s.color } : undefined}>
+          <div className="text-[34px] font-bold" style={s.color ? { color: s.color } : undefined}>
             {s.value}
           </div>
         </div>

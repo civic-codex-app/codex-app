@@ -15,7 +15,7 @@ export function Footer() {
           <GreenDiamond size={12} color="var(--codex-faint)" />
         </div>
         <div className="flex items-center gap-4">
-          <span className="hidden font-serif text-[13px] italic text-[var(--codex-faint)] sm:inline">
+          <span className="hidden text-[13px] text-[var(--codex-faint)] sm:inline">
             Built for civic transparency
           </span>
           <button

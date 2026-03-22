@@ -8,8 +8,19 @@ import { createClient } from '@/lib/supabase/client'
 const TABS = [
   {
     href: '/',
-    label: 'Directory',
+    label: 'Home',
     match: ['/'],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+    ),
+  },
+  {
+    href: '/directory',
+    label: 'Directory',
+    match: ['/directory', '/politicians'],
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -42,28 +53,28 @@ const TABS = [
       </svg>
     ),
   },
-  {
-    href: '/insights',
-    label: 'Insights',
-    match: ['/insights'],
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="20" x2="18" y2="10" />
-        <line x1="12" y1="20" x2="12" y2="4" />
-        <line x1="6" y1="20" x2="6" y2="14" />
-      </svg>
-    ),
-  },
 ]
 
-const MORE_LINKS = [
-  { href: '/compare', label: 'Compare' },
-  { href: '/match', label: 'Voter Match', authOnly: true },
-  { href: '/report-cards', label: 'Report Cards' },
-  { href: '/issues/map', label: 'Issue Map' },
+interface MoreLink {
+  href: string
+  label: string
+  authOnly?: boolean
+}
+
+const MORE_LINKS: MoreLink[] = [
+  { href: '/insights', label: 'Insights' },
   { href: '/insights/money-map', label: 'Money Map' },
-  { href: '/bills', label: 'Bills' },
   { href: '/polls', label: 'Polls' },
+  { href: '/report-cards', label: 'Civic Profiles' },
+  { href: '/bills', label: 'Bills' },
+  { href: '/issues/map', label: 'Issue Map' },
+]
+
+const AUTH_MORE_LINKS: MoreLink[] = [
+  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/match', label: 'Voter Match' },
+  { href: '/following', label: 'Following' },
+  { href: '/account', label: 'Account' },
 ]
 
 export function BottomTabs() {
@@ -79,7 +90,7 @@ export function BottomTabs() {
   }, [])
 
   const toggleMore = useCallback(() => {
-    setMoreOpen(prev => !prev)
+    setMoreOpen((prev) => !prev)
   }, [])
 
   const closeMore = useCallback(() => {
@@ -97,55 +108,67 @@ export function BottomTabs() {
         />
       )}
 
-      {/* More panel */}
+      {/* More drawer sheet */}
       {moreOpen && (
         <div
-          className="fixed left-0 right-0 z-50 border-t sm:hidden"
+          className="fixed left-0 right-0 z-50 rounded-t-xl border-t sm:hidden"
           style={{
             bottom: 'calc(56px + var(--safe-bottom, 0px))',
             backgroundColor: 'var(--codex-bg)',
             borderColor: 'var(--codex-border)',
-            padding: '16px 24px',
+            padding: '12px 16px',
+            maxHeight: '60vh',
+            overflowY: 'auto',
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            {MORE_LINKS.filter((link) => !link.authOnly || isLoggedIn).map((link) => (
+          <div className="flex flex-col">
+            {/* Public links */}
+            {MORE_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={closeMore}
-                style={{
-                  display: 'block',
-                  padding: '12px 16px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--codex-text)',
-                  textDecoration: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                }}
+                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
               >
                 {link.label}
               </Link>
             ))}
-            <div style={{ borderTop: '1px solid var(--codex-border)', marginTop: '4px', paddingTop: '4px' }}>
+
+            {/* Divider */}
+            <div className="my-1 border-t border-[var(--codex-border)]" />
+
+            {/* Auth-dependent links */}
+            {isLoggedIn ? (
+              <>
+                {AUTH_MORE_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={closeMore}
+                    className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <form action="/api/auth/signout" method="POST">
+                  <button
+                    type="submit"
+                    className="block w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-red-500 transition-colors hover:bg-[var(--codex-hover)]"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    Sign Out
+                  </button>
+                </form>
+              </>
+            ) : (
               <Link
-                href={isLoggedIn ? '/dashboard' : '/login'}
+                href="/login"
                 onClick={closeMore}
-                style={{
-                  display: 'block',
-                  padding: '12px 16px',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--codex-text)',
-                  textDecoration: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                }}
+                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
               >
-                {isLoggedIn ? 'Account' : 'Sign In'}
+                Sign In
               </Link>
-            </div>
+            )}
           </div>
         </div>
       )}
@@ -172,6 +195,7 @@ export function BottomTabs() {
                 href={tab.href}
                 onClick={closeMore}
                 aria-current={isActive ? 'page' : undefined}
+                className="no-underline"
                 style={{
                   flex: 1,
                   display: 'flex',
@@ -179,15 +203,18 @@ export function BottomTabs() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '2px',
-                  textDecoration: 'none',
-                  cursor: 'pointer',
                   color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)',
                 }}
               >
                 {tab.icon}
-                <span style={{ fontSize: '10px', fontWeight: 500 }}>
-                  {tab.label}
-                </span>
+                <span className="text-xs font-medium">{tab.label}</span>
+                {/* Active dot indicator */}
+                {isActive && (
+                  <span
+                    className="rounded-full bg-[var(--codex-text)]"
+                    style={{ width: '4px', height: '4px', marginTop: '-1px' }}
+                  />
+                )}
               </Link>
             )
           })}
@@ -210,15 +237,30 @@ export function BottomTabs() {
               color: moreOpen ? 'var(--codex-text)' : 'var(--codex-faint)',
               WebkitAppearance: 'none',
             }}
+            aria-label="More navigation options"
+            aria-expanded={moreOpen}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="12" cy="12" r="1" />
               <circle cx="12" cy="5" r="1" />
               <circle cx="12" cy="19" r="1" />
             </svg>
-            <span style={{ fontSize: '10px', fontWeight: 500 }}>
-              More
-            </span>
+            <span className="text-xs font-medium">More</span>
+            {moreOpen && (
+              <span
+                className="rounded-full bg-[var(--codex-text)]"
+                style={{ width: '4px', height: '4px', marginTop: '-1px' }}
+              />
+            )}
           </button>
         </div>
       </nav>

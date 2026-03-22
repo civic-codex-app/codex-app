@@ -53,14 +53,14 @@ export function ElectionCountdown({ electionDate }: ElectionCountdownProps) {
   return (
     <div className="flex items-center gap-3">
       <div className="flex items-baseline gap-1.5">
-        <span className="font-serif text-3xl tabular-nums text-[var(--codex-text)]">{days}</span>
+        <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{days}</span>
         <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
           {days === 1 ? 'day' : 'days'}
         </span>
       </div>
       <span className="text-[var(--codex-border)]">&middot;</span>
       <div className="flex items-baseline gap-1.5">
-        <span className="font-serif text-3xl tabular-nums text-[var(--codex-text)]">{hours}</span>
+        <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{hours}</span>
         <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
           {hours === 1 ? 'hour' : 'hours'}
         </span>
@@ -69,14 +69,14 @@ export function ElectionCountdown({ electionDate }: ElectionCountdownProps) {
         <>
           <span className="text-[var(--codex-border)]">&middot;</span>
           <div className="flex items-baseline gap-1.5">
-            <span className="font-serif text-3xl tabular-nums text-[var(--codex-text)]">{minutes}</span>
+            <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{minutes}</span>
             <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               {minutes === 1 ? 'min' : 'mins'}
             </span>
           </div>
           <span className="text-[var(--codex-border)]">&middot;</span>
           <div className="flex items-baseline gap-1.5">
-            <span className="font-serif text-3xl tabular-nums text-[var(--codex-text)]">{seconds}</span>
+            <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{seconds}</span>
             <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               sec
             </span>
