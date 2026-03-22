@@ -15,6 +15,7 @@ interface Profile {
   role: string
   bio: string | null
   state: string | null
+  zip_code: string | null
   avatar_url: string | null
   notifications_enabled: boolean
 }
@@ -96,6 +97,7 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
         display_name: (form.get('display_name') as string) || null,
         bio: (form.get('bio') as string) || null,
         state: (form.get('state') as string) || null,
+        zip_code: (form.get('zip_code') as string) || null,
         notifications_enabled: form.get('notifications') === 'on',
       })
       .eq('id', profile!.id)
@@ -196,6 +198,22 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
             <option key={s} value={s}>{s}</option>
           ))}
         </select>
+      </div>
+
+      <div>
+        <label htmlFor="acct-zip" className={labelClass}>Zip Code</label>
+        <input
+          id="acct-zip"
+          name="zip_code"
+          defaultValue={profile?.zip_code ?? ''}
+          placeholder="e.g. 78701"
+          maxLength={10}
+          pattern="[0-9]{5}(-[0-9]{4})?"
+          className={fieldClass}
+        />
+        <p className="mt-1 text-[11px] text-[var(--codex-faint)]">
+          Used to find your congressional district representative
+        </p>
       </div>
 
       <div>
