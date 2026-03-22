@@ -393,7 +393,13 @@ export default async function PoliticianPage({ params }: PageProps) {
             {/* Report Card — auth-gated */}
             <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
               {isAuthenticated ? (
-                <PoliticianReportCard {...reportCard} />
+                <PoliticianReportCard
+                  {...reportCard}
+                  stanceCount={politicianStances.length}
+                  voteCount={votingRecords.length}
+                  committeeCount={committees.length}
+                  yearsInOffice={pol.since_year ? new Date().getFullYear() - pol.since_year : undefined}
+                />
               ) : (
                 <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-6 text-center">
                   <h3 className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
