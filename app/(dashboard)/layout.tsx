@@ -62,6 +62,7 @@ const ACCOUNT_TABS = [
 ]
 
 const MORE_LINKS = [
+  { href: '/ballot', label: 'My Ballot' },
   { href: '/directory', label: 'Directory' },
   { href: '/elections', label: 'Elections' },
   { href: '/issues', label: 'Issues' },
