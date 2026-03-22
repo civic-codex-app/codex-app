@@ -64,17 +64,18 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Get user profile for state
+  // Get user profile for state + zip
   const { data: profile } = await supabase
     .from('profiles')
-    .select('state')
+    .select('state, zip_code')
     .eq('id', user!.id)
     .single()
 
   const userState = profile?.state as string | null
+  const userZip = profile?.zip_code as string | null
 
-  // Get statewide representatives only (senators + governor)
-  // House reps require district info which we don't have yet
+  // Get representatives: senators + governor (statewide)
+  // If user has a zip, also try to find their House rep via the API
   let representatives: Politician[] = []
   if (userState) {
     const { data } = await supabase
@@ -86,6 +87,27 @@ export default async function DashboardPage() {
       .order('name')
       .limit(10)
     representatives = (data ?? []) as Politician[]
+  }
+
+  // Try to find House rep via zip lookup
+  if (userZip && /^\d{5}$/.test(userZip)) {
+    try {
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+      const repRes = await fetch(`${baseUrl}/api/representatives?zip=${userZip}`, { next: { revalidate: 86400 } })
+      if (repRes.ok) {
+        const repData = await repRes.json()
+        const apiReps = (repData.representatives ?? []) as Politician[]
+        // Add any House reps not already in the list
+        const existingIds = new Set(representatives.map(r => r.id))
+        for (const rep of apiReps) {
+          if (!existingIds.has(rep.id) && rep.chamber === 'house') {
+            representatives.push(rep)
+          }
+        }
+      }
+    } catch {
+      // Zip lookup failed, just show statewide reps
+    }
   }
 
   // Get followed politicians
