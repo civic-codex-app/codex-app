@@ -5,7 +5,14 @@ import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
-import { gradeColor } from '@/lib/utils/report-card'
+// Tier labels matching the Civic Profile component
+function tierColor(score: number): string {
+  if (score >= 80) return '#22C55E'
+  if (score >= 65) return '#3B82F6'
+  if (score >= 50) return '#8B5CF6'
+  if (score >= 35) return '#EAB308'
+  return '#9CA3AF'
+}
 import type { RankedPolitician } from './page'
 
 const TABS = [
@@ -67,7 +74,7 @@ export function ReportCardList({
       <div className="flex flex-col gap-2">
         {filtered.map((p, idx) => {
           const rc = p.reportCard
-          const color = gradeColor(rc.grade)
+          const color = tierColor(rc.score)
           const pColor = partyColor(p.party)
 
           return (
@@ -131,25 +138,14 @@ export function ReportCardList({
                 })}
               </div>
 
-              {/* Score + Grade */}
-              <div className="flex flex-shrink-0 items-center gap-2.5">
-                <span className="text-sm font-medium text-[var(--codex-sub)]">
+              {/* Score */}
+              <div className="flex flex-shrink-0 items-center">
+                <span
+                  className="font-serif text-lg font-bold"
+                  style={{ color }}
+                >
                   {rc.score}
                 </span>
-                <div
-                  className="flex h-9 w-9 items-center justify-center rounded-full"
-                  style={{
-                    border: `2px solid ${color}`,
-                    background: `${color}10`,
-                  }}
-                >
-                  <span
-                    className="font-serif text-base font-bold leading-none"
-                    style={{ color }}
-                  >
-                    {rc.grade}
-                  </span>
-                </div>
               </div>
             </Link>
           )

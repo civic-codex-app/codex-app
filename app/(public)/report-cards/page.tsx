@@ -185,7 +185,6 @@ export default async function ReportCardsPage() {
   })
 
   ranked.sort((a, b) => b.reportCard.score - a.reportCard.score)
-  const top = ranked.slice(0, 100)
 
   return (
     <>
@@ -193,16 +192,14 @@ export default async function ReportCardsPage() {
       <div className="mx-auto max-w-[1200px] px-6 pb-16 pt-10 md:px-10">
         {/* Page title */}
         <h1 className="mb-2 font-serif text-[clamp(1.8rem,4vw,2.8rem)] leading-tight text-[var(--codex-text)]">
-          Report <em>Cards</em>
+          Civic <em>Profiles</em>
         </h1>
         <p className="mb-8 max-w-2xl text-sm leading-relaxed text-[var(--codex-sub)]">
-          Every politician graded on four dimensions: bipartisanship (crossing
-          party lines), engagement (voting attendance), transparency (verified
-          stances), and effectiveness (committee involvement). Scores are
-          combined into a letter grade from A to F.
+          Every politician scored on civic activity: bipartisanship, engagement,
+          transparency, and effectiveness. Higher scores mean more active public service.
         </p>
 
-        <ReportCardList politicians={top} />
+        <ReportCardList politicians={ranked} />
 
         <Footer />
       </div>
