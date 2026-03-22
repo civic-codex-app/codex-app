@@ -43,23 +43,37 @@ export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
   const [metric, setMetric] = useState<Metric>('raised')
   const [selectedState, setSelectedState] = useState<string | null>(null)
 
-  // Find max value for color scaling
-  const values = Object.values(stateFinance).map((sf) => sf[metric])
-  const maxVal = Math.max(...values, 1)
+  // Build state data with a 5-tier color scale based on percentile ranking
+  const entries = Object.entries(stateFinance).map(([state, sf]) => ({
+    state,
+    val: sf[metric],
+  }))
+  const sorted = [...entries].sort((a, b) => a.val - b.val)
+  const rankMap = new Map<string, number>()
+  sorted.forEach((e, i) => rankMap.set(e.state, i / Math.max(sorted.length - 1, 1)))
 
-  // Build state data for the map
+  // Color tiers: light yellow → orange → deep red (heat map style)
+  const COLORS = [
+    '#FEF3C7', // very low — pale yellow
+    '#FDE68A', // low — yellow
+    '#FBBF24', // medium — amber
+    '#F97316', // high — orange
+    '#DC2626', // very high — red
+  ]
+
+  function getColor(percentile: number): string {
+    const idx = Math.min(Math.floor(percentile * COLORS.length), COLORS.length - 1)
+    return COLORS[idx]
+  }
+
   const stateData: Record<string, { value: number; label?: string; color?: string }> = {}
   for (const [state, sf] of Object.entries(stateFinance)) {
     const val = sf[metric]
-    // Logarithmic scale for better color distribution
-    const intensity = Math.log(val + 1) / Math.log(maxVal + 1)
-    const r = Math.round(34 + (22 - 34) * intensity)
-    const g = Math.round(197 + (163 - 197) * intensity)
-    const b = Math.round(94 + (74 - 94) * intensity)
+    const pct = rankMap.get(state) ?? 0
     stateData[state] = {
       value: val,
       label: formatMoney(val),
-      color: val > 0 ? `rgb(${r}, ${g}, ${b})` : undefined,
+      color: val > 0 ? getColor(pct) : undefined,
     }
   }
 
@@ -104,9 +118,11 @@ export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
           stateData={stateData}
           onStateClick={(code) => setSelectedState(selectedState === code ? null : code)}
           legend={[
-            { color: '#22C55E', label: 'High' },
-            { color: '#86EFAC', label: 'Medium' },
-            { color: 'var(--codex-hover)', label: 'Low / No Data' },
+            { color: '#DC2626', label: 'Highest' },
+            { color: '#F97316', label: 'High' },
+            { color: '#FBBF24', label: 'Medium' },
+            { color: '#FEF3C7', label: 'Low' },
+            { color: 'var(--codex-hover)', label: 'No Data' },
           ]}
         />
       </div>
