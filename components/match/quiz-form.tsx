@@ -220,42 +220,42 @@ export function QuizForm({ issues }: Props) {
           <div className="relative h-4 rounded-full" style={{
             background: 'linear-gradient(to right, #10B981, #22C55E, #84CC16, #9CA3AF, #F97316, #EF4444, #E11D48)'
           }}>
-            {/* Tap targets */}
-            {SLIDER_STANCES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => selectStance(i)}
-                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${(i / 6) * 100}%`, width: '28px', height: '28px', background: 'none', border: 'none', cursor: 'pointer', zIndex: 2 }}
-                aria-label={STANCE_STYLES[SLIDER_STANCES[i]].label}
-              />
-            ))}
-
             {/* Thumb */}
-            {(
+            <div
+              className="pointer-events-none absolute top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-150"
+              style={{ left: `${(sliderValue / 6) * 100}%`, zIndex: 3 }}
+            >
               <div
-                className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-200"
-                style={{ left: `${(sliderValue / 6) * 100}%`, zIndex: 3 }}
-              >
-                <div
-                  className="h-10 w-10 rounded-full border-[4px] border-white shadow-xl"
-                  style={{ backgroundColor: currentStyle?.color ?? '#9CA3AF', boxShadow: '0 0 0 2px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.3)' }}
-                />
-              </div>
-            )}
+                className="h-11 w-11 rounded-full border-[4px] border-white"
+                style={{ backgroundColor: currentStyle?.color ?? '#9CA3AF', boxShadow: '0 0 0 2px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.3)' }}
+              />
+            </div>
 
             {/* Tick marks */}
             {SLIDER_STANCES.map((_, i) => (
               <div
                 key={`tick-${i}`}
-                className="absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/50 bg-white/30"
+                className="pointer-events-none absolute top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/50 bg-white/30"
                 style={{ left: `${(i / 6) * 100}%` }}
               />
             ))}
+
+            {/* Native range input — overlaid directly on track for drag */}
+            <input
+              type="range"
+              min={0}
+              max={6}
+              step={1}
+              value={sliderValue}
+              onChange={(e) => selectStance(Number(e.target.value))}
+              className="absolute inset-0 h-full w-full cursor-pointer"
+              style={{ opacity: 0, zIndex: 10, margin: 0, padding: 0 }}
+              aria-label="Stance slider"
+            />
           </div>
 
           {/* Labels below slider */}
-          <div className="mt-3 flex justify-between">
+          <div className="mt-4 flex justify-between">
             {SLIDER_LABELS.map((label, i) => (
               <button
                 key={i}
@@ -274,19 +274,6 @@ export function QuizForm({ issues }: Props) {
             ))}
           </div>
         </div>
-
-        {/* Native range input for drag support */}
-        <input
-          type="range"
-          min={0}
-          max={6}
-          step={1}
-          value={sliderValue}
-          onChange={(e) => selectStance(Number(e.target.value))}
-          className="mt-1 w-full cursor-pointer opacity-0"
-          style={{ height: '32px', margin: '-32px 0 0 0', position: 'relative', zIndex: 10 }}
-          aria-label="Stance slider"
-        />
       </div>
 
       {/* Skip button */}
