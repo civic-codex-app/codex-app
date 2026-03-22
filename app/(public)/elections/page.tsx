@@ -3,6 +3,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
+import { ElectionsMap } from '@/components/elections/elections-map'
 
 export const revalidate = 600
 
@@ -109,9 +110,26 @@ export default async function ElectionsPage() {
           </div>
         </div>
 
+        {/* Interactive map */}
+        <div className="mb-10">
+          <ElectionsMap
+            stateElections={stateElections.map(el => {
+              const counts = raceCounts[el.id] || { total: 0, senate: 0, house: 0, governor: 0, local: 0 }
+              const stateCode = el.slug.split('-')[0]?.toUpperCase()
+              return {
+                slug: el.slug,
+                stateCode,
+                raceCount: counts.total,
+                hasSenate: counts.senate > 0,
+                hasGovernor: counts.governor > 0,
+              }
+            })}
+          />
+        </div>
+
         {/* State grid */}
         <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
-          Find Your State
+          Or Browse by State
         </h2>
         <div className="mb-12 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {stateElections.map(election => {
