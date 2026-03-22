@@ -178,13 +178,13 @@ export default async function IssuesPage({ searchParams }: PageProps) {
                 {total > 0 && (
                   <div className="mb-3">
                     <div className="flex h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
-                      {supports > 0 && <div style={{ width: `${(supports / total) * 100}%`, background: '#22C55E', opacity: 0.7 }} />}
-                      {mixed > 0 && <div style={{ width: `${(mixed / total) * 100}%`, background: '#EAB308', opacity: 0.6 }} />}
+                      {supports > 0 && <div style={{ width: `${(supports / total) * 100}%`, background: '#3B82F6', opacity: 0.7 }} />}
+                      {mixed > 0 && <div style={{ width: `${(mixed / total) * 100}%`, background: '#A855F7', opacity: 0.6 }} />}
                       {opposes > 0 && <div style={{ width: `${(opposes / total) * 100}%`, background: '#EF4444', opacity: 0.7 }} />}
                     </div>
                     <div className="mt-1.5 flex gap-3 text-[11px] text-[var(--codex-faint)]">
-                      <span style={{ color: '#22C55E' }}>{supports}</span>
-                      <span style={{ color: '#EAB308' }}>{mixed}</span>
+                      <span style={{ color: '#3B82F6' }}>{supports}</span>
+                      <span style={{ color: '#A855F7' }}>{mixed}</span>
                       <span style={{ color: '#EF4444' }}>{opposes}</span>
                     </div>
                   </div>
@@ -226,7 +226,7 @@ function PartyBar({ party, supports, opposes, total }: { party: string; supports
     <div className="flex items-center gap-2">
       <span className="w-7 text-[10px] font-medium" style={{ color }}>{label}</span>
       <div className="flex h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
-        {supportPct > 0 && <div style={{ width: `${supportPct}%`, background: '#22C55E', opacity: 0.6 }} />}
+        {supportPct > 0 && <div style={{ width: `${supportPct}%`, background: '#3B82F6', opacity: 0.6 }} />}
         {opposePct > 0 && <div style={{ width: `${opposePct}%`, background: '#EF4444', opacity: 0.6, marginLeft: 'auto' }} />}
       </div>
       <span className="w-14 text-right text-[10px] tabular-nums text-[var(--codex-faint)]">

@@ -20,9 +20,9 @@ interface PoliticianCardProps {
 }
 
 const STANCE_COLORS = {
-  supports: '#22C55E',
+  supports: '#3B82F6',
   opposes: '#EF4444',
-  mixed: '#EAB308',
+  mixed: '#A855F7',
 }
 
 export function PoliticianCard({ politician, alignment, stances }: PoliticianCardProps) {

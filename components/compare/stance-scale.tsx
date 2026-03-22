@@ -41,8 +41,8 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
               key={issue.slug}
               className="rounded-md px-4 py-3 sm:grid sm:grid-cols-[1fr_140px_140px] sm:items-center sm:gap-2"
               style={{
-                background: match ? '#22C55E08' : undefined,
-                border: `1px solid ${match ? '#22C55E18' : 'var(--codex-border)'}`,
+                background: match ? '#3B82F608' : undefined,
+                border: `1px solid ${match ? '#3B82F618' : 'var(--codex-border)'}`,
               }}
             >
               {/* Issue name */}

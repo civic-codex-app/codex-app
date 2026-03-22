@@ -328,10 +328,10 @@ export default async function RaceDetailPage({ params }: PageProps) {
                             <div className="mb-2 flex items-center gap-3">
                               <div className="flex h-[5px] w-24 overflow-hidden rounded-full bg-[var(--codex-border)]">
                                 {supports > 0 && (
-                                  <div style={{ width: `${(supports / totalStances) * 100}%`, background: '#22C55E', opacity: 0.7 }} />
+                                  <div style={{ width: `${(supports / totalStances) * 100}%`, background: '#3B82F6', opacity: 0.7 }} />
                                 )}
                                 {mixed > 0 && (
-                                  <div style={{ width: `${(mixed / totalStances) * 100}%`, background: '#EAB308', opacity: 0.7 }} />
+                                  <div style={{ width: `${(mixed / totalStances) * 100}%`, background: '#A855F7', opacity: 0.7 }} />
                                 )}
                                 {opposes > 0 && (
                                   <div style={{ width: `${(opposes / totalStances) * 100}%`, background: '#EF4444', opacity: 0.7 }} />

@@ -43,30 +43,30 @@ interface IssueMapViewProps {
 /* ------------------------------------------------------------------ */
 
 function stanceColorScale(value: number): string {
-  // 6 = strongly supports (deep green)
-  // 5 = supports (green)
-  // 4 = leans support (light green)
+  // 6 = strongly supports (deep blue)
+  // 5 = supports (blue)
+  // 4 = leans support (light blue)
   // 3 = neutral/mixed (gray)
   // 2 = leans oppose (light red)
   // 1 = opposes (red)
   // 0 = strongly opposes (deep red)
-  if (value >= 5.5) return '#059669' // emerald-600
-  if (value >= 4.5) return '#10B981' // emerald-500
-  if (value >= 3.5) return '#6EE7B7' // emerald-300
+  if (value >= 5.5) return '#1D4ED8' // blue-700
+  if (value >= 4.5) return '#3B82F6' // blue-500
+  if (value >= 3.5) return '#60A5FA' // blue-400
   if (value >= 2.5) return '#9CA3AF' // gray-400
-  if (value >= 1.5) return '#FCA5A5' // red-300
+  if (value >= 1.5) return '#F87171' // red-400
   if (value >= 0.5) return '#EF4444' // red-500
   return '#DC2626' // red-600
 }
 
 function stanceLabelFromAvg(value: number): string {
-  if (value >= 5.5) return 'Strongly Supports'
-  if (value >= 4.5) return 'Supports'
-  if (value >= 3.5) return 'Leans Support'
+  if (value >= 5.5) return 'Strongly For'
+  if (value >= 4.5) return 'For'
+  if (value >= 3.5) return 'Leans For'
   if (value >= 2.5) return 'Neutral / Mixed'
-  if (value >= 1.5) return 'Leans Oppose'
-  if (value >= 0.5) return 'Opposes'
-  return 'Strongly Opposes'
+  if (value >= 1.5) return 'Leans Against'
+  if (value >= 0.5) return 'Against'
+  return 'Strongly Against'
 }
 
 /* ------------------------------------------------------------------ */
@@ -74,13 +74,13 @@ function stanceLabelFromAvg(value: number): string {
 /* ------------------------------------------------------------------ */
 
 const LEGEND = [
-  { color: '#059669', label: 'Strongly Supports' },
-  { color: '#10B981', label: 'Supports' },
-  { color: '#6EE7B7', label: 'Leans Support' },
+  { color: '#1D4ED8', label: 'Strongly For' },
+  { color: '#3B82F6', label: 'For' },
+  { color: '#60A5FA', label: 'Leans For' },
   { color: '#9CA3AF', label: 'Neutral / Mixed' },
-  { color: '#FCA5A5', label: 'Leans Oppose' },
-  { color: '#EF4444', label: 'Opposes' },
-  { color: '#DC2626', label: 'Strongly Opposes' },
+  { color: '#F87171', label: 'Leans Against' },
+  { color: '#EF4444', label: 'Against' },
+  { color: '#DC2626', label: 'Strongly Against' },
 ]
 
 /* ------------------------------------------------------------------ */

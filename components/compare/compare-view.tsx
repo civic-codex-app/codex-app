@@ -125,7 +125,7 @@ export function CompareView({
               className="rounded-l-full transition-all"
               style={{
                 width: `${agreePct}%`,
-                background: 'linear-gradient(90deg, #22C55E88, #22C55E)',
+                background: 'linear-gradient(90deg, #3B82F688, #3B82F6)',
               }}
             />
             <div
@@ -137,7 +137,7 @@ export function CompareView({
             />
           </div>
           <div className="flex justify-between text-[11px]">
-            <span className="text-green-400/70">{agree} agree</span>
+            <span className="text-blue-400/70">{agree} agree</span>
             <span className="text-red-400/70">{disagree} disagree</span>
           </div>
         </div>
@@ -275,9 +275,9 @@ function ProfileCard({
           </div>
           {total > 0 ? (
             <div className="flex items-center gap-1">
-              <span className="text-[12px] tabular-nums text-green-400">{supports}</span>
+              <span className="text-[12px] tabular-nums text-blue-400">{supports}</span>
               <span className="text-[11px] text-[var(--codex-faint)]">/</span>
-              <span className="text-[12px] tabular-nums text-yellow-400">{mixed}</span>
+              <span className="text-[12px] tabular-nums text-purple-400">{mixed}</span>
               <span className="text-[11px] text-[var(--codex-faint)]">/</span>
               <span className="text-[12px] tabular-nums text-red-400">{opposes}</span>
             </div>
@@ -306,10 +306,10 @@ function ProfileCard({
       {total > 0 && (
         <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
           {supports > 0 && (
-            <div style={{ width: `${(supports / total) * 100}%`, background: '#22C55E', opacity: 0.6 }} />
+            <div style={{ width: `${(supports / total) * 100}%`, background: '#3B82F6', opacity: 0.6 }} />
           )}
           {mixed > 0 && (
-            <div style={{ width: `${(mixed / total) * 100}%`, background: '#EAB308', opacity: 0.6 }} />
+            <div style={{ width: `${(mixed / total) * 100}%`, background: '#A855F7', opacity: 0.6 }} />
           )}
           {opposes > 0 && (
             <div style={{ width: `${(opposes / total) * 100}%`, background: '#EF4444', opacity: 0.6 }} />

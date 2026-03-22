@@ -31,14 +31,14 @@ export interface StanceStyle {
  *  No good/bad judgment, just where on the spectrum it falls.
  */
 export const STANCE_STYLES: Record<string, StanceStyle> = {
-  strongly_supports: { bg: 'bg-blue-600/15',    text: 'text-blue-400',    label: 'Strongly For',    color: '#1D4ED8', shortLabel: 'Strong For' },
-  supports:          { bg: 'bg-blue-500/10',     text: 'text-blue-400',    label: 'For',             color: '#3B82F6', shortLabel: 'For' },
-  leans_support:     { bg: 'bg-blue-400/10',     text: 'text-blue-300',    label: 'Leans For',       color: '#60A5FA', shortLabel: 'Leans For' },
-  neutral:           { bg: 'bg-gray-500/10',     text: 'text-gray-400',    label: 'Neutral',         color: '#9CA3AF', shortLabel: 'Neutral' },
-  mixed:             { bg: 'bg-purple-500/10',   text: 'text-purple-400',  label: 'Mixed',           color: '#A855F7', shortLabel: 'Mixed' },
-  leans_oppose:      { bg: 'bg-red-400/10',      text: 'text-red-300',     label: 'Leans Against',   color: '#F87171', shortLabel: 'Leans Against' },
-  opposes:           { bg: 'bg-red-500/10',      text: 'text-red-400',     label: 'Against',         color: '#EF4444', shortLabel: 'Against' },
-  strongly_opposes:  { bg: 'bg-red-600/15',      text: 'text-red-400',     label: 'Strongly Against', color: '#DC2626', shortLabel: 'Strong Against' },
+  strongly_supports: { bg: 'bg-blue-600/15',    text: 'text-blue-400',    label: 'Strong Progressive',  color: '#1D4ED8', shortLabel: 'Strong Left' },
+  supports:          { bg: 'bg-blue-500/10',     text: 'text-blue-400',    label: 'Progressive',         color: '#3B82F6', shortLabel: 'Left' },
+  leans_support:     { bg: 'bg-blue-400/10',     text: 'text-blue-300',    label: 'Leans Progressive',   color: '#60A5FA', shortLabel: 'Leans Left' },
+  neutral:           { bg: 'bg-gray-500/10',     text: 'text-gray-400',    label: 'Centrist',            color: '#9CA3AF', shortLabel: 'Center' },
+  mixed:             { bg: 'bg-purple-500/10',   text: 'text-purple-400',  label: 'Mixed',               color: '#A855F7', shortLabel: 'Mixed' },
+  leans_oppose:      { bg: 'bg-red-400/10',      text: 'text-red-300',     label: 'Leans Conservative',  color: '#F87171', shortLabel: 'Leans Right' },
+  opposes:           { bg: 'bg-red-500/10',      text: 'text-red-400',     label: 'Conservative',        color: '#EF4444', shortLabel: 'Right' },
+  strongly_opposes:  { bg: 'bg-red-600/15',      text: 'text-red-400',     label: 'Strong Conservative', color: '#DC2626', shortLabel: 'Strong Right' },
   unknown:           { bg: 'bg-[var(--codex-badge-bg)]', text: 'text-[var(--codex-faint)]', label: 'Unknown', color: '#6B7280', shortLabel: 'Unknown' },
 }
 
@@ -105,10 +105,10 @@ export function stanceBucket(stance: string): 'supports' | 'opposes' | 'neutral'
 
 /**
  * Simplified 3-tier stance display for the redesigned UI.
- * Collapses 7-point scale into For / Mixed / Against / Unknown.
+ * Collapses 7-point scale into Progressive / Mixed / Conservative / Unknown.
  */
 export interface StanceDisplay {
-  label: 'For' | 'Mixed' | 'Against' | 'Unknown'
+  label: 'Progressive' | 'Mixed' | 'Conservative' | 'Unknown'
   color: string
   bgColor: string
 }
@@ -116,12 +116,12 @@ export interface StanceDisplay {
 export function getStanceDisplay(stance: string): StanceDisplay {
   switch (stanceBucket(stance)) {
     case 'supports':
-      return { label: 'For', color: '#10B981', bgColor: '#ECFDF5' }
+      return { label: 'Progressive', color: '#3B82F6', bgColor: '#EFF6FF' }
     case 'opposes':
-      return { label: 'Against', color: '#EF4444', bgColor: '#FEF2F2' }
+      return { label: 'Conservative', color: '#EF4444', bgColor: '#FEF2F2' }
     case 'neutral':
     case 'mixed':
-      return { label: 'Mixed', color: '#F59E0B', bgColor: '#FFFBEB' }
+      return { label: 'Mixed', color: '#A855F7', bgColor: '#FAF5FF' }
     default:
       return { label: 'Unknown', color: '#9CA3AF', bgColor: '#F3F4F6' }
   }

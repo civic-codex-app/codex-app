@@ -96,8 +96,8 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
                   className="grid items-center gap-2 rounded-md px-4 py-2.5"
                   style={{
                     gridTemplateColumns: `1fr ${candidates.map(() => '100px').join(' ')}`,
-                    background: allAgree ? '#22C55E08' : undefined,
-                    border: `1px solid ${allAgree ? '#22C55E18' : 'var(--codex-border)'}`,
+                    background: allAgree ? '#3B82F608' : undefined,
+                    border: `1px solid ${allAgree ? '#3B82F618' : 'var(--codex-border)'}`,
                   }}
                 >
                   <Link

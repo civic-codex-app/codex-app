@@ -224,7 +224,7 @@ export async function CompareSuggestions({
           const reasonColors: Record<string, { bg: string; text: string }> = {
             'state-rival': { bg: '#EF444418', text: '#EF4444' },
             'ideological-opposite': { bg: '#F9731618', text: '#F97316' },
-            'surprising-ally': { bg: '#22C55E18', text: '#22C55E' },
+            'surprising-ally': { bg: '#3B82F618', text: '#3B82F6' },
           }
           const rc = reasonColors[s.reason] ?? { bg: 'var(--codex-badge-bg)', text: 'var(--codex-faint)' }
 

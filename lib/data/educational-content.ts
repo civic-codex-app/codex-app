@@ -27,80 +27,80 @@ export const ISSUE_SUBTITLES: Record<string, string> = {
 
 export interface IssueExplainer {
   description: string
-  supportsExplainer: string
-  opposesExplainer: string
+  progressiveView: string
+  conservativeView: string
 }
 
 export const ISSUE_EXPLAINERS: Record<string, IssueExplainer> = {
   'gun-policy-and-2nd-amendment': {
     description: 'Gun policy is about the rules for buying, selling, and carrying guns. This includes background checks and bans on certain weapons.',
-    supportsExplainer: 'Wants more rules on guns. Thinks background checks and weapon bans make people safer.',
-    opposesExplainer: 'Wants fewer rules on guns. Believes people have the right to own guns freely.',
+    progressiveView: 'Wants more rules on guns. Thinks background checks and weapon bans make people safer.',
+    conservativeView: 'Wants fewer rules on guns. Believes people have the right to own guns freely.',
   },
   'healthcare-and-medicare': {
     description: 'Health care policy is about how people see doctors and pay for medicine. It covers insurance, drug prices, and government health plans.',
-    supportsExplainer: 'Wants the government to help more people get health care at lower prices.',
-    opposesExplainer: 'Wants less government in health care. Thinks people should shop for their own plans.',
+    progressiveView: 'Wants the government to help more people get health care at lower prices.',
+    conservativeView: 'Wants less government in health care. Thinks people should shop for their own plans.',
   },
   'immigration-and-border-security': {
     description: 'Immigration is about who can come to the U.S. and who gets to stay. It covers border security, visas, and paths to become a citizen.',
-    supportsExplainer: 'Wants to help people already here get a legal path to stay. Supports letting in more people.',
-    opposesExplainer: 'Wants stronger borders and fewer people coming in. Supports sending back those here without papers.',
+    progressiveView: 'Wants to help people already here get a legal path to stay. Supports letting in more people.',
+    conservativeView: 'Wants stronger borders and fewer people coming in. Supports sending back those here without papers.',
   },
   'climate-and-environment': {
     description: 'Climate policy is about what to do as the Earth gets warmer. It covers clean energy, pollution rules, and protecting nature.',
-    supportsExplainer: 'Wants strong action to cut pollution and switch to clean energy like solar and wind.',
-    opposesExplainer: 'Thinks climate rules hurt businesses and cost too much. Puts jobs and cheap energy first.',
+    progressiveView: 'Wants strong action to cut pollution and switch to clean energy like solar and wind.',
+    conservativeView: 'Thinks climate rules hurt businesses and cost too much. Puts jobs and cheap energy first.',
   },
   'economy-and-jobs': {
     description: 'The economy is about jobs, pay, and how much things cost. This covers the lowest pay allowed, trade, and taxes.',
-    supportsExplainer: 'Wants the government to create jobs and raise pay for workers.',
-    opposesExplainer: 'Wants the government to step back and let businesses decide pay and hiring.',
+    progressiveView: 'Wants the government to create jobs and raise pay for workers.',
+    conservativeView: 'Wants the government to step back and let businesses decide pay and hiring.',
   },
   'education-and-student-debt': {
     description: 'Education is about schools, teachers, and college costs. It covers how schools get money and what happens with student loans.',
-    supportsExplainer: 'Wants more money for public schools. Supports help with student loans.',
-    opposesExplainer: 'Wants parents to pick their kids\' school. Thinks the federal government should do less in education.',
+    progressiveView: 'Wants more money for public schools. Supports help with student loans.',
+    conservativeView: 'Wants parents to pick their kids\' school. Thinks the federal government should do less in education.',
   },
   'criminal-justice-reform': {
     description: 'Criminal justice is about how police, courts, and jails work. It covers how long people go to prison and how police do their jobs.',
-    supportsExplainer: 'Wants changes like shorter sentences and more focus on helping people get back on their feet.',
-    opposesExplainer: 'Wants tougher punishments and more money for police.',
+    progressiveView: 'Wants changes like shorter sentences and more focus on helping people get back on their feet.',
+    conservativeView: 'Wants tougher punishments and more money for police.',
   },
   'foreign-policy-and-diplomacy': {
     description: 'Foreign policy is about how the U.S. deals with other countries. This covers trade deals, military alliances, and sending aid overseas.',
-    supportsExplainer: 'Wants the U.S. to work closely with other countries and help allies.',
-    opposesExplainer: 'Wants to focus on problems at home. Thinks we spend too much on other countries.',
+    progressiveView: 'Wants the U.S. to work closely with other countries and help allies.',
+    conservativeView: 'Wants to focus on problems at home. Thinks we spend too much on other countries.',
   },
   'technology-and-ai-regulation': {
     description: 'Tech policy is about rules for companies like Google, Apple, and Meta. It covers your personal data, AI tools, and social media.',
-    supportsExplainer: 'Wants new laws to protect your data. Wants rules on how AI is used.',
-    opposesExplainer: 'Wants fewer rules so tech companies can keep inventing new things.',
+    progressiveView: 'Wants new laws to protect your data. Wants rules on how AI is used.',
+    conservativeView: 'Wants fewer rules so tech companies can keep inventing new things.',
   },
   'housing-and-affordability': {
     description: 'Housing is about the cost of rent and homes. It covers building affordable places to live and helping people who are homeless.',
-    supportsExplainer: 'Wants the government to build affordable housing and help with rent.',
-    opposesExplainer: 'Wants fewer building rules so the market can bring prices down on its own.',
+    progressiveView: 'Wants the government to build affordable housing and help with rent.',
+    conservativeView: 'Wants fewer building rules so the market can bring prices down on its own.',
   },
   'national-defense-and-military': {
     description: 'Defense is about how much we spend on the military. It covers troops, weapons, veterans, and bases around the world.',
-    supportsExplainer: 'Wants a strong military with enough money to stay ready.',
-    opposesExplainer: 'Wants to spend less on the military and use that money for things at home.',
+    progressiveView: 'Wants a strong military with enough money to stay ready.',
+    conservativeView: 'Wants to spend less on the military and use that money for things at home.',
   },
   'energy-policy-and-oil-gas': {
     description: 'Energy policy is about where we get our power. It covers oil, gas, solar, wind, and nuclear energy.',
-    supportsExplainer: 'Wants to switch to solar and wind. Wants to use less oil and gas.',
-    opposesExplainer: 'Wants to drill for more oil and gas at home to keep prices low.',
+    progressiveView: 'Wants to switch to solar and wind. Wants to use less oil and gas.',
+    conservativeView: 'Wants to drill for more oil and gas at home to keep prices low.',
   },
   'infrastructure-and-transportation': {
     description: 'Infrastructure is about the things we all use every day: roads, bridges, water pipes, internet, and buses or trains.',
-    supportsExplainer: 'Wants the government to spend big on fixing roads, bridges, and internet.',
-    opposesExplainer: 'Wants private companies to handle more of it. Worried about spending too much.',
+    progressiveView: 'Wants the government to spend big on fixing roads, bridges, and internet.',
+    conservativeView: 'Wants private companies to handle more of it. Worried about spending too much.',
   },
   'social-security-and-medicare': {
     description: 'Social Security is money the government pays to people when they retire or cannot work. The money comes from everyone\'s paychecks.',
-    supportsExplainer: 'Wants to protect these payments and maybe make them bigger.',
-    opposesExplainer: 'Thinks the program costs too much. May want to raise the retirement age.',
+    progressiveView: 'Wants to protect these payments and maybe make them bigger.',
+    conservativeView: 'Thinks the program costs too much. May want to raise the retirement age.',
   },
 }
 
@@ -113,8 +113,8 @@ export function getStanceContext(issueSlug: string, stance: string): string | nu
   const supportStances = ['strongly_supports', 'supports', 'leans_support']
   const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
 
-  if (supportStances.includes(stance)) return explainer.supportsExplainer
-  if (opposeStances.includes(stance)) return explainer.opposesExplainer
+  if (supportStances.includes(stance)) return explainer.progressiveView
+  if (opposeStances.includes(stance)) return explainer.conservativeView
   return null
 }
 

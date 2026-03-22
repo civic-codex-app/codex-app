@@ -262,13 +262,13 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
               {ISSUE_EXPLAINERS[slug].description}
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
-              <div className="rounded-md bg-green-500/5 px-3 py-2">
-                <span className="text-[11px] font-medium text-green-400">Supports</span>
-                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].supportsExplainer}</p>
+              <div className="rounded-md bg-blue-500/5 px-3 py-2">
+                <span className="text-[11px] font-medium text-blue-400">Progressive</span>
+                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].progressiveView}</p>
               </div>
               <div className="rounded-md bg-red-500/5 px-3 py-2">
-                <span className="text-[11px] font-medium text-red-400">Opposes</span>
-                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].opposesExplainer}</p>
+                <span className="text-[11px] font-medium text-red-400">Conservative</span>
+                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].conservativeView}</p>
               </div>
             </div>
           </div>
@@ -278,15 +278,15 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         {totalAll > 0 && (
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="text-2xl font-bold text-green-400">{supportsAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Support</div>
+              <div className="text-2xl font-bold text-blue-400">{supportsAll}</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Progressive</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
               <div className="text-2xl font-bold text-red-400">{opposesAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Oppose</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Conservative</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="text-2xl font-bold text-yellow-400">{mixedAll}</div>
+              <div className="text-2xl font-bold text-purple-400">{mixedAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Mixed / Neutral</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
@@ -324,19 +324,19 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                       </div>
                       <div className="mb-1 flex h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
                         {supportPct > 0 && (
-                          <div className="bg-green-500/70" style={{ width: `${supportPct}%` }} />
+                          <div className="bg-blue-500/70" style={{ width: `${supportPct}%` }} />
                         )}
                         {mixedPct > 0 && (
-                          <div className="bg-yellow-500/50" style={{ width: `${mixedPct}%` }} />
+                          <div className="bg-purple-500/50" style={{ width: `${mixedPct}%` }} />
                         )}
                         {opposePct > 0 && (
                           <div className="bg-red-500/70" style={{ width: `${opposePct}%` }} />
                         )}
                       </div>
                       <div className="flex gap-4 text-[10px] text-[var(--codex-faint)]">
-                        <span className="text-green-400/70">{supportPct}% support</span>
-                        <span className="text-yellow-400/70">{mixedPct}% mixed</span>
-                        <span className="text-red-400/70">{opposePct}% oppose</span>
+                        <span className="text-blue-400/70">{supportPct}% progressive</span>
+                        <span className="text-purple-400/70">{mixedPct}% mixed</span>
+                        <span className="text-red-400/70">{opposePct}% conservative</span>
                       </div>
                     </div>
                   )

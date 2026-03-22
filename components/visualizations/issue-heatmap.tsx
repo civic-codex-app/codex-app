@@ -41,9 +41,9 @@ function stanceColor(data: PartyStanceData): string {
   if (total === 0) return 'var(--codex-border)'
   const supportPct = data.supports / total
   const opposePct = data.opposes / total
-  if (supportPct > 0.6) return '#22C55E'
+  if (supportPct > 0.6) return '#3B82F6'
   if (opposePct > 0.6) return '#EF4444'
-  return '#EAB308'
+  return '#A855F7'
 }
 
 function stanceOpacity(data: PartyStanceData): number {
@@ -170,7 +170,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                           <div className="flex h-full w-full overflow-hidden rounded-[3px]">
                             {data.supports > 0 && (
                               <div
-                                className="h-full bg-green-500"
+                                className="h-full bg-blue-500"
                                 style={{ width: `${(data.supports / total) * 100}%`, opacity: 0.85 }}
                               />
                             )}
@@ -182,7 +182,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                             )}
                             {data.mixed > 0 && (
                               <div
-                                className="h-full bg-yellow-500"
+                                className="h-full bg-purple-500"
                                 style={{ width: `${(data.mixed / total) * 100}%`, opacity: 0.85 }}
                               />
                             )}
@@ -207,7 +207,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                               {row.issue}
                             </div>
                             <div className="flex items-center gap-2 text-[12px]">
-                              <span className="text-green-400">
+                              <span className="text-blue-400">
                                 {data.supports} <span className="text-[10px]">for</span>
                               </span>
                               {(data.neutral ?? 0) > 0 && (
@@ -215,7 +215,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                                   {data.neutral} <span className="text-[10px]">neutral</span>
                                 </span>
                               )}
-                              <span className="text-yellow-400">
+                              <span className="text-purple-400">
                                 {data.mixed} <span className="text-[10px]">mixed</span>
                               </span>
                               <span className="text-red-400">
@@ -238,20 +238,20 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
           <div className="mt-5 flex items-center gap-5 border-t border-[var(--codex-border)] pt-4">
             <span className="text-[10px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">Legend</span>
             <div className="flex items-center gap-1.5">
-              <div className="h-3 w-3 rounded-sm bg-green-500" style={{ opacity: 0.75 }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">Supports</span>
+              <div className="h-3 w-3 rounded-sm bg-blue-500" style={{ opacity: 0.75 }} />
+              <span className="text-[11px] text-[var(--codex-faint)]">For</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-gray-400" style={{ opacity: 0.6 }} />
               <span className="text-[11px] text-[var(--codex-faint)]">Neutral</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="h-3 w-3 rounded-sm bg-yellow-500" style={{ opacity: 0.75 }} />
+              <div className="h-3 w-3 rounded-sm bg-purple-500" style={{ opacity: 0.75 }} />
               <span className="text-[11px] text-[var(--codex-faint)]">Mixed</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-red-500" style={{ opacity: 0.75 }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">Opposes</span>
+              <span className="text-[11px] text-[var(--codex-faint)]">Against</span>
             </div>
           </div>
         </div>

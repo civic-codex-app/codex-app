@@ -68,7 +68,7 @@ export function AccountabilityScore({ votes, stances }: AccountabilityScoreProps
   if (total === 0) return null
 
   const alignPct = Math.round((aligned / total) * 100)
-  const color = alignPct >= 80 ? '#22C55E' : alignPct >= 60 ? '#3B82F6' : alignPct >= 40 ? '#EAB308' : '#EF4444'
+  const color = alignPct >= 80 ? '#3B82F6' : alignPct >= 60 ? '#60A5FA' : alignPct >= 40 ? '#A855F7' : '#EF4444'
 
   // Deduplicate contradictions by bill name
   const seen = new Set<string>()

@@ -22,9 +22,9 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }>
 }
 
 const STANCE_COLORS: Record<string, { bg: string; text: string; label: string }> = {
-  supports: { bg: 'bg-green-500/10', text: 'text-green-400', label: 'Supports' },
-  opposes: { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Opposes' },
-  mixed: { bg: 'bg-yellow-500/10', text: 'text-yellow-400', label: 'Mixed' },
+  supports: { bg: 'bg-blue-500/10', text: 'text-blue-400', label: 'For' },
+  opposes: { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Against' },
+  mixed: { bg: 'bg-purple-500/10', text: 'text-purple-400', label: 'Mixed' },
   unknown: { bg: 'bg-[var(--codex-badge-bg)]', text: 'text-[var(--codex-faint)]', label: 'Unknown' },
 }
 
@@ -201,17 +201,17 @@ export default async function CandidateProfilePage({ params }: PageProps) {
                 </span>
               )}
               <span className="text-[11px] text-[var(--codex-faint)]">
-                {supports} support · {mixed} mixed · {opposes} oppose
+                {supports} for · {mixed} mixed · {opposes} against
               </span>
             </div>
 
             {/* Mini stance bar */}
             <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
               {supports > 0 && (
-                <div style={{ width: `${(supports / totalStances) * 100}%`, background: '#22C55E', opacity: 0.6 }} />
+                <div style={{ width: `${(supports / totalStances) * 100}%`, background: '#3B82F6', opacity: 0.6 }} />
               )}
               {mixed > 0 && (
-                <div style={{ width: `${(mixed / totalStances) * 100}%`, background: '#EAB308', opacity: 0.6 }} />
+                <div style={{ width: `${(mixed / totalStances) * 100}%`, background: '#A855F7', opacity: 0.6 }} />
               )}
               {opposes > 0 && (
                 <div style={{ width: `${(opposes / totalStances) * 100}%`, background: '#EF4444', opacity: 0.6 }} />

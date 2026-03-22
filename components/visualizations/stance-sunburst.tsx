@@ -9,14 +9,14 @@ interface StanceSunburstProps {
 }
 
 const SEGMENTS = [
-  { key: 'strongly_supports', label: 'Strongly Supports', color: STANCE_STYLES.strongly_supports.color },
-  { key: 'supports', label: 'Supports', color: STANCE_STYLES.supports.color },
-  { key: 'leans_support', label: 'Leans Support', color: STANCE_STYLES.leans_support.color },
+  { key: 'strongly_supports', label: 'Strongly For', color: STANCE_STYLES.strongly_supports.color },
+  { key: 'supports', label: 'For', color: STANCE_STYLES.supports.color },
+  { key: 'leans_support', label: 'Leans For', color: STANCE_STYLES.leans_support.color },
   { key: 'neutral', label: 'Neutral', color: STANCE_STYLES.neutral.color },
   { key: 'mixed', label: 'Mixed', color: STANCE_STYLES.mixed.color },
-  { key: 'leans_oppose', label: 'Leans Oppose', color: STANCE_STYLES.leans_oppose.color },
-  { key: 'opposes', label: 'Opposes', color: STANCE_STYLES.opposes.color },
-  { key: 'strongly_opposes', label: 'Strongly Opposes', color: STANCE_STYLES.strongly_opposes.color },
+  { key: 'leans_oppose', label: 'Leans Against', color: STANCE_STYLES.leans_oppose.color },
+  { key: 'opposes', label: 'Against', color: STANCE_STYLES.opposes.color },
+  { key: 'strongly_opposes', label: 'Strongly Against', color: STANCE_STYLES.strongly_opposes.color },
   { key: 'unknown', label: 'Unknown', color: 'var(--codex-border)' },
 ]
 

@@ -126,9 +126,9 @@ export function alignmentMeta(score: number): {
   color: string
   bgColor: string
 } {
-  if (score >= 85) return { label: 'Strong Party Line', color: '#22C55E', bgColor: '#22C55E18' }
-  if (score >= 65) return { label: 'Mostly Aligned', color: '#3B82F6', bgColor: '#3B82F618' }
-  if (score >= 45) return { label: 'Moderate', color: '#EAB308', bgColor: '#EAB30818' }
+  if (score >= 85) return { label: 'Strong Party Line', color: '#3B82F6', bgColor: '#3B82F618' }
+  if (score >= 65) return { label: 'Mostly Aligned', color: '#60A5FA', bgColor: '#60A5FA18' }
+  if (score >= 45) return { label: 'Moderate', color: '#A855F7', bgColor: '#A855F718' }
   if (score >= 25) return { label: 'Independent Streak', color: '#F97316', bgColor: '#F9731618' }
   return { label: 'Maverick', color: '#EF4444', bgColor: '#EF444418' }
 }

@@ -291,7 +291,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
           {/* Ring labels */}
           {RINGS.map((ring) => {
             const r = (ring / MAX_VALUE) * maxRadius
-            const labels: Record<number, string> = { 2: 'Opposes', 4: 'Leans', 6: 'Strongly For' }
+            const labels: Record<number, string> = { 2: 'Against', 4: 'Leans', 6: 'Strongly For' }
             return (
               <text
                 key={ring}
