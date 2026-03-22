@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: '/admin/finance', label: 'Campaign Finance' },
   { href: '/admin/users', label: 'Users' },
   { href: '/admin/annotations', label: 'Annotations' },
+  { href: '/admin/settings', label: 'Settings' },
 ]
 
 export function AdminShell({ children }: { children: React.ReactNode }) {

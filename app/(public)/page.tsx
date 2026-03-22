@@ -11,12 +11,16 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { Trending } from '@/components/directory/trending'
 import { PARTY_EXPLAINERS } from '@/lib/data/educational-content'
+import { getSiteSettings } from '@/lib/utils/site-settings'
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
-  title: 'U.S. Politician Directory & Civic Engagement Platform',
-  description: 'Track U.S. politicians, their stances on issues, voting records, campaign finance, and elections. Transparent, data-driven political information for voters.',
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSiteSettings()
+  return {
+    title: s.homepage_title,
+    description: s.homepage_description,
+  }
 }
 
 export default async function HomePage() {
