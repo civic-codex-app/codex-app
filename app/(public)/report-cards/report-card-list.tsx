@@ -168,7 +168,7 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
                 })}
               </div>
 
-              <span className="flex-shrink-0 font-serif text-lg font-bold" style={{ color }}>
+              <span className="flex-shrink-0 text-lg font-semibold font-bold" style={{ color }}>
                 {rc.score}
               </span>
             </Link>

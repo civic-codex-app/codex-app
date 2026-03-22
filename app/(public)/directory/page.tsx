@@ -61,9 +61,8 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
-        <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.1]">
-          {params.state ? `${stateLabel} Officials` : 'Browse'}{' '}
-          {!params.state && <span className="italic text-[var(--codex-subtle)]">Officials</span>}
+        <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+          {params.state ? `${stateLabel} Officials` : 'Browse Officials'}
         </h1>
         <p className="mb-6 text-[14px] text-[var(--codex-sub)]">
           {totalCount.toLocaleString()} results
@@ -114,7 +113,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
 
           {politicians.length === 0 && (
             <div className="py-16 text-center text-[var(--codex-faint)]">
-              <div className="mb-2 font-serif text-xl">No officials found</div>
+              <div className="mb-2 text-xl font-semibold">No officials found</div>
               <div className="text-sm">Try adjusting your filters</div>
             </div>
           )}

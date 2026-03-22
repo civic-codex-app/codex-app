@@ -120,7 +120,7 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
           <div className="py-20 text-center text-[var(--codex-faint)]">
-            <div className="mb-2 font-serif text-2xl">No active elections</div>
+            <div className="mb-2 text-2xl font-bold">No active elections</div>
             <div className="text-sm">Check back soon for upcoming election coverage</div>
           </div>
           <Footer />
@@ -182,11 +182,8 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         {/* Hero */}
         <div className="mb-6 max-w-[600px]">
-          <h1 className="mb-4 animate-fade-up font-serif text-[clamp(32px,4vw,52px)] font-normal leading-[1.1]">
-            {election.name.split(' ').slice(0, -1).join(' ')}{' '}
-            <span className="italic text-[var(--codex-subtle)]">
-              {election.name.split(' ').pop()}
-            </span>
+          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
+            {election.name}
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
             {election.description ?? `Election day: ${dateStr}`}
@@ -201,19 +198,19 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
         {/* Stats bar */}
         <div className="mb-8 flex flex-wrap gap-6 border-y border-[var(--codex-border)] py-4">
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl">{totalRaces}</span>
+            <span className="text-2xl font-bold">{totalRaces}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               Total Races
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl">{totalCandidates}</span>
+            <span className="text-2xl font-bold">{totalCandidates}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               Candidates
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl">{uniqueStates}</span>
+            <span className="text-2xl font-bold">{uniqueStates}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               States
             </span>
@@ -223,7 +220,7 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
             if (count === 0) return null
             return (
               <div key={chamber} className="flex items-baseline gap-2">
-                <span className="font-serif text-2xl">{count}</span>
+                <span className="text-2xl font-bold">{count}</span>
                 <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
                   {CHAMBER_LABELS[chamber as keyof typeof CHAMBER_LABELS] ?? chamber}
                 </span>
@@ -284,7 +281,7 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
                       </span>
                     </div>
 
-                    <h3 className="mb-3 font-serif text-base transition-colors group-hover:text-[var(--codex-text)]">
+                    <h3 className="mb-3 text-base font-semibold transition-colors group-hover:text-[var(--codex-text)]">
                       {race.name}
                     </h3>
 
@@ -363,7 +360,7 @@ export default async function ElectionsPage({ searchParams }: PageProps) {
 
         {raceList.length === 0 && (
           <div className="py-20 text-center text-[var(--codex-faint)]">
-            <div className="mb-2 font-serif text-2xl">No races found</div>
+            <div className="mb-2 text-2xl font-bold">No races found</div>
             <div className="text-sm">Try adjusting your filters</div>
           </div>
         )}

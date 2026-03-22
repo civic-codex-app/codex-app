@@ -161,7 +161,7 @@ export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
           </div>
 
           {/* Politician breakdown */}
-          <h3 className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+          <h3 className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
             Politicians ({selectedData.count})
           </h3>
           <div className="space-y-1">

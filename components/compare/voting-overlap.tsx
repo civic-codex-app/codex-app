@@ -65,7 +65,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
   if (shared.length === 0) {
     return (
       <div className="mb-8">
-        <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
           Voting Record Overlap
         </h2>
         <div className="rounded-md border border-[var(--codex-border)] px-6 py-8 text-center text-[13px] text-[var(--codex-faint)]">
@@ -79,7 +79,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
         Voting Record Overlap
       </h2>
 

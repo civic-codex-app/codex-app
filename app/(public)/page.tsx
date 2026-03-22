@@ -66,9 +66,8 @@ export default async function HomePage() {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         {/* Hero */}
         <div className="mb-12 max-w-[740px]">
-          <h1 className="mb-5 animate-fade-up font-serif text-[clamp(40px,5.5vw,68px)] font-normal leading-[1.05]">
-            Every elected official.{' '}
-            <span className="italic text-[var(--codex-subtle)]">One directory.</span>
+          <h1 className="mb-5 animate-fade-up text-[clamp(40px,5.5vw,68px)] font-bold leading-[1.05]">
+            Every elected official. One directory.
           </h1>
           <p className="max-w-[500px] animate-fade-up text-[15.5px] leading-[1.7] text-[var(--codex-subtle)]">
             Search {total.toLocaleString()} politicians. Compare stances, track voting records, and find your match.
@@ -83,27 +82,27 @@ export default async function HomePage() {
         {/* Quick stats */}
         <div className="mb-12 grid animate-fade-up grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
-            <div className="font-serif text-2xl text-[var(--codex-text)]">{total.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-[var(--codex-text)]">{total.toLocaleString()}</div>
             <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total Officials</div>
           </div>
           <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
             <div className="flex items-center justify-center gap-1.5">
               <PartyIcon party="democrat" size={14} />
-              <span className="font-serif text-2xl" style={{ color: partyColor('democrat') }}>{dem.toLocaleString()}</span>
+              <span className="text-2xl font-bold" style={{ color: partyColor('democrat') }}>{dem.toLocaleString()}</span>
             </div>
             <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Democratic</div>
           </div>
           <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
             <div className="flex items-center justify-center gap-1.5">
               <PartyIcon party="republican" size={14} />
-              <span className="font-serif text-2xl" style={{ color: partyColor('republican') }}>{gop.toLocaleString()}</span>
+              <span className="text-2xl font-bold" style={{ color: partyColor('republican') }}>{gop.toLocaleString()}</span>
             </div>
             <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Republican</div>
           </div>
           <div className="rounded-md border border-[var(--codex-border)] p-4 text-center">
             <div className="flex items-center justify-center gap-1.5">
               <PartyIcon party="independent" size={14} />
-              <span className="font-serif text-2xl" style={{ color: partyColor('independent') }}>{ind.toLocaleString()}</span>
+              <span className="text-2xl font-bold" style={{ color: partyColor('independent') }}>{ind.toLocaleString()}</span>
             </div>
             <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Independent</div>
           </div>
@@ -142,7 +141,7 @@ export default async function HomePage() {
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="truncate font-serif text-[15px] font-medium text-[var(--codex-text)] transition-colors group-hover:text-[var(--codex-text)]">
+                      <div className="truncate text-[15px] font-semibold font-medium text-[var(--codex-text)] transition-colors group-hover:text-[var(--codex-text)]">
                         {pol.name}
                       </div>
                       <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-[var(--codex-sub)]">
@@ -169,19 +168,19 @@ export default async function HomePage() {
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Link href="/match" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 font-serif text-[15px] text-[var(--codex-text)]">Voter Match</div>
+              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Voter Match</div>
               <p className="text-[12px] text-[var(--codex-faint)]">Find politicians who align with your views</p>
             </Link>
             <Link href="/compare" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 font-serif text-[15px] text-[var(--codex-text)]">Compare</div>
+              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Compare</div>
               <p className="text-[12px] text-[var(--codex-faint)]">Side-by-side on issues, finance, and votes</p>
             </Link>
             <Link href="/report-cards" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 font-serif text-[15px] text-[var(--codex-text)]">Civic Profiles</div>
+              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Civic Profiles</div>
               <p className="text-[12px] text-[var(--codex-faint)]">Activity scores for every politician</p>
             </Link>
             <Link href="/issues/map" className="rounded-md border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-1 font-serif text-[15px] text-[var(--codex-text)]">Issue Map</div>
+              <div className="mb-1 text-[15px] font-semibold text-[var(--codex-text)]">Issue Map</div>
               <p className="text-[12px] text-[var(--codex-faint)]">How each state leans on key issues</p>
             </Link>
           </div>

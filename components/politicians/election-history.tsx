@@ -41,7 +41,7 @@ export function ElectionHistory({ results, party }: ElectionHistoryProps) {
 
   return (
     <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
         Election History
       </h2>
       <div className="space-y-3">

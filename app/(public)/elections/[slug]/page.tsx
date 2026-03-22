@@ -145,7 +145,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
           )}
         </div>
 
-        <h1 className="mb-3 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.1]">
+        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {race.name}
         </h1>
 
@@ -273,14 +273,14 @@ export default async function RaceDetailPage({ params }: PageProps) {
                             {pol ? (
                               <Link
                                 href={`/politicians/${pol.slug}`}
-                                className="font-serif text-lg transition-colors hover:text-[var(--codex-text)]"
+                                className="text-lg font-semibold transition-colors hover:text-[var(--codex-text)]"
                               >
                                 {candidate.name}
                               </Link>
                             ) : (
                               <Link
                                 href={`/candidates/${candidate.id}`}
-                                className="font-serif text-lg transition-colors hover:text-[var(--codex-text)]"
+                                className="text-lg font-semibold transition-colors hover:text-[var(--codex-text)]"
                               >
                                 {candidate.name}
                               </Link>
@@ -391,7 +391,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
             </div>
           ) : (
             <div className="py-12 text-center text-[var(--codex-faint)]">
-              <div className="mb-2 font-serif text-lg">No candidates announced yet</div>
+              <div className="mb-2 text-lg font-semibold">No candidates announced yet</div>
               <div className="text-sm">Check back as the race develops</div>
             </div>
           )}

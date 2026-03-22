@@ -169,7 +169,7 @@ export default async function BillDetailPage({ params }: PageProps) {
           <FollowBillButton billId={bill.id} className="ml-auto" />
         </div>
 
-        <h1 className="mb-3 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.1]">
+        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {bill.title}
         </h1>
 
@@ -224,19 +224,19 @@ export default async function BillDetailPage({ params }: PageProps) {
 
             <div className="mb-5 grid grid-cols-4 gap-4">
               <div>
-                <div className="font-serif text-2xl text-green-400">{yea}</div>
+                <div className="text-2xl font-bold text-green-400">{yea}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Yea</div>
               </div>
               <div>
-                <div className="font-serif text-2xl text-red-400">{nay}</div>
+                <div className="text-2xl font-bold text-red-400">{nay}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Nay</div>
               </div>
               <div>
-                <div className="font-serif text-2xl text-yellow-400">{abstain}</div>
+                <div className="text-2xl font-bold text-yellow-400">{abstain}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Abstain</div>
               </div>
               <div>
-                <div className="font-serif text-2xl text-[var(--codex-faint)]">{notVoting}</div>
+                <div className="text-2xl font-bold text-[var(--codex-faint)]">{notVoting}</div>
                 <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Not Voting</div>
               </div>
             </div>
@@ -339,7 +339,7 @@ export default async function BillDetailPage({ params }: PageProps) {
 
         {total === 0 && (
           <div className="mb-10 py-12 text-center text-[var(--codex-faint)]">
-            <div className="mb-2 font-serif text-lg">No recorded votes yet</div>
+            <div className="mb-2 text-lg font-semibold">No recorded votes yet</div>
             <div className="text-sm">Voting records will appear as the bill progresses</div>
           </div>
         )}

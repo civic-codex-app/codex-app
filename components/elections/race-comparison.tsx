@@ -57,7 +57,7 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
         Candidate Issue Comparison
       </h2>
 

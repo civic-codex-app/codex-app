@@ -44,7 +44,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
           <div className="py-20 text-center">
-            <div className="mb-3 font-serif text-2xl">Something went wrong</div>
+            <div className="mb-3 text-2xl font-bold">Something went wrong</div>
           </div>
           <Footer />
         </div>
@@ -113,8 +113,8 @@ export default async function IssuesPage({ searchParams }: PageProps) {
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
-          <h1 className="mb-4 animate-fade-up font-serif text-[clamp(32px,4vw,52px)] font-normal leading-[1.1]">
-            Political <span className="italic text-[var(--codex-subtle)]">Issues</span>
+          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
+            Political Issues
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
             Explore where politicians stand on the issues that matter most.
@@ -124,11 +124,11 @@ export default async function IssuesPage({ searchParams }: PageProps) {
         {/* Stats */}
         <div className="mb-6 flex flex-wrap gap-6 border-y border-[var(--codex-border)] py-4">
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl">{issues.length}</span>
+            <span className="text-2xl font-bold">{issues.length}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">Issues</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl">{totalStancesCount.toLocaleString()}</span>
+            <span className="text-2xl font-bold">{totalStancesCount.toLocaleString()}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">Total Stances</span>
           </div>
         </div>
@@ -160,7 +160,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
               >
                 <div className="mb-2 flex items-center gap-2">
                   <IssueIcon icon={issue.icon} size={18} className="text-[var(--codex-sub)]" />
-                  <h3 className="font-serif text-lg transition-colors group-hover:text-[var(--codex-text)]">
+                  <h3 className="text-lg font-semibold transition-colors group-hover:text-[var(--codex-text)]">
                     {issue.name}
                   </h3>
                 </div>

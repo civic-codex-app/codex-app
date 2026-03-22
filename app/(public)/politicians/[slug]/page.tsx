@@ -90,7 +90,7 @@ function LinkButton({
       style={{ color: accent || 'var(--codex-sub)', borderColor: accent ? `${accent}33` : undefined }}
     >
       <span>{label}</span>
-      <span className="font-serif text-base" style={{ color: accent || 'var(--codex-faint)' }}>
+      <span className="text-base font-semibold" style={{ color: accent || 'var(--codex-faint)' }}>
         {icon}
       </span>
     </a>
@@ -266,10 +266,9 @@ export default async function PoliticianPage({ params }: PageProps) {
                 height={400}
                 unoptimized
                 className="aspect-[3/4] w-full object-cover object-top"
-                style={{ filter: 'grayscale(20%)' }}
-              />
+                              />
             ) : (
-              <div className="flex aspect-[3/4] w-full items-center justify-center bg-[var(--codex-card)] font-serif text-[120px] text-[var(--codex-text)] opacity-10" aria-hidden="true">
+              <div className="flex aspect-[3/4] w-full items-center justify-center bg-[var(--codex-card)] text-[120px] text-[var(--codex-text)] opacity-10" aria-hidden="true">
                 {pol.name.charAt(0)}
               </div>
             )}
@@ -291,17 +290,16 @@ export default async function PoliticianPage({ params }: PageProps) {
                     height={160}
                     unoptimized
                     className="h-full w-full object-cover object-top"
-                    style={{ filter: 'grayscale(20%)' }}
-                  />
+                                      />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center font-serif text-[64px] text-[var(--codex-text)] opacity-20" aria-hidden="true">
+                  <div className="flex h-full w-full items-center justify-center text-[64px] text-[var(--codex-text)] opacity-20" aria-hidden="true">
                     {pol.name.charAt(0)}
                   </div>
                 )}
               </div>
               <div className="min-w-0">
                 <PartyPill party={pol.party} size="lg" />
-                <h1 className="mt-1.5 font-serif text-[28px] font-normal leading-[1.05]">
+                <h1 className="mt-1.5 text-[28px] font-bold leading-[1.05]">
                   {pol.name}
                 </h1>
               </div>
@@ -311,7 +309,7 @@ export default async function PoliticianPage({ params }: PageProps) {
             <div className="mb-3 hidden md:block">
               <PartyPill party={pol.party} size="lg" />
             </div>
-            <h1 className="mb-4 hidden font-serif text-[38px] font-normal leading-[1.05] md:block">
+            <h1 className="mb-4 hidden text-[38px] font-bold leading-[1.05] md:block">
               {pol.name}
             </h1>
 
@@ -378,7 +376,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                     <div className="mb-1 text-[11px] uppercase tracking-[0.1em] text-[var(--codex-sub)]">
                       {label}
                     </div>
-                    <div className="font-serif text-xl">{value}</div>
+                    <div className="text-xl font-semibold">{value}</div>
                   </div>
                 ))}
               </div>
@@ -406,7 +404,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                   <h3 className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
                     Report Card
                   </h3>
-                  <div className="mb-3 font-serif text-lg text-[var(--codex-text)]">
+                  <div className="mb-3 text-lg font-semibold text-[var(--codex-text)]">
                     Sign up to see the full report card
                   </div>
                   <p className="mb-4 text-[13px] text-[var(--codex-faint)]">

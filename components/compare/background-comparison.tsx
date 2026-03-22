@@ -45,7 +45,7 @@ export function BackgroundComparison({ polA, polB }: BackgroundComparisonProps) 
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
         Background
       </h2>
       <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">

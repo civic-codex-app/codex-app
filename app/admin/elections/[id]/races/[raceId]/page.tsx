@@ -35,13 +35,13 @@ export default async function EditRacePage({ params }: PageProps) {
   return (
     <div>
       <div className="max-w-2xl">
-        <h1 className="mb-8 font-serif text-3xl">Edit Race</h1>
+        <h1 className="mb-8 text-3xl font-bold">Edit Race</h1>
         <RaceForm election_id={id} race={race as any} politicians={politicians ?? []} />
       </div>
 
       <div className="mt-12">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="font-serif text-2xl">Candidates</h2>
+          <h2 className="text-2xl font-bold">Candidates</h2>
           <Link
             href={`/admin/elections/${id}/races/${raceId}/candidates/new`}
             className="rounded-md bg-[var(--codex-text)] px-4 py-2 text-sm font-medium text-[var(--codex-bg)] no-underline hover:opacity-90"

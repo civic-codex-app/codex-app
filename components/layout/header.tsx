@@ -261,7 +261,7 @@ export function Header() {
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
-                      <span className="font-serif text-xs text-[var(--codex-sub)]">{userInitial}</span>
+                      <span className="text-xs font-semibold text-[var(--codex-sub)]">{userInitial}</span>
                     </div>
                   )}
                 </div>

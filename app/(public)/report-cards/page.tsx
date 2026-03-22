@@ -80,7 +80,7 @@ export default async function ReportCardsPage() {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
           <div className="py-20 text-center">
-            <div className="mb-3 font-serif text-2xl text-[var(--codex-text)]">
+            <div className="mb-3 text-2xl font-bold text-[var(--codex-text)]">
               Something went wrong
             </div>
             <p className="text-sm text-[var(--codex-sub)]">
@@ -191,8 +191,8 @@ export default async function ReportCardsPage() {
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pb-16 md:px-10">
         {/* Page title */}
-        <h1 className="mb-2 font-serif text-[clamp(1.8rem,4vw,2.8rem)] leading-tight text-[var(--codex-text)]">
-          Civic <em>Profiles</em>
+        <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight text-[var(--codex-text)]">
+          Civic Profiles
         </h1>
         <p className="mb-8 max-w-2xl text-sm leading-relaxed text-[var(--codex-sub)]">
           Every politician scored on civic activity: bipartisanship, engagement,

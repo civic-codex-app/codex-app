@@ -40,7 +40,7 @@ export default async function InsightsPage() {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
           <div className="py-20 text-center">
-            <div className="mb-3 font-serif text-2xl text-[var(--codex-text)]">Something went wrong</div>
+            <div className="mb-3 text-2xl font-bold text-[var(--codex-text)]">Something went wrong</div>
             <p className="text-sm text-[var(--codex-sub)]">
               We couldn&apos;t load insights right now. Please try again later.
             </p>
@@ -212,9 +212,8 @@ export default async function InsightsPage() {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         {/* Hero */}
         <div className="mb-14 max-w-[650px]">
-          <h1 className="mb-4 animate-fade-up font-serif text-[clamp(32px,4vw,52px)] font-normal leading-[1.1]">
-            Political{' '}
-            <span className="italic text-[var(--codex-subtle)]">Insights</span>
+          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
+            Political Insights
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
             Data-driven analysis of political positions, party alignment, and bipartisan cooperation
@@ -328,15 +327,15 @@ export default async function InsightsPage() {
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
             <a href="/issues/map" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-2 font-serif text-lg">Issue Map</div>
+              <div className="mb-2 text-lg font-semibold">Issue Map</div>
               <p className="text-[13px] text-[var(--codex-sub)]">See how each state&apos;s delegation leans on key issues</p>
             </a>
             <a href="/insights/money-map" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-2 font-serif text-lg">Money Map</div>
+              <div className="mb-2 text-lg font-semibold">Money Map</div>
               <p className="text-[13px] text-[var(--codex-sub)]">Campaign finance totals by state</p>
             </a>
             <a href="/report-cards" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
-              <div className="mb-2 font-serif text-lg">Report Cards</div>
+              <div className="mb-2 text-lg font-semibold">Report Cards</div>
               <p className="text-[13px] text-[var(--codex-sub)]">Every politician graded A through F</p>
             </a>
           </div>

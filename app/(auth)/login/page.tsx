@@ -38,7 +38,7 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 font-serif text-3xl">Sign in</h1>
+        <h1 className="mb-2 text-3xl font-bold">Sign in</h1>
         <p className="text-sm text-[var(--codex-sub)]">Welcome back</p>
       </div>
 

@@ -46,7 +46,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 md:px-10">
           <div className="py-20 text-center">
-            <div className="mb-3 font-serif text-2xl text-[var(--codex-text)]">Something went wrong</div>
+            <div className="mb-3 text-2xl font-bold text-[var(--codex-text)]">Something went wrong</div>
             <p className="text-sm text-[var(--codex-sub)]">
               We couldn&apos;t load bills right now. Please try again later.
             </p>
@@ -92,9 +92,8 @@ export default async function BillsPage({ searchParams }: PageProps) {
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
-          <h1 className="mb-4 animate-fade-up font-serif text-[clamp(32px,4vw,52px)] font-normal leading-[1.1]">
-            Bills &{' '}
-            <span className="italic text-[var(--codex-subtle)]">Legislation</span>
+          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
+            Bills & Legislation
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
             Track major bills through Congress and see how your representatives voted.
@@ -104,25 +103,25 @@ export default async function BillsPage({ searchParams }: PageProps) {
         {/* Stats */}
         <div className="mb-8 flex flex-wrap gap-6 border-y border-[var(--codex-border)] py-4">
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl">{all.length}</span>
+            <span className="text-2xl font-bold">{all.length}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               Total Bills
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl text-green-400">{signed}</span>
+            <span className="text-2xl font-bold text-green-400">{signed}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               Signed
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl text-blue-400">{active}</span>
+            <span className="text-2xl font-bold text-blue-400">{active}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               Active
             </span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="font-serif text-2xl text-red-400">{failed}</span>
+            <span className="text-2xl font-bold text-red-400">{failed}</span>
             <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
               Failed / Vetoed
             </span>
@@ -169,7 +168,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
                     )}
                   </div>
 
-                  <h3 className="mb-1.5 font-serif text-lg transition-colors group-hover:text-[var(--codex-text)]">
+                  <h3 className="mb-1.5 text-lg font-semibold transition-colors group-hover:text-[var(--codex-text)]">
                     {bill.title}
                   </h3>
 
@@ -204,7 +203,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
 
           {billList.length === 0 && (
             <div className="py-20 text-center text-[var(--codex-faint)]">
-              <div className="mb-2 font-serif text-2xl">No bills found</div>
+              <div className="mb-2 text-2xl font-bold">No bills found</div>
               <div className="text-sm">Check back for legislation updates</div>
             </div>
           )}

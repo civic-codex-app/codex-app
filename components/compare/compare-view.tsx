@@ -113,7 +113,7 @@ export function CompareView({
       {total > 0 && (
         <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            <span className="text-sm font-semibold text-[var(--codex-sub)]">
               Issue Agreement
             </span>
             <span className="text-xl font-semibold">
@@ -177,7 +177,7 @@ export function CompareView({
       {/* Shared committees */}
       {sharedCommittees.length > 0 && (
         <div className="mb-8">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
             Shared Committees
           </h2>
           <div className="grid gap-2">

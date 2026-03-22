@@ -17,7 +17,7 @@ export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
   return (
     <div className="rounded-md border border-[var(--codex-border)] p-4">
       <div className="mb-3 flex items-center justify-between">
-        <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+        <span className="text-sm font-semibold text-[var(--codex-sub)]">
           Party Alignment
         </span>
         <span

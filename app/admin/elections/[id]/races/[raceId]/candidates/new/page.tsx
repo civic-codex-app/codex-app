@@ -20,7 +20,7 @@ export default async function NewCandidatePage({ params }: PageProps) {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-8 font-serif text-3xl">Add Candidate</h1>
+      <h1 className="mb-8 text-3xl font-bold">Add Candidate</h1>
       <CandidateForm race_id={raceId} election_id={id} politicians={politicians ?? []} />
     </div>
   )

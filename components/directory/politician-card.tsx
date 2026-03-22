@@ -51,7 +51,7 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
               height={56}
               unoptimized
               loading="lazy"
-              className="h-full w-full object-cover grayscale-[40%] transition-[filter] duration-300 group-hover:grayscale-0"
+              className="h-full w-full object-cover"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center" style={{ background: `${color}08` }}>

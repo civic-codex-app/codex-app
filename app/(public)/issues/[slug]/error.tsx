@@ -10,7 +10,7 @@ export default function IssueError({
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-6">
       <div className="max-w-md text-center">
-        <div className="mb-4 font-serif text-[clamp(28px,4vw,42px)] leading-[1.1] text-[var(--codex-text)]">
+        <div className="mb-4 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1] text-[var(--codex-text)]">
           Something went wrong
         </div>
         <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">

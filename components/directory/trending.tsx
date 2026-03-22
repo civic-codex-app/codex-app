@@ -37,7 +37,7 @@ export function Trending() {
   if (loading) {
     return (
       <div className="mb-12">
-        <h2 className="mb-5 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <h2 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
           Trending
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -63,7 +63,7 @@ export function Trending() {
 
   return (
     <div className="mb-12">
-      <h2 className="mb-5 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+      <h2 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
         Trending
       </h2>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

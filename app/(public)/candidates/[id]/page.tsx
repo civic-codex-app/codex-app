@@ -134,7 +134,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
 
           {/* Name + meta */}
           <div className="min-w-0 flex-1 pt-1">
-            <h1 className="mb-2 font-serif text-[clamp(24px,4vw,42px)] font-normal leading-[1.1]">
+            <h1 className="mb-2 text-[clamp(24px,4vw,42px)] font-bold leading-[1.1]">
               {candidate.name}
             </h1>
             <div className="flex flex-wrap items-center gap-2">
@@ -196,7 +196,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
 
             <div className="flex items-baseline justify-between">
               {alignment >= 0 && (
-                <span className="font-serif text-2xl" style={{ color }}>
+                <span className="text-2xl font-bold" style={{ color }}>
                   {alignment}%
                 </span>
               )}
@@ -229,7 +229,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
             <div className="rounded-md border border-[var(--codex-border)] p-4">
               <Link
                 href={`/elections/${race.slug}`}
-                className="font-serif text-lg transition-colors hover:text-[var(--codex-text)]"
+                className="text-lg font-semibold transition-colors hover:text-[var(--codex-text)]"
               >
                 {race.name}
               </Link>
@@ -313,7 +313,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
               style={{ color: color, borderColor: `${color}33` }}
             >
               <span>Campaign Website</span>
-              <span className="font-serif text-base" style={{ color: `${color}88` }}>
+              <span className="text-base font-semibold" style={{ color: `${color}88` }}>
                 &rarr;
               </span>
             </a>

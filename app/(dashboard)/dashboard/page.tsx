@@ -194,7 +194,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="mb-2 font-serif text-3xl">Dashboard</h1>
+      <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
       <p className="mb-10 text-sm text-[var(--codex-sub)]">
         Your personalized political directory
       </p>
@@ -202,7 +202,7 @@ export default async function DashboardPage() {
       {/* Your Representatives */}
       <section className="mb-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
             Your Representatives{stateName ? ` \u00b7 ${stateName}` : ''}
           </h2>
           {userState && (
@@ -279,7 +279,7 @@ export default async function DashboardPage() {
 
       {/* Quick Links */}
       <section className="mb-10">
-        <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
           Quick Links
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -306,7 +306,7 @@ export default async function DashboardPage() {
       {/* Recent Activity Feed */}
       {recentActivity.length > 0 && (
         <section className="mb-10">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
             Recent Activity
           </h2>
           <div className="space-y-2">
@@ -346,7 +346,7 @@ export default async function DashboardPage() {
       {/* Followed Bills */}
       <section className="mb-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
             Saved Bills ({followedBills.length})
           </h2>
           <Link
@@ -416,14 +416,14 @@ export default async function DashboardPage() {
       {/* Upcoming Election */}
       {upcomingElection && (
         <section className="mb-10">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
             Upcoming Election
           </h2>
           <Link
             href={`/elections`}
             className="block rounded-md border border-[var(--codex-border)] p-5 no-underline transition-colors hover:border-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
           >
-            <div className="mb-1 font-serif text-lg text-[var(--codex-text)]">
+            <div className="mb-1 text-lg font-semibold text-[var(--codex-text)]">
               {upcomingElection.name}
             </div>
             <div className="mb-3 text-xs text-[var(--codex-faint)]">
@@ -441,7 +441,7 @@ export default async function DashboardPage() {
       {/* Following */}
       <section>
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
             Following ({followedPoliticians.length})
           </h2>
           <Link
@@ -460,7 +460,7 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <div className="rounded-md border border-[var(--codex-border)] py-16 text-center">
-            <div className="mb-2 font-serif text-xl text-[var(--codex-faint)]">
+            <div className="mb-2 text-xl font-semibold text-[var(--codex-faint)]">
               Not following anyone yet
             </div>
             <p className="mb-6 text-sm text-[var(--codex-sub)]">

@@ -236,7 +236,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           </span>
         </div>
 
-        <h1 className="mb-3 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.1]">
+        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--codex-sub)]" />}
           {issue.name}
         </h1>
@@ -249,19 +249,19 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         {totalAll > 0 && (
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="font-serif text-2xl text-green-400">{supportsAll}</div>
+              <div className="text-2xl font-bold text-green-400">{supportsAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Support</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="font-serif text-2xl text-red-400">{opposesAll}</div>
+              <div className="text-2xl font-bold text-red-400">{opposesAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Oppose</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="font-serif text-2xl text-yellow-400">{mixedAll}</div>
+              <div className="text-2xl font-bold text-yellow-400">{mixedAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Mixed / Neutral</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="font-serif text-2xl text-[var(--codex-text)]">{totalAll}</div>
+              <div className="text-2xl font-bold text-[var(--codex-text)]">{totalAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total</div>
             </div>
           </div>
@@ -386,7 +386,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
         {stanceList.length === 0 && (
           <div className="py-16 text-center text-[var(--codex-faint)]">
-            <div className="mb-2 font-serif text-xl">No stances recorded yet</div>
+            <div className="mb-2 text-xl font-semibold">No stances recorded yet</div>
             <div className="text-sm">Check back as we track more politician positions</div>
           </div>
         )}

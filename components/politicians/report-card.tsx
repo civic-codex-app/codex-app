@@ -80,7 +80,7 @@ export function PoliticianReportCard({
 
   return (
     <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-      <h3 className="mb-5 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+      <h3 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
         Civic Profile
       </h3>
 

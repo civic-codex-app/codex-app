@@ -31,7 +31,7 @@ export default async function AdminIssuesPage() {
     <div>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="mb-1 font-serif text-3xl">Issues</h1>
+          <h1 className="mb-1 text-3xl font-bold">Issues</h1>
           <p className="text-sm text-[var(--codex-sub)]">{issues.length} issues</p>
         </div>
         <Link

@@ -30,13 +30,13 @@ export default async function EditElectionPage({ params }: PageProps) {
   return (
     <div>
       <div className="max-w-2xl">
-        <h1 className="mb-8 font-serif text-3xl">Edit Election</h1>
+        <h1 className="mb-8 text-3xl font-bold">Edit Election</h1>
         <ElectionForm election={election as any} />
       </div>
 
       <div className="mt-12">
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="font-serif text-2xl">Races</h2>
+          <h2 className="text-2xl font-bold">Races</h2>
           <Link
             href={`/admin/elections/${id}/races/new`}
             className="rounded-md bg-[var(--codex-text)] px-4 py-2 text-sm font-medium text-[var(--codex-bg)] no-underline hover:opacity-90"

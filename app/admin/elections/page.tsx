@@ -14,7 +14,7 @@ export default async function AdminElectionsPage() {
     <div>
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="mb-1 font-serif text-3xl">Elections</h1>
+          <h1 className="mb-1 text-3xl font-bold">Elections</h1>
           <p className="text-sm text-[var(--codex-sub)]">{elections.length} elections</p>
         </div>
         <Link

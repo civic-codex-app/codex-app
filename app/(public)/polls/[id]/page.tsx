@@ -102,7 +102,7 @@ export default async function PollDetailPage({ params }: PageProps) {
         </div>
 
         {/* Poll question */}
-        <h1 className="mb-3 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.1]">
+        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {poll.title}
         </h1>
 

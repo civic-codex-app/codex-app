@@ -39,7 +39,7 @@ export default function SignupPage() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 font-serif text-3xl">Create account</h1>
+        <h1 className="mb-2 text-3xl font-bold">Create account</h1>
         <p className="text-sm text-[var(--codex-sub)]">Follow politicians and track legislation</p>
       </div>
 

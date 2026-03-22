@@ -82,7 +82,7 @@ export default function NewPoliticianPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-8 font-serif text-3xl">Add Politician</h1>
+      <h1 className="mb-8 text-3xl font-bold">Add Politician</h1>
 
       {error && (
         <div className="mb-6 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400" role="alert">

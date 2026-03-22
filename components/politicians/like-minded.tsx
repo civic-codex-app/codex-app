@@ -23,7 +23,7 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
 
   return (
     <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
         Like-Minded Officials
       </h2>
       <div className="grid gap-2">

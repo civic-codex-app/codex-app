@@ -16,7 +16,7 @@ export default async function EditPoliticianPage({ params }: PageProps) {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-8 font-serif text-3xl">Edit Politician</h1>
+      <h1 className="mb-8 text-3xl font-bold">Edit Politician</h1>
       <PoliticianEditForm politician={data as Politician} />
     </div>
   )

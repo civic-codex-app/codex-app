@@ -32,7 +32,7 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
 
   return (
     <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-1 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
         Campaign Finance
       </h2>
       <p className="mb-4 text-[11px] text-[var(--codex-faint)]">

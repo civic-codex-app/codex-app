@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="text-center">
-        <h1 className="mb-4 font-serif text-3xl">Check your email</h1>
+        <h1 className="mb-4 text-3xl font-bold">Check your email</h1>
         <p className="mb-8 text-sm text-[var(--codex-sub)]">
           We sent a password reset link to {email}
         </p>
@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-8 text-center">
-        <h1 className="mb-2 font-serif text-3xl">Reset password</h1>
+        <h1 className="mb-2 text-3xl font-bold">Reset password</h1>
         <p className="text-sm text-[var(--codex-sub)]">
           Enter your email to receive a reset link
         </p>

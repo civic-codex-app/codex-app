@@ -73,7 +73,7 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <h1 className="mb-2 font-serif text-3xl">Admin Overview</h1>
+      <h1 className="mb-2 text-3xl font-bold">Admin Overview</h1>
       <p className="mb-10 text-sm text-[var(--codex-sub)]">Manage your political directory data</p>
 
       {/* Stats Grid */}
@@ -87,7 +87,7 @@ export default async function AdminOverviewPage() {
             <div className="mb-2 text-[11px] uppercase tracking-[0.1em] text-[var(--codex-sub)]">
               {s.label}
             </div>
-            <div className="font-serif text-3xl text-[var(--codex-text)]">{s.value}</div>
+            <div className="text-3xl font-bold text-[var(--codex-text)]">{s.value}</div>
           </Link>
         ))}
       </div>

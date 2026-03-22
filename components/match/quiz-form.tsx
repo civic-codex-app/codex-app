@@ -130,7 +130,7 @@ export function QuizForm({ issues }: Props) {
     <div>
       {/* Progress bar */}
       <div className="mb-8">
-        <div className="mb-2 flex items-center justify-between text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[var(--codex-sub)]">
           <span>Question {currentStep + 1} of {total}</span>
           <span>{Math.round(progress)}%</span>
         </div>

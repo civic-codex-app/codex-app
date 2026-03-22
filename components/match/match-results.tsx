@@ -158,7 +158,7 @@ export function MatchResults({ results, onRetake }: Props) {
       {/* Remaining results */}
       {rest.length > 0 && (
         <>
-          <h3 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          <h3 className="mb-3 text-sm font-semibold text-[var(--codex-sub)]">
             More Matches
           </h3>
           <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">

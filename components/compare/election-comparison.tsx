@@ -101,7 +101,7 @@ export function ElectionComparison({
 }: ElectionComparisonProps) {
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
         Election History
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">

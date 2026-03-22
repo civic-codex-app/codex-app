@@ -29,7 +29,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
   if (!latestA && !latestB) {
     return (
       <div className="mb-8">
-        <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
           Campaign Finance
         </h2>
         <div className="rounded-md border border-[var(--codex-border)] px-6 py-8 text-center text-[13px] text-[var(--codex-faint)]">
@@ -59,7 +59,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
         Campaign Finance
       </h2>
 
