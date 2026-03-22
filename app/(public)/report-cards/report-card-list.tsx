@@ -1,11 +1,29 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
-// Tier labels matching the Civic Profile component
+import type { RankedPolitician } from './page'
+
+const CHAMBER_TABS = [
+  { key: 'all', label: 'All' },
+  { key: 'senate', label: 'Senate' },
+  { key: 'house', label: 'House' },
+  { key: 'governor', label: 'Governor' },
+] as const
+
+const PARTY_TABS = [
+  { key: 'all', label: 'All Parties' },
+  { key: 'democrat', label: 'Democratic' },
+  { key: 'republican', label: 'Republican' },
+  { key: 'independent', label: 'Independent' },
+] as const
+
+type ChamberKey = (typeof CHAMBER_TABS)[number]['key']
+type PartyKey = (typeof PARTY_TABS)[number]['key']
+
 function tierColor(score: number): string {
   if (score >= 80) return '#22C55E'
   if (score >= 65) return '#3B82F6'
@@ -13,16 +31,6 @@ function tierColor(score: number): string {
   if (score >= 35) return '#EAB308'
   return '#9CA3AF'
 }
-import type { RankedPolitician } from './page'
-
-const TABS = [
-  { key: 'all', label: 'All' },
-  { key: 'senate', label: 'Senate' },
-  { key: 'house', label: 'House' },
-  { key: 'governor', label: 'Governor' },
-] as const
-
-type TabKey = (typeof TABS)[number]['key']
 
 function barColor(value: number): string {
   if (value >= 75) return '#22C55E'
@@ -39,28 +47,38 @@ const DIMS = [
   { key: 'effectiveness' as const, label: 'EF' },
 ]
 
-export function ReportCardList({
-  politicians,
-}: {
-  politicians: RankedPolitician[]
-}) {
-  const [tab, setTab] = useState<TabKey>('all')
+const PAGE_SIZE = 50
 
-  const filtered =
-    tab === 'all'
-      ? politicians
-      : politicians.filter((p) => p.chamber === tab)
+export function ReportCardList({ politicians }: { politicians: RankedPolitician[] }) {
+  const [chamber, setChamber] = useState<ChamberKey>('all')
+  const [party, setParty] = useState<PartyKey>('all')
+  const [page, setPage] = useState(1)
+
+  const filtered = useMemo(() => {
+    let list = politicians
+    if (chamber !== 'all') list = list.filter((p) => p.chamber === chamber)
+    if (party !== 'all') list = list.filter((p) => p.party === party)
+    return list
+  }, [politicians, chamber, party])
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages)
+  const pageItems = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+
+  // Reset page when filters change
+  const handleChamber = (key: ChamberKey) => { setChamber(key); setPage(1) }
+  const handleParty = (key: PartyKey) => { setParty(key); setPage(1) }
 
   return (
     <>
-      {/* Filter tabs */}
-      <div className="mb-6 flex gap-2">
-        {TABS.map((t) => (
+      {/* Filter rows */}
+      <div className="mb-3 flex flex-wrap gap-2">
+        {CHAMBER_TABS.map((t) => (
           <button
             key={t.key}
-            onClick={() => setTab(t.key)}
+            onClick={() => handleChamber(t.key)}
             className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
-              tab === t.key
+              chamber === t.key
                 ? 'bg-[var(--codex-text)] text-[var(--codex-card)]'
                 : 'bg-[var(--codex-hover)] text-[var(--codex-sub)] hover:text-[var(--codex-text)]'
             }`}
@@ -69,26 +87,42 @@ export function ReportCardList({
           </button>
         ))}
       </div>
+      <div className="mb-6 flex flex-wrap gap-2">
+        {PARTY_TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => handleParty(t.key)}
+            className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${
+              party === t.key
+                ? 'border border-[var(--codex-text)] text-[var(--codex-text)]'
+                : 'border border-[var(--codex-border)] text-[var(--codex-faint)] hover:text-[var(--codex-sub)]'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+        <span className="ml-auto self-center text-[11px] text-[var(--codex-faint)]">
+          {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+        </span>
+      </div>
 
       {/* List */}
       <div className="flex flex-col gap-2">
-        {filtered.map((p, idx) => {
+        {pageItems.map((p, idx) => {
           const rc = p.reportCard
           const color = tierColor(rc.score)
           const pColor = partyColor(p.party)
+          const rank = (safePage - 1) * PAGE_SIZE + idx + 1
 
           return (
             <Link
               key={p.id}
               href={`/politicians/${p.slug}`}
-              className="flex items-center gap-3 rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] px-4 py-3 transition-colors hover:border-[var(--codex-text)]/10 md:gap-4"
+              className="flex items-center gap-3 rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] px-4 py-3 no-underline transition-colors hover:border-[var(--codex-text)]/10 md:gap-4"
             >
-              {/* Rank */}
               <span className="w-7 flex-shrink-0 text-right text-xs font-medium text-[var(--codex-faint)]">
-                {idx + 1}
+                {rank}
               </span>
-
-              {/* Avatar */}
               <div
                 className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border"
                 style={{ borderColor: `${pColor}30` }}
@@ -101,8 +135,6 @@ export function ReportCardList({
                   party={p.party}
                 />
               </div>
-
-              {/* Name + meta */}
               <div className="min-w-0 flex-1">
                 <div className="truncate text-sm font-medium text-[var(--codex-text)]">
                   {p.name}
@@ -115,10 +147,11 @@ export function ReportCardList({
                 </div>
               </div>
 
-              {/* Mini dimension bars (hidden on small screens) */}
+              {/* Mini dimension bars (desktop) */}
               <div className="hidden flex-shrink-0 gap-2 sm:flex">
                 {DIMS.map((dim) => {
                   const value = rc[dim.key]
+                  if (value < 0) return null
                   return (
                     <div key={dim.key} className="flex w-14 flex-col items-center gap-0.5">
                       <span className="text-[9px] uppercase tracking-wider text-[var(--codex-faint)]">
@@ -127,10 +160,7 @@ export function ReportCardList({
                       <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
                         <div
                           className="h-full rounded-full"
-                          style={{
-                            width: `${value}%`,
-                            backgroundColor: barColor(value),
-                          }}
+                          style={{ width: `${value}%`, backgroundColor: barColor(value) }}
                         />
                       </div>
                     </div>
@@ -138,25 +168,46 @@ export function ReportCardList({
                 })}
               </div>
 
-              {/* Score */}
-              <div className="flex flex-shrink-0 items-center">
-                <span
-                  className="font-serif text-lg font-bold"
-                  style={{ color }}
-                >
-                  {rc.score}
-                </span>
-              </div>
+              <span className="flex-shrink-0 font-serif text-lg font-bold" style={{ color }}>
+                {rc.score}
+              </span>
             </Link>
           )
         })}
 
-        {filtered.length === 0 && (
+        {pageItems.length === 0 && (
           <div className="py-12 text-center text-sm text-[var(--codex-faint)]">
-            No politicians found for this filter.
+            No politicians found for these filters.
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-6 flex items-center justify-between">
+          <span className="text-[11px] text-[var(--codex-faint)]">
+            Page {safePage} of {totalPages}
+          </span>
+          <div className="flex gap-2">
+            {safePage > 1 && (
+              <button
+                onClick={() => setPage(safePage - 1)}
+                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
+              >
+                Previous
+              </button>
+            )}
+            {safePage < totalPages && (
+              <button
+                onClick={() => setPage(safePage + 1)}
+                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
+              >
+                Next
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </>
   )
 }

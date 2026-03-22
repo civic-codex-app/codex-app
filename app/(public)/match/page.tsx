@@ -20,7 +20,7 @@ export default async function MatchPage() {
   return (
     <>
       <Header />
-      <main className="mx-auto max-w-2xl px-4 pb-20 pt-28 sm:pt-32">
+      <main className="mx-auto max-w-2xl px-6 pb-20 md:px-10">
         <div className="mb-10 text-center">
           <h1 className="font-serif text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight text-[var(--codex-text)]">
             Find Your <em>Match</em>
