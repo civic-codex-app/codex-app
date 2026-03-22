@@ -1,26 +1,22 @@
-import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AvatarImage } from '@/components/ui/avatar-image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
-import { IssueDetailFilters } from '@/components/filters/issue-detail-filters'
-import { stanceBucket, STANCE_STYLES, STANCE_ORDER } from '@/lib/utils/stances'
+import { stanceBucket, STANCE_STYLES } from '@/lib/utils/stances'
 import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
 import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
+import { StanceGroup, type StanceEntry } from '@/components/issues/stance-group'
 
 export const revalidate = 600 // 10 minutes
 
 interface PageProps {
   params: Promise<{ slug: string }>
-  searchParams: Promise<{ party?: string; chamber?: string; page?: string }>
+  searchParams: Promise<{ party?: string; chamber?: string }>
 }
-
-const PAGE_SIZE = 50
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
@@ -49,8 +45,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-const STANCE_CONFIG = STANCE_STYLES
-
 const CATEGORY_LABELS: Record<string, string> = {
   economy: 'Economy',
   healthcare: 'Healthcare',
@@ -68,6 +62,132 @@ const CATEGORY_LABELS: Record<string, string> = {
   energy: 'Energy',
 }
 
+/** Fetch all rows with pagination to bypass Supabase 1000-row limit */
+async function fetchAllStances(supabase: ReturnType<typeof createServiceRoleClient>, issueId: string) {
+  const PAGE = 1000
+  let all: IssueStanceWithPoliticianRow[] = []
+  let from = 0
+  let done = false
+  while (!done) {
+    const { data, error } = await supabase
+      .from('politician_issues')
+      .select('*, politicians:politician_id!inner(id, name, slug, party, chamber, state, title, image_url)')
+      .eq('issue_id', issueId)
+      .order('stance')
+      .order('id')
+      .range(from, from + PAGE - 1)
+    if (error) {
+      console.error('Failed to fetch stances:', error.message)
+      break
+    }
+    const rows = (data ?? []) as any as IssueStanceWithPoliticianRow[]
+    all = all.concat(rows)
+    if (rows.length < PAGE) done = true
+    else from += PAGE
+  }
+  return all
+}
+
+/** Patterns that indicate a generic/boilerplate summary */
+const GENERIC_PATTERNS = [
+  /^supports?\s+(this\s+)?issue/i,
+  /^opposes?\s+(this\s+)?issue/i,
+  /^has\s+(a\s+)?(mixed|neutral|unknown)\s+(stance|position)/i,
+  /^no\s+(known\s+)?(stance|position)/i,
+  /^position\s+(is\s+)?(unclear|unknown)/i,
+]
+
+function isGenericSummary(summary: string | null): boolean {
+  if (!summary || summary.trim().length === 0) return true
+  if (summary.trim().length < 20) return true
+  return GENERIC_PATTERNS.some((p) => p.test(summary.trim()))
+}
+
+/**
+ * Process stances into deduplicated entries grouped by bucket.
+ * Politicians with identical summaries are collapsed into one entry.
+ */
+function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]) {
+  // Deduplicate by politician id
+  const seenPol = new Set<string>()
+  const deduped = stances.filter((s) => {
+    const polId = s.politicians?.id
+    if (!polId || seenPol.has(polId)) return false
+    seenPol.add(polId)
+    return true
+  })
+
+  const BUCKET_CONFIG = {
+    supports: { label: 'For', style: STANCE_STYLES.supports },
+    mixed: { label: 'Mixed / Neutral', style: STANCE_STYLES.mixed },
+    opposes: { label: 'Against', style: STANCE_STYLES.opposes },
+    unknown: { label: 'Unknown', style: STANCE_STYLES.unknown },
+  }
+
+  // Group into buckets, merging neutral into mixed
+  const buckets: Record<string, IssueStanceWithPoliticianRow[]> = {
+    supports: [],
+    mixed: [],
+    opposes: [],
+    unknown: [],
+  }
+  for (const s of deduped) {
+    let bucket = stanceBucket(s.stance)
+    if (bucket === 'neutral') bucket = 'mixed'
+    buckets[bucket].push(s)
+  }
+
+  const result: Record<string, { entries: StanceEntry[]; totalCount: number; label: string; style: typeof STANCE_STYLES.supports }> = {}
+
+  for (const [bucket, items] of Object.entries(buckets)) {
+    if (items.length === 0) continue
+
+    const config = BUCKET_CONFIG[bucket as keyof typeof BUCKET_CONFIG]
+
+    // Group by normalized summary
+    const summaryMap = new Map<string, StanceEntry>()
+    const noSummaryPols: StanceEntry['politicians'] = []
+
+    for (const s of items) {
+      const pol = s.politicians!
+      const polData = {
+        id: pol.id,
+        name: pol.name,
+        slug: pol.slug,
+        party: pol.party,
+        chamber: pol.chamber,
+        state: pol.state,
+        title: pol.title,
+        image_url: pol.image_url,
+      }
+
+      if (isGenericSummary(s.summary)) {
+        noSummaryPols.push(polData)
+      } else {
+        const key = s.summary!.trim().toLowerCase()
+        const existing = summaryMap.get(key)
+        if (existing) {
+          existing.politicians.push(polData)
+        } else {
+          summaryMap.set(key, { summary: s.summary!.trim(), politicians: [polData] })
+        }
+      }
+    }
+
+    // Unique summaries first (sorted by politician count desc), then no-summary group
+    const entries: StanceEntry[] = Array.from(summaryMap.values())
+      .sort((a, b) => b.politicians.length - a.politicians.length)
+
+    if (noSummaryPols.length > 0) {
+      entries.push({ summary: null, politicians: noSummaryPols })
+    }
+
+    result[bucket] = { entries, totalCount: items.length, label: config.label, style: config.style }
+  }
+
+  return result
+}
+
 export default async function IssuePage({ params, searchParams }: PageProps) {
   const { slug } = await params
   const sp = await searchParams
@@ -78,17 +198,10 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
   if (!issueData) notFound()
 
   const issue = issueData as any as IssueRow
-  const currentPage = Math.max(1, parseInt(sp.page ?? '1', 10) || 1)
-
-  const hasFilters = !!(sp.party || sp.chamber)
 
   // Stance types grouped by bucket
   const supportStances = ['strongly_supports', 'supports', 'leans_support']
   const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
-  const mixedStances = ['neutral', 'mixed', 'unknown']
-
-  // All count queries in parallel — no row fetching needed
-  const parties = ['democrat', 'republican', 'independent', 'green'] as const
 
   function countQ(filters: { stance?: string[]; party?: string } = {}) {
     let q = filters.party
@@ -98,7 +211,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     return q
   }
 
-  const [totalRes, supportsRes, opposesRes, filteredRes,
+  const [totalRes, supportsRes, opposesRes, allStances,
     demTotalR, demSupR, demOppR,
     gopTotalR, gopSupR, gopOppR,
     indTotalR, indSupR, indOppR,
@@ -106,22 +219,13 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     countQ(),
     countQ({ stance: supportStances }),
     countQ({ stance: opposeStances }),
-    // Filtered total for pagination
-    (() => {
-      let q = supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issue.id)
-      if (sp.party) q = q.eq('politicians.party', sp.party)
-      if (sp.chamber) q = q.eq('politicians.chamber', sp.chamber)
-      return q
-    })(),
-    // Democrat counts
+    fetchAllStances(supabase, issue.id),
     countQ({ party: 'democrat' }),
     countQ({ party: 'democrat', stance: supportStances }),
     countQ({ party: 'democrat', stance: opposeStances }),
-    // Republican counts
     countQ({ party: 'republican' }),
     countQ({ party: 'republican', stance: supportStances }),
     countQ({ party: 'republican', stance: opposeStances }),
-    // Independent counts
     countQ({ party: 'independent' }),
     countQ({ party: 'independent', stance: supportStances }),
     countQ({ party: 'independent', stance: opposeStances }),
@@ -140,66 +244,8 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
   const indTotal = indTotalR.count ?? 0
   if (indTotal > 0) partyStats.independent = { total: indTotal, supports: indSupR.count ?? 0, opposes: indOppR.count ?? 0, mixed: indTotal - (indSupR.count ?? 0) - (indOppR.count ?? 0) }
 
-  // Filtered total for pagination
-  const filteredTotal = hasFilters ? (filteredRes.count ?? 0) : totalAll
-  const totalPages = Math.max(1, Math.ceil(filteredTotal / PAGE_SIZE))
-  const safePage = Math.min(currentPage, totalPages)
-  const offset = (safePage - 1) * PAGE_SIZE
-
-  // Fetch only the current page of stances with full politician data
-  let pageQuery = supabase
-    .from('politician_issues')
-    .select('*, politicians:politician_id!inner(id, name, slug, party, chamber, state, title, image_url)')
-    .eq('issue_id', issue.id)
-    .order('stance')
-    .order('id')
-
-  if (sp.party) pageQuery = pageQuery.eq('politicians.party', sp.party)
-  if (sp.chamber) pageQuery = pageQuery.eq('politicians.chamber', sp.chamber)
-
-  pageQuery = pageQuery.range(offset, offset + PAGE_SIZE - 1)
-
-  const { data: pageData, error: pageError } = await pageQuery
-  if (pageError) console.error('Failed to fetch stances page:', pageError.message)
-
-  const stanceList = (pageData ?? []) as any as IssueStanceWithPoliticianRow[]
-
-  // Deduplicate: first by politician_issues.id (true row duplicates from joins),
-  // then by politician_id (a politician may have multiple stance records for one issue)
-  const seenRowId = new Set<string>()
-  const seenPolId = new Set<string>()
-  const dedupedList = stanceList.filter((s) => {
-    if (seenRowId.has(s.id)) return false
-    seenRowId.add(s.id)
-    const polId = (s as any).politicians?.id
-    if (polId) {
-      if (seenPolId.has(polId)) return false
-      seenPolId.add(polId)
-    }
-    return true
-  })
-
-  // Group by stance
-  const grouped: Record<string, IssueStanceWithPoliticianRow[]> = {}
-  for (const s of dedupedList) {
-    const key = s.stance
-    if (!grouped[key]) grouped[key] = []
-    grouped[key].push(s)
-  }
-
-  const stanceOrder = STANCE_ORDER
-
-  // Build URL helper for pagination
-  function buildUrl(overrides: Record<string, string>) {
-    const p: Record<string, string> = {}
-    if (sp.party) p.party = sp.party
-    if (sp.chamber) p.chamber = sp.chamber
-    Object.assign(p, overrides)
-    // Remove page=1 to keep URLs clean
-    if (p.page === '1') delete p.page
-    const qs = new URLSearchParams(p).toString()
-    return `/issues/${slug}${qs ? `?${qs}` : ''}`
-  }
+  // Build deduplicated stance groups
+  const stanceGroups = buildStanceGroups(allStances)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -207,17 +253,11 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     name: `${issue.name} - Political Stances`,
     description: issue.description || `Track where U.S. politicians stand on ${issue.name}`,
     url: `https://codexapp.org/issues/${slug}`,
-    about: {
-      '@type': 'Thing',
-      name: issue.name,
-      description: issue.description,
-    },
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'Codex',
-      url: 'https://codexapp.org',
-    },
+    about: { '@type': 'Thing', name: issue.name, description: issue.description },
+    isPartOf: { '@type': 'WebSite', name: 'Codex', url: 'https://codexapp.org' },
   }
+
+  const bucketOrder = ['supports', 'mixed', 'opposes', 'unknown'] as const
 
   return (
     <>
@@ -263,11 +303,11 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               <div className="rounded-md bg-blue-500/5 px-3 py-2">
-                <span className="text-[11px] font-medium text-blue-400">Progressive</span>
+                <span className="text-[11px] font-medium text-blue-400">For</span>
                 <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].progressiveView}</p>
               </div>
               <div className="rounded-md bg-red-500/5 px-3 py-2">
-                <span className="text-[11px] font-medium text-red-400">Conservative</span>
+                <span className="text-[11px] font-medium text-red-400">Against</span>
                 <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].conservativeView}</p>
               </div>
             </div>
@@ -279,11 +319,11 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
               <div className="text-2xl font-bold text-blue-400">{supportsAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Progressive</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">For</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
               <div className="text-2xl font-bold text-red-400">{opposesAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Conservative</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Against</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
               <div className="text-2xl font-bold text-purple-400">{mixedAll}</div>
@@ -334,9 +374,9 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                         )}
                       </div>
                       <div className="flex gap-4 text-[10px] text-[var(--codex-faint)]">
-                        <span className="text-blue-400/70">{supportPct}% progressive</span>
+                        <span className="text-blue-400/70">{supportPct}% for</span>
                         <span className="text-purple-400/70">{mixedPct}% mixed</span>
-                        <span className="text-red-400/70">{opposePct}% conservative</span>
+                        <span className="text-red-400/70">{opposePct}% against</span>
                       </div>
                     </div>
                   )
@@ -345,124 +385,50 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           </div>
         )}
 
-        {/* Filters */}
-        <Suspense>
-          <IssueDetailFilters />
-        </Suspense>
-
-        {/* Result count */}
-        <div className="mb-4 text-[11px] text-[var(--codex-faint)]">
-          Showing {offset + 1}–{Math.min(offset + PAGE_SIZE, filteredTotal)} of {filteredTotal}{hasFilters ? ` (filtered from ${totalAll})` : ''} stances
+        {/* Section header for notable stances */}
+        <div className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          Notable Stances
         </div>
+        <p className="mb-6 text-[11px] text-[var(--codex-faint)]">
+          Politicians with unique positions on this issue. Similar stances are grouped together.
+        </p>
 
-        {stanceOrder.map((stance) => {
-          const items = grouped[stance]
-          if (!items || items.length === 0) return null
-          const config = STANCE_CONFIG[stance] ?? STANCE_CONFIG.unknown
+        {/* Stance groups: For / Mixed / Against / Unknown */}
+        {bucketOrder.map((bucket) => {
+          const group = stanceGroups[bucket]
+          if (!group) return null
           return (
-            <section key={stance} className="mb-10">
-              <h2 className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
-                <span className={`rounded-sm px-2 py-0.5 text-[10px] ${config.bg} ${config.text}`}>
-                  {config.label}
-                </span>
-                <span className="text-[var(--codex-faint)]">{items.length}</span>
-              </h2>
-              <div className="space-y-2">
-                {items.map((s, idx) => {
-                  const pol = s.politicians
-                  if (!pol) return null
-                  return (
-                    <Link
-                      key={`${s.id}-${pol.id}`}
-                      href={`/politicians/${pol.slug}`}
-                      className="group flex items-center gap-4 rounded-md border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-input-border)]"
-                    >
-                      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]">
-                        <AvatarImage
-                          src={pol.image_url}
-                          alt={pol.name}
-                          size={40}
-                          party={pol.party}
-                          fallbackColor={partyColor(pol.party)}
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium transition-colors group-hover:text-[var(--codex-text)]">
-                            {pol.name}
-                          </span>
-                          <span
-                            className="text-[10px] font-medium uppercase"
-                            style={{ color: partyColor(pol.party) }}
-                          >
-                            {partyLabel(pol.party)}
-                          </span>
-                        </div>
-                        <div className="text-[11px] text-[var(--codex-faint)]">
-                          {pol.title} &middot; {pol.state}
-                        </div>
-                        {s.summary && (
-                          <p className="mt-1 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{s.summary}</p>
-                        )}
-                      </div>
-                    </Link>
-                  )
-                })}
-              </div>
-            </section>
+            <StanceGroup
+              key={bucket}
+              label={group.label}
+              color={group.style.color}
+              bgClass={group.style.bg}
+              textClass={group.style.text}
+              entries={group.entries}
+              totalCount={group.totalCount}
+            />
           )
         })}
 
-        {stanceList.length === 0 && (
+        {totalAll === 0 && (
           <div className="py-16 text-center text-[var(--codex-faint)]">
             <div className="mb-2 text-xl font-semibold">No stances recorded yet</div>
             <div className="text-sm">Check back as we track more politician positions</div>
           </div>
         )}
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="mb-10 mt-2 flex items-center justify-between">
-            <p className="text-[11px] text-[var(--codex-faint)]">
-              Page {safePage} of {totalPages}
+        {/* Browse all link */}
+        {totalAll > 0 && (
+          <div className="mb-10 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 text-center">
+            <p className="mb-3 text-[13px] text-[var(--codex-sub)]">
+              Want to see every politician&apos;s stance on {issue.name}?
             </p>
-            <div className="flex gap-2">
-              {safePage > 1 && (
-                <Link
-                  href={buildUrl({ page: String(safePage - 1) })}
-                  className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
-                >
-                  Previous
-                </Link>
-              )}
-              {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 2)
-                .map((p, idx, arr) => (
-                  <span key={p} className="flex items-center gap-2">
-                    {idx > 0 && arr[idx - 1] !== p - 1 && (
-                      <span className="text-[var(--codex-faint)]">&hellip;</span>
-                    )}
-                    <Link
-                      href={buildUrl({ page: String(p) })}
-                      className={`rounded-md border px-3 py-1.5 text-sm no-underline ${
-                        p === safePage
-                          ? 'border-[var(--codex-text)] bg-[var(--codex-text)] text-[var(--codex-bg)]'
-                          : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]'
-                      }`}
-                    >
-                      {p}
-                    </Link>
-                  </span>
-                ))}
-              {safePage < totalPages && (
-                <Link
-                  href={buildUrl({ page: String(safePage + 1) })}
-                  className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
-                >
-                  Next
-                </Link>
-              )}
-            </div>
+            <Link
+              href={`/politicians?issue=${slug}`}
+              className="inline-flex items-center gap-2 rounded-md border border-[var(--codex-border)] px-5 py-2.5 text-[13px] font-medium text-[var(--codex-text)] no-underline transition-all hover:border-[var(--codex-input-border)] hover:bg-[var(--codex-hover)]"
+            >
+              Browse all {totalAll} politicians &rarr;
+            </Link>
           </div>
         )}
 
