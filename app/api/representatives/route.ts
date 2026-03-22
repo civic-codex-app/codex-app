@@ -1,78 +1,104 @@
 import { NextResponse } from 'next/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import zipToDistrictData from '@/lib/data/zip-to-district.json'
+
+type DistrictEntry = { state: string; district: string }
+const zipLookup = zipToDistrictData as Record<string, DistrictEntry[]>
 
 /**
  * GET /api/representatives?zip=78701
  *
- * Uses Google Civic Information API (free, no key required for representativeInfoByAddress)
- * to find representatives by zip code, then matches them to our politicians DB.
+ * Looks up congressional district(s) for a zip code using local data,
+ * then returns matching House rep(s), Senators, and Governor from the DB.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const zip = searchParams.get('zip')
 
   if (!zip || !/^\d{5}$/.test(zip)) {
-    return NextResponse.json({ error: 'Valid 5-digit zip code required' }, { status: 400 })
+    return NextResponse.json(
+      { error: 'Valid 5-digit zip code required' },
+      { status: 400 }
+    )
   }
 
   try {
-    // Call Google Civic Information API (free, no API key needed for basic use)
-    const civicUrl = `https://www.googleapis.com/civicinfo/v2/representatives?address=${zip}&levels=country&levels=regional&roles=legislatorUpperBody&roles=legislatorLowerBody&roles=headOfGovernment&key=${process.env.GOOGLE_CIVIC_API_KEY || ''}`
+    const districts = zipLookup[zip]
 
-    const civicRes = await fetch(civicUrl, { next: { revalidate: 86400 } }) // Cache 24h
-
-    if (!civicRes.ok) {
-      // Fallback: just return state-level reps based on zip prefix
+    if (!districts || districts.length === 0) {
+      // No district data for this zip — try state-level fallback
       return fallbackByState(zip)
     }
 
-    const civicData = await civicRes.json()
-    const officials = civicData.officials ?? []
-
-    // Extract names from Civic API
-    const names: string[] = officials.map((o: any) => o.name).filter(Boolean)
-
-    if (names.length === 0) {
-      return fallbackByState(zip)
-    }
-
-    // Match names to our politicians DB
     const supabase = createServiceRoleClient()
-    const matchedPoliticians: any[] = []
 
-    for (const name of names) {
-      // Try exact name match first
-      const { data } = await supabase
+    // Collect unique states from the district entries
+    const states = [...new Set(districts.map((d) => d.state))]
+
+    // ── Fetch House reps matching state + district ──────────────
+    const housePromises = districts.map((d) =>
+      supabase
         .from('politicians')
-        .select('id, name, slug, party, state, chamber, title, image_url')
-        .ilike('name', `%${name.split(' ').pop()}%`) // Match by last name
+        .select('id, name, slug, party, state, chamber, district, title, image_url')
+        .eq('state', d.state)
+        .eq('chamber', 'house')
+        .eq('district', d.district)
         .limit(5)
+    )
 
-      if (data && data.length > 0) {
-        // Find best match — prefer exact name match, then first-name + last-name
-        const nameParts = name.toLowerCase().split(' ')
-        const lastName = nameParts[nameParts.length - 1]
-        const firstName = nameParts[0]
+    // ── Fetch Senators for the state(s) ─────────────────────────
+    const senatePromise = supabase
+      .from('politicians')
+      .select('id, name, slug, party, state, chamber, title, image_url')
+      .in('state', states)
+      .eq('chamber', 'senate')
+      .order('name')
+      .limit(10)
 
-        const match = data.find((p: any) => {
-          const pParts = p.name.toLowerCase().split(' ')
-          const pLast = pParts[pParts.length - 1]
-          const pFirst = pParts[0]
-          return pLast === lastName && pFirst === firstName
-        }) ?? data.find((p: any) => {
-          const pLast = p.name.toLowerCase().split(' ').pop()
-          return pLast === lastName
-        })
+    // ── Fetch Governor(s) for the state(s) ──────────────────────
+    const govPromise = supabase
+      .from('politicians')
+      .select('id, name, slug, party, state, chamber, title, image_url')
+      .in('state', states)
+      .eq('chamber', 'governor')
+      .limit(5)
 
-        if (match && !matchedPoliticians.find((m: any) => m.id === match.id)) {
-          matchedPoliticians.push(match)
+    const [houseResults, senateResult, govResult] = await Promise.all([
+      Promise.all(housePromises),
+      senatePromise,
+      govPromise,
+    ])
+
+    // Deduplicate house reps (a zip may map to multiple districts)
+    const seen = new Set<string>()
+    const houseReps: any[] = []
+    for (const result of houseResults) {
+      for (const rep of result.data ?? []) {
+        if (!seen.has(rep.id)) {
+          seen.add(rep.id)
+          houseReps.push(rep)
         }
       }
     }
 
+    const senators = senateResult.data ?? []
+    const governors = govResult.data ?? []
+
+    const representatives = [...senators, ...houseReps, ...governors]
+
     return NextResponse.json(
-      { representatives: matchedPoliticians, source: 'civic_api' },
-      { headers: { 'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=172800' } }
+      {
+        representatives,
+        districts,
+        state: states[0],
+        source: 'zip_lookup',
+      },
+      {
+        headers: {
+          'Cache-Control':
+            'public, s-maxage=86400, stale-while-revalidate=172800',
+        },
+      }
     )
   } catch (err) {
     console.error('Representatives API error:', err)
@@ -82,7 +108,6 @@ export async function GET(request: Request) {
 
 /** Fallback: look up state from zip prefix and return senators + governor */
 async function fallbackByState(zip: string) {
-  // Rough zip-to-state mapping using first 3 digits
   const state = zipToState(zip)
   if (!state) {
     return NextResponse.json({ representatives: [], source: 'none' })
@@ -107,7 +132,6 @@ async function fallbackByState(zip: string) {
 /** Map zip code prefix to state abbreviation */
 function zipToState(zip: string): string | null {
   const prefix = parseInt(zip.substring(0, 3))
-  // Standard USPS zip code ranges
   if (prefix >= 35 && prefix <= 36) return 'AL'
   if (prefix >= 995 && prefix <= 999) return 'AK'
   if (prefix >= 850 && prefix <= 865) return 'AZ'

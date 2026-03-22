@@ -1,0 +1,2630 @@
+[
+  {
+    "first": "Robert",
+    "last": "Aderholt",
+    "state": "AL",
+    "district": "4"
+  },
+  {
+    "first": "Gus",
+    "last": "Bilirakis",
+    "state": "FL",
+    "district": "12"
+  },
+  {
+    "first": "Sanford",
+    "last": "Bishop",
+    "state": "GA",
+    "district": "2"
+  },
+  {
+    "first": "Vern",
+    "last": "Buchanan",
+    "state": "FL",
+    "district": "16"
+  },
+  {
+    "first": "Ken",
+    "last": "Calvert",
+    "state": "CA",
+    "district": "41"
+  },
+  {
+    "first": "André",
+    "last": "Carson",
+    "state": "IN",
+    "district": "7"
+  },
+  {
+    "first": "John",
+    "last": "Carter",
+    "state": "TX",
+    "district": "31"
+  },
+  {
+    "first": "Kathy",
+    "last": "Castor",
+    "state": "FL",
+    "district": "14"
+  },
+  {
+    "first": "Judy",
+    "last": "Chu",
+    "state": "CA",
+    "district": "28"
+  },
+  {
+    "first": "Yvette",
+    "last": "Clarke",
+    "state": "NY",
+    "district": "9"
+  },
+  {
+    "first": "Emanuel",
+    "last": "Cleaver",
+    "state": "MO",
+    "district": "5"
+  },
+  {
+    "first": "James",
+    "last": "Clyburn",
+    "state": "SC",
+    "district": "6"
+  },
+  {
+    "first": "Steve",
+    "last": "Cohen",
+    "state": "TN",
+    "district": "9"
+  },
+  {
+    "first": "Tom",
+    "last": "Cole",
+    "state": "OK",
+    "district": "4"
+  },
+  {
+    "first": "Jim",
+    "last": "Costa",
+    "state": "CA",
+    "district": "21"
+  },
+  {
+    "first": "Joe",
+    "last": "Courtney",
+    "state": "CT",
+    "district": "2"
+  },
+  {
+    "first": "Eric",
+    "last": "Crawford",
+    "state": "AR",
+    "district": "1"
+  },
+  {
+    "first": "Henry",
+    "last": "Cuellar",
+    "state": "TX",
+    "district": "28"
+  },
+  {
+    "first": "Danny",
+    "last": "Davis",
+    "state": "IL",
+    "district": "7"
+  },
+  {
+    "first": "Diana",
+    "last": "DeGette",
+    "state": "CO",
+    "district": "1"
+  },
+  {
+    "first": "Rosa",
+    "last": "DeLauro",
+    "state": "CT",
+    "district": "3"
+  },
+  {
+    "first": "Scott",
+    "last": "DesJarlais",
+    "state": "TN",
+    "district": "4"
+  },
+  {
+    "first": "Mario",
+    "last": "Diaz-Balart",
+    "state": "FL",
+    "district": "26"
+  },
+  {
+    "first": "Lloyd",
+    "last": "Doggett",
+    "state": "TX",
+    "district": "37"
+  },
+  {
+    "first": "Charles",
+    "last": "Fleischmann",
+    "state": "TN",
+    "district": "3"
+  },
+  {
+    "first": "Virginia",
+    "last": "Foxx",
+    "state": "NC",
+    "district": "5"
+  },
+  {
+    "first": "John",
+    "last": "Garamendi",
+    "state": "CA",
+    "district": "8"
+  },
+  {
+    "first": "Paul",
+    "last": "Gosar",
+    "state": "AZ",
+    "district": "9"
+  },
+  {
+    "first": "Sam",
+    "last": "Graves",
+    "state": "MO",
+    "district": "6"
+  },
+  {
+    "first": "Al",
+    "last": "Green",
+    "state": "TX",
+    "district": "9"
+  },
+  {
+    "first": "H.",
+    "last": "Griffith",
+    "state": "VA",
+    "district": "9"
+  },
+  {
+    "first": "Brett",
+    "last": "Guthrie",
+    "state": "KY",
+    "district": "2"
+  },
+  {
+    "first": "Andy",
+    "last": "Harris",
+    "state": "MD",
+    "district": "1"
+  },
+  {
+    "first": "James",
+    "last": "Himes",
+    "state": "CT",
+    "district": "4"
+  },
+  {
+    "first": "Steny",
+    "last": "Hoyer",
+    "state": "MD",
+    "district": "5"
+  },
+  {
+    "first": "Bill",
+    "last": "Huizenga",
+    "state": "MI",
+    "district": "4"
+  },
+  {
+    "first": "Henry",
+    "last": "Johnson",
+    "state": "GA",
+    "district": "4"
+  },
+  {
+    "first": "Jim",
+    "last": "Jordan",
+    "state": "OH",
+    "district": "4"
+  },
+  {
+    "first": "Marcy",
+    "last": "Kaptur",
+    "state": "OH",
+    "district": "9"
+  },
+  {
+    "first": "William",
+    "last": "Keating",
+    "state": "MA",
+    "district": "9"
+  },
+  {
+    "first": "Mike",
+    "last": "Kelly",
+    "state": "PA",
+    "district": "16"
+  },
+  {
+    "first": "Rick",
+    "last": "Larsen",
+    "state": "WA",
+    "district": "2"
+  },
+  {
+    "first": "John",
+    "last": "Larson",
+    "state": "CT",
+    "district": "1"
+  },
+  {
+    "first": "Robert",
+    "last": "Latta",
+    "state": "OH",
+    "district": "5"
+  },
+  {
+    "first": "Zoe",
+    "last": "Lofgren",
+    "state": "CA",
+    "district": "18"
+  },
+  {
+    "first": "Frank",
+    "last": "Lucas",
+    "state": "OK",
+    "district": "3"
+  },
+  {
+    "first": "Stephen",
+    "last": "Lynch",
+    "state": "MA",
+    "district": "8"
+  },
+  {
+    "first": "Doris",
+    "last": "Matsui",
+    "state": "CA",
+    "district": "7"
+  },
+  {
+    "first": "Michael",
+    "last": "McCaul",
+    "state": "TX",
+    "district": "10"
+  },
+  {
+    "first": "Tom",
+    "last": "McClintock",
+    "state": "CA",
+    "district": "5"
+  },
+  {
+    "first": "Betty",
+    "last": "McCollum",
+    "state": "MN",
+    "district": "4"
+  },
+  {
+    "first": "James",
+    "last": "McGovern",
+    "state": "MA",
+    "district": "2"
+  },
+  {
+    "first": "Gregory",
+    "last": "Meeks",
+    "state": "NY",
+    "district": "5"
+  },
+  {
+    "first": "Gwen",
+    "last": "Moore",
+    "state": "WI",
+    "district": "4"
+  },
+  {
+    "first": "Jerrold",
+    "last": "Nadler",
+    "state": "NY",
+    "district": "12"
+  },
+  {
+    "first": "Richard",
+    "last": "Neal",
+    "state": "MA",
+    "district": "1"
+  },
+  {
+    "first": "Eleanor",
+    "last": "Norton",
+    "state": "DC",
+    "district": "0"
+  },
+  {
+    "first": "Frank",
+    "last": "Pallone",
+    "state": "NJ",
+    "district": "6"
+  },
+  {
+    "first": "Nancy",
+    "last": "Pelosi",
+    "state": "CA",
+    "district": "11"
+  },
+  {
+    "first": "Chellie",
+    "last": "Pingree",
+    "state": "ME",
+    "district": "1"
+  },
+  {
+    "first": "Mike",
+    "last": "Quigley",
+    "state": "IL",
+    "district": "5"
+  },
+  {
+    "first": "Harold",
+    "last": "Rogers",
+    "state": "KY",
+    "district": "5"
+  },
+  {
+    "first": "Mike",
+    "last": "Rogers",
+    "state": "AL",
+    "district": "3"
+  },
+  {
+    "first": "Steve",
+    "last": "Scalise",
+    "state": "LA",
+    "district": "1"
+  },
+  {
+    "first": "Janice",
+    "last": "Schakowsky",
+    "state": "IL",
+    "district": "9"
+  },
+  {
+    "first": "David",
+    "last": "Schweikert",
+    "state": "AZ",
+    "district": "1"
+  },
+  {
+    "first": "Austin",
+    "last": "Scott",
+    "state": "GA",
+    "district": "8"
+  },
+  {
+    "first": "David",
+    "last": "Scott",
+    "state": "GA",
+    "district": "13"
+  },
+  {
+    "first": "Robert",
+    "last": "Scott",
+    "state": "VA",
+    "district": "3"
+  },
+  {
+    "first": "Terri",
+    "last": "Sewell",
+    "state": "AL",
+    "district": "7"
+  },
+  {
+    "first": "Brad",
+    "last": "Sherman",
+    "state": "CA",
+    "district": "32"
+  },
+  {
+    "first": "Michael",
+    "last": "Simpson",
+    "state": "ID",
+    "district": "2"
+  },
+  {
+    "first": "Adam",
+    "last": "Smith",
+    "state": "WA",
+    "district": "9"
+  },
+  {
+    "first": "Adrian",
+    "last": "Smith",
+    "state": "NE",
+    "district": "3"
+  },
+  {
+    "first": "Christopher",
+    "last": "Smith",
+    "state": "NJ",
+    "district": "4"
+  },
+  {
+    "first": "Linda",
+    "last": "Sánchez",
+    "state": "CA",
+    "district": "38"
+  },
+  {
+    "first": "Bennie",
+    "last": "Thompson",
+    "state": "MS",
+    "district": "2"
+  },
+  {
+    "first": "Mike",
+    "last": "Thompson",
+    "state": "CA",
+    "district": "4"
+  },
+  {
+    "first": "Glenn",
+    "last": "Thompson",
+    "state": "PA",
+    "district": "15"
+  },
+  {
+    "first": "Paul",
+    "last": "Tonko",
+    "state": "NY",
+    "district": "20"
+  },
+  {
+    "first": "Michael",
+    "last": "Turner",
+    "state": "OH",
+    "district": "10"
+  },
+  {
+    "first": "Nydia",
+    "last": "Velázquez",
+    "state": "NY",
+    "district": "7"
+  },
+  {
+    "first": "Tim",
+    "last": "Walberg",
+    "state": "MI",
+    "district": "5"
+  },
+  {
+    "first": "Debbie",
+    "last": "Wasserman Schultz",
+    "state": "FL",
+    "district": "25"
+  },
+  {
+    "first": "Maxine",
+    "last": "Waters",
+    "state": "CA",
+    "district": "43"
+  },
+  {
+    "first": "Daniel",
+    "last": "Webster",
+    "state": "FL",
+    "district": "11"
+  },
+  {
+    "first": "Joe",
+    "last": "Wilson",
+    "state": "SC",
+    "district": "2"
+  },
+  {
+    "first": "Frederica",
+    "last": "Wilson",
+    "state": "FL",
+    "district": "24"
+  },
+  {
+    "first": "Robert",
+    "last": "Wittman",
+    "state": "VA",
+    "district": "1"
+  },
+  {
+    "first": "Steve",
+    "last": "Womack",
+    "state": "AR",
+    "district": "3"
+  },
+  {
+    "first": "Mark",
+    "last": "Amodei",
+    "state": "NV",
+    "district": "2"
+  },
+  {
+    "first": "Suzanne",
+    "last": "Bonamici",
+    "state": "OR",
+    "district": "1"
+  },
+  {
+    "first": "Suzan",
+    "last": "DelBene",
+    "state": "WA",
+    "district": "1"
+  },
+  {
+    "first": "Thomas",
+    "last": "Massie",
+    "state": "KY",
+    "district": "4"
+  },
+  {
+    "first": "Bill",
+    "last": "Foster",
+    "state": "IL",
+    "district": "11"
+  },
+  {
+    "first": "Dina",
+    "last": "Titus",
+    "state": "NV",
+    "district": "1"
+  },
+  {
+    "first": "Jared",
+    "last": "Huffman",
+    "state": "CA",
+    "district": "2"
+  },
+  {
+    "first": "Ami",
+    "last": "Bera",
+    "state": "CA",
+    "district": "6"
+  },
+  {
+    "first": "Eric",
+    "last": "Swalwell",
+    "state": "CA",
+    "district": "14"
+  },
+  {
+    "first": "Julia",
+    "last": "Brownley",
+    "state": "CA",
+    "district": "26"
+  },
+  {
+    "first": "Raul",
+    "last": "Ruiz",
+    "state": "CA",
+    "district": "25"
+  },
+  {
+    "first": "Mark",
+    "last": "Takano",
+    "state": "CA",
+    "district": "39"
+  },
+  {
+    "first": "Juan",
+    "last": "Vargas",
+    "state": "CA",
+    "district": "52"
+  },
+  {
+    "first": "Scott",
+    "last": "Peters",
+    "state": "CA",
+    "district": "50"
+  },
+  {
+    "first": "Lois",
+    "last": "Frankel",
+    "state": "FL",
+    "district": "22"
+  },
+  {
+    "first": "Garland",
+    "last": "Barr",
+    "state": "KY",
+    "district": "6"
+  },
+  {
+    "first": "Ann",
+    "last": "Wagner",
+    "state": "MO",
+    "district": "2"
+  },
+  {
+    "first": "Richard",
+    "last": "Hudson",
+    "state": "NC",
+    "district": "9"
+  },
+  {
+    "first": "Grace",
+    "last": "Meng",
+    "state": "NY",
+    "district": "6"
+  },
+  {
+    "first": "Hakeem",
+    "last": "Jeffries",
+    "state": "NY",
+    "district": "8"
+  },
+  {
+    "first": "Joyce",
+    "last": "Beatty",
+    "state": "OH",
+    "district": "3"
+  },
+  {
+    "first": "David",
+    "last": "Joyce",
+    "state": "OH",
+    "district": "14"
+  },
+  {
+    "first": "Scott",
+    "last": "Perry",
+    "state": "PA",
+    "district": "10"
+  },
+  {
+    "first": "Randy",
+    "last": "Weber",
+    "state": "TX",
+    "district": "14"
+  },
+  {
+    "first": "Joaquin",
+    "last": "Castro",
+    "state": "TX",
+    "district": "20"
+  },
+  {
+    "first": "Roger",
+    "last": "Williams",
+    "state": "TX",
+    "district": "25"
+  },
+  {
+    "first": "Marc",
+    "last": "Veasey",
+    "state": "TX",
+    "district": "33"
+  },
+  {
+    "first": "Mark",
+    "last": "Pocan",
+    "state": "WI",
+    "district": "2"
+  },
+  {
+    "first": "Robin",
+    "last": "Kelly",
+    "state": "IL",
+    "district": "2"
+  },
+  {
+    "first": "Jason",
+    "last": "Smith",
+    "state": "MO",
+    "district": "8"
+  },
+  {
+    "first": "Katherine",
+    "last": "Clark",
+    "state": "MA",
+    "district": "5"
+  },
+  {
+    "first": "Donald",
+    "last": "Norcross",
+    "state": "NJ",
+    "district": "1"
+  },
+  {
+    "first": "Alma",
+    "last": "Adams",
+    "state": "NC",
+    "district": "12"
+  },
+  {
+    "first": "Gary",
+    "last": "Palmer",
+    "state": "AL",
+    "district": "6"
+  },
+  {
+    "first": "J.",
+    "last": "Hill",
+    "state": "AR",
+    "district": "2"
+  },
+  {
+    "first": "Bruce",
+    "last": "Westerman",
+    "state": "AR",
+    "district": "4"
+  },
+  {
+    "first": "Mark",
+    "last": "DeSaulnier",
+    "state": "CA",
+    "district": "10"
+  },
+  {
+    "first": "Pete",
+    "last": "Aguilar",
+    "state": "CA",
+    "district": "33"
+  },
+  {
+    "first": "Ted",
+    "last": "Lieu",
+    "state": "CA",
+    "district": "36"
+  },
+  {
+    "first": "Norma",
+    "last": "Torres",
+    "state": "CA",
+    "district": "35"
+  },
+  {
+    "first": "Earl",
+    "last": "Carter",
+    "state": "GA",
+    "district": "1"
+  },
+  {
+    "first": "Barry",
+    "last": "Loudermilk",
+    "state": "GA",
+    "district": "11"
+  },
+  {
+    "first": "Rick",
+    "last": "Allen",
+    "state": "GA",
+    "district": "12"
+  },
+  {
+    "first": "Mike",
+    "last": "Bost",
+    "state": "IL",
+    "district": "12"
+  },
+  {
+    "first": "Seth",
+    "last": "Moulton",
+    "state": "MA",
+    "district": "6"
+  },
+  {
+    "first": "John",
+    "last": "Moolenaar",
+    "state": "MI",
+    "district": "2"
+  },
+  {
+    "first": "Debbie",
+    "last": "Dingell",
+    "state": "MI",
+    "district": "6"
+  },
+  {
+    "first": "Tom",
+    "last": "Emmer",
+    "state": "MN",
+    "district": "6"
+  },
+  {
+    "first": "David",
+    "last": "Rouzer",
+    "state": "NC",
+    "district": "7"
+  },
+  {
+    "first": "Bonnie",
+    "last": "Watson Coleman",
+    "state": "NJ",
+    "district": "12"
+  },
+  {
+    "first": "Elise",
+    "last": "Stefanik",
+    "state": "NY",
+    "district": "21"
+  },
+  {
+    "first": "Brendan",
+    "last": "Boyle",
+    "state": "PA",
+    "district": "2"
+  },
+  {
+    "first": "Brian",
+    "last": "Babin",
+    "state": "TX",
+    "district": "36"
+  },
+  {
+    "first": "Donald",
+    "last": "Beyer",
+    "state": "VA",
+    "district": "8"
+  },
+  {
+    "first": "Stacey",
+    "last": "Plaskett",
+    "state": "VI",
+    "district": "0"
+  },
+  {
+    "first": "Dan",
+    "last": "Newhouse",
+    "state": "WA",
+    "district": "4"
+  },
+  {
+    "first": "Glenn",
+    "last": "Grothman",
+    "state": "WI",
+    "district": "6"
+  },
+  {
+    "first": "Aumua Amata",
+    "last": "Radewagen",
+    "state": "AS",
+    "district": "0"
+  },
+  {
+    "first": "Trent",
+    "last": "Kelly",
+    "state": "MS",
+    "district": "1"
+  },
+  {
+    "first": "Darin",
+    "last": "LaHood",
+    "state": "IL",
+    "district": "16"
+  },
+  {
+    "first": "Warren",
+    "last": "Davidson",
+    "state": "OH",
+    "district": "8"
+  },
+  {
+    "first": "James",
+    "last": "Comer",
+    "state": "KY",
+    "district": "1"
+  },
+  {
+    "first": "Dwight",
+    "last": "Evans",
+    "state": "PA",
+    "district": "3"
+  },
+  {
+    "first": "Bradley",
+    "last": "Schneider",
+    "state": "IL",
+    "district": "10"
+  },
+  {
+    "first": "Andy",
+    "last": "Biggs",
+    "state": "AZ",
+    "district": "5"
+  },
+  {
+    "first": "Ro",
+    "last": "Khanna",
+    "state": "CA",
+    "district": "17"
+  },
+  {
+    "first": "Jimmy",
+    "last": "Panetta",
+    "state": "CA",
+    "district": "19"
+  },
+  {
+    "first": "Salud",
+    "last": "Carbajal",
+    "state": "CA",
+    "district": "24"
+  },
+  {
+    "first": "Nanette",
+    "last": "Barragán",
+    "state": "CA",
+    "district": "44"
+  },
+  {
+    "first": "J.",
+    "last": "Correa",
+    "state": "CA",
+    "district": "46"
+  },
+  {
+    "first": "Neal",
+    "last": "Dunn",
+    "state": "FL",
+    "district": "2"
+  },
+  {
+    "first": "John",
+    "last": "Rutherford",
+    "state": "FL",
+    "district": "5"
+  },
+  {
+    "first": "Darren",
+    "last": "Soto",
+    "state": "FL",
+    "district": "9"
+  },
+  {
+    "first": "Brian",
+    "last": "Mast",
+    "state": "FL",
+    "district": "21"
+  },
+  {
+    "first": "Raja",
+    "last": "Krishnamoorthi",
+    "state": "IL",
+    "district": "8"
+  },
+  {
+    "first": "Clay",
+    "last": "Higgins",
+    "state": "LA",
+    "district": "3"
+  },
+  {
+    "first": "Mike",
+    "last": "Johnson",
+    "state": "LA",
+    "district": "4"
+  },
+  {
+    "first": "Jamie",
+    "last": "Raskin",
+    "state": "MD",
+    "district": "8"
+  },
+  {
+    "first": "Jack",
+    "last": "Bergman",
+    "state": "MI",
+    "district": "1"
+  },
+  {
+    "first": "Don",
+    "last": "Bacon",
+    "state": "NE",
+    "district": "2"
+  },
+  {
+    "first": "Josh",
+    "last": "Gottheimer",
+    "state": "NJ",
+    "district": "5"
+  },
+  {
+    "first": "Adriano",
+    "last": "Espaillat",
+    "state": "NY",
+    "district": "13"
+  },
+  {
+    "first": "Brian",
+    "last": "Fitzpatrick",
+    "state": "PA",
+    "district": "1"
+  },
+  {
+    "first": "Lloyd",
+    "last": "Smucker",
+    "state": "PA",
+    "district": "11"
+  },
+  {
+    "first": "David",
+    "last": "Kustoff",
+    "state": "TN",
+    "district": "8"
+  },
+  {
+    "first": "Vicente",
+    "last": "Gonzalez",
+    "state": "TX",
+    "district": "34"
+  },
+  {
+    "first": "Jodey",
+    "last": "Arrington",
+    "state": "TX",
+    "district": "19"
+  },
+  {
+    "first": "Pramila",
+    "last": "Jayapal",
+    "state": "WA",
+    "district": "7"
+  },
+  {
+    "first": "Ron",
+    "last": "Estes",
+    "state": "KS",
+    "district": "4"
+  },
+  {
+    "first": "Ralph",
+    "last": "Norman",
+    "state": "SC",
+    "district": "5"
+  },
+  {
+    "first": "Jimmy",
+    "last": "Gomez",
+    "state": "CA",
+    "district": "34"
+  },
+  {
+    "first": "Michael",
+    "last": "Cloud",
+    "state": "TX",
+    "district": "27"
+  },
+  {
+    "first": "Troy",
+    "last": "Balderson",
+    "state": "OH",
+    "district": "12"
+  },
+  {
+    "first": "Kevin",
+    "last": "Hern",
+    "state": "OK",
+    "district": "1"
+  },
+  {
+    "first": "Joseph",
+    "last": "Morelle",
+    "state": "NY",
+    "district": "25"
+  },
+  {
+    "first": "Mary",
+    "last": "Scanlon",
+    "state": "PA",
+    "district": "5"
+  },
+  {
+    "first": "Ed",
+    "last": "Case",
+    "state": "HI",
+    "district": "1"
+  },
+  {
+    "first": "Steven",
+    "last": "Horsford",
+    "state": "NV",
+    "district": "4"
+  },
+  {
+    "first": "Greg",
+    "last": "Stanton",
+    "state": "AZ",
+    "district": "4"
+  },
+  {
+    "first": "Josh",
+    "last": "Harder",
+    "state": "CA",
+    "district": "9"
+  },
+  {
+    "first": "Mike",
+    "last": "Levin",
+    "state": "CA",
+    "district": "49"
+  },
+  {
+    "first": "Joe",
+    "last": "Neguse",
+    "state": "CO",
+    "district": "2"
+  },
+  {
+    "first": "Jason",
+    "last": "Crow",
+    "state": "CO",
+    "district": "6"
+  },
+  {
+    "first": "Jahana",
+    "last": "Hayes",
+    "state": "CT",
+    "district": "5"
+  },
+  {
+    "first": "W.",
+    "last": "Steube",
+    "state": "FL",
+    "district": "17"
+  },
+  {
+    "first": "Lucy",
+    "last": "McBath",
+    "state": "GA",
+    "district": "6"
+  },
+  {
+    "first": "Russ",
+    "last": "Fulcher",
+    "state": "ID",
+    "district": "1"
+  },
+  {
+    "first": "Jesús",
+    "last": "García",
+    "state": "IL",
+    "district": "4"
+  },
+  {
+    "first": "Sean",
+    "last": "Casten",
+    "state": "IL",
+    "district": "6"
+  },
+  {
+    "first": "Lauren",
+    "last": "Underwood",
+    "state": "IL",
+    "district": "14"
+  },
+  {
+    "first": "James",
+    "last": "Baird",
+    "state": "IN",
+    "district": "4"
+  },
+  {
+    "first": "Sharice",
+    "last": "Davids",
+    "state": "KS",
+    "district": "3"
+  },
+  {
+    "first": "Lori",
+    "last": "Trahan",
+    "state": "MA",
+    "district": "3"
+  },
+  {
+    "first": "Ayanna",
+    "last": "Pressley",
+    "state": "MA",
+    "district": "7"
+  },
+  {
+    "first": "Haley",
+    "last": "Stevens",
+    "state": "MI",
+    "district": "11"
+  },
+  {
+    "first": "Rashida",
+    "last": "Tlaib",
+    "state": "MI",
+    "district": "12"
+  },
+  {
+    "first": "Angie",
+    "last": "Craig",
+    "state": "MN",
+    "district": "2"
+  },
+  {
+    "first": "Ilhan",
+    "last": "Omar",
+    "state": "MN",
+    "district": "5"
+  },
+  {
+    "first": "Pete",
+    "last": "Stauber",
+    "state": "MN",
+    "district": "8"
+  },
+  {
+    "first": "Michael",
+    "last": "Guest",
+    "state": "MS",
+    "district": "3"
+  },
+  {
+    "first": "Chris",
+    "last": "Pappas",
+    "state": "NH",
+    "district": "1"
+  },
+  {
+    "first": "Jefferson",
+    "last": "Van Drew",
+    "state": "NJ",
+    "district": "2"
+  },
+  {
+    "first": "Susie",
+    "last": "Lee",
+    "state": "NV",
+    "district": "3"
+  },
+  {
+    "first": "Alexandria",
+    "last": "Ocasio-Cortez",
+    "state": "NY",
+    "district": "14"
+  },
+  {
+    "first": "Madeleine",
+    "last": "Dean",
+    "state": "PA",
+    "district": "4"
+  },
+  {
+    "first": "Chrissy",
+    "last": "Houlahan",
+    "state": "PA",
+    "district": "6"
+  },
+  {
+    "first": "Daniel",
+    "last": "Meuser",
+    "state": "PA",
+    "district": "9"
+  },
+  {
+    "first": "John",
+    "last": "Joyce",
+    "state": "PA",
+    "district": "13"
+  },
+  {
+    "first": "Guy",
+    "last": "Reschenthaler",
+    "state": "PA",
+    "district": "14"
+  },
+  {
+    "first": "William",
+    "last": "Timmons",
+    "state": "SC",
+    "district": "4"
+  },
+  {
+    "first": "Dusty",
+    "last": "Johnson",
+    "state": "SD",
+    "district": "0"
+  },
+  {
+    "first": "Tim",
+    "last": "Burchett",
+    "state": "TN",
+    "district": "2"
+  },
+  {
+    "first": "John",
+    "last": "Rose",
+    "state": "TN",
+    "district": "6"
+  },
+  {
+    "first": "Dan",
+    "last": "Crenshaw",
+    "state": "TX",
+    "district": "2"
+  },
+  {
+    "first": "Lance",
+    "last": "Gooden",
+    "state": "TX",
+    "district": "5"
+  },
+  {
+    "first": "Lizzie",
+    "last": "Fletcher",
+    "state": "TX",
+    "district": "7"
+  },
+  {
+    "first": "Veronica",
+    "last": "Escobar",
+    "state": "TX",
+    "district": "16"
+  },
+  {
+    "first": "Chip",
+    "last": "Roy",
+    "state": "TX",
+    "district": "21"
+  },
+  {
+    "first": "Sylvia",
+    "last": "Garcia",
+    "state": "TX",
+    "district": "29"
+  },
+  {
+    "first": "Ben",
+    "last": "Cline",
+    "state": "VA",
+    "district": "6"
+  },
+  {
+    "first": "Kim",
+    "last": "Schrier",
+    "state": "WA",
+    "district": "8"
+  },
+  {
+    "first": "Bryan",
+    "last": "Steil",
+    "state": "WI",
+    "district": "1"
+  },
+  {
+    "first": "Carol",
+    "last": "Miller",
+    "state": "WV",
+    "district": "1"
+  },
+  {
+    "first": "Jared",
+    "last": "Golden",
+    "state": "ME",
+    "district": "2"
+  },
+  {
+    "first": "Gregory",
+    "last": "Murphy",
+    "state": "NC",
+    "district": "3"
+  },
+  {
+    "first": "Kweisi",
+    "last": "Mfume",
+    "state": "MD",
+    "district": "7"
+  },
+  {
+    "first": "Thomas",
+    "last": "Tiffany",
+    "state": "WI",
+    "district": "7"
+  },
+  {
+    "first": "Darrell",
+    "last": "Issa",
+    "state": "CA",
+    "district": "48"
+  },
+  {
+    "first": "Pete",
+    "last": "Sessions",
+    "state": "TX",
+    "district": "17"
+  },
+  {
+    "first": "David",
+    "last": "Valadao",
+    "state": "CA",
+    "district": "22"
+  },
+  {
+    "first": "Barry",
+    "last": "Moore",
+    "state": "AL",
+    "district": "1"
+  },
+  {
+    "first": "Jay",
+    "last": "Obernolte",
+    "state": "CA",
+    "district": "23"
+  },
+  {
+    "first": "Young",
+    "last": "Kim",
+    "state": "CA",
+    "district": "40"
+  },
+  {
+    "first": "Sara",
+    "last": "Jacobs",
+    "state": "CA",
+    "district": "51"
+  },
+  {
+    "first": "Lauren",
+    "last": "Boebert",
+    "state": "CO",
+    "district": "4"
+  },
+  {
+    "first": "Katherine",
+    "last": "Cammack",
+    "state": "FL",
+    "district": "3"
+  },
+  {
+    "first": "C.",
+    "last": "Franklin",
+    "state": "FL",
+    "district": "18"
+  },
+  {
+    "first": "Byron",
+    "last": "Donalds",
+    "state": "FL",
+    "district": "19"
+  },
+  {
+    "first": "Carlos",
+    "last": "Gimenez",
+    "state": "FL",
+    "district": "28"
+  },
+  {
+    "first": "Maria",
+    "last": "Salazar",
+    "state": "FL",
+    "district": "27"
+  },
+  {
+    "first": "Nikema",
+    "last": "Williams",
+    "state": "GA",
+    "district": "5"
+  },
+  {
+    "first": "Andrew",
+    "last": "Clyde",
+    "state": "GA",
+    "district": "9"
+  },
+  {
+    "first": "Ashley",
+    "last": "Hinson",
+    "state": "IA",
+    "district": "2"
+  },
+  {
+    "first": "Mariannette",
+    "last": "Miller-Meeks",
+    "state": "IA",
+    "district": "1"
+  },
+  {
+    "first": "Randy",
+    "last": "Feenstra",
+    "state": "IA",
+    "district": "4"
+  },
+  {
+    "first": "Mary",
+    "last": "Miller",
+    "state": "IL",
+    "district": "15"
+  },
+  {
+    "first": "Frank",
+    "last": "Mrvan",
+    "state": "IN",
+    "district": "1"
+  },
+  {
+    "first": "Victoria",
+    "last": "Spartz",
+    "state": "IN",
+    "district": "5"
+  },
+  {
+    "first": "Tracey",
+    "last": "Mann",
+    "state": "KS",
+    "district": "1"
+  },
+  {
+    "first": "Jake",
+    "last": "Auchincloss",
+    "state": "MA",
+    "district": "4"
+  },
+  {
+    "first": "Lisa",
+    "last": "McClain",
+    "state": "MI",
+    "district": "9"
+  },
+  {
+    "first": "Michelle",
+    "last": "Fischbach",
+    "state": "MN",
+    "district": "7"
+  },
+  {
+    "first": "Deborah",
+    "last": "Ross",
+    "state": "NC",
+    "district": "2"
+  },
+  {
+    "first": "Teresa",
+    "last": "Leger Fernandez",
+    "state": "NM",
+    "district": "3"
+  },
+  {
+    "first": "Andrew",
+    "last": "Garbarino",
+    "state": "NY",
+    "district": "2"
+  },
+  {
+    "first": "Nicole",
+    "last": "Malliotakis",
+    "state": "NY",
+    "district": "11"
+  },
+  {
+    "first": "Ritchie",
+    "last": "Torres",
+    "state": "NY",
+    "district": "15"
+  },
+  {
+    "first": "Stephanie",
+    "last": "Bice",
+    "state": "OK",
+    "district": "5"
+  },
+  {
+    "first": "Cliff",
+    "last": "Bentz",
+    "state": "OR",
+    "district": "2"
+  },
+  {
+    "first": "Nancy",
+    "last": "Mace",
+    "state": "SC",
+    "district": "1"
+  },
+  {
+    "first": "Diana",
+    "last": "Harshbarger",
+    "state": "TN",
+    "district": "1"
+  },
+  {
+    "first": "Patrick",
+    "last": "Fallon",
+    "state": "TX",
+    "district": "4"
+  },
+  {
+    "first": "August",
+    "last": "Pfluger",
+    "state": "TX",
+    "district": "11"
+  },
+  {
+    "first": "Ronny",
+    "last": "Jackson",
+    "state": "TX",
+    "district": "13"
+  },
+  {
+    "first": "Troy",
+    "last": "Nehls",
+    "state": "TX",
+    "district": "22"
+  },
+  {
+    "first": "Ernest",
+    "last": "Gonzales",
+    "state": "TX",
+    "district": "23"
+  },
+  {
+    "first": "Beth",
+    "last": "Van Duyne",
+    "state": "TX",
+    "district": "24"
+  },
+  {
+    "first": "Blake",
+    "last": "Moore",
+    "state": "UT",
+    "district": "1"
+  },
+  {
+    "first": "Clarence",
+    "last": "Owens",
+    "state": "UT",
+    "district": "4"
+  },
+  {
+    "first": "Marilyn",
+    "last": "Strickland",
+    "state": "WA",
+    "district": "10"
+  },
+  {
+    "first": "Scott",
+    "last": "Fitzgerald",
+    "state": "WI",
+    "district": "5"
+  },
+  {
+    "first": "Claudia",
+    "last": "Tenney",
+    "state": "NY",
+    "district": "24"
+  },
+  {
+    "first": "Julia",
+    "last": "Letlow",
+    "state": "LA",
+    "district": "5"
+  },
+  {
+    "first": "Troy",
+    "last": "Carter",
+    "state": "LA",
+    "district": "2"
+  },
+  {
+    "first": "Melanie",
+    "last": "Stansbury",
+    "state": "NM",
+    "district": "1"
+  },
+  {
+    "first": "Jake",
+    "last": "Ellzey",
+    "state": "TX",
+    "district": "6"
+  },
+  {
+    "first": "Shontel",
+    "last": "Brown",
+    "state": "OH",
+    "district": "11"
+  },
+  {
+    "first": "Mike",
+    "last": "Carey",
+    "state": "OH",
+    "district": "15"
+  },
+  {
+    "first": "Sheila",
+    "last": "Cherfilus-McCormick",
+    "state": "FL",
+    "district": "20"
+  },
+  {
+    "first": "Mike",
+    "last": "Flood",
+    "state": "NE",
+    "district": "1"
+  },
+  {
+    "first": "Brad",
+    "last": "Finstad",
+    "state": "MN",
+    "district": "1"
+  },
+  {
+    "first": "Patrick",
+    "last": "Ryan",
+    "state": "NY",
+    "district": "18"
+  },
+  {
+    "first": "Rudy",
+    "last": "Yakym",
+    "state": "IN",
+    "district": "2"
+  },
+  {
+    "first": "Ryan",
+    "last": "Zinke",
+    "state": "MT",
+    "district": "1"
+  },
+  {
+    "first": "Dale",
+    "last": "Strong",
+    "state": "AL",
+    "district": "5"
+  },
+  {
+    "first": "Eli",
+    "last": "Crane",
+    "state": "AZ",
+    "district": "2"
+  },
+  {
+    "first": "Juan",
+    "last": "Ciscomani",
+    "state": "AZ",
+    "district": "6"
+  },
+  {
+    "first": "Kevin",
+    "last": "Kiley",
+    "state": "CA",
+    "district": "3"
+  },
+  {
+    "first": "Kevin",
+    "last": "Mullin",
+    "state": "CA",
+    "district": "15"
+  },
+  {
+    "first": "Sydney",
+    "last": "Kamlager-Dove",
+    "state": "CA",
+    "district": "37"
+  },
+  {
+    "first": "Robert",
+    "last": "Garcia",
+    "state": "CA",
+    "district": "42"
+  },
+  {
+    "first": "Brittany",
+    "last": "Pettersen",
+    "state": "CO",
+    "district": "7"
+  },
+  {
+    "first": "Aaron",
+    "last": "Bean",
+    "state": "FL",
+    "district": "4"
+  },
+  {
+    "first": "Cory",
+    "last": "Mills",
+    "state": "FL",
+    "district": "7"
+  },
+  {
+    "first": "Maxwell",
+    "last": "Frost",
+    "state": "FL",
+    "district": "10"
+  },
+  {
+    "first": "Anna",
+    "last": "Luna",
+    "state": "FL",
+    "district": "13"
+  },
+  {
+    "first": "Laurel",
+    "last": "Lee",
+    "state": "FL",
+    "district": "15"
+  },
+  {
+    "first": "Jared",
+    "last": "Moskowitz",
+    "state": "FL",
+    "district": "23"
+  },
+  {
+    "first": "Rich",
+    "last": "McCormick",
+    "state": "GA",
+    "district": "7"
+  },
+  {
+    "first": "Mike",
+    "last": "Collins",
+    "state": "GA",
+    "district": "10"
+  },
+  {
+    "first": "James (Jim)",
+    "last": "Moylan",
+    "state": "GU",
+    "district": "0"
+  },
+  {
+    "first": "Jill",
+    "last": "Tokuda",
+    "state": "HI",
+    "district": "2"
+  },
+  {
+    "first": "Zachary (Zach)",
+    "last": "Nunn",
+    "state": "IA",
+    "district": "3"
+  },
+  {
+    "first": "Jonathan",
+    "last": "Jackson",
+    "state": "IL",
+    "district": "1"
+  },
+  {
+    "first": "Delia",
+    "last": "Ramirez",
+    "state": "IL",
+    "district": "3"
+  },
+  {
+    "first": "Nicole (Nikki)",
+    "last": "Budzinski",
+    "state": "IL",
+    "district": "13"
+  },
+  {
+    "first": "Eric",
+    "last": "Sorensen",
+    "state": "IL",
+    "district": "17"
+  },
+  {
+    "first": "Erin",
+    "last": "Houchin",
+    "state": "IN",
+    "district": "9"
+  },
+  {
+    "first": "Morgan",
+    "last": "McGarvey",
+    "state": "KY",
+    "district": "3"
+  },
+  {
+    "first": "Glenn",
+    "last": "Ivey",
+    "state": "MD",
+    "district": "4"
+  },
+  {
+    "first": "Hillary",
+    "last": "Scholten",
+    "state": "MI",
+    "district": "3"
+  },
+  {
+    "first": "John",
+    "last": "James",
+    "state": "MI",
+    "district": "10"
+  },
+  {
+    "first": "Shri",
+    "last": "Thanedar",
+    "state": "MI",
+    "district": "13"
+  },
+  {
+    "first": "Mark",
+    "last": "Alford",
+    "state": "MO",
+    "district": "4"
+  },
+  {
+    "first": "Eric",
+    "last": "Burlison",
+    "state": "MO",
+    "district": "7"
+  },
+  {
+    "first": "Mike",
+    "last": "Ezell",
+    "state": "MS",
+    "district": "4"
+  },
+  {
+    "first": "Donald",
+    "last": "Davis",
+    "state": "NC",
+    "district": "1"
+  },
+  {
+    "first": "Valerie",
+    "last": "Foushee",
+    "state": "NC",
+    "district": "4"
+  },
+  {
+    "first": "Charles (Chuck)",
+    "last": "Edwards",
+    "state": "NC",
+    "district": "11"
+  },
+  {
+    "first": "Thomas",
+    "last": "Kean",
+    "state": "NJ",
+    "district": "7"
+  },
+  {
+    "first": "Robert",
+    "last": "Menendez",
+    "state": "NJ",
+    "district": "8"
+  },
+  {
+    "first": "Gabriel (Gabe)",
+    "last": "Vasquez",
+    "state": "NM",
+    "district": "2"
+  },
+  {
+    "first": "Nicolas",
+    "last": "LaLota",
+    "state": "NY",
+    "district": "1"
+  },
+  {
+    "first": "Dan",
+    "last": "Goldman",
+    "state": "NY",
+    "district": "10"
+  },
+  {
+    "first": "Michael",
+    "last": "Lawler",
+    "state": "NY",
+    "district": "17"
+  },
+  {
+    "first": "Nicholas",
+    "last": "Langworthy",
+    "state": "NY",
+    "district": "23"
+  },
+  {
+    "first": "Greg",
+    "last": "Landsman",
+    "state": "OH",
+    "district": "1"
+  },
+  {
+    "first": "Max",
+    "last": "Miller",
+    "state": "OH",
+    "district": "7"
+  },
+  {
+    "first": "Emilia",
+    "last": "Sykes",
+    "state": "OH",
+    "district": "13"
+  },
+  {
+    "first": "Josh",
+    "last": "Brecheen",
+    "state": "OK",
+    "district": "2"
+  },
+  {
+    "first": "Valerie",
+    "last": "Hoyle",
+    "state": "OR",
+    "district": "4"
+  },
+  {
+    "first": "Andrea",
+    "last": "Salinas",
+    "state": "OR",
+    "district": "6"
+  },
+  {
+    "first": "Summer",
+    "last": "Lee",
+    "state": "PA",
+    "district": "12"
+  },
+  {
+    "first": "Chris",
+    "last": "Deluzio",
+    "state": "PA",
+    "district": "17"
+  },
+  {
+    "first": "Seth",
+    "last": "Magaziner",
+    "state": "RI",
+    "district": "2"
+  },
+  {
+    "first": "Russell",
+    "last": "Fry",
+    "state": "SC",
+    "district": "7"
+  },
+  {
+    "first": "Andrew",
+    "last": "Ogles",
+    "state": "TN",
+    "district": "5"
+  },
+  {
+    "first": "Nathaniel",
+    "last": "Moran",
+    "state": "TX",
+    "district": "1"
+  },
+  {
+    "first": "Keith",
+    "last": "Self",
+    "state": "TX",
+    "district": "3"
+  },
+  {
+    "first": "Morgan",
+    "last": "Luttrell",
+    "state": "TX",
+    "district": "8"
+  },
+  {
+    "first": "Mónica",
+    "last": "De La Cruz",
+    "state": "TX",
+    "district": "15"
+  },
+  {
+    "first": "Jasmine",
+    "last": "Crockett",
+    "state": "TX",
+    "district": "30"
+  },
+  {
+    "first": "Gregorio",
+    "last": "Casar",
+    "state": "TX",
+    "district": "35"
+  },
+  {
+    "first": "Wesley",
+    "last": "Hunt",
+    "state": "TX",
+    "district": "38"
+  },
+  {
+    "first": "Jennifer",
+    "last": "Kiggans",
+    "state": "VA",
+    "district": "2"
+  },
+  {
+    "first": "Becca",
+    "last": "Balint",
+    "state": "VT",
+    "district": "0"
+  },
+  {
+    "first": "Marie",
+    "last": "Gluesenkamp Perez",
+    "state": "WA",
+    "district": "3"
+  },
+  {
+    "first": "Derrick",
+    "last": "Van Orden",
+    "state": "WI",
+    "district": "3"
+  },
+  {
+    "first": "Harriet",
+    "last": "Hageman",
+    "state": "WY",
+    "district": "0"
+  },
+  {
+    "first": "Jennifer",
+    "last": "McClellan",
+    "state": "VA",
+    "district": "4"
+  },
+  {
+    "first": "Gabe",
+    "last": "Amo",
+    "state": "RI",
+    "district": "1"
+  },
+  {
+    "first": "Celeste",
+    "last": "Maloy",
+    "state": "UT",
+    "district": "2"
+  },
+  {
+    "first": "Thomas",
+    "last": "Suozzi",
+    "state": "NY",
+    "district": "3"
+  },
+  {
+    "first": "Timothy",
+    "last": "Kennedy",
+    "state": "NY",
+    "district": "26"
+  },
+  {
+    "first": "Vince",
+    "last": "Fong",
+    "state": "CA",
+    "district": "20"
+  },
+  {
+    "first": "Michael",
+    "last": "Rulli",
+    "state": "OH",
+    "district": "6"
+  },
+  {
+    "first": "LaMonica",
+    "last": "McIver",
+    "state": "NJ",
+    "district": "10"
+  },
+  {
+    "first": "Tony",
+    "last": "Wied",
+    "state": "WI",
+    "district": "8"
+  },
+  {
+    "first": "Cleo",
+    "last": "Fields",
+    "state": "LA",
+    "district": "6"
+  },
+  {
+    "first": "Marlin",
+    "last": "Stutzman",
+    "state": "IN",
+    "district": "3"
+  },
+  {
+    "first": "Gilbert",
+    "last": "Cisneros",
+    "state": "CA",
+    "district": "31"
+  },
+  {
+    "first": "Nicholas",
+    "last": "Begich",
+    "state": "AK",
+    "district": "0"
+  },
+  {
+    "first": "Shomari",
+    "last": "Figures",
+    "state": "AL",
+    "district": "2"
+  },
+  {
+    "first": "Yassamin",
+    "last": "Ansari",
+    "state": "AZ",
+    "district": "3"
+  },
+  {
+    "first": "Abraham",
+    "last": "Hamadeh",
+    "state": "AZ",
+    "district": "8"
+  },
+  {
+    "first": "Lateefah",
+    "last": "Simon",
+    "state": "CA",
+    "district": "12"
+  },
+  {
+    "first": "Adam",
+    "last": "Gray",
+    "state": "CA",
+    "district": "13"
+  },
+  {
+    "first": "Sam",
+    "last": "Liccardo",
+    "state": "CA",
+    "district": "16"
+  },
+  {
+    "first": "George",
+    "last": "Whitesides",
+    "state": "CA",
+    "district": "27"
+  },
+  {
+    "first": "Luz",
+    "last": "Rivas",
+    "state": "CA",
+    "district": "29"
+  },
+  {
+    "first": "Laura",
+    "last": "Friedman",
+    "state": "CA",
+    "district": "30"
+  },
+  {
+    "first": "Derek",
+    "last": "Tran",
+    "state": "CA",
+    "district": "45"
+  },
+  {
+    "first": "Dave",
+    "last": "Min",
+    "state": "CA",
+    "district": "47"
+  },
+  {
+    "first": "Jeff",
+    "last": "Hurd",
+    "state": "CO",
+    "district": "3"
+  },
+  {
+    "first": "Jeff",
+    "last": "Crank",
+    "state": "CO",
+    "district": "5"
+  },
+  {
+    "first": "Gabe",
+    "last": "Evans",
+    "state": "CO",
+    "district": "8"
+  },
+  {
+    "first": "Sarah",
+    "last": "McBride",
+    "state": "DE",
+    "district": "0"
+  },
+  {
+    "first": "Mike",
+    "last": "Haridopolos",
+    "state": "FL",
+    "district": "8"
+  },
+  {
+    "first": "Brian",
+    "last": "Jack",
+    "state": "GA",
+    "district": "3"
+  },
+  {
+    "first": "Jefferson",
+    "last": "Shreve",
+    "state": "IN",
+    "district": "6"
+  },
+  {
+    "first": "Mark",
+    "last": "Messmer",
+    "state": "IN",
+    "district": "8"
+  },
+  {
+    "first": "Derek",
+    "last": "Schmidt",
+    "state": "KS",
+    "district": "2"
+  },
+  {
+    "first": "Johnny",
+    "last": "Olszewski",
+    "state": "MD",
+    "district": "2"
+  },
+  {
+    "first": "Sarah",
+    "last": "Elfreth",
+    "state": "MD",
+    "district": "3"
+  },
+  {
+    "first": "April",
+    "last": "McClain Delaney",
+    "state": "MD",
+    "district": "6"
+  },
+  {
+    "first": "Tom",
+    "last": "Barrett",
+    "state": "MI",
+    "district": "7"
+  },
+  {
+    "first": "Kristen",
+    "last": "McDonald Rivet",
+    "state": "MI",
+    "district": "8"
+  },
+  {
+    "first": "Kelly",
+    "last": "Morrison",
+    "state": "MN",
+    "district": "3"
+  },
+  {
+    "first": "Wesley",
+    "last": "Bell",
+    "state": "MO",
+    "district": "1"
+  },
+  {
+    "first": "Robert",
+    "last": "Onder",
+    "state": "MO",
+    "district": "3"
+  },
+  {
+    "first": "Kimberlyn",
+    "last": "King-Hinds",
+    "state": "MP",
+    "district": "0"
+  },
+  {
+    "first": "Troy",
+    "last": "Downing",
+    "state": "MT",
+    "district": "2"
+  },
+  {
+    "first": "Addison",
+    "last": "McDowell",
+    "state": "NC",
+    "district": "6"
+  },
+  {
+    "first": "Mark",
+    "last": "Harris",
+    "state": "NC",
+    "district": "8"
+  },
+  {
+    "first": "Pat",
+    "last": "Harrigan",
+    "state": "NC",
+    "district": "10"
+  },
+  {
+    "first": "Brad",
+    "last": "Knott",
+    "state": "NC",
+    "district": "13"
+  },
+  {
+    "first": "Tim",
+    "last": "Moore",
+    "state": "NC",
+    "district": "14"
+  },
+  {
+    "first": "Julie",
+    "last": "Fedorchak",
+    "state": "ND",
+    "district": "0"
+  },
+  {
+    "first": "Maggie",
+    "last": "Goodlander",
+    "state": "NH",
+    "district": "2"
+  },
+  {
+    "first": "Herbert",
+    "last": "Conaway",
+    "state": "NJ",
+    "district": "3"
+  },
+  {
+    "first": "Nellie",
+    "last": "Pou",
+    "state": "NJ",
+    "district": "9"
+  },
+  {
+    "first": "Laura",
+    "last": "Gillen",
+    "state": "NY",
+    "district": "4"
+  },
+  {
+    "first": "George",
+    "last": "Latimer",
+    "state": "NY",
+    "district": "16"
+  },
+  {
+    "first": "Josh",
+    "last": "Riley",
+    "state": "NY",
+    "district": "19"
+  },
+  {
+    "first": "John",
+    "last": "Mannion",
+    "state": "NY",
+    "district": "22"
+  },
+  {
+    "first": "David",
+    "last": "Taylor",
+    "state": "OH",
+    "district": "2"
+  },
+  {
+    "first": "Maxine",
+    "last": "Dexter",
+    "state": "OR",
+    "district": "3"
+  },
+  {
+    "first": "Janelle",
+    "last": "Bynum",
+    "state": "OR",
+    "district": "5"
+  },
+  {
+    "first": "Ryan",
+    "last": "Mackenzie",
+    "state": "PA",
+    "district": "7"
+  },
+  {
+    "first": "Robert",
+    "last": "Bresnahan",
+    "state": "PA",
+    "district": "8"
+  },
+  {
+    "first": "Pablo José",
+    "last": "Hernández Rivera",
+    "state": "PR",
+    "district": "0"
+  },
+  {
+    "first": "Sheri",
+    "last": "Biggs",
+    "state": "SC",
+    "district": "3"
+  },
+  {
+    "first": "Craig",
+    "last": "Goldman",
+    "state": "TX",
+    "district": "12"
+  },
+  {
+    "first": "Brandon",
+    "last": "Gill",
+    "state": "TX",
+    "district": "26"
+  },
+  {
+    "first": "Julie",
+    "last": "Johnson",
+    "state": "TX",
+    "district": "32"
+  },
+  {
+    "first": "Mike",
+    "last": "Kennedy",
+    "state": "UT",
+    "district": "3"
+  },
+  {
+    "first": "John",
+    "last": "McGuire",
+    "state": "VA",
+    "district": "5"
+  },
+  {
+    "first": "Eugene",
+    "last": "Vindman",
+    "state": "VA",
+    "district": "7"
+  },
+  {
+    "first": "Suhas",
+    "last": "Subramanyam",
+    "state": "VA",
+    "district": "10"
+  },
+  {
+    "first": "Michael",
+    "last": "Baumgartner",
+    "state": "WA",
+    "district": "5"
+  },
+  {
+    "first": "Emily",
+    "last": "Randall",
+    "state": "WA",
+    "district": "6"
+  },
+  {
+    "first": "Riley",
+    "last": "Moore",
+    "state": "WV",
+    "district": "2"
+  },
+  {
+    "first": "Jimmy",
+    "last": "Patronis",
+    "state": "FL",
+    "district": "1"
+  },
+  {
+    "first": "Randall",
+    "last": "Fine",
+    "state": "FL",
+    "district": "6"
+  },
+  {
+    "first": "James",
+    "last": "Walkinshaw",
+    "state": "VA",
+    "district": "11"
+  },
+  {
+    "first": "Adelita",
+    "last": "Grijalva",
+    "state": "AZ",
+    "district": "7"
+  },
+  {
+    "first": "Matt",
+    "last": "Van Epps",
+    "state": "TN",
+    "district": "7"
+  },
+  {
+    "first": "Christian",
+    "last": "Menefee",
+    "state": "TX",
+    "district": "18"
+  }
+]
