@@ -189,7 +189,7 @@ export function MatchResults({ results, onRetake }: Props) {
               const color = scoreColor(r.score)
               const pColor = partyColor(r.politician.party)
               return (
-                <div key={r.politician.slug} className="flex items-center gap-3 px-4 py-3">
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
                   {/* Rank */}
                   <span className="w-5 shrink-0 text-center text-[13px] font-medium text-[var(--codex-faint)]">
                     {i + 4}
@@ -211,12 +211,9 @@ export function MatchResults({ results, onRetake }: Props) {
 
                   {/* Name + party */}
                   <div className="min-w-0 flex-1">
-                    <Link
-                      href={`/politicians/${r.politician.slug}`}
-                      className="text-[14px] font-medium text-[var(--codex-text)] hover:underline"
-                    >
+                    <span className="text-[14px] font-medium text-[var(--codex-text)]">
                       {r.politician.name}
-                    </Link>
+                    </span>
                     <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
                       <span>{partyLabel(r.politician.party)}</span>
@@ -241,14 +238,7 @@ export function MatchResults({ results, onRetake }: Props) {
                     </span>
                   </div>
 
-                  {/* Compare link */}
-                  <Link
-                    href={`/compare?a=${topSlug}&b=${r.politician.slug}`}
-                    className="shrink-0 text-[12px] text-[var(--codex-faint)] hover:text-[var(--codex-sub)] hover:underline"
-                  >
-                    Compare
-                  </Link>
-                </div>
+                </Link>
               )
             })}
           </div>

@@ -13,6 +13,7 @@ import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { FollowButton } from '@/components/directory/follow-button'
 import { LikeButton } from '@/components/directory/like-button'
 import { AnnotationList } from '@/components/annotations/annotation-list'
+import { BackButton } from '@/components/ui/back-button'
 import { SubmitAnnotation } from '@/components/annotations/submit-annotation'
 import { YourAlignment } from '@/components/politicians/your-alignment'
 export const revalidate = 600 // 10 minutes
@@ -254,12 +255,7 @@ export default async function PoliticianPage({ params }: PageProps) {
       <Header />
 
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <Link
-          href="/"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] print:hidden"
-        >
-          &larr; Back to directory
-        </Link>
+        <BackButton />
 
         <div className="grid gap-10 md:grid-cols-[340px_1fr]">
           {/* Image -- large on desktop, hidden on mobile */}
