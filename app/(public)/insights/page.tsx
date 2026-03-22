@@ -15,6 +15,8 @@ import type {
   InsightsIssueRow,
 } from '@/lib/types/supabase'
 
+export const revalidate = 900 // 15 minutes
+
 export const metadata: Metadata = {
   title: 'Insights -- Codex',
   description: 'Data-driven political insights: chamber composition, issue consensus, alignment spectrums, and bipartisan rankings.',

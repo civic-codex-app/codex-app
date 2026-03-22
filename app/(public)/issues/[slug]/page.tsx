@@ -12,6 +12,8 @@ import { IssueDetailFilters } from '@/components/filters/issue-detail-filters'
 import { stanceBucket, STANCE_STYLES, STANCE_ORDER } from '@/lib/utils/stances'
 import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
 
+export const revalidate = 600 // 10 minutes
+
 interface PageProps {
   params: Promise<{ slug: string }>
   searchParams: Promise<{ party?: string; chamber?: string; page?: string }>

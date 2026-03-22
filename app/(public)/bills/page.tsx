@@ -4,6 +4,8 @@ import { Footer } from '@/components/layout/footer'
 import Link from 'next/link'
 import type { BillRow, BillStatRow, BillVoteRow } from '@/lib/types/supabase'
 
+export const revalidate = 600 // 10 minutes
+
 export const metadata = {
   title: 'Bills & Legislation -- Codex',
   description: 'Track major bills and how your representatives voted.',

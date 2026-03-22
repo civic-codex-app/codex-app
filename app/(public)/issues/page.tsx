@@ -9,6 +9,8 @@ import { stanceBucket } from '@/lib/utils/stances'
 import { partyColor } from '@/lib/constants/parties'
 import { IssueSortSelect } from '@/components/filters/issue-sort-select'
 
+export const revalidate = 600 // 10 minutes
+
 export const metadata = {
   title: 'Issues -- Codex',
   description: 'Explore political issues and see where politicians stand.',

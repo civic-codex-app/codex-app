@@ -11,6 +11,8 @@ import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { FollowButton } from '@/components/directory/follow-button'
 import { LikeButton } from '@/components/directory/like-button'
+export const revalidate = 600 // 10 minutes
+
 import type { Politician } from '@/lib/types/politician'
 import type {
   PoliticianStanceRow,

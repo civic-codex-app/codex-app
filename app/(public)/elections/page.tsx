@@ -11,6 +11,8 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS } from '@/lib/constants/chambers'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 
+export const revalidate = 600 // 10 minutes
+
 export const metadata = {
   title: 'Elections -- Codex',
   description: 'Track upcoming elections -- Senate, House, Governor, and local races across the country.',

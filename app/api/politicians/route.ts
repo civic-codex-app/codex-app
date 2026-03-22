@@ -70,5 +70,8 @@ export async function GET(request: NextRequest) {
   const totalCount = count ?? 0
   const hasMore = offset + PAGE_SIZE < totalCount
 
-  return NextResponse.json({ politicians, stances, alignments, hasMore, totalCount })
+  return NextResponse.json(
+    { politicians, stances, alignments, hasMore, totalCount },
+    { headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' } }
+  )
 }

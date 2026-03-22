@@ -14,6 +14,8 @@ import type { Politician } from '@/lib/types/politician'
 import { computeAlignment } from '@/lib/utils/alignment'
 import { stanceBucket } from '@/lib/utils/stances'
 
+export const revalidate = 300 // 5 minutes
+
 export const metadata: Metadata = {
   title: 'Codex - U.S. Politician Directory & Civic Engagement Platform',
   description: 'Track U.S. politicians, their stances on issues, voting records, campaign finance, and elections. Transparent, data-driven political information for voters.',

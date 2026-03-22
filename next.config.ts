@@ -5,6 +5,38 @@ const withPWA = withPWAInit({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
   register: true,
+  workboxOptions: {
+    runtimeCaching: [
+      {
+        // Cache page navigations (HTML) with network-first strategy
+        urlPattern: ({ request }: { request: Request }) => request.mode === 'navigate',
+        handler: 'NetworkFirst' as const,
+        options: {
+          cacheName: 'pages',
+          expiration: { maxEntries: 50, maxAgeSeconds: 300 },
+          networkTimeoutSeconds: 3,
+        },
+      },
+      {
+        // Cache API responses with stale-while-revalidate
+        urlPattern: /\/api\/(politicians|search)/,
+        handler: 'StaleWhileRevalidate' as const,
+        options: {
+          cacheName: 'api-responses',
+          expiration: { maxEntries: 100, maxAgeSeconds: 300 },
+        },
+      },
+      {
+        // Cache images aggressively
+        urlPattern: /\.(jpg|jpeg|png|gif|webp|svg|ico)$/i,
+        handler: 'CacheFirst' as const,
+        options: {
+          cacheName: 'images',
+          expiration: { maxEntries: 200, maxAgeSeconds: 86400 },
+        },
+      },
+    ],
+  },
 })
 
 const nextConfig: NextConfig = {

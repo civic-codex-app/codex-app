@@ -3,6 +3,8 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { PollCard } from '@/components/polls/poll-card'
 
+export const revalidate = 60 // 1 minute
+
 export const metadata = {
   title: 'Polls — Codex',
   description: 'Vote on political races, issues, and matchups.',
