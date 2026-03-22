@@ -81,7 +81,8 @@ export function QuizForm({ issues }: Props) {
       setCurrentStep(currentStep - 1)
       const prevIssue = issues[currentStep - 1]
       const prevAnswer = answers[prevIssue.slug]
-      setSliderValue(prevAnswer ? SLIDER_STANCES.indexOf(prevAnswer as any) : null)
+      const idx = prevAnswer ? SLIDER_STANCES.indexOf(prevAnswer as any) : -1
+      setSliderValue(idx >= 0 ? idx : 3)
     }
   }
 
@@ -90,7 +91,8 @@ export function QuizForm({ issues }: Props) {
       setCurrentStep(currentStep + 1)
       const nextIssue = issues[currentStep + 1]
       const nextAnswer = answers[nextIssue.slug]
-      setSliderValue(nextAnswer ? SLIDER_STANCES.indexOf(nextAnswer as any) : null)
+      const idx = nextAnswer ? SLIDER_STANCES.indexOf(nextAnswer as any) : -1
+      setSliderValue(idx >= 0 ? idx : 3)
     }
   }
 
