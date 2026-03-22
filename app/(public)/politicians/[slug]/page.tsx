@@ -31,6 +31,7 @@ import { LikeMinded, type LikeMindedPolitician } from '@/components/politicians/
 import { StanceDeviation } from '@/components/politicians/stance-deviation'
 import { PoliticianReportCard } from '@/components/politicians/report-card'
 import { computeReportCard } from '@/lib/utils/report-card'
+import { AccountabilityScore } from '@/components/politicians/accountability-score'
 import { VotingHistory } from '@/components/politicians/voting-history'
 import { CampaignFinance } from '@/components/politicians/campaign-finance'
 import { ElectionHistory } from '@/components/politicians/election-history'
@@ -517,6 +518,12 @@ export default async function PoliticianPage({ params }: PageProps) {
             )}
 
             {/* Voting Record */}
+            {/* Votes vs Stances */}
+            <AccountabilityScore
+              votes={votingRecords.map((v: any) => ({ bill_name: v.bill_name, bill_number: v.bill_number, vote: v.vote }))}
+              stances={politicianStances as any}
+            />
+
             <VotingHistory votes={votingRecords} />
 
             {/* Campaign Finance */}
