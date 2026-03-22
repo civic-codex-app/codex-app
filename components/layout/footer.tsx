@@ -7,7 +7,7 @@ export function Footer() {
   const { mode, toggle } = useThemeStore()
 
   return (
-    <footer className="mt-10 border-t border-[var(--codex-border)] py-12">
+    <footer className="mt-10 hidden border-t border-[var(--codex-border)] py-12 sm:block">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <DonkeyIcon size={12} color="var(--codex-faint)" />
