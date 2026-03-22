@@ -7,6 +7,7 @@ import { IssueIcon } from '@/components/icons/issue-icon'
 import { stanceStyle, STANCE_STYLES } from '@/lib/utils/stances'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { X, MapPin, ChevronDown } from 'lucide-react'
+import { QUIZ_CONTENT } from '@/lib/data/quiz-content'
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -60,13 +61,13 @@ function stanceColorScale(value: number): string {
 }
 
 function stanceLabelFromAvg(value: number): string {
-  if (value >= 5.5) return 'Strongly For'
-  if (value >= 4.5) return 'For'
-  if (value >= 3.5) return 'Leans For'
-  if (value >= 2.5) return 'Neutral / Mixed'
-  if (value >= 1.5) return 'Leans Against'
-  if (value >= 0.5) return 'Against'
-  return 'Strongly Against'
+  if (value >= 5.5) return 'Reps here overwhelmingly back this'
+  if (value >= 4.5) return 'Most reps here support this'
+  if (value >= 3.5) return 'Reps here lean toward supporting'
+  if (value >= 2.5) return 'Reps here are split on this'
+  if (value >= 1.5) return 'Reps here lean toward opposing'
+  if (value >= 0.5) return 'Most reps here oppose this'
+  return 'Reps here overwhelmingly oppose this'
 }
 
 /* ------------------------------------------------------------------ */
@@ -74,13 +75,13 @@ function stanceLabelFromAvg(value: number): string {
 /* ------------------------------------------------------------------ */
 
 const LEGEND = [
-  { color: '#1D4ED8', label: 'Strongly For' },
-  { color: '#3B82F6', label: 'For' },
-  { color: '#60A5FA', label: 'Leans For' },
-  { color: '#9CA3AF', label: 'Neutral / Mixed' },
-  { color: '#F87171', label: 'Leans Against' },
-  { color: '#EF4444', label: 'Against' },
-  { color: '#DC2626', label: 'Strongly Against' },
+  { color: '#1D4ED8', label: 'Overwhelmingly back this' },
+  { color: '#3B82F6', label: 'Most support' },
+  { color: '#60A5FA', label: 'Lean toward supporting' },
+  { color: '#9CA3AF', label: 'Split on this issue' },
+  { color: '#F87171', label: 'Lean toward opposing' },
+  { color: '#EF4444', label: 'Most oppose' },
+  { color: '#DC2626', label: 'Overwhelmingly oppose' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -213,6 +214,42 @@ export function IssueMapView({
           legend={LEGEND}
         />
       </div>
+
+      {/* Issue explainer — what do the colors mean for this issue? */}
+      {(() => {
+        const content = QUIZ_CONTENT[selectedIssue]
+        if (!content) return null
+        return (
+          <div className="mt-4 rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-4 sm:p-5">
+            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+              What do the colors mean?
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="flex gap-3 rounded-lg border border-[var(--codex-border)] p-3">
+                <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#3B82F6' }} />
+                <div>
+                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Blue states</p>
+                  <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--codex-sub)]">
+                    {content.supportsMeans}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-3 rounded-lg border border-[var(--codex-border)] p-3">
+                <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#EF4444' }} />
+                <div>
+                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Red states</p>
+                  <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--codex-sub)]">
+                    {content.opposesMeans}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p className="mt-3 text-[11px] leading-relaxed text-[var(--codex-faint)]">
+              Colors show the average stance of elected officials in each state, not the views of residents. Gray states have no data yet.
+            </p>
+          </div>
+        )
+      })()}
 
       {/* State detail panel */}
       {selectedState && (

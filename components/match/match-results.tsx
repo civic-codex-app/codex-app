@@ -15,6 +15,10 @@ interface Politician {
   chamber: string
   image_url: string | null
   title: string | null
+  twitter_url?: string | null
+  facebook_url?: string | null
+  instagram_url?: string | null
+  website_url?: string | null
 }
 
 interface MatchResult {
@@ -28,6 +32,7 @@ interface Props {
   results: MatchResult[]
   stateResults?: MatchResult[]
   userState?: string | null
+  isLoggedIn?: boolean
   onRetake: () => void
   onEditAnswers?: () => void
   onUpdateResults?: () => void
@@ -40,7 +45,7 @@ function scoreColor(score: number): string {
   return '#EF4444'
 }
 
-export function MatchResults({ results, stateResults = [], userState, onRetake, onEditAnswers, onUpdateResults }: Props) {
+export function MatchResults({ results, stateResults = [], userState, isLoggedIn, onRetake, onEditAnswers, onUpdateResults }: Props) {
   const [copied, setCopied] = useState(false)
 
   const handleShare = useCallback(() => {
@@ -202,7 +207,7 @@ export function MatchResults({ results, stateResults = [], userState, onRetake, 
                 />
               </div>
 
-              {/* Meta row */}
+              {/* Meta + social row */}
               <div className="mt-2.5 flex items-center justify-between text-[12px] text-[var(--codex-faint)]">
                 <span>{r.matchedIssues} issues matched</span>
                 <Link
@@ -212,10 +217,72 @@ export function MatchResults({ results, stateResults = [], userState, onRetake, 
                   Compare
                 </Link>
               </div>
+
+              {/* Social links + View Profile */}
+              <div className="mt-3 flex items-center gap-2 border-t border-[var(--codex-border)] pt-3">
+                {r.politician.twitter_url && (
+                  <a href={r.politician.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="X / Twitter">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                )}
+                {r.politician.facebook_url && (
+                  <a href={r.politician.facebook_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="Facebook">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a>
+                )}
+                {r.politician.instagram_url && (
+                  <a href={r.politician.instagram_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="Instagram">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                  </a>
+                )}
+                {r.politician.website_url && (
+                  <a href={r.politician.website_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="Website">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  </a>
+                )}
+                <Link
+                  href={`/politicians/${r.politician.slug}`}
+                  className="ml-auto rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+                >
+                  View Profile
+                </Link>
+              </div>
             </div>
           )
         })}
       </div>
+
+      {/* Sign-up CTA — prominent placement after top 3 */}
+      {!isLoggedIn && (
+        <div className="mb-10 overflow-hidden rounded-xl border border-[var(--codex-border)]" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06))' }}>
+          <div className="px-6 py-8 text-center">
+            <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+              Don't lose your results
+            </p>
+            <p className="mt-2 text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--codex-text)]">
+              Create an account to save your matches
+            </p>
+            <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-[var(--codex-sub)]">
+              See which politicians represent your state, track issues you care about, and keep your results across devices.
+            </p>
+            <Link
+              href="/signup"
+              className="mt-5 inline-block rounded-lg px-8 py-3 text-[14px] font-semibold text-white no-underline transition-opacity hover:opacity-90"
+              style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+            >
+              Sign Up Free
+            </Link>
+            <p className="mt-3">
+              <Link
+                href="/login"
+                className="text-[13px] text-[var(--codex-sub)] underline decoration-[var(--codex-border)] underline-offset-2 hover:text-[var(--codex-text)]"
+              >
+                Already have an account? Sign in
+              </Link>
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Remaining results */}
       {rest.length > 0 && (

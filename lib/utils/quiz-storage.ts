@@ -13,18 +13,24 @@ const STEP_KEY = 'codex_quiz_step'
 // localStorage (fast, offline cache)
 // ---------------------------------------------------------------------------
 
-export function saveQuizAnswers(answers: Record<string, string>) {
+export function saveQuizAnswers(answers: Record<string, string>, userId?: string) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, userId: userId ?? null }))
   } catch {
     // localStorage unavailable (SSR, private browsing full)
   }
 }
 
-export function loadQuizAnswers(): Record<string, string> {
+export function loadQuizAnswers(userId?: string): Record<string, string> {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    return stored ? JSON.parse(stored) : {}
+    if (!stored) return {}
+    const parsed = JSON.parse(stored)
+    // Handle legacy format (plain object of answers)
+    if (!parsed.answers) return userId ? {} : parsed
+    // If userId provided, only return answers belonging to same user
+    if (userId && parsed.userId !== userId) return {}
+    return parsed.answers
   } catch {
     return {}
   }
@@ -47,19 +53,22 @@ export function loadQuizStep(): number {
 
 const RESULTS_KEY = 'codex_quiz_results'
 
-export function saveQuizResults(results: any, stateResults: any) {
+export function saveQuizResults(results: any, stateResults: any, userId?: string) {
   try {
-    localStorage.setItem(RESULTS_KEY, JSON.stringify({ results, stateResults, savedAt: Date.now() }))
+    localStorage.setItem(RESULTS_KEY, JSON.stringify({ results, stateResults, savedAt: Date.now(), userId: userId ?? null }))
   } catch {}
 }
 
-export function loadQuizResults(): { results: any[]; stateResults: any[] } | null {
+export function loadQuizResults(userId?: string): { results: any[]; stateResults: any[] } | null {
   try {
     const stored = localStorage.getItem(RESULTS_KEY)
     if (!stored) return null
     const parsed = JSON.parse(stored)
     // Results are valid for 24 hours
     if (Date.now() - (parsed.savedAt ?? 0) > 24 * 60 * 60 * 1000) return null
+    // Only return results if they belong to the same user
+    // If userId is provided but cached results have no userId or a different one, reject
+    if (userId && parsed.userId !== userId) return null
     return { results: parsed.results ?? [], stateResults: parsed.stateResults ?? [] }
   } catch {
     return null

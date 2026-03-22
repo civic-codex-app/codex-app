@@ -118,11 +118,11 @@ export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
           stateData={stateData}
           onStateClick={(code) => setSelectedState(selectedState === code ? null : code)}
           legend={[
-            { color: '#DC2626', label: 'Highest' },
-            { color: '#F97316', label: 'High' },
-            { color: '#FBBF24', label: 'Medium' },
-            { color: '#FEF3C7', label: 'Low' },
-            { color: 'var(--codex-hover)', label: 'No Data' },
+            { color: '#DC2626', label: 'Most money raised' },
+            { color: '#F97316', label: 'Above average' },
+            { color: '#FBBF24', label: 'Average' },
+            { color: '#FEF3C7', label: 'Below average' },
+            { color: 'var(--codex-hover)', label: 'No data available' },
           ]}
         />
         <p className="mt-2 text-center text-[12px] text-[var(--codex-faint)]">

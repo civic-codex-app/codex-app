@@ -129,7 +129,7 @@ export async function POST(request: Request) {
     const allScoredIds = scored.slice(0, 100).map((t) => t.politicianId)
     const { data: politicians, error: polError } = await supabase
       .from('politicians')
-      .select('id, name, slug, party, state, chamber, image_url, title')
+      .select('id, name, slug, party, state, chamber, image_url, title, twitter_url, facebook_url, instagram_url, website_url')
       .in('id', allScoredIds)
 
     if (polError) {
@@ -163,6 +163,10 @@ export async function POST(request: Request) {
           chamber: politician.chamber,
           image_url: politician.image_url,
           title: politician.title,
+          twitter_url: politician.twitter_url,
+          facebook_url: politician.facebook_url,
+          instagram_url: politician.instagram_url,
+          website_url: politician.website_url,
         },
         score: t.score,
         matchedIssues: t.matched,
