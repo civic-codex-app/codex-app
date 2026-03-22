@@ -6,7 +6,7 @@ export const CHAMBER_LABELS: Record<ChamberKey, string> = {
   all: 'All',
   senate: 'Senate',
   house: 'House',
-  governor: 'Governor',
+  governor: 'Statewide',
   presidential: 'Presidential',
   mayor: 'Mayor',
   city_council: 'City Council',
