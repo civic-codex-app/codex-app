@@ -75,7 +75,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased" suppressHydrationWarning>
+      <body className="font-sans antialiased" style={{ paddingTop: 'env(safe-area-inset-top)' }} suppressHydrationWarning>
         {children}
         <Analytics />
       </body>
