@@ -29,6 +29,8 @@ interface Props {
   stateResults?: MatchResult[]
   userState?: string | null
   onRetake: () => void
+  onEditAnswers?: () => void
+  onUpdateResults?: () => void
 }
 
 function scoreColor(score: number): string {
@@ -38,7 +40,7 @@ function scoreColor(score: number): string {
   return '#EF4444'
 }
 
-export function MatchResults({ results, stateResults = [], userState, onRetake }: Props) {
+export function MatchResults({ results, stateResults = [], userState, onRetake, onEditAnswers, onUpdateResults }: Props) {
   const [copied, setCopied] = useState(false)
 
   const handleShare = useCallback(() => {
@@ -283,16 +285,32 @@ export function MatchResults({ results, stateResults = [], userState, onRetake }
       )}
 
       {/* Actions */}
-      <div className="mt-10 flex items-center justify-center gap-3">
+      <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+        {onEditAnswers && (
+          <button
+            onClick={onEditAnswers}
+            className="rounded-lg border border-[var(--codex-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-sub)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+          >
+            Change Answers
+          </button>
+        )}
+        {onUpdateResults && (
+          <button
+            onClick={onUpdateResults}
+            className="rounded-lg border border-[var(--codex-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-sub)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+          >
+            Update Results
+          </button>
+        )}
         <button
           onClick={onRetake}
-          className="rounded-lg border border-[var(--codex-border)] px-6 py-2.5 text-[14px] font-medium text-[var(--codex-sub)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+          className="rounded-lg border border-[var(--codex-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-sub)]"
         >
-          Retake Quiz
+          Start Over
         </button>
         <button
           onClick={handleShare}
-          className="rounded-lg bg-[var(--codex-text)] px-6 py-2.5 text-[14px] font-medium text-[var(--codex-card)] transition-opacity hover:opacity-90"
+          className="rounded-lg bg-[var(--codex-text)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-card)] transition-opacity hover:opacity-90"
         >
           {copied ? 'Copied!' : 'Share Results'}
         </button>

@@ -45,10 +45,32 @@ export function loadQuizStep(): number {
   }
 }
 
+const RESULTS_KEY = 'codex_quiz_results'
+
+export function saveQuizResults(results: any, stateResults: any) {
+  try {
+    localStorage.setItem(RESULTS_KEY, JSON.stringify({ results, stateResults, savedAt: Date.now() }))
+  } catch {}
+}
+
+export function loadQuizResults(): { results: any[]; stateResults: any[] } | null {
+  try {
+    const stored = localStorage.getItem(RESULTS_KEY)
+    if (!stored) return null
+    const parsed = JSON.parse(stored)
+    // Results are valid for 24 hours
+    if (Date.now() - (parsed.savedAt ?? 0) > 24 * 60 * 60 * 1000) return null
+    return { results: parsed.results ?? [], stateResults: parsed.stateResults ?? [] }
+  } catch {
+    return null
+  }
+}
+
 export function clearQuizProgress() {
   try {
     localStorage.removeItem(STORAGE_KEY)
     localStorage.removeItem(STEP_KEY)
+    localStorage.removeItem(RESULTS_KEY)
   } catch {}
 }
 

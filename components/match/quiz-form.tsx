@@ -4,7 +4,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { MatchResults } from './match-results'
 import { QUIZ_CONTENT, type QuizPosition } from '@/lib/data/quiz-content'
-import { saveQuizAnswers, loadQuizAnswers, saveQuizStep, loadQuizStep, clearQuizProgress, syncQuizToServer, loadQuizFromServer, mergeQuizAnswers } from '@/lib/utils/quiz-storage'
+import { saveQuizAnswers, loadQuizAnswers, saveQuizStep, loadQuizStep, clearQuizProgress, syncQuizToServer, loadQuizFromServer, mergeQuizAnswers, saveQuizResults, loadQuizResults } from '@/lib/utils/quiz-storage'
 import { createClient } from '@/lib/supabase/client'
 
 interface Issue {
@@ -87,6 +87,8 @@ export function QuizForm({ issues }: Props) {
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const syncTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isLoggedIn = useRef(false)
+  // Load cached results on mount
+  const [initialLoaded, setInitialLoaded] = useState(false)
 
   // On mount: check auth and load from server if logged in
   useEffect(() => {
@@ -111,7 +113,6 @@ export function QuizForm({ issues }: Props) {
         if (Object.keys(merged).length > 0) {
           setAnswers(merged)
           saveQuizAnswers(merged)
-          // Push merged result back to server if local had newer data
           if (Object.keys(local).length > Object.keys(serverAnswers ?? {}).length) {
             syncQuizToServer(merged)
           }
@@ -119,6 +120,14 @@ export function QuizForm({ issues }: Props) {
       } catch {
         // Not logged in or network error — continue with localStorage only
       }
+
+      // Load cached results if available
+      const cached = loadQuizResults()
+      if (cached && cached.results.length > 0 && !cancelled) {
+        setResults(cached.results)
+        setStateResults(cached.stateResults)
+      }
+      if (!cancelled) setInitialLoaded(true)
     }
     init()
     return () => { cancelled = true }
@@ -215,6 +224,7 @@ export function QuizForm({ issues }: Props) {
       if (!res.ok) { setError(data.error ?? 'Something went wrong.'); return }
       setResults(data.results)
       setStateResults(data.yourState ?? [])
+      saveQuizResults(data.results, data.yourState ?? [])
     } catch {
       setError('Network error. Please try again.')
     } finally {
@@ -228,12 +238,25 @@ export function QuizForm({ issues }: Props) {
     if (isLoggedIn.current) syncQuizToServer({})
     setCurrentStep(0)
     setResults(null)
+    setStateResults([])
     setError(null)
     setShowCheck(false)
     setMilestone(null)
   }
 
-  if (results) return <MatchResults results={results} stateResults={stateResults} userState={userState} onRetake={retake} />
+  function editAnswers() {
+    // Go back to the quiz with current answers intact
+    setResults(null)
+    setStateResults([])
+    setCurrentStep(0)
+  }
+
+  function updateResults() {
+    // Re-submit current answers to get fresh results with any new data
+    submit()
+  }
+
+  if (results) return <MatchResults results={results} stateResults={stateResults} userState={userState} onRetake={retake} onEditAnswers={editAnswers} onUpdateResults={updateResults} />
   if (!issue) return null
 
   const content = QUIZ_CONTENT[issue.slug]
