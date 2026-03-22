@@ -221,7 +221,7 @@ export function QuizForm({ issues }: Props) {
         {/* Slider track */}
         <div className="relative px-2">
           {/* Track background - gradient from green to red */}
-          <div className="relative h-3 rounded-full" style={{
+          <div className="relative h-4 rounded-full" style={{
             background: 'linear-gradient(to right, #10B981, #22C55E, #84CC16, #9CA3AF, #F97316, #EF4444, #E11D48)'
           }}>
             {/* Tap targets */}
@@ -242,8 +242,8 @@ export function QuizForm({ issues }: Props) {
                 style={{ left: `${(sliderValue / 6) * 100}%`, zIndex: 3 }}
               >
                 <div
-                  className="h-6 w-6 rounded-full border-[3px] border-white shadow-lg"
-                  style={{ backgroundColor: currentStyle?.color ?? '#9CA3AF' }}
+                  className="h-10 w-10 rounded-full border-[4px] border-white shadow-xl"
+                  style={{ backgroundColor: currentStyle?.color ?? '#9CA3AF', boxShadow: '0 0 0 2px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.3)' }}
                 />
               </div>
             )}
