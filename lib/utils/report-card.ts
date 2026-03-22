@@ -41,12 +41,15 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
   const isExecutive = ['presidential', 'governor'].includes(chamber ?? '')
 
   // --- Bipartisanship ---
-  // Politicians near 50% party alignment (centrist) score highest.
+  // Measures willingness to break from party. Moderate formula:
+  // 100% alignment → 40 (loyal but not maverick)
+  // 50% alignment → 100 (perfectly centrist)
+  // 0% alignment → 40 (contrarian)
   const alignment = computeAlignment(party, stances)
   const bipartisanship =
     alignment < 0
-      ? 50
-      : Math.max(0, 100 - Math.abs(alignment - 50) * 2)
+      ? 60
+      : Math.round(40 + 60 * (1 - Math.pow((alignment - 50) / 50, 2)))
 
   // --- Engagement ---
   // For legislators: proportion of yea/nay votes. For executives: skip (N/A)
@@ -59,9 +62,15 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
   }
 
   // --- Transparency ---
-  let transparency = 50
+  // Having stance positions at all shows transparency (even if unverified).
+  // Verified stances get a bonus.
+  let transparency = 30 // no stances at all
   if (totalStances > 0) {
-    transparency = Math.round((verifiedStances / totalStances) * 100)
+    // Base: 50 for having stances, up to 80 for having many (14 = full coverage)
+    const coverageScore = Math.min(totalStances / 14, 1) * 30 + 50
+    // Bonus for verified stances
+    const verifiedBonus = totalStances > 0 ? (verifiedStances / totalStances) * 20 : 0
+    transparency = Math.round(Math.min(coverageScore + verifiedBonus, 100))
   }
 
   // --- Effectiveness ---

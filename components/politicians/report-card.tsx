@@ -67,6 +67,7 @@ export function PoliticianReportCard({
       <div className="flex flex-col gap-3">
         {DIMENSIONS.map((dim) => {
           const value = dims[dim.key] as number
+          if (value < 0) return null // Skip N/A dimensions (e.g. engagement for executives)
           return (
             <div key={dim.key} className="flex items-center gap-3">
               <span className="w-[110px] flex-shrink-0 text-xs text-[var(--codex-sub)]">
