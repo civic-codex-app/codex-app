@@ -174,6 +174,7 @@ export default async function ReportCardsPage() {
     const stanceData = stancesByPol.get(p.id)
     const reportCard = computeReportCard({
       party: p.party,
+      chamber: p.chamber,
       stances: stanceData?.stances ?? [],
       votingRecords: votesByPol.get(p.id) ?? [],
       committees: committeesByPol.get(p.id) ?? [],

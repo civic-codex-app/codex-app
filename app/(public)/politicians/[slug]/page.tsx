@@ -127,6 +127,7 @@ export default async function PoliticianPage({ params }: PageProps) {
   const verifiedCount = politicianStances.filter((s: any) => s.is_verified).length
   const reportCard = computeReportCard({
     party: pol.party,
+    chamber: pol.chamber,
     stances: politicianStances,
     votingRecords: votingRecords.map((v: any) => ({ vote: v.vote })),
     committees: committees.map((c: any) => ({ role: c.role })),
