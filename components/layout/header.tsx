@@ -247,11 +247,7 @@ export function Header() {
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
-                <div className={`h-7 w-7 overflow-hidden rounded-full border-2 transition-colors hover:border-[var(--codex-text)] ${
-                  pathname.startsWith('/dashboard') || pathname.startsWith('/account') || pathname.startsWith('/following')
-                    ? 'border-[var(--codex-text)]'
-                    : 'border-[var(--codex-border)]'
-                }`}>
+                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--codex-border)] transition-colors hover:border-[var(--codex-text)]">
                   {profile?.avatar_url ? (
                     <Image
                       src={profile.avatar_url}
