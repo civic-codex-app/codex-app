@@ -237,7 +237,7 @@ export function Header() {
 
           {/* User avatar / Sign In */}
           {isLoggedIn ? (
-            <div ref={userMenuRef} className="relative hidden sm:block">
+            <div ref={userMenuRef} className="relative">
               <button
                 type="button"
                 onClick={() => setUserMenuOpen((prev) => !prev)}
