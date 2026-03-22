@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { loadQuizAnswers } from '@/lib/utils/quiz-storage'
+import { loadQuizAnswers, loadQuizFromServer, mergeQuizAnswers, clearQuizProgress } from '@/lib/utils/quiz-storage'
 import Link from 'next/link'
 
 interface Stance {
@@ -75,13 +75,16 @@ export function YourAlignment({ politicianName, politicianSlug, politicianStance
   const [hasQuiz, setHasQuiz] = useState(false)
 
   useEffect(() => {
-    const answers = loadQuizAnswers()
-    const count = Object.keys(answers).length
-    if (count < 3) return
+    async function load() {
+      const local = loadQuizAnswers()
+      const server = await loadQuizFromServer()
+      const answers = mergeQuizAnswers(local, server)
+      const count = Object.keys(answers).length
+      if (count < 3) return
 
-    setHasQuiz(true)
+      setHasQuiz(true)
 
-    const stances = politicianStances.map(s => ({
+      const stances = politicianStances.map(s => ({
       issue_slug: s.issue_slug,
       stance: s.stance,
     }))
@@ -90,6 +93,8 @@ export function YourAlignment({ politicianName, politicianSlug, politicianStance
     if (computed.matched >= 3) {
       setResult(computed)
     }
+    }
+    load()
   }, [politicianStances])
 
   // Not enough quiz data
@@ -129,12 +134,27 @@ export function YourAlignment({ politicianName, politicianSlug, politicianStance
         </div>
       </div>
 
-      <Link
-        href={`/compare?a=${politicianSlug}`}
-        className="mt-3 block text-center text-[12px] font-medium text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
-      >
-        See full comparison →
-      </Link>
+      <div className="mt-3 flex gap-2">
+        <Link
+          href={`/compare?a=${politicianSlug}`}
+          className="flex-1 rounded-lg border border-[var(--codex-border)] py-2 text-center text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+        >
+          Compare
+        </Link>
+        <Link
+          href="/quiz"
+          className="flex-1 rounded-lg border border-[var(--codex-border)] py-2 text-center text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+        >
+          See All Results
+        </Link>
+        <Link
+          href="/quiz"
+          onClick={() => { try { clearQuizProgress() } catch {} }}
+          className="flex-1 rounded-lg border border-[var(--codex-border)] py-2 text-center text-[12px] font-medium text-[var(--codex-faint)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-sub)]"
+        >
+          Retake
+        </Link>
+      </div>
     </div>
   )
 }
