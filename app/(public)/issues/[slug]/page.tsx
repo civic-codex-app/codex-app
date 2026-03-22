@@ -89,7 +89,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
   // Fetch stats (lightweight — stance + party only, paginated to handle >1000)
   async function fetchStanceStats() {
-    const all: { stance: string; party: string }[] = []
+    const all: { stance: string; party: string; chamber: string }[] = []
     let from = 0
     while (true) {
       const { data } = await supabase
