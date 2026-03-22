@@ -13,9 +13,6 @@ export function Footer() {
           <DonkeyIcon size={12} color="var(--codex-faint)" />
           <ElephantIcon size={12} color="var(--codex-faint)" />
           <GreenDiamond size={12} color="var(--codex-faint)" />
-          <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
-            Codex
-          </span>
         </div>
         <div className="flex items-center gap-4">
           <span className="hidden font-serif text-[13px] italic text-[var(--codex-faint)] sm:inline">

@@ -39,7 +39,7 @@ function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-8 text-center">
         <h1 className="mb-2 font-serif text-3xl">Sign in</h1>
-        <p className="text-sm text-[var(--codex-sub)]">Welcome back to Codex</p>
+        <p className="text-sm text-[var(--codex-sub)]">Welcome back</p>
       </div>
 
       {error && (
