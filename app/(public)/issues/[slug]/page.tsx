@@ -163,12 +163,18 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
   const stanceList = (pageData ?? []) as any as IssueStanceWithPoliticianRow[]
 
-  // Deduplicate by politician_id (a politician may have duplicate stance records)
-  const seen = new Set<string>()
+  // Deduplicate: first by politician_issues.id (true row duplicates from joins),
+  // then by politician_id (a politician may have multiple stance records for one issue)
+  const seenRowId = new Set<string>()
+  const seenPolId = new Set<string>()
   const dedupedList = stanceList.filter((s) => {
-    const polId = (s as any).politicians?.id ?? s.id
-    if (seen.has(polId)) return false
-    seen.add(polId)
+    if (seenRowId.has(s.id)) return false
+    seenRowId.add(s.id)
+    const polId = (s as any).politicians?.id
+    if (polId) {
+      if (seenPolId.has(polId)) return false
+      seenPolId.add(polId)
+    }
     return true
   })
 
@@ -339,12 +345,12 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                 <span className="text-[var(--codex-faint)]">{items.length}</span>
               </h2>
               <div className="space-y-2">
-                {items.map((s) => {
+                {items.map((s, idx) => {
                   const pol = s.politicians
                   if (!pol) return null
                   return (
                     <Link
-                      key={s.id}
+                      key={`${s.id}-${pol.id}`}
                       href={`/politicians/${pol.slug}`}
                       className="group flex items-center gap-4 rounded-md border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-input-border)]"
                     >
