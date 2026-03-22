@@ -18,10 +18,12 @@ function isUUID(str: string) {
 }
 
 function getBillLabel(vote: any) {
-  // Prefer bill_number (e.g., "H.R. 1234"), then bill_name if not a UUID
-  if (vote.bill_number && !isUUID(vote.bill_number)) return vote.bill_number
-  if (vote.bill_name && !isUUID(vote.bill_name)) return vote.bill_name
-  return null // skip UUID-only bills
+  const name = vote.bill_name && !isUUID(vote.bill_name) ? vote.bill_name : null
+  const number = vote.bill_number && !isUUID(vote.bill_number) ? vote.bill_number : null
+  if (name && number) return `${name} (${number})`
+  if (name) return name
+  if (number) return number
+  return null
 }
 
 export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapProps) {
