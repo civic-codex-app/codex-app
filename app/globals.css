@@ -201,7 +201,7 @@ html {
   header,
   footer,
   nav,
-  .print\\:hidden,
+  [data-print-hide],
   [data-bottom-tabs],
   [data-mobile-nav] {
     display: none !important;
