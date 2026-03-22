@@ -180,6 +180,7 @@ function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]) {
           .replace(/[.,;:!?]+$/g, '')
           .replace(/\s+/g, ' ')
           .replace(/\b(the|a|an|of|and|in|on|for|to|is|has|with|their|this|that)\b/g, '')
+          .replace(/\b(\w{4,})s\b/g, '$1')  // naive depluralize (5+ char words) to merge "protections"/"protection"
           .replace(/\s+/g, ' ')
           .trim()
         const existing = summaryMap.get(key)

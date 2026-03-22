@@ -19,6 +19,7 @@ interface UserProfile {
 // Secondary nav items for desktop
 const SECONDARY_NAV = [
   { href: '/dashboard', label: 'Dashboard' },
+  { href: '/ballot-scorecard', label: 'Scorecard' },
   { href: '/following', label: 'Following' },
   { href: '/account', label: 'Account' },
 ]

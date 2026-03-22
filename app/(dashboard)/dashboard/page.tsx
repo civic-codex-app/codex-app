@@ -1,9 +1,14 @@
 import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PoliticianCard } from '@/components/directory/politician-card'
-import { ElectionCountdown } from '@/components/elections/election-countdown'
+import { ElectionCountdownCard } from '@/components/elections/election-countdown-card'
 import { RecentActivityFeed, type ActivityItem } from '@/components/dashboard/recent-activity-feed'
 import { IssuePriorities } from '@/components/dashboard/issue-priorities'
+import { StreakWidget } from '@/components/dashboard/streak-widget'
+import { BadgesDisplay } from '@/components/dashboard/badges-display'
+import { SurpriseMatches } from '@/components/dashboard/surprise-matches'
+import { computeVoterMatch } from '@/lib/utils/voter-match'
+import { stanceBucket } from '@/lib/utils/stances'
 import type { Politician } from '@/lib/types/politician'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
@@ -25,6 +30,17 @@ const QUICK_LINKS = [
     ),
   },
   {
+    href: '/ballot-scorecard',
+    title: 'Ballot Scorecard',
+    description: 'See how candidates align with you',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+    ),
+  },
+  {
     href: '/report-cards',
     title: 'Report Cards',
     description: 'See how politicians score on key issues',
@@ -35,6 +51,17 @@ const QUICK_LINKS = [
         <line x1="16" y1="13" x2="8" y2="13" />
         <line x1="16" y1="17" x2="8" y2="17" />
         <polyline points="10 9 9 9 8 9" />
+      </svg>
+    ),
+  },
+  {
+    href: '/elections/countdown',
+    title: 'Election Countdown',
+    description: 'Key dates and deadlines for your state',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
       </svg>
     ),
   },
@@ -80,15 +107,20 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // Get user profile for state + zip
+  // Get user profile for state + zip + engagement + quiz
   const { data: profile } = await supabase
     .from('profiles')
-    .select('state, zip_code')
+    .select('state, zip_code, city, quiz_answers, current_streak, longest_streak, badges')
     .eq('id', user!.id)
     .single()
 
   const userState = profile?.state as string | null
   const userZip = profile?.zip_code as string | null
+  const quizAnswers = (profile?.quiz_answers ?? {}) as Record<string, string>
+  const hasQuiz = Object.keys(quizAnswers).length > 0
+  const currentStreak = (profile?.current_streak ?? 0) as number
+  const longestStreak = (profile?.longest_streak ?? 0) as number
+  const earnedBadges = (profile?.badges ?? []) as string[]
 
   // Get representatives: senators + governor (statewide)
   // If user has a zip, also try to find their House rep via the API
@@ -241,12 +273,86 @@ export default async function DashboardPage() {
   const todayStr = new Date().toISOString().split('T')[0]
   const { data: upcomingElection } = await serviceClient
     .from('elections')
-    .select('name, slug, election_date')
+    .select('id, name, slug, election_date')
     .eq('is_active', true)
     .gte('election_date', todayStr)
     .order('election_date')
     .limit(1)
     .maybeSingle()
+
+  // Fetch election key dates for user's state
+  let electionKeyDates: Array<{ date_type: string; event_date: string; description: string | null; source_url: string | null }> = []
+  if (upcomingElection) {
+    const { data: keyDates } = await serviceClient
+      .from('election_key_dates')
+      .select('date_type, event_date, description, source_url')
+      .eq('election_id', (upcomingElection as any).id ?? '')
+      .or(userState ? `state.eq.${userState},state.is.null` : 'state.is.null')
+      .order('event_date')
+    electionKeyDates = (keyDates ?? []) as any
+  }
+
+  // Compute "Surprise Me" cross-party matches if user has quiz answers
+  let surpriseMatches: Array<{
+    id: string; name: string; slug: string; party: string; state: string;
+    chamber: string; image_url: string | null; score: number; matched: number
+  }> = []
+
+  if (hasQuiz) {
+    // Determine user's likely lean from quiz answers
+    let blueCount = 0, redCount = 0
+    for (const stance of Object.values(quizAnswers)) {
+      const bucket = stanceBucket(stance)
+      if (bucket === 'supports') blueCount++
+      else if (bucket === 'opposes') redCount++
+    }
+    const oppositeParty = blueCount >= redCount ? 'republican' : 'democrat'
+
+    // Fetch opposite-party politicians with stances
+    const { data: oppPols } = await serviceClient
+      .from('politicians')
+      .select('id, name, slug, party, state, chamber, image_url')
+      .eq('party', oppositeParty)
+      .limit(200)
+
+    if (oppPols && oppPols.length > 0) {
+      const oppIds = oppPols.map(p => p.id)
+      const { data: oppStances } = await serviceClient
+        .from('politician_issues')
+        .select('politician_id, stance, is_verified, issues:issue_id(slug)')
+        .in('politician_id', oppIds)
+
+      if (oppStances) {
+        // Build per-politician stance maps
+        const byPol = new Map<string, { stances: Record<string, string>; verified: Record<string, boolean> }>()
+        for (const row of oppStances as any[]) {
+          const slug = row.issues?.slug
+          if (!slug) continue
+          if (!byPol.has(row.politician_id)) byPol.set(row.politician_id, { stances: {}, verified: {} })
+          const entry = byPol.get(row.politician_id)!
+          entry.stances[slug] = row.stance
+          entry.verified[slug] = row.is_verified === true
+        }
+
+        // Score each
+        const scored: Array<typeof surpriseMatches[0]> = []
+        const polMap = new Map(oppPols.map(p => [p.id, p]))
+        for (const [pid, data] of byPol) {
+          const result = computeVoterMatch(quizAnswers, data.stances, data.verified)
+          if (result.matched >= 5 && result.score >= 30) {
+            const pol = polMap.get(pid)!
+            scored.push({
+              id: pol.id, name: pol.name, slug: pol.slug, party: pol.party,
+              state: pol.state, chamber: pol.chamber, image_url: pol.image_url,
+              score: result.score, matched: result.matched,
+            })
+          }
+        }
+        scored.sort((a, b) => b.score - a.score)
+        surpriseMatches = scored.slice(0, 5)
+      }
+    }
+  }
 
   const stateName = userState ? STATE_NAMES[userState] ?? userState : null
 
@@ -254,8 +360,21 @@ export default async function DashboardPage() {
     <div>
       <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
       <p className="mb-10 text-sm text-[var(--codex-sub)]">
-        Your personalized political directory
+        Your personalized civic engagement hub
       </p>
+
+      {/* Engagement: Streak + Badges */}
+      <section className="mb-10">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+            Your Civic Engagement
+          </h2>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-[280px_1fr]">
+          <StreakWidget initialStreak={currentStreak} longestStreak={longestStreak} />
+          <BadgesDisplay earnedBadges={earnedBadges} />
+        </div>
+      </section>
 
       {/* Your Representatives */}
       <section className="mb-10">
@@ -350,6 +469,11 @@ export default async function DashboardPage() {
         </div>
         <IssuePriorities zip={userZip} />
       </section>
+
+      {/* Surprise Matches — cross-party alignment */}
+      {surpriseMatches.length > 0 && (
+        <SurpriseMatches matches={surpriseMatches} />
+      )}
 
       {/* Quick Links */}
       <section className="mb-10">
@@ -460,28 +584,19 @@ export default async function DashboardPage() {
         )}
       </section>
 
-      {/* Upcoming Election */}
+      {/* Upcoming Election with Key Dates */}
       {upcomingElection && (
         <section className="mb-10">
           <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
             Upcoming Election
           </h2>
-          <Link
-            href={`/elections`}
-            className="block rounded-md border border-[var(--codex-border)] p-5 no-underline transition-colors hover:border-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
-          >
-            <div className="mb-1 text-lg font-semibold text-[var(--codex-text)]">
-              {upcomingElection.name}
-            </div>
-            <div className="mb-3 text-xs text-[var(--codex-faint)]">
-              {new Date(upcomingElection.election_date + 'T00:00:00').toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric',
-              })}
-            </div>
-            <ElectionCountdown electionDate={upcomingElection.election_date} />
-          </Link>
+          <ElectionCountdownCard
+            electionName={upcomingElection.name}
+            electionSlug={upcomingElection.slug}
+            electionDate={upcomingElection.election_date}
+            keyDates={electionKeyDates}
+            userState={userState}
+          />
         </section>
       )}
 

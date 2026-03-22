@@ -16,6 +16,8 @@ import { AnnotationList } from '@/components/annotations/annotation-list'
 import { BackButton } from '@/components/ui/back-button'
 import { SubmitAnnotation } from '@/components/annotations/submit-annotation'
 import { YourAlignment } from '@/components/politicians/your-alignment'
+import { StanceTimeline } from '@/components/politicians/stance-timeline'
+import { StanceTimelineToggle } from '@/components/politicians/stance-timeline-toggle'
 export const revalidate = 600 // 10 minutes
 
 import type { Politician } from '@/lib/types/politician'
@@ -43,6 +45,7 @@ import { ElectionHistory } from '@/components/politicians/election-history'
 import { stanceStyle } from '@/lib/utils/stances'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
 import { getStanceContext } from '@/lib/data/educational-content'
+import { AskYourRep } from '@/components/politicians/ask-your-rep'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -115,12 +118,13 @@ export default async function PoliticianPage({ params }: PageProps) {
   const pol = data as Politician
 
   // Run all queries in parallel for performance
-  const [stancesResult, committeeResult, votingResult, financeResult, electionResult] = await Promise.all([
+  const [stancesResult, committeeResult, votingResult, financeResult, electionResult, stanceHistoryResult] = await Promise.all([
     supabase.from('politician_issues').select('*, issues:issue_id(id, name, slug, icon, category)').eq('politician_id', pol.id).order('created_at'),
     supabase.from('politician_committees').select('role, committees:committee_id(id, name, slug, chamber)').eq('politician_id', pol.id),
     supabase.from('voting_records').select('id, bill_name, bill_number, bill_id, vote, vote_date').eq('politician_id', pol.id).order('vote_date', { ascending: false }),
     supabase.from('campaign_finance').select('*').eq('politician_id', pol.id).order('cycle', { ascending: false }),
     supabase.from('election_results').select('*').eq('politician_id', pol.id).order('election_year', { ascending: false }),
+    supabase.from('stance_history').select('id, issue_id, stance, effective_date, source_url, source_description').eq('politician_id', pol.id).order('effective_date', { ascending: false }),
   ])
 
   const politicianStances = (stancesResult.data ?? []) as any as PoliticianStanceRow[]
@@ -128,6 +132,18 @@ export default async function PoliticianPage({ params }: PageProps) {
   const votingRecords = (votingResult.data ?? []) as any as VotingRecordRow[]
   const financeRecords = (financeResult.data ?? []) as any as CampaignFinanceRow[]
   const electionResults = (electionResult.data ?? []) as any as ElectionResultRow[]
+  const stanceHistory = (stanceHistoryResult.data ?? []) as Array<{
+    id: string; issue_id: string; stance: string; effective_date: string | null;
+    source_url: string | null; source_description: string | null
+  }>
+
+  // Build stance history map: issue_id -> entries[]
+  const stanceHistoryByIssue = new Map<string, typeof stanceHistory>()
+  for (const h of stanceHistory) {
+    const list = stanceHistoryByIssue.get(h.issue_id) ?? []
+    list.push(h)
+    stanceHistoryByIssue.set(h.issue_id, list)
+  }
 
   // Compute party alignment score
   const alignmentScore = computeAlignment(pol.party, politicianStances)
@@ -512,6 +528,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                     const sc = stanceStyle(s.stance)
                     const isEstimated = !s.is_verified
                     const hasRealSummary = s.summary && !s.summary.includes('key aspects') && !s.summary.includes('Estimated position') && !s.summary.includes('generally been')
+                    const issueHistory = s.issues?.id ? (stanceHistoryByIssue.get(s.issues.id) ?? []) : []
                     return (
                       <div
                         key={s.id}
@@ -552,6 +569,19 @@ export default async function PoliticianPage({ params }: PageProps) {
                               {getStanceContext(s.issues.slug, s.stance)}
                             </p>
                           )}
+                          {/* Stance change timeline */}
+                          <StanceTimelineToggle hasHistory={issueHistory.length > 0}>
+                            <StanceTimeline
+                              entries={issueHistory.map(h => ({
+                                stance: h.stance,
+                                effective_date: h.effective_date,
+                                source_url: h.source_url,
+                                source_description: h.source_description,
+                              }))}
+                              currentStance={s.stance}
+                              issueName={s.issues?.name ?? 'this issue'}
+                            />
+                          </StanceTimelineToggle>
                         </div>
                       </div>
                     )
@@ -588,6 +618,18 @@ export default async function PoliticianPage({ params }: PageProps) {
 
             {/* Election History */}
             <ElectionHistory results={electionResults as any} party={pol.party} />
+
+            {/* Ask Your Rep — Contact Templates */}
+            <AskYourRep
+              politicianName={pol.name}
+              state={pol.state}
+              websiteUrl={pol.website_url}
+              twitterUrl={pol.twitter_url ?? null}
+              facebookUrl={pol.facebook_url ?? null}
+              issues={politicianStances
+                .filter((s: any) => s.issues?.slug && s.issues?.name)
+                .map((s: any) => ({ slug: s.issues.slug, name: s.issues.name }))}
+            />
 
             {/* Community Annotations */}
             <AnnotationList politicianId={pol.id} />
