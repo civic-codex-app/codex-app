@@ -62,7 +62,7 @@ export default async function HomePage() {
             Track Every Politician in America
           </h1>
           <p className="max-w-[520px] animate-fade-up text-[15.5px] leading-[1.7] text-[var(--codex-subtle)]">
-            Search {total.toLocaleString()} officials. Compare stances. See who agrees with you.
+            Search {total.toLocaleString()} officials. Compare stances. See who represents you.
           </p>
         </div>
 
@@ -105,7 +105,7 @@ export default async function HomePage() {
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
               </div>
-              <div className="text-[15px] font-bold text-[var(--codex-text)]">Who Agrees With You?</div>
+              <div className="text-[15px] font-bold text-[var(--codex-text)]">Who Represents You?</div>
               <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Discover officials who align with your views</p>
             </Link>
             <Link href="/compare" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">

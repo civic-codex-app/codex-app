@@ -40,7 +40,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   }
 
   const title = `${score}% Match with ${politician.name} -- Codex`
-  const description = `I'm ${score}% aligned with ${politician.name}. Take the Who Represents You quiz on Codex to see who agrees with you!`
+  const description = `I'm ${score}% aligned with ${politician.name}. Take the Who Represents You quiz on Codex to see who represents you!`
 
   const ogImageUrl = `${BASE_URL}/api/og/match?${new URLSearchParams({
     name: politician.name,
@@ -90,7 +90,7 @@ export default async function MatchPage() {
       <main className="mx-auto max-w-2xl px-6 pt-6 pb-20 md:px-10">
         <div className="mb-10 text-center">
           <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight text-[var(--codex-text)]">
-            Who Agrees With You?
+            Who Represents You?
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-[var(--codex-sub)]">
             Share your stance on key issues and we'll show you which politicians
