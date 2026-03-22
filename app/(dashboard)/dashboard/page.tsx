@@ -128,6 +128,35 @@ export default async function DashboardPage() {
     followedPoliticians = (data ?? []) as Politician[]
   }
 
+  // Get recent votes from followed politicians (activity feed)
+  let recentActivity: Array<{ politician_name: string; politician_slug: string; politician_party: string; bill_name: string; bill_number: string; vote: string; vote_date: string }> = []
+  if (followedIds.length > 0) {
+    const { data: recentVotes } = await supabase
+      .from('voting_records')
+      .select('bill_name, bill_number, vote, vote_date, politician_id')
+      .in('politician_id', followedIds.slice(0, 20)) // Limit to avoid URL length issues
+      .order('vote_date', { ascending: false })
+      .limit(10)
+
+    if (recentVotes) {
+      const polMap = new Map(followedPoliticians.map(p => [p.id, p]))
+      recentActivity = recentVotes
+        .filter((v: any) => v.bill_name && !/^[0-9a-f]{8}-/.test(v.bill_name)) // Skip UUID bill names
+        .map((v: any) => {
+          const pol = polMap.get(v.politician_id)
+          return {
+            politician_name: pol?.name ?? 'Unknown',
+            politician_slug: pol?.slug ?? '',
+            politician_party: pol?.party ?? '',
+            bill_name: v.bill_name,
+            bill_number: v.bill_number ?? '',
+            vote: v.vote,
+            vote_date: v.vote_date,
+          }
+        })
+    }
+  }
+
   const stateName = userState ? STATE_NAMES[userState] ?? userState : null
 
   return (
@@ -240,6 +269,46 @@ export default async function DashboardPage() {
           ))}
         </div>
       </section>
+
+      {/* Recent Activity Feed */}
+      {recentActivity.length > 0 && (
+        <section className="mb-10">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            Recent Activity
+          </h2>
+          <div className="space-y-2">
+            {recentActivity.map((item, i) => (
+              <div key={i} className="flex items-center gap-3 rounded-md border border-[var(--codex-border)] px-4 py-3">
+                <span
+                  className="flex-shrink-0 rounded-sm px-1.5 py-0.5 text-[10px] font-medium uppercase"
+                  style={{
+                    color: item.vote === 'yea' ? '#22C55E' : item.vote === 'nay' ? '#EF4444' : '#9CA3AF',
+                    background: item.vote === 'yea' ? '#22C55E18' : item.vote === 'nay' ? '#EF444418' : '#9CA3AF18',
+                  }}
+                >
+                  {item.vote}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-[13px] text-[var(--codex-text)]">
+                    <Link href={`/politicians/${item.politician_slug}`} className="font-medium hover:underline" style={{ color: partyColor(item.politician_party) }}>
+                      {item.politician_name}
+                    </Link>
+                    {' voted on '}
+                    <span className="text-[var(--codex-sub)]">
+                      {item.bill_name}{item.bill_number ? ` (${item.bill_number})` : ''}
+                    </span>
+                  </div>
+                </div>
+                {item.vote_date && (
+                  <span className="flex-shrink-0 text-[11px] text-[var(--codex-faint)]">
+                    {new Date(item.vote_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Following */}
       <section>
