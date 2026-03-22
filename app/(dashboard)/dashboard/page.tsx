@@ -3,6 +3,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PoliticianCard } from '@/components/directory/politician-card'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
 import { RecentActivityFeed, type ActivityItem } from '@/components/dashboard/recent-activity-feed'
+import { IssuePriorities } from '@/components/dashboard/issue-priorities'
 import type { Politician } from '@/lib/types/politician'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
@@ -320,6 +321,22 @@ export default async function DashboardPage() {
             </Link>
           </div>
         )}
+      </section>
+
+      {/* Issue Priorities */}
+      <section className="mb-10">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+            Your Issue Priorities
+          </h2>
+          <Link
+            href="/ballot"
+            className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+          >
+            Ballot preview &rarr;
+          </Link>
+        </div>
+        <IssuePriorities zip={userZip} />
       </section>
 
       {/* Quick Links */}
