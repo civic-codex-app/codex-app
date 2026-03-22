@@ -14,8 +14,10 @@ import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabas
 
 interface PageProps {
   params: Promise<{ slug: string }>
-  searchParams: Promise<{ party?: string; chamber?: string }>
+  searchParams: Promise<{ party?: string; chamber?: string; page?: string }>
 }
+
+const PAGE_SIZE = 50
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
@@ -73,51 +75,59 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
   if (!issueData) notFound()
 
   const issue = issueData as any as IssueRow
+  const currentPage = Math.max(1, parseInt(sp.page ?? '1', 10) || 1)
 
-  // Paginate all stances (avoid 1000-row default limit)
-  const stancesArr: any[] = []
-  {
+  // Build base filter for all queries
+  const hasFilters = !!(sp.party || sp.chamber)
+
+  function applyFilters(query: any) {
+    let q = query.eq('issue_id', issue.id)
+    if (sp.party) q = q.eq('politicians.party', sp.party)
+    if (sp.chamber) q = q.eq('politicians.chamber', sp.chamber)
+    return q
+  }
+
+  // Fetch stats (lightweight — stance + party only, paginated to handle >1000)
+  async function fetchStanceStats() {
+    const all: { stance: string; party: string }[] = []
     let from = 0
     while (true) {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('politician_issues')
-        .select('*, politicians:politician_id(id, name, slug, party, chamber, state, title, image_url)')
+        .select('stance, politicians:politician_id(party, chamber)')
         .eq('issue_id', issue.id)
-        .order('stance')
+        .order('id')
         .range(from, from + 999)
-      if (error) { console.error('Failed to fetch stances:', error.message); break }
       if (!data || !data.length) break
-      stancesArr.push(...data)
+      for (const row of data as any[]) {
+        if (row.politicians) all.push({ stance: row.stance, party: row.politicians.party, chamber: row.politicians.chamber })
+      }
       if (data.length < 1000) break
       from += 1000
     }
+    return all
   }
 
-  // All stances before filtering (for stats)
-  const allStances = stancesArr as any as IssueStanceWithPoliticianRow[]
+  const allStanceStats = await fetchStanceStats()
 
-  // Apply client-side party/chamber filters
-  let stanceList = [...allStances]
-  if (sp.party) {
-    stanceList = stanceList.filter((s) => s.politicians?.party === sp.party)
-  }
-  if (sp.chamber) {
-    stanceList = stanceList.filter((s) => s.politicians?.chamber === sp.chamber)
-  }
+  // Apply filters for count
+  let filteredStats = allStanceStats
+  if (sp.party) filteredStats = filteredStats.filter((s) => s.party === sp.party)
+  if (sp.chamber) filteredStats = filteredStats.filter((s) => (s as any).chamber === sp.chamber)
 
-  // Compute summary stats from all stances (before filtering)
-  const totalAll = allStances.length
-  const supportsAll = allStances.filter((s) => stanceBucket(s.stance) === 'supports').length
-  const opposesAll = allStances.filter((s) => stanceBucket(s.stance) === 'opposes').length
-  const mixedAll = allStances.filter((s) => {
+  // Compute summary stats from ALL stances (unfiltered, for the header)
+  const totalAll = allStanceStats.length
+  const supportsAll = allStanceStats.filter((s) => stanceBucket(s.stance) === 'supports').length
+  const opposesAll = allStanceStats.filter((s) => stanceBucket(s.stance) === 'opposes').length
+  const mixedAll = allStanceStats.filter((s) => {
     const b = stanceBucket(s.stance)
     return b === 'mixed' || b === 'neutral'
   }).length
 
-  // Party breakdown stats (from all stances)
+  // Party breakdown stats (from all stances, unfiltered)
   const partyStats: Record<string, { total: number; supports: number; opposes: number; mixed: number }> = {}
-  for (const s of allStances) {
-    const p = s.politicians?.party
+  for (const s of allStanceStats) {
+    const p = s.party
     if (!p) continue
     if (!partyStats[p]) partyStats[p] = { total: 0, supports: 0, opposes: 0, mixed: 0 }
     partyStats[p].total++
@@ -126,6 +136,30 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     else if (bucket === 'opposes') partyStats[p].opposes++
     else partyStats[p].mixed++
   }
+
+  // Filtered total for pagination
+  const filteredTotal = filteredStats.length
+  const totalPages = Math.max(1, Math.ceil(filteredTotal / PAGE_SIZE))
+  const safePage = Math.min(currentPage, totalPages)
+  const offset = (safePage - 1) * PAGE_SIZE
+
+  // Fetch only the current page of stances with full politician data
+  let pageQuery = supabase
+    .from('politician_issues')
+    .select('*, politicians:politician_id!inner(id, name, slug, party, chamber, state, title, image_url)')
+    .eq('issue_id', issue.id)
+    .order('stance')
+    .order('id')
+
+  if (sp.party) pageQuery = pageQuery.eq('politicians.party', sp.party)
+  if (sp.chamber) pageQuery = pageQuery.eq('politicians.chamber', sp.chamber)
+
+  pageQuery = pageQuery.range(offset, offset + PAGE_SIZE - 1)
+
+  const { data: pageData, error: pageError } = await pageQuery
+  if (pageError) console.error('Failed to fetch stances page:', pageError.message)
+
+  const stanceList = (pageData ?? []) as any as IssueStanceWithPoliticianRow[]
 
   // Group by stance
   const grouped: Record<string, IssueStanceWithPoliticianRow[]> = {}
@@ -137,7 +171,17 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
   const stanceOrder = STANCE_ORDER
 
-  const hasFilters = !!(sp.party || sp.chamber)
+  // Build URL helper for pagination
+  function buildUrl(overrides: Record<string, string>) {
+    const p: Record<string, string> = {}
+    if (sp.party) p.party = sp.party
+    if (sp.chamber) p.chamber = sp.chamber
+    Object.assign(p, overrides)
+    // Remove page=1 to keep URLs clean
+    if (p.page === '1') delete p.page
+    const qs = new URLSearchParams(p).toString()
+    return `/issues/${slug}${qs ? `?${qs}` : ''}`
+  }
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -266,12 +310,10 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           <IssueDetailFilters />
         </Suspense>
 
-        {/* Filtered count */}
-        {hasFilters && (
-          <div className="mb-4 text-[11px] text-[var(--codex-faint)]">
-            Showing {stanceList.length} of {totalAll} stances
-          </div>
-        )}
+        {/* Result count */}
+        <div className="mb-4 text-[11px] text-[var(--codex-faint)]">
+          Showing {offset + 1}–{Math.min(offset + PAGE_SIZE, filteredTotal)} of {filteredTotal}{hasFilters ? ` (filtered from ${totalAll})` : ''} stances
+        </div>
 
         {stanceOrder.map((stance) => {
           const items = grouped[stance]
@@ -335,6 +377,52 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           <div className="py-16 text-center text-[var(--codex-faint)]">
             <div className="mb-2 font-serif text-xl">No stances recorded yet</div>
             <div className="text-sm">Check back as we track more politician positions</div>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mb-10 mt-2 flex items-center justify-between">
+            <p className="text-[11px] text-[var(--codex-faint)]">
+              Page {safePage} of {totalPages}
+            </p>
+            <div className="flex gap-2">
+              {safePage > 1 && (
+                <Link
+                  href={buildUrl({ page: String(safePage - 1) })}
+                  className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
+                >
+                  Previous
+                </Link>
+              )}
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 2)
+                .map((p, idx, arr) => (
+                  <span key={p} className="flex items-center gap-2">
+                    {idx > 0 && arr[idx - 1] !== p - 1 && (
+                      <span className="text-[var(--codex-faint)]">&hellip;</span>
+                    )}
+                    <Link
+                      href={buildUrl({ page: String(p) })}
+                      className={`rounded-md border px-3 py-1.5 text-sm no-underline ${
+                        p === safePage
+                          ? 'border-[var(--codex-text)] bg-[var(--codex-text)] text-[var(--codex-bg)]'
+                          : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]'
+                      }`}
+                    >
+                      {p}
+                    </Link>
+                  </span>
+                ))}
+              {safePage < totalPages && (
+                <Link
+                  href={buildUrl({ page: String(safePage + 1) })}
+                  className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
+                >
+                  Next
+                </Link>
+              )}
+            </div>
           </div>
         )}
 
