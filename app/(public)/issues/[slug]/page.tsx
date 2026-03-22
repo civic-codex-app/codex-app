@@ -77,68 +77,68 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
   const issue = issueData as any as IssueRow
   const currentPage = Math.max(1, parseInt(sp.page ?? '1', 10) || 1)
 
-  // Build base filter for all queries
   const hasFilters = !!(sp.party || sp.chamber)
 
-  function applyFilters(query: any) {
-    let q = query.eq('issue_id', issue.id)
-    if (sp.party) q = q.eq('politicians.party', sp.party)
-    if (sp.chamber) q = q.eq('politicians.chamber', sp.chamber)
+  // Stance types grouped by bucket
+  const supportStances = ['strongly_supports', 'supports', 'leans_support']
+  const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
+  const mixedStances = ['neutral', 'mixed', 'unknown']
+
+  // All count queries in parallel — no row fetching needed
+  const parties = ['democrat', 'republican', 'independent', 'green'] as const
+
+  function countQ(filters: { stance?: string[]; party?: string } = {}) {
+    let q = filters.party
+      ? supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issue.id).eq('politicians.party', filters.party)
+      : supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issue.id)
+    if (filters.stance) q = q.in('stance', filters.stance)
     return q
   }
 
-  // Fetch stats (lightweight — stance + party only, paginated to handle >1000)
-  async function fetchStanceStats() {
-    const all: { stance: string; party: string; chamber: string }[] = []
-    let from = 0
-    while (true) {
-      const { data } = await supabase
-        .from('politician_issues')
-        .select('stance, politicians:politician_id(party, chamber)')
-        .eq('issue_id', issue.id)
-        .order('id')
-        .range(from, from + 999)
-      if (!data || !data.length) break
-      for (const row of data as any[]) {
-        if (row.politicians) all.push({ stance: row.stance, party: row.politicians.party, chamber: row.politicians.chamber })
-      }
-      if (data.length < 1000) break
-      from += 1000
-    }
-    return all
-  }
+  const [totalRes, supportsRes, opposesRes, filteredRes,
+    demTotalR, demSupR, demOppR,
+    gopTotalR, gopSupR, gopOppR,
+    indTotalR, indSupR, indOppR,
+  ] = await Promise.all([
+    countQ(),
+    countQ({ stance: supportStances }),
+    countQ({ stance: opposeStances }),
+    // Filtered total for pagination
+    (() => {
+      let q = supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issue.id)
+      if (sp.party) q = q.eq('politicians.party', sp.party)
+      if (sp.chamber) q = q.eq('politicians.chamber', sp.chamber)
+      return q
+    })(),
+    // Democrat counts
+    countQ({ party: 'democrat' }),
+    countQ({ party: 'democrat', stance: supportStances }),
+    countQ({ party: 'democrat', stance: opposeStances }),
+    // Republican counts
+    countQ({ party: 'republican' }),
+    countQ({ party: 'republican', stance: supportStances }),
+    countQ({ party: 'republican', stance: opposeStances }),
+    // Independent counts
+    countQ({ party: 'independent' }),
+    countQ({ party: 'independent', stance: supportStances }),
+    countQ({ party: 'independent', stance: opposeStances }),
+  ])
 
-  const allStanceStats = await fetchStanceStats()
+  const totalAll = totalRes.count ?? 0
+  const supportsAll = supportsRes.count ?? 0
+  const opposesAll = opposesRes.count ?? 0
+  const mixedAll = totalAll - supportsAll - opposesAll
 
-  // Apply filters for count
-  let filteredStats = allStanceStats
-  if (sp.party) filteredStats = filteredStats.filter((s) => s.party === sp.party)
-  if (sp.chamber) filteredStats = filteredStats.filter((s) => (s as any).chamber === sp.chamber)
-
-  // Compute summary stats from ALL stances (unfiltered, for the header)
-  const totalAll = allStanceStats.length
-  const supportsAll = allStanceStats.filter((s) => stanceBucket(s.stance) === 'supports').length
-  const opposesAll = allStanceStats.filter((s) => stanceBucket(s.stance) === 'opposes').length
-  const mixedAll = allStanceStats.filter((s) => {
-    const b = stanceBucket(s.stance)
-    return b === 'mixed' || b === 'neutral'
-  }).length
-
-  // Party breakdown stats (from all stances, unfiltered)
   const partyStats: Record<string, { total: number; supports: number; opposes: number; mixed: number }> = {}
-  for (const s of allStanceStats) {
-    const p = s.party
-    if (!p) continue
-    if (!partyStats[p]) partyStats[p] = { total: 0, supports: 0, opposes: 0, mixed: 0 }
-    partyStats[p].total++
-    const bucket = stanceBucket(s.stance)
-    if (bucket === 'supports') partyStats[p].supports++
-    else if (bucket === 'opposes') partyStats[p].opposes++
-    else partyStats[p].mixed++
-  }
+  const demTotal = demTotalR.count ?? 0
+  if (demTotal > 0) partyStats.democrat = { total: demTotal, supports: demSupR.count ?? 0, opposes: demOppR.count ?? 0, mixed: demTotal - (demSupR.count ?? 0) - (demOppR.count ?? 0) }
+  const gopTotal = gopTotalR.count ?? 0
+  if (gopTotal > 0) partyStats.republican = { total: gopTotal, supports: gopSupR.count ?? 0, opposes: gopOppR.count ?? 0, mixed: gopTotal - (gopSupR.count ?? 0) - (gopOppR.count ?? 0) }
+  const indTotal = indTotalR.count ?? 0
+  if (indTotal > 0) partyStats.independent = { total: indTotal, supports: indSupR.count ?? 0, opposes: indOppR.count ?? 0, mixed: indTotal - (indSupR.count ?? 0) - (indOppR.count ?? 0) }
 
   // Filtered total for pagination
-  const filteredTotal = filteredStats.length
+  const filteredTotal = hasFilters ? (filteredRes.count ?? 0) : totalAll
   const totalPages = Math.max(1, Math.ceil(filteredTotal / PAGE_SIZE))
   const safePage = Math.min(currentPage, totalPages)
   const offset = (safePage - 1) * PAGE_SIZE

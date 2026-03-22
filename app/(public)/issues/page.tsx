@@ -50,71 +50,43 @@ export default async function IssuesPage({ searchParams }: PageProps) {
     )
   }
 
-  // Fetch stances per issue in parallel — each issue paginates independently
+  // Stance types grouped by bucket
+  const supportStances = ['strongly_supports', 'supports', 'leans_support']
+  const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
+
   const issueIds = issues.map(i => i.id)
 
-  async function fetchAllStancesForIssue(issueId: string) {
-    const stances: { stance: string; party: string }[] = []
-    let from = 0
-    while (true) {
-      const { data } = await supabase
-        .from('politician_issues')
-        .select('stance, politicians:politician_id(party)')
-        .eq('issue_id', issueId)
-        .range(from, from + 999)
-      if (!data || !data.length) break
-      for (const row of data as any[]) {
-        stances.push({ stance: row.stance, party: row.politicians?.party ?? 'independent' })
-      }
-      if (data.length < 1000) break
-      from += 1000
+  // Fast parallel count queries per issue (instead of fetching 100K+ rows)
+  async function fetchIssueStats(issueId: string) {
+    const [totalR, supR, oppR, demTotalR, demSupR, demOppR, gopTotalR, gopSupR, gopOppR] = await Promise.all([
+      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issueId),
+      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issueId).in('stance', supportStances),
+      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issueId).in('stance', opposeStances),
+      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'democrat'),
+      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'democrat').in('stance', supportStances),
+      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'democrat').in('stance', opposeStances),
+      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'republican'),
+      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'republican').in('stance', supportStances),
+      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'republican').in('stance', opposeStances),
+    ])
+    const total = totalR.count ?? 0
+    const supports = supR.count ?? 0
+    const opposes = oppR.count ?? 0
+    return {
+      total, supports, opposes, mixed: total - supports - opposes,
+      demTotal: demTotalR.count ?? 0, demSupports: demSupR.count ?? 0, demOpposes: demOppR.count ?? 0,
+      gopTotal: gopTotalR.count ?? 0, gopSupports: gopSupR.count ?? 0, gopOpposes: gopOppR.count ?? 0,
     }
-    return stances
   }
 
-  // Run all 14 issue queries in parallel
-  const issueStancesArr = await Promise.all(issueIds.map(id => fetchAllStancesForIssue(id)))
+  // Run all issue stats in parallel
+  const statsArr = await Promise.all(issueIds.map(id => fetchIssueStats(id)))
 
-  const allStances: { issue_id: string; stance: string; party: string }[] = []
+  const issueStats = new Map<string, typeof statsArr[0]>()
   const issueTotalCounts = new Map<string, number>()
   for (let i = 0; i < issueIds.length; i++) {
-    issueTotalCounts.set(issueIds[i], issueStancesArr[i].length)
-    for (const s of issueStancesArr[i]) {
-      allStances.push({ issue_id: issueIds[i], ...s })
-    }
-  }
-
-  // Build per-issue stats
-  const issueStats = new Map<string, {
-    total: number; supports: number; opposes: number; mixed: number
-    demSupports: number; demOpposes: number; demTotal: number
-    gopSupports: number; gopOpposes: number; gopTotal: number
-  }>()
-
-  for (const s of allStances) {
-    if (!issueStats.has(s.issue_id)) {
-      issueStats.set(s.issue_id, {
-        total: 0, supports: 0, opposes: 0, mixed: 0,
-        demSupports: 0, demOpposes: 0, demTotal: 0,
-        gopSupports: 0, gopOpposes: 0, gopTotal: 0,
-      })
-    }
-    const stats = issueStats.get(s.issue_id)!
-    stats.total++
-    const bucket = stanceBucket(s.stance)
-    if (bucket === 'supports') stats.supports++
-    else if (bucket === 'opposes') stats.opposes++
-    else stats.mixed++
-
-    if (s.party === 'democrat') {
-      stats.demTotal++
-      if (bucket === 'supports') stats.demSupports++
-      else if (bucket === 'opposes') stats.demOpposes++
-    } else if (s.party === 'republican') {
-      stats.gopTotal++
-      if (bucket === 'supports') stats.gopSupports++
-      else if (bucket === 'opposes') stats.gopOpposes++
-    }
+    issueStats.set(issueIds[i], statsArr[i])
+    issueTotalCounts.set(issueIds[i], statsArr[i].total)
   }
 
   // Sort
