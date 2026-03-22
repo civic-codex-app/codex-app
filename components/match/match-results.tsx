@@ -48,7 +48,7 @@ export function MatchResults({ results, onRetake }: Props) {
     if (navigator.share) {
       navigator.share({
         title: `I'm ${top.score}% aligned with ${top.politician.name}`,
-        text: 'Take the Alignment Quiz quiz on Codex!',
+        text: 'Take the Who Represents You quiz on Codex!',
         url: shareUrl,
       }).catch(() => {})
     } else {

@@ -14,7 +14,7 @@ import { STATE_NAMES } from '@/lib/constants/us-states'
 const QUICK_LINKS = [
   {
     href: '/match',
-    title: 'Alignment Quiz',
+    title: 'Who Represents You',
     description: 'Find politicians who align with your views',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">

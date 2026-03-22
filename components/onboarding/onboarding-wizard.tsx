@@ -253,7 +253,7 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
             </div>
           )}
 
-          {/* -------- Step 3: Alignment Quiz -------- */}
+          {/* -------- Step 3: Who Represents You -------- */}
           {step === 3 && (
             <div className="space-y-6">
               <div className="text-center">
