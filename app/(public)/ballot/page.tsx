@@ -52,7 +52,7 @@ interface Race {
 }
 
 /* ── Data fetching ────────────────────────────────────────────────── */
-async function fetchBallotRaces(state: string): Promise<Race[]> {
+async function fetchBallotRaces(state: string, userDistrict?: string | null): Promise<Race[]> {
   const supabase = createServiceRoleClient()
   const todayStr = new Date().toISOString().split('T')[0]
 
@@ -93,6 +93,18 @@ async function fetchBallotRaces(state: string): Promise<Race[]> {
       from += PAGE
       if (data.length < PAGE) hasMore = false
     }
+  }
+
+  if (allRaces.length === 0) return []
+
+  // Filter to only statewide races + user's specific district
+  // Statewide = no district (senate, governor, presidential)
+  // District-specific = matches user's congressional district
+  if (userDistrict) {
+    allRaces = allRaces.filter((r) => {
+      if (!r.district) return true // statewide race
+      return r.district === userDistrict
+    })
   }
 
   if (allRaces.length === 0) return []
@@ -246,7 +258,18 @@ export default async function BallotPreviewPage() {
     )
   }
 
-  const races = await fetchBallotRaces(userState)
+  // Look up user's congressional district from zip
+  let userDistrict: string | null = null
+  if (userZip) {
+    try {
+      const zipMap = (await import('@/lib/data/zip-to-district.json')).default as Record<string, string>
+      userDistrict = zipMap[userZip] ?? null
+    } catch {
+      // zip-to-district.json may not exist
+    }
+  }
+
+  const races = await fetchBallotRaces(userState, userDistrict)
 
   // Group races by category
   const grouped: Record<RaceGroup, Race[]> = {
