@@ -101,7 +101,7 @@ export default async function HomePage() {
         {/* Quick Actions — above the fold */}
         <div className="mb-12">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link href="/match" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
+            <Link href="/quiz" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
               </div>

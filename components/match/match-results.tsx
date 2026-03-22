@@ -43,7 +43,7 @@ export function MatchResults({ results, onRetake }: Props) {
     const top = results[0]
     if (!top) return
 
-    const shareUrl = `${window.location.origin}/match?result=${top.politician.slug}&score=${top.score}`
+    const shareUrl = `${window.location.origin}/quiz?result=${top.politician.slug}&score=${top.score}`
 
     if (navigator.share) {
       navigator.share({

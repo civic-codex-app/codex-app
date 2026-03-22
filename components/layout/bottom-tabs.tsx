@@ -72,7 +72,7 @@ const MORE_LINKS: MoreLink[] = [
 
 const AUTH_MORE_LINKS: MoreLink[] = [
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/match', label: 'Who Represents You' },
+  { href: '/quiz', label: 'Who Represents You' },
   { href: '/following', label: 'Following' },
   { href: '/account', label: 'Account' },
 ]

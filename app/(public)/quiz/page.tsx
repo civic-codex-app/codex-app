@@ -42,7 +42,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const title = `${score}% Match with ${politician.name} -- Codex`
   const description = `I'm ${score}% aligned with ${politician.name}. Take the Who Represents You quiz on Codex to see who represents you!`
 
-  const ogImageUrl = `${BASE_URL}/api/og/match?${new URLSearchParams({
+  const ogImageUrl = `${BASE_URL}/api/og/quiz?${new URLSearchParams({
     name: politician.name,
     party: politician.party ?? '',
     state: politician.state ?? '',
@@ -55,7 +55,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     openGraph: {
       title,
       description,
-      url: `${BASE_URL}/match?result=${result}&score=${score}`,
+      url: `${BASE_URL}/quiz?result=${result}&score=${score}`,
       siteName: 'Codex',
       images: [
         {

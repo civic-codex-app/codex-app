@@ -13,7 +13,7 @@ import { STATE_NAMES } from '@/lib/constants/us-states'
 
 const QUICK_LINKS = [
   {
-    href: '/match',
+    href: '/quiz',
     title: 'Who Represents You',
     description: 'Find politicians who align with your views',
     icon: (

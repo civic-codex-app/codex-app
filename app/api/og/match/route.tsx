@@ -185,7 +185,7 @@ export async function GET(req: NextRequest) {
             color: '#4b5563',
           }}
         >
-          See who represents you at codex-app-gold.vercel.app/match
+          See who represents you at codex-app-gold.vercel.app/quiz
         </div>
       </div>
     ),

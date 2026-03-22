@@ -268,7 +268,7 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
 
               <div className="flex flex-col gap-3 pt-2">
                 <Button
-                  onClick={() => router.push('/match')}
+                  onClick={() => router.push('/quiz')}
                   className="w-full"
                 >
                   Take the Quiz
