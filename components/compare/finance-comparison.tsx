@@ -1,5 +1,3 @@
-import { partyColor } from '@/lib/constants/parties'
-
 interface FinanceComparisonProps {
   financeA: any[]
   financeB: any[]
@@ -13,9 +11,12 @@ function formatMoney(amount: number): string {
   return `$${amount.toLocaleString()}`
 }
 
+const COLOR_A = '#6366F1' // indigo
+const COLOR_B = '#F97316' // orange
+
 export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceComparisonProps) {
-  const colorA = partyColor(polA.party)
-  const colorB = partyColor(polB.party)
+  const colorA = COLOR_A
+  const colorB = COLOR_B
 
   // Get most recent cycle for each
   const latestA = financeA.length > 0
@@ -27,7 +28,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
 
   if (!latestA && !latestB) {
     return (
-      <div>
+      <div className="mb-8">
         <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
           Campaign Finance
         </h2>
@@ -57,7 +58,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
   ]
 
   return (
-    <div>
+    <div className="mb-8">
       <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
         Campaign Finance
       </h2>

@@ -7,6 +7,7 @@ interface BackgroundComparisonProps {
 }
 
 export function BackgroundComparison({ polA, polB }: BackgroundComparisonProps) {
+  // Wrapper has mb-8 applied via parent
   const currentYear = new Date().getFullYear()
 
   const yearsA = polA.since_year ? currentYear - polA.since_year : null
@@ -43,7 +44,7 @@ export function BackgroundComparison({ polA, polB }: BackgroundComparisonProps) 
   ]
 
   return (
-    <div>
+    <div className="mb-8">
       <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
         Background
       </h2>

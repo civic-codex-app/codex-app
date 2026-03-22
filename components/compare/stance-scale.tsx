@@ -2,8 +2,7 @@
 
 import Link from 'next/link'
 import { IssueIcon } from '@/components/icons/issue-icon'
-import { STANCE_NUMERIC, stanceStyle, stanceBucket } from '@/lib/utils/stances'
-import { partyColor } from '@/lib/constants/parties'
+import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
 
 interface StanceScaleProps {
   issues: Array<{ slug: string; name: string; icon?: string; a?: string; b?: string }>
@@ -12,45 +11,34 @@ interface StanceScaleProps {
 }
 
 export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
-  const colorA = partyColor(polA.party)
-  const colorB = partyColor(polB.party)
+  const lastA = polA.name.split(' ').pop()
+  const lastB = polB.name.split(' ').pop()
 
   return (
-    <div>
+    <div className="mb-8">
       <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
-        Stance Comparison
+        Issue Positions
       </h2>
 
-      {/* Legend */}
-      <div className="mb-4 flex items-center gap-4 text-[11px] text-[var(--codex-sub)]">
-        <div className="flex items-center gap-1.5">
-          <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: colorA }} />
-          <span>{polA.name.split(' ').pop()}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: colorB }} />
-          <span>{polB.name.split(' ').pop()}</span>
-        </div>
-      </div>
-
       <div className="space-y-1">
+        {/* Header row */}
+        <div className="hidden gap-2 px-4 pb-2 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_140px_140px]">
+          <span>Issue</span>
+          <span className="text-center">{lastA}</span>
+          <span className="text-center">{lastB}</span>
+        </div>
+
         {issues.map((issue) => {
-          const numA = STANCE_NUMERIC[issue.a ?? 'unknown'] ?? -1
-          const numB = STANCE_NUMERIC[issue.b ?? 'unknown'] ?? -1
           const styleA = stanceStyle(issue.a ?? 'unknown')
           const styleB = stanceStyle(issue.b ?? 'unknown')
           const bucketA = stanceBucket(issue.a ?? 'unknown')
           const bucketB = stanceBucket(issue.b ?? 'unknown')
-          const match =
-            bucketA !== 'unknown' && bucketB !== 'unknown' && bucketA === bucketB
-
-          const posA = numA >= 0 ? (numA / 6) * 100 : -1
-          const posB = numB >= 0 ? (numB / 6) * 100 : -1
+          const match = bucketA !== 'unknown' && bucketB !== 'unknown' && bucketA === bucketB
 
           return (
             <div
               key={issue.slug}
-              className="rounded-md px-4 py-3"
+              className="rounded-md px-4 py-3 sm:grid sm:grid-cols-[1fr_140px_140px] sm:items-center sm:gap-2"
               style={{
                 background: match ? '#22C55E08' : undefined,
                 border: `1px solid ${match ? '#22C55E18' : 'var(--codex-border)'}`,
@@ -59,7 +47,7 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
               {/* Issue name */}
               <Link
                 href={`/issues/${issue.slug}`}
-                className="mb-2 flex items-center gap-2 text-[13px] font-medium text-[var(--codex-text)] hover:underline"
+                className="flex items-center gap-2 text-[13px] font-medium text-[var(--codex-text)] hover:underline"
               >
                 {issue.icon && (
                   <IssueIcon icon={issue.icon} size={14} className="text-[var(--codex-sub)]" />
@@ -67,55 +55,29 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
                 {issue.name}
               </Link>
 
-              {/* Scale track */}
-              <div className="relative mx-1 h-4">
-                {/* Track background */}
-                <div className="absolute left-0 right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[var(--codex-border)]" />
-
-                {/* 7 tick marks */}
-                {[0, 1, 2, 3, 4, 5, 6].map((tick) => (
-                  <div
-                    key={tick}
-                    className="absolute top-1/2 h-2 w-px -translate-x-1/2 -translate-y-1/2 bg-[var(--codex-faint)]"
-                    style={{ left: `${(tick / 6) * 100}%`, opacity: 0.4 }}
-                  />
-                ))}
-
-                {/* Dot A */}
-                {posA >= 0 ? (
-                  <div
-                    className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--codex-card)]"
-                    style={{ left: `${posA}%`, background: colorA, zIndex: 2 }}
-                  />
-                ) : null}
-
-                {/* Dot B */}
-                {posB >= 0 ? (
-                  <div
-                    className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--codex-card)]"
-                    style={{ left: `${posB}%`, background: colorB, zIndex: 2 }}
-                  />
-                ) : null}
-              </div>
-
-              {/* Labels row */}
-              <div className="mt-1.5 flex items-center justify-between text-[11px]">
-                <span style={{ color: colorA }}>
-                  {posA >= 0 ? styleA.shortLabel : '—'}
-                </span>
-                <span style={{ color: colorB }}>
-                  {posB >= 0 ? styleB.shortLabel : '—'}
-                </span>
+              {/* Stance badges */}
+              <div className="mt-2 flex items-center gap-3 sm:mt-0 sm:contents">
+                <div className="flex sm:justify-center">
+                  <span
+                    className="rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em]"
+                    style={{ color: styleA.color, background: `${styleA.color}18` }}
+                  >
+                    {styleA.shortLabel || styleA.label}
+                  </span>
+                </div>
+                <span className="text-[11px] text-[var(--codex-faint)] sm:hidden">vs</span>
+                <div className="flex sm:justify-center">
+                  <span
+                    className="rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em]"
+                    style={{ color: styleB.color, background: `${styleB.color}18` }}
+                  >
+                    {styleB.shortLabel || styleB.label}
+                  </span>
+                </div>
               </div>
             </div>
           )
         })}
-      </div>
-
-      {/* Scale axis labels */}
-      <div className="mt-2 flex justify-between px-5 text-[10px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">
-        <span>Strongly Opposes</span>
-        <span>Strongly Supports</span>
       </div>
     </div>
   )

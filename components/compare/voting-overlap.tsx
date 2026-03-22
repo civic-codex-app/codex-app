@@ -12,6 +12,18 @@ const VOTE_COLORS: Record<string, { bg: string; text: string }> = {
   not_voting: { bg: '#9CA3AF18', text: '#9CA3AF' },
 }
 
+// Check if a string looks like a UUID
+function isUUID(str: string) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str)
+}
+
+function getBillLabel(vote: any) {
+  // Prefer bill_number (e.g., "H.R. 1234"), then bill_name if not a UUID
+  if (vote.bill_number && !isUUID(vote.bill_number)) return vote.bill_number
+  if (vote.bill_name && !isUUID(vote.bill_name)) return vote.bill_name
+  return null // skip UUID-only bills
+}
+
 export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapProps) {
   // Index B votes by bill_id for fast lookup
   const bByBill = new Map<string, any>()
@@ -20,13 +32,15 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
   }
 
   // Find shared votes (same bill_id)
-  const shared: { bill: any; voteA: string; voteB: string }[] = []
+  const shared: { label: string; voteA: string; voteB: string }[] = []
   for (const vA of votingA) {
     if (!vA.bill_id) continue
     const vB = bByBill.get(vA.bill_id)
     if (!vB) continue
+    const label = getBillLabel(vA) ?? getBillLabel(vB)
+    if (!label) continue // skip if both are UUIDs
     shared.push({
-      bill: vA.bills ?? vB.bills ?? { name: `Bill #${vA.bill_id}` },
+      label,
       voteA: vA.vote,
       voteB: vB.vote,
     })
@@ -48,7 +62,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
 
   if (shared.length === 0) {
     return (
-      <div>
+      <div className="mb-8">
         <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
           Voting Record Overlap
         </h2>
@@ -62,7 +76,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
   const display = shared.slice(0, 10)
 
   return (
-    <div>
+    <div className="mb-8">
       <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
         Voting Record Overlap
       </h2>
@@ -116,7 +130,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
               className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-md border border-[var(--codex-border)] px-4 py-2 sm:grid-cols-[1fr_80px_80px]"
             >
               <span className="truncate text-[13px] text-[var(--codex-text)]">
-                {s.bill?.name ?? s.bill?.title ?? 'Unknown Bill'}
+                {s.label}
               </span>
               <div className="flex justify-center">
                 <span
