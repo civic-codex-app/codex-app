@@ -1,0 +1,173 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import { USMap, STATE_NAMES } from '@/components/visualizations/us-map'
+import { partyColor } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
+
+type Metric = 'raised' | 'spent' | 'cash'
+
+interface StateFin {
+  raised: number
+  spent: number
+  cash: number
+  count: number
+  politicians: Array<{
+    name: string
+    slug: string
+    party: string
+    raised: number
+    spent: number
+    cash: number
+  }>
+}
+
+interface MoneyMapViewProps {
+  stateFinance: Record<string, StateFin>
+}
+
+function formatMoney(amount: number): string {
+  if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(1)}M`
+  if (amount >= 1_000) return `$${(amount / 1_000).toFixed(0)}K`
+  return `$${amount.toLocaleString()}`
+}
+
+const METRIC_LABELS: Record<Metric, string> = {
+  raised: 'Total Raised',
+  spent: 'Total Spent',
+  cash: 'Cash on Hand',
+}
+
+export function MoneyMapView({ stateFinance }: MoneyMapViewProps) {
+  const [metric, setMetric] = useState<Metric>('raised')
+  const [selectedState, setSelectedState] = useState<string | null>(null)
+
+  // Find max value for color scaling
+  const values = Object.values(stateFinance).map((sf) => sf[metric])
+  const maxVal = Math.max(...values, 1)
+
+  // Build state data for the map
+  const stateData: Record<string, { value: number; label?: string; color?: string }> = {}
+  for (const [state, sf] of Object.entries(stateFinance)) {
+    const val = sf[metric]
+    // Logarithmic scale for better color distribution
+    const intensity = Math.log(val + 1) / Math.log(maxVal + 1)
+    const r = Math.round(34 + (22 - 34) * intensity)
+    const g = Math.round(197 + (163 - 197) * intensity)
+    const b = Math.round(94 + (74 - 94) * intensity)
+    stateData[state] = {
+      value: val,
+      label: formatMoney(val),
+      color: val > 0 ? `rgb(${r}, ${g}, ${b})` : undefined,
+    }
+  }
+
+  const selectedData = selectedState ? stateFinance[selectedState] : null
+
+  return (
+    <div>
+      {/* Breadcrumb */}
+      <div className="mb-2 flex items-center gap-2 text-[12px] text-[var(--codex-faint)]">
+        <Link href="/insights" className="hover:text-[var(--codex-text)]">Insights</Link>
+        <span>/</span>
+        <span>Money Map</span>
+      </div>
+
+      <h1 className="mb-2 font-serif text-[clamp(24px,4vw,36px)] font-normal leading-[1.1]">
+        Money <span className="italic text-[var(--codex-subtle)]">Map</span>
+      </h1>
+      <p className="mb-6 text-[14px] leading-relaxed text-[var(--codex-sub)]">
+        Campaign finance totals by state. Click a state to see individual politician breakdowns.
+      </p>
+
+      {/* Metric selector */}
+      <div className="mb-4 flex gap-2">
+        {(Object.keys(METRIC_LABELS) as Metric[]).map((m) => (
+          <button
+            key={m}
+            onClick={() => setMetric(m)}
+            className={`rounded-full px-4 py-1.5 text-[12px] font-medium transition-colors ${
+              metric === m
+                ? 'bg-[var(--codex-text)] text-[var(--codex-card)]'
+                : 'border border-[var(--codex-border)] text-[var(--codex-sub)] hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]'
+            }`}
+          >
+            {METRIC_LABELS[m]}
+          </button>
+        ))}
+      </div>
+
+      {/* Map */}
+      <div className="rounded-lg border border-[var(--codex-border)] p-4">
+        <USMap
+          stateData={stateData}
+          onStateClick={(code) => setSelectedState(selectedState === code ? null : code)}
+          legend={[
+            { color: '#22C55E', label: 'High' },
+            { color: '#86EFAC', label: 'Medium' },
+            { color: 'var(--codex-hover)', label: 'Low / No Data' },
+          ]}
+        />
+      </div>
+
+      {/* State detail panel */}
+      {selectedState && selectedData && (
+        <div className="mt-6 rounded-lg border border-[var(--codex-border)] p-5">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="font-serif text-xl">
+              {STATE_NAMES[selectedState] ?? selectedState}
+            </h2>
+            <button
+              onClick={() => setSelectedState(null)}
+              className="text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          {/* State totals */}
+          <div className="mb-4 grid grid-cols-3 gap-4">
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total Raised</div>
+              <div className="font-serif text-lg text-[var(--codex-text)]">{formatMoney(selectedData.raised)}</div>
+            </div>
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total Spent</div>
+              <div className="font-serif text-lg text-[var(--codex-text)]">{formatMoney(selectedData.spent)}</div>
+            </div>
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Cash on Hand</div>
+              <div className="font-serif text-lg text-[var(--codex-text)]">{formatMoney(selectedData.cash)}</div>
+            </div>
+          </div>
+
+          {/* Politician breakdown */}
+          <h3 className="mb-2 text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+            Politicians ({selectedData.count})
+          </h3>
+          <div className="space-y-1">
+            {selectedData.politicians.slice(0, 15).map((p) => (
+              <div key={p.slug} className="flex items-center gap-3 rounded-md border border-[var(--codex-border)] px-3 py-2">
+                <PartyIcon party={p.party} size={12} />
+                <Link href={`/politicians/${p.slug}`} className="flex-1 truncate text-[13px] font-medium text-[var(--codex-text)] hover:underline">
+                  {p.name}
+                </Link>
+                <span className="text-[12px] tabular-nums text-[var(--codex-sub)]">
+                  {formatMoney(p[metric])}
+                </span>
+              </div>
+            ))}
+            {selectedData.politicians.length > 15 && (
+              <p className="pt-1 text-center text-[11px] text-[var(--codex-faint)]">
+                +{selectedData.politicians.length - 15} more
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
