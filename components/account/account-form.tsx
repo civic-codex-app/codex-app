@@ -91,15 +91,34 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
     const form = new FormData(e.currentTarget)
     const supabase = createClient()
 
+    const zipCode = (form.get('zip_code') as string) || null
+
+    // Auto-lookup city from zip code
+    let city: string | null = null
+    if (zipCode && zipCode.length === 5) {
+      try {
+        const res = await fetch(`https://api.zippopotam.us/us/${zipCode}`)
+        if (res.ok) {
+          const data = await res.json()
+          city = data.places?.[0]?.['place name'] ?? null
+        }
+      } catch {
+        // silently fail — city is optional
+      }
+    }
+
+    const updates: Record<string, any> = {
+      display_name: (form.get('display_name') as string) || null,
+      bio: (form.get('bio') as string) || null,
+      state: (form.get('state') as string) || null,
+      zip_code: zipCode,
+      notifications_enabled: form.get('notifications') === 'on',
+    }
+    if (city) updates.city = city
+
     const { error: updateError } = await supabase
       .from('profiles')
-      .update({
-        display_name: (form.get('display_name') as string) || null,
-        bio: (form.get('bio') as string) || null,
-        state: (form.get('state') as string) || null,
-        zip_code: (form.get('zip_code') as string) || null,
-        notifications_enabled: form.get('notifications') === 'on',
-      })
+      .update(updates)
       .eq('id', profile!.id)
 
     if (updateError) {

@@ -52,7 +52,7 @@ interface Race {
 }
 
 /* ── Data fetching ────────────────────────────────────────────────── */
-async function fetchBallotRaces(state: string, userDistrict?: string | null): Promise<Race[]> {
+async function fetchBallotRaces(state: string, userDistrict?: string | null, userCity?: string | null): Promise<Race[]> {
   const supabase = createServiceRoleClient()
   const todayStr = new Date().toISOString().split('T')[0]
 
@@ -97,15 +97,24 @@ async function fetchBallotRaces(state: string, userDistrict?: string | null): Pr
 
   if (allRaces.length === 0) return []
 
-  // Filter to only statewide races + user's specific district
-  // Statewide = no district (senate, governor, presidential)
-  // District-specific = matches user's congressional district
-  if (userDistrict) {
-    allRaces = allRaces.filter((r) => {
-      if (!r.district) return true // statewide race
+  // Filter races to user's specific district and city
+  const LOCAL = ['mayor', 'city_council', 'county', 'school_board', 'other_local']
+  const cityLower = userCity?.toLowerCase()
+
+  allRaces = allRaces.filter((r) => {
+    // Local races: only show if race name contains user's city
+    if (LOCAL.includes(r.chamber)) {
+      if (!cityLower) return false // no city info, skip local races
+      return r.name.toLowerCase().includes(cityLower)
+    }
+    // District races: match user's district
+    if (r.district) {
+      if (!userDistrict) return true // no district info, show all
       return r.district === userDistrict
-    })
-  }
+    }
+    // Statewide races (no district): always show
+    return true
+  })
 
   if (allRaces.length === 0) return []
 
@@ -209,12 +218,13 @@ export default async function BallotPreviewPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('state, zip_code')
+    .select('state, zip_code, city')
     .eq('id', user.id)
     .single()
 
   const userState = profile?.state as string | null
   const userZip = profile?.zip_code as string | null
+  const userCity = profile?.city as string | null
   const stateName = userState ? STATE_NAMES[userState] ?? userState : null
 
   // If no state set, show prompt
@@ -269,7 +279,7 @@ export default async function BallotPreviewPage() {
     }
   }
 
-  const races = await fetchBallotRaces(userState, userDistrict)
+  const races = await fetchBallotRaces(userState, userDistrict, userCity)
 
   // Group races by category
   const grouped: Record<RaceGroup, Race[]> = {
