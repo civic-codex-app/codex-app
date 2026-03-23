@@ -136,7 +136,7 @@ export default function DataSourcesPage() {
   return (
     <>
       <Header />
-      <main className="mx-auto max-w-3xl px-6 pb-24 pt-8 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <h1 className="mb-2 text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--codex-text)]">
           Data Sources & Disclaimer
         </h1>
@@ -237,7 +237,7 @@ export default function DataSourcesPage() {
         </p>
 
         <Footer />
-      </main>
+      </div>
     </>
   )
 }
