@@ -10,6 +10,7 @@ import { SurpriseMatches } from '@/components/dashboard/surprise-matches'
 import { computeVoterMatch } from '@/lib/utils/voter-match'
 import { stanceBucket } from '@/lib/utils/stances'
 import type { Politician } from '@/lib/types/politician'
+import { IssueIcon } from '@/components/icons/issue-icon'
 
 export const dynamic = 'force-dynamic'
 import Link from 'next/link'
@@ -268,6 +269,25 @@ export default async function DashboardPage() {
       .in('id', followedBillIds)
       .order('last_action_date', { ascending: false })
     followedBills = (data ?? []) as any
+  }
+
+  // Get followed issues
+  const { data: issueFollows } = await supabase
+    .from('issue_follows')
+    .select('issue_id')
+    .eq('user_id', user!.id)
+
+  const followedIssueIds = (issueFollows ?? []).map((f: { issue_id: string }) => f.issue_id)
+
+  let followedIssues: Array<{ id: string; name: string; slug: string; icon: string | null; category: string }> = []
+  if (followedIssueIds.length > 0) {
+    const serviceForIssues = createServiceRoleClient()
+    const { data } = await serviceForIssues
+      .from('issues')
+      .select('id, name, slug, icon, category')
+      .in('id', followedIssueIds)
+      .order('name')
+    followedIssues = (data ?? []) as any
   }
 
   // Get upcoming election
@@ -601,6 +621,54 @@ export default async function DashboardPage() {
           />
         </section>
       )}
+
+      {/* Followed Issues */}
+      <section className="mb-10">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+            Followed Issues ({followedIssues.length})
+          </h2>
+          <Link
+            href="/issues"
+            className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+          >
+            Browse issues &rarr;
+          </Link>
+        </div>
+
+        {followedIssues.length > 0 ? (
+          <div className="divide-y divide-[var(--codex-border)] rounded-md border border-[var(--codex-border)]">
+            {followedIssues.map((issue) => (
+              <Link
+                key={issue.id}
+                href={`/issues/${issue.slug}`}
+                className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+              >
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md bg-[var(--codex-badge-bg)] text-[var(--codex-sub)]">
+                  <IssueIcon icon={issue.icon} size={18} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-sm font-medium text-[var(--codex-text)]">
+                    {issue.name}
+                  </div>
+                  <div className="text-xs text-[var(--codex-sub)]">
+                    {issue.category}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-md border border-[var(--codex-border)] py-10 text-center">
+            <p className="mb-2 text-sm text-[var(--codex-sub)]">
+              No followed issues yet
+            </p>
+            <p className="text-xs text-[var(--codex-faint)]">
+              Follow issues to track politician stances here
+            </p>
+          </div>
+        )}
+      </section>
 
       {/* Following */}
       <section>

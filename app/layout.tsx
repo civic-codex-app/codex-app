@@ -81,6 +81,18 @@ export default function RootLayout({
             __html: `(function(){try{var t=localStorage.getItem('codex-theme');if(t==='dark'){document.documentElement.classList.add('dark')}else if(t==='light'){document.documentElement.classList.add('light')}else{var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;document.documentElement.classList.add(d?'dark':'light')}}catch(e){}})()`,
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Poli',
+              url: 'https://getpoli.app',
+              description: 'Track U.S. politicians, their stances on issues, voting records, campaign finance, and elections.',
+            }),
+          }}
+        />
         {children}
         <VercelAnalytics />
       </body>

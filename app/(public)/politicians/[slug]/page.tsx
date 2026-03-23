@@ -229,8 +229,8 @@ export default async function PoliticianPage({ params }: PageProps) {
     jobTitle: pol.title,
     description: pol.bio,
     image: pol.image_url,
-    url: `https://getpoli.com/politicians/${pol.slug}`,
-    affiliation: {
+    url: `https://getpoli.app/politicians/${pol.slug}`,
+    memberOf: {
       '@type': 'Organization',
       name: pol.party === 'democrat' ? 'Democratic Party' : pol.party === 'republican' ? 'Republican Party' : pol.party === 'green' ? 'Green Party' : 'Independent',
     },
@@ -242,6 +242,7 @@ export default async function PoliticianPage({ params }: PageProps) {
       pol.website_url,
       pol.twitter_url,
       pol.facebook_url,
+      pol.instagram_url,
       pol.youtube_url,
       pol.wiki_url,
     ].filter(Boolean),

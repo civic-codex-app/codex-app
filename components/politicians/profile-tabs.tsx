@@ -615,14 +615,27 @@ function StanceGroup({
                         {getStanceContext(s.issues.slug, s.stance)}
                       </p>
                     )}
-                    {s.issues?.slug && (
-                      <Link
-                        href={`/issues/${s.issues.slug}`}
-                        className="mt-2 inline-block text-[12px] text-blue-500 hover:underline"
-                      >
-                        View all positions on {s.issues.name} &rarr;
-                      </Link>
-                    )}
+                    <div className="mt-2 flex flex-wrap items-center gap-3">
+                      {s.issues?.slug && (
+                        <Link
+                          href={`/issues/${s.issues.slug}`}
+                          className="inline-block text-[12px] text-blue-500 hover:underline"
+                        >
+                          View all positions on {s.issues.name} &rarr;
+                        </Link>
+                      )}
+                      {s.source_url && (
+                        <a
+                          href={s.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] text-[var(--codex-faint)] hover:text-[var(--codex-sub)]"
+                        >
+                          Source
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                      )}
+                    </div>
                     {/* Stance change timeline */}
                     <StanceTimelineToggle hasHistory={issueHistory.length > 0}>
                       <StanceTimeline

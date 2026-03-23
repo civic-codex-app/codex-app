@@ -36,6 +36,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { href: '/elections', label: 'Elections' },
+  { href: '/states', label: 'States' },
   {
     href: '/issues',
     label: 'Issues',
@@ -54,6 +55,7 @@ const NAV_ITEMS: NavItem[] = [
       { href: '/polls', label: 'Polls' },
     ],
   },
+  { href: '/feed', label: 'Feed' },
 ]
 
 const USER_MENU_ITEMS: DropdownItem[] = [

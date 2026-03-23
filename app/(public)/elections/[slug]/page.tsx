@@ -131,8 +131,22 @@ export default async function RaceDetailPage({ params }: PageProps) {
     partyGroups[c.party] = (partyGroups[c.party] || 0) + 1
   }
 
+  // JSON-LD structured data for individual race
+  const raceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: race.name,
+    startDate: election?.election_date,
+    description: race.description,
+    url: `https://getpoli.app/elections/${slug}`,
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(raceJsonLd) }}
+      />
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
@@ -461,8 +475,22 @@ async function renderStateElection(
     month: 'long', day: 'numeric', year: 'numeric',
   })
 
+  // JSON-LD structured data for state election
+  const electionJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: election.name,
+    startDate: election.election_date,
+    description: election.description,
+    url: `https://getpoli.app/elections/${election.slug}`,
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(electionJsonLd) }}
+      />
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link

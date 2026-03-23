@@ -128,11 +128,11 @@ export default async function BillDetailPage({ params }: PageProps) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Legislation',
-    name: bill.title,
+    name: `${bill.number}: ${bill.title}`,
     legislationIdentifier: bill.number,
     description: bill.summary,
     legislationDate: bill.introduced_date,
-    url: `https://getpoli.com/bills/${bill.id}`,
+    url: `https://getpoli.app/bills/${bill.id}`,
     legislationPassedBy: bill.congress_session
       ? { '@type': 'Organization', name: `${bill.congress_session} United States Congress` }
       : undefined,

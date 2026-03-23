@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { IssueIcon } from '@/components/icons/issue-icon'
@@ -11,6 +12,7 @@ import { stanceBucket, stanceDisplayBadge, STANCE_STYLES } from '@/lib/utils/sta
 import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
 import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
 import { StanceGroup, type StanceEntry } from '@/components/issues/stance-group'
+import { FollowIssueButton } from '@/components/issues/follow-issue-button'
 
 export const revalidate = 3600 // 1 hour
 
@@ -222,6 +224,26 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
   const issue = issueData as any as IssueRow
 
+  // Check if user is following this issue
+  let isFollowing = false
+  let isAuthenticated = false
+  try {
+    const authClient = await createClient()
+    const { data: { user } } = await authClient.auth.getUser()
+    if (user) {
+      isAuthenticated = true
+      const { data: followData } = await authClient
+        .from('issue_follows')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('issue_id', issue.id)
+        .maybeSingle()
+      isFollowing = !!followData
+    }
+  } catch {
+    // Auth check failed, continue without follow state
+  }
+
   // Stance types grouped by bucket
   const supportStances = ['strongly_supports', 'supports', 'leans_support']
   const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
@@ -306,10 +328,15 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           </span>
         </div>
 
-        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
-          {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--codex-sub)]" />}
-          {issue.name}
-        </h1>
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <h1 className="text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+            {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--codex-sub)]" />}
+            {issue.name}
+          </h1>
+          {isAuthenticated && (
+            <FollowIssueButton issueId={issue.id} initialFollowing={isFollowing} className="mt-2 flex-shrink-0" />
+          )}
+        </div>
 
         {issue.description && (
           <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">{issue.description}</p>

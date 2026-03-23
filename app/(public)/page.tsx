@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SearchInput } from '@/components/directory/search-input'
@@ -25,6 +26,38 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function HomePage() {
   const supabase = createServiceRoleClient()
+
+  // Check if user is authenticated and fetch personalized data
+  type UserProfile = { state: string | null; quiz_answers: Record<string, string> | null; quiz_results: unknown }
+  let userProfile: UserProfile | null = null
+  let userRepresentatives: { id: string; name: string; slug: string; party: string; state: string; chamber: string; title: string; image_url: string | null }[] = []
+  try {
+    const authClient = await createClient()
+    const { data: { user } } = await authClient.auth.getUser()
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('state, quiz_answers, quiz_results')
+        .eq('id', user.id)
+        .single()
+      if (profile) {
+        userProfile = profile as unknown as UserProfile
+        // Fetch representatives for the user's state
+        if (profile.state) {
+          const { data: reps } = await supabase
+            .from('politicians')
+            .select('id, name, slug, party, state, chamber, title, image_url')
+            .eq('state', profile.state)
+            .in('chamber', ['senate', 'house', 'governor'])
+            .order('chamber')
+            .limit(20)
+          userRepresentatives = reps ?? []
+        }
+      }
+    }
+  } catch {
+    // Not authenticated or profile fetch failed — show anonymous view
+  }
 
   // Featured politicians — most likely searched (top federal officials)
   const FEATURED_SLUGS = [
@@ -76,6 +109,100 @@ export default async function HomePage() {
             <SearchInput size="lg" />
           </div>
         </Suspense>
+
+        {/* Personalized section for authenticated users */}
+        {userProfile && (
+          <div className="mb-10 space-y-4 animate-fade-up">
+            {/* Quick links */}
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--codex-border)] px-4 py-2 text-[13px] font-medium text-[var(--codex-sub)] no-underline transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Dashboard
+              </Link>
+              <Link
+                href="/ballot"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--codex-border)] px-4 py-2 text-[13px] font-medium text-[var(--codex-sub)] no-underline transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                My Ballot
+              </Link>
+            </div>
+
+            {/* Your Representatives */}
+            {userRepresentatives.length > 0 && (
+              <div className="rounded-xl border border-[var(--codex-border)] p-5">
+                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+                  Your Representatives
+                </h2>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {userRepresentatives.map((rep) => {
+                    const repColor = partyColor(rep.party)
+                    return (
+                      <Link
+                        key={rep.id}
+                        href={`/politicians/${rep.slug}`}
+                        className="group flex items-center gap-3 rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                      >
+                        <div
+                          className="h-11 w-11 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]"
+                          style={{ border: `1.5px solid ${repColor}33` }}
+                        >
+                          <AvatarImage
+                            src={rep.image_url}
+                            alt={rep.name}
+                            size={44}
+                            party={rep.party}
+                            fallbackColor={repColor}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate text-[14px] font-semibold text-[var(--codex-text)]">
+                            {rep.name}
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <PartyIcon party={rep.party} size={10} />
+                            <span className="text-[11px] text-[var(--codex-faint)]">
+                              {CHAMBER_LABELS[rep.chamber as ChamberKey] ?? rep.chamber}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Quiz results prompt */}
+            {userProfile.quiz_answers && Object.keys(userProfile.quiz_answers).length > 0 ? (
+              <Link
+                href="/quiz"
+                className="flex items-center justify-between rounded-xl border border-blue-500/20 bg-blue-500/5 p-4 no-underline transition-all hover:border-blue-500/40"
+              >
+                <div>
+                  <div className="text-[14px] font-semibold text-[var(--codex-text)]">Your Top Matches</div>
+                  <div className="text-[12px] text-[var(--codex-sub)]">See which officials align with your views</div>
+                </div>
+                <svg className="shrink-0 text-blue-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </Link>
+            ) : (
+              <Link
+                href="/quiz"
+                className="flex items-center justify-between rounded-xl border border-[var(--codex-border)] bg-[var(--codex-hover)] p-4 no-underline transition-all hover:border-[var(--codex-text)]"
+              >
+                <div>
+                  <div className="text-[14px] font-semibold text-[var(--codex-text)]">Take the Quiz</div>
+                  <div className="text-[12px] text-[var(--codex-sub)]">Find out which officials match your views</div>
+                </div>
+                <svg className="shrink-0 text-[var(--codex-faint)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </Link>
+            )}
+          </div>
+        )}
 
         {/* Party stats — 3 colored cards */}
         <div className="mb-12 grid animate-fade-up grid-cols-3 gap-3">
