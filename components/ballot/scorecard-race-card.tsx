@@ -87,8 +87,8 @@ function ScorecardCandidateRow({
   candidate: Candidate
   scoreData: { score: number; matched: number; total: number } | null
 }) {
-  const href = candidate.politician_id
-    ? `/politicians/${candidate.politician_id}`
+  const href = candidate.politician_slug
+    ? `/politicians/${candidate.politician_slug}`
     : `/candidates/${candidate.id}`
 
   const hasData = scoreData && scoreData.matched > 0

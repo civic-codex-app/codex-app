@@ -22,6 +22,7 @@ export interface Candidate {
   status: string
   image_url: string | null
   politician_id: string | null
+  politician_slug: string | null
   bio: string | null
   stance_count: number
 }
@@ -115,7 +116,7 @@ export async function fetchBallotRaces(state: string, userDistrict?: string | nu
   while (hasMore) {
     const { data } = await supabase
       .from('candidates')
-      .select('id, race_id, name, party, is_incumbent, status, image_url, politician_id, bio')
+      .select('id, race_id, name, party, is_incumbent, status, image_url, politician_id, bio, politicians:politician_id(slug)')
       .in('race_id', raceIds)
       .range(from, from + PAGE - 1)
 
@@ -170,6 +171,7 @@ export async function fetchBallotRaces(state: string, userDistrict?: string | nu
       status: c.status,
       image_url: c.image_url,
       politician_id: c.politician_id,
+      politician_slug: (c.politicians as any)?.slug ?? null,
       bio: c.bio,
       stance_count: stanceCounts.get(c.id) ?? 0,
     })

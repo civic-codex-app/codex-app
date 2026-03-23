@@ -207,8 +207,8 @@ function BallotRaceCard({ race }: { race: Race }) {
 
 /* ── Candidate Row ────────────────────────────────────────────────── */
 function CandidateRow({ candidate }: { candidate: Candidate }) {
-  const href = candidate.politician_id
-    ? `/politicians/${candidate.politician_id}`
+  const href = candidate.politician_slug
+    ? `/politicians/${candidate.politician_slug}`
     : `/candidates/${candidate.id}`
 
   return (
