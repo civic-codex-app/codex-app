@@ -200,19 +200,19 @@ export default async function FeedPage({ searchParams }: PageProps) {
         className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10"
       >
         {/* Page header */}
-        <div className="mb-6">
-          <h1 className="font-serif text-[clamp(1.5rem,3vw,2rem)] font-bold text-[var(--codex-text)]">
+        <div className="mb-8">
+          <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             Activity Feed
           </h1>
-          <p className="mt-1 text-sm text-[var(--codex-sub)]">
+          <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">
             Recent votes, stance updates, and political activity from the last 30 days.
           </p>
         </div>
 
         {/* Filters */}
         <div className="mb-6">
-          <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
-            Filters
+          <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--codex-faint)]">
+            Filter
           </div>
           <Suspense fallback={null}>
             <FeedFilters />
@@ -269,8 +269,8 @@ export default async function FeedPage({ searchParams }: PageProps) {
             </div>
           </>
         )}
+        <Footer />
       </main>
-      <Footer />
     </>
   )
 }

@@ -54,40 +54,40 @@ export function ActivityItem({ type, politician, date, details, isFollowed }: Ac
 
   return (
     <div
-      className="flex gap-3 rounded-lg border px-4 py-3 transition-colors"
+      className="flex overflow-hidden rounded-xl transition-colors"
       style={{
-        borderColor: isFollowed ? pColor + '40' : 'var(--codex-border)',
-        backgroundColor: isFollowed ? pColor + '06' : 'transparent',
+        border: `1.5px solid ${pColor}22`,
+        backgroundColor: `${pColor}08`,
       }}
     >
       {/* Avatar */}
       <Link
         href={`/politicians/${politician.slug}`}
-        className="flex-shrink-0 overflow-hidden rounded-full"
-        style={{ width: 40, height: 40 }}
+        className="w-[52px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--codex-card)]"
       >
         <AvatarImage
           src={politician.image_url}
           alt={politician.name}
-          size={40}
+          size={104}
           fallbackColor={pColor}
           party={politician.party}
+          className="h-full w-full object-cover object-top"
         />
       </Link>
 
       {/* Content */}
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 px-4 py-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-1.5 text-sm">
-            <PartyIcon party={politician.party} size={14} />
+            {politician.image_url && <PartyIcon party={politician.party} size={12} />}
             <Link
               href={`/politicians/${politician.slug}`}
-              className="font-medium text-[var(--codex-text)] no-underline hover:underline"
+              className="font-semibold text-[var(--codex-text)] no-underline hover:underline"
             >
               {politician.name}
             </Link>
           </div>
-          <span className="flex-shrink-0 text-xs text-[var(--codex-faint)]">
+          <span className="flex-shrink-0 text-[11px] text-[var(--codex-faint)]">
             {relativeTime(date)}
           </span>
         </div>
