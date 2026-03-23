@@ -8,12 +8,19 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public assets
+     * Only run middleware on routes that need auth checks:
+     * - /dashboard, /admin, /account, /following, /onboarding (protected)
+     * - /login, /signup (redirect if already authenticated)
+     * - /api routes that need session refresh
+     * Public pages skip middleware entirely for faster loads.
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
+    '/dashboard/:path*',
+    '/admin/:path*',
+    '/account/:path*',
+    '/following/:path*',
+    '/onboarding/:path*',
+    '/login',
+    '/signup',
+    '/api/:path*',
   ],
 }
