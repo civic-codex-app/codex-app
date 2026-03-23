@@ -273,8 +273,11 @@ export default async function PoliticianPage({ params }: PageProps) {
                 className="aspect-[3/4] w-full rounded-xl object-cover object-top"
               />
             ) : (
-              <div className="flex aspect-[3/4] w-full items-center justify-center rounded-xl bg-[var(--codex-card)] text-[120px] text-[var(--codex-text)] opacity-10" aria-hidden="true">
-                {pol.name.charAt(0)}
+              <div
+                className="flex aspect-[3/4] w-full items-center justify-center rounded-xl"
+                style={{ backgroundColor: `${color}08`, border: `2px solid ${color}22` }}
+              >
+                <PartyIcon party={pol.party} size={120} />
               </div>
             )}
           </div>
@@ -295,25 +298,30 @@ export default async function PoliticianPage({ params }: PageProps) {
                     height={160}
                     unoptimized
                     className="h-full w-full object-cover object-top"
-                                      />
+                  />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-[64px] text-[var(--codex-text)] opacity-20" aria-hidden="true">
-                    {pol.name.charAt(0)}
+                  <div
+                    className="flex h-full w-full items-center justify-center"
+                    style={{ backgroundColor: `${color}08` }}
+                  >
+                    <PartyIcon party={pol.party} size={64} />
                   </div>
                 )}
               </div>
               <div className="min-w-0">
-                <PartyIcon party={pol.party} size={32} />
-                <h1 className="mt-1.5 text-[28px] font-bold leading-[1.05]">
+                {pol.image_url && <PartyIcon party={pol.party} size={32} />}
+                <h1 className={`text-[28px] font-bold leading-[1.05]${pol.image_url ? ' mt-1.5' : ''}`}>
                   {pol.name}
                 </h1>
               </div>
             </div>
 
-            {/* Desktop: party icon + name */}
-            <div className="mb-3 hidden md:block">
-              <PartyIcon party={pol.party} size={40} />
-            </div>
+            {/* Desktop: party icon + name (only show icon if has photo) */}
+            {pol.image_url && (
+              <div className="mb-3 hidden md:block">
+                <PartyIcon party={pol.party} size={40} />
+              </div>
+            )}
             <h1 className="mb-4 hidden text-[38px] font-bold leading-[1.05] md:block">
               {pol.name}
             </h1>

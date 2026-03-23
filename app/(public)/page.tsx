@@ -312,9 +312,7 @@ export default async function HomePage() {
                         {pol.name}
                       </div>
                       <div className="mt-1 flex items-center gap-1.5">
-                        <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium" style={{ backgroundColor: `${color}18`, color }}>
-                          <PartyIcon party={pol.party} size={10} />
-                        </span>
+                        <PartyIcon party={pol.party} size={12} />
                         <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
                       </div>
                       <div className="mt-1 text-sm text-[var(--codex-faint)]">

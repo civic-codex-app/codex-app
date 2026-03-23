@@ -111,7 +111,8 @@ export default async function StateDetailPage({ params }: PageProps) {
         if (data.length < 500) break
         from += 500
       }
-      return all
+      // Only return races that have at least one candidate
+      return all.filter(r => (r.candidates ?? []).length > 0)
     })(),
 
     // Campaign finance for state politicians
@@ -228,43 +229,45 @@ export default async function StateDetailPage({ params }: PageProps) {
                     {label}
                     <span className="ml-2 text-[var(--codex-faint)]">{group.length}</span>
                   </h3>
-                  <div className="space-y-2">
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {group.map((pol) => {
                       const color = partyColor(pol.party)
                       return (
                         <Link
                           key={pol.id}
                           href={`/politicians/${pol.slug}`}
-                          className="flex items-center gap-3 rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                          className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                          style={{ backgroundColor: `${color}08` }}
                         >
-                          <div
-                            className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]"
-                            style={{ border: `2px solid ${color}44` }}
-                          >
-                            <AvatarImage
-                              src={pol.image_url}
-                              alt={pol.name}
-                              size={40}
-                              party={pol.party}
-                              fallbackColor={color}
-                            />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="flex items-center gap-2">
-                              <span className="truncate text-[14px] font-medium text-[var(--codex-text)]">
-                                {pol.name}
-                              </span>
-                              <PartyIcon party={pol.party} size={12} />
+                          <div className="flex items-center gap-4 p-4">
+                            <div
+                              className="h-[56px] w-[56px] flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
+                              style={{ border: `2px solid ${color}33` }}
+                            >
+                              <AvatarImage
+                                src={pol.image_url}
+                                alt={pol.name}
+                                size={56}
+                                party={pol.party}
+                                fallbackColor={color}
+                                className="h-full w-full object-cover"
+                              />
                             </div>
-                            {pol.title && (
-                              <div className="truncate text-[11px] text-[var(--codex-faint)]">
-                                {pol.title}
+                            <div className="min-w-0 flex-1">
+                              <div className="truncate text-[15px] font-semibold text-[var(--codex-text)]">
+                                {pol.name}
                               </div>
-                            )}
+                              <div className="mt-1 flex items-center gap-1.5">
+                                {pol.image_url && <PartyIcon party={pol.party} size={12} />}
+                                <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
+                              </div>
+                              {pol.title && (
+                                <div className="mt-0.5 truncate text-[12px] text-[var(--codex-faint)]">
+                                  {pol.title}
+                                </div>
+                              )}
+                            </div>
                           </div>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--codex-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="9 18 15 12 9 6" />
-                          </svg>
                         </Link>
                       )
                     })}
@@ -407,36 +410,40 @@ export default async function StateDetailPage({ params }: PageProps) {
               All Officials
               <span className="ml-2 text-[var(--codex-faint)]">{politicians.length}</span>
             </h2>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {politicians.map((pol) => {
                 const color = partyColor(pol.party)
                 return (
                   <Link
                     key={pol.id}
                     href={`/politicians/${pol.slug}`}
-                    className="flex items-center gap-2 rounded-lg border border-[var(--codex-border)] p-2.5 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                    className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                    style={{ backgroundColor: `${color}08` }}
                   >
-                    <div
-                      className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]"
-                      style={{ border: `1.5px solid ${color}44` }}
-                    >
-                      <AvatarImage
-                        src={pol.image_url}
-                        alt={pol.name}
-                        size={32}
-                        party={pol.party}
-                        fallbackColor={color}
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="truncate text-[12px] font-medium text-[var(--codex-text)]">
-                        {pol.name}
+                    <div className="flex items-center gap-3 p-3">
+                      <div
+                        className="h-[44px] w-[44px] flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
+                        style={{ border: `1.5px solid ${color}33` }}
+                      >
+                        <AvatarImage
+                          src={pol.image_url}
+                          alt={pol.name}
+                          size={44}
+                          party={pol.party}
+                          fallbackColor={color}
+                          className="h-full w-full object-cover"
+                        />
                       </div>
-                      <div className="flex items-center gap-1">
-                        <PartyIcon party={pol.party} size={9} />
-                        <span className="truncate text-[10px] text-[var(--codex-faint)]">
-                          {CHAMBER_LABELS[pol.chamber as keyof typeof CHAMBER_LABELS] ?? pol.chamber}
-                        </span>
+                      <div className="min-w-0">
+                        <div className="truncate text-[13px] font-semibold text-[var(--codex-text)]">
+                          {pol.name}
+                        </div>
+                        <div className="mt-0.5 flex items-center gap-1.5">
+                          {pol.image_url && <PartyIcon party={pol.party} size={10} />}
+                          <span className="truncate text-[11px] text-[var(--codex-faint)]">
+                            {CHAMBER_LABELS[pol.chamber as keyof typeof CHAMBER_LABELS] ?? pol.chamber}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </Link>

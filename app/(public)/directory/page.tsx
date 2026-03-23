@@ -5,12 +5,14 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SearchInput } from '@/components/directory/search-input'
+import { DirectoryFilters } from '@/components/directory/directory-filters'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
+import { STATE_NAMES } from '@/lib/constants/us-states'
 
-export const revalidate = 1800 // 30 minutes
+export const revalidate = 1800
 
 export const metadata: Metadata = {
   title: 'Browse Politicians | Poli',
@@ -29,22 +31,111 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1)
   const offset = (page - 1) * PAGE_SIZE
 
-  let query = supabase.from('politicians').select('id, name, slug, party, state, chamber, title, image_url', { count: 'exact' })
+  // Fetch ALL politicians (lightweight: just filter fields) to compute facet counts
+  // Then fetch the paginated results for display
+  const [facetResult, pageResult] = await Promise.all([
+    (async () => {
+      const all: Array<{ party: string; chamber: string; state: string }> = []
+      let from = 0
+      while (true) {
+        let q = supabase.from('politicians').select('party, chamber, state')
+        // Apply current filters for cascading counts
+        if (params.state) q = q.eq('state', params.state)
+        if (params.party) q = q.eq('party', params.party)
+        if (params.chamber) q = q.eq('chamber', params.chamber)
+        q = q.range(from, from + 999)
+        const { data } = await q
+        if (!data || data.length === 0) break
+        all.push(...data)
+        if (data.length < 1000) break
+        from += 1000
+      }
+      return all
+    })(),
+    (async () => {
+      let query = supabase
+        .from('politicians')
+        .select('id, name, slug, party, state, chamber, title, image_url', { count: 'exact' })
+      if (params.state) query = query.eq('state', params.state)
+      if (params.party) query = query.eq('party', params.party)
+      if (params.chamber) query = query.eq('chamber', params.chamber)
+      query = query.order('name').range(offset, offset + PAGE_SIZE - 1)
+      return query
+    })(),
+  ])
 
-  if (params.state) query = query.eq('state', params.state)
-  if (params.party) query = query.eq('party', params.party)
-  if (params.chamber) query = query.eq('chamber', params.chamber)
+  // Also fetch unfiltered facets for dimensions NOT currently filtered
+  // This lets us show counts for party options even when chamber is selected, etc.
+  const [partyFacet, chamberFacet, stateFacet] = await Promise.all([
+    // Party counts: apply chamber + state filters, but NOT party
+    (async () => {
+      const all: Array<{ party: string }> = []
+      let from = 0
+      while (true) {
+        let q = supabase.from('politicians').select('party')
+        if (params.state) q = q.eq('state', params.state)
+        if (params.chamber) q = q.eq('chamber', params.chamber)
+        q = q.range(from, from + 999)
+        const { data } = await q
+        if (!data || data.length === 0) break
+        all.push(...data)
+        if (data.length < 1000) break
+        from += 1000
+      }
+      const counts: Record<string, number> = {}
+      for (const p of all) counts[p.party] = (counts[p.party] || 0) + 1
+      return counts
+    })(),
+    // Chamber counts: apply party + state filters, but NOT chamber
+    (async () => {
+      const all: Array<{ chamber: string }> = []
+      let from = 0
+      while (true) {
+        let q = supabase.from('politicians').select('chamber')
+        if (params.state) q = q.eq('state', params.state)
+        if (params.party) q = q.eq('party', params.party)
+        q = q.range(from, from + 999)
+        const { data } = await q
+        if (!data || data.length === 0) break
+        all.push(...data)
+        if (data.length < 1000) break
+        from += 1000
+      }
+      const counts: Record<string, number> = {}
+      for (const c of all) counts[c.chamber] = (counts[c.chamber] || 0) + 1
+      return counts
+    })(),
+    // State counts: apply party + chamber filters, but NOT state
+    (async () => {
+      const all: Array<{ state: string }> = []
+      let from = 0
+      while (true) {
+        let q = supabase.from('politicians').select('state')
+        if (params.party) q = q.eq('party', params.party)
+        if (params.chamber) q = q.eq('chamber', params.chamber)
+        q = q.range(from, from + 999)
+        const { data } = await q
+        if (!data || data.length === 0) break
+        all.push(...data)
+        if (data.length < 1000) break
+        from += 1000
+      }
+      const counts: Record<string, number> = {}
+      for (const s of all) if (s.state) counts[s.state] = (counts[s.state] || 0) + 1
+      return counts
+    })(),
+  ])
 
-  query = query.order('name').range(offset, offset + PAGE_SIZE - 1)
-
-  const { data, count } = await query
-  const politicians = data ?? []
-  const totalCount = count ?? 0
+  const politicians = pageResult.data ?? []
+  const totalCount = pageResult.count ?? 0
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
 
-  const stateLabel = params.state ?? 'All States'
-  const partyLabel2 = params.party ? partyLabel(params.party) : 'All Parties'
+  const filterCounts = {
+    parties: partyFacet,
+    chambers: chamberFacet,
+    states: stateFacet,
+  }
 
   function buildUrl(overrides: Record<string, string>) {
     const p: Record<string, string> = {}
@@ -61,51 +152,59 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
-          {params.state ? `${stateLabel} Officials` : 'Browse Officials'}
+        <h1 className="mb-1 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+          Directory
         </h1>
         <p className="mb-6 text-[14px] text-[var(--codex-sub)]">
-          {totalCount.toLocaleString()} results
-          {params.state ? ` in ${stateLabel}` : ''}
-          {params.party ? ` · ${partyLabel2}` : ''}
-          {params.chamber ? ` · ${CHAMBER_LABELS[params.chamber as ChamberKey] ?? params.chamber}` : ''}
+          {totalCount.toLocaleString()} official{totalCount !== 1 ? 's' : ''}
         </p>
 
         <Suspense>
           <SearchInput basePath="/directory" />
         </Suspense>
 
+        <Suspense>
+          <DirectoryFilters counts={filterCounts} stateNames={STATE_NAMES} />
+        </Suspense>
+
         {/* Results */}
-        <div className="mb-8 space-y-2">
+        <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {politicians.map((pol) => {
             const color = partyColor(pol.party)
             return (
               <Link
                 key={pol.id}
                 href={`/politicians/${pol.slug}`}
-                className="flex cursor-pointer items-center gap-4 rounded-md border border-[var(--codex-border)] p-3 no-underline transition-all duration-200 hover:border-[var(--codex-text)] hover:shadow-md"
+                className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                style={{ backgroundColor: `${color}08` }}
               >
-                <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]">
-                  <AvatarImage
-                    src={pol.image_url}
-                    alt={pol.name}
-                    size={40}
-                    party={pol.party}
-                    fallbackColor={color}
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-[14px] font-medium text-[var(--codex-text)]">{pol.name}</div>
-                  <div className="flex items-center gap-1.5 text-[11px] text-[var(--codex-faint)]">
-                    <PartyIcon party={pol.party} size={10} />
-                    <span>·</span>
-                    <span>{pol.state}</span>
-                    {pol.title && <><span>·</span><span>{pol.title}</span></>}
+                <div className="flex items-center gap-4 p-4">
+                  <div
+                    className="h-[64px] w-[64px] flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
+                    style={{ border: `2px solid ${color}33` }}
+                  >
+                    <AvatarImage
+                      src={pol.image_url}
+                      alt={pol.name}
+                      size={64}
+                      party={pol.party}
+                      fallbackColor={color}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="truncate text-[15px] font-semibold text-[var(--codex-text)]">
+                      {pol.name}
+                    </div>
+                    <div className="mt-1 flex items-center gap-1.5">
+                      {pol.image_url && <PartyIcon party={pol.party} size={12} />}
+                      <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
+                    </div>
+                    <div className="mt-1 truncate text-[12px] text-[var(--codex-faint)]">
+                      {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)}
+                    </div>
                   </div>
                 </div>
-                <span className="hidden text-[11px] text-[var(--codex-faint)] sm:block">
-                  {CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber}
-                </span>
               </Link>
             )
           })}
