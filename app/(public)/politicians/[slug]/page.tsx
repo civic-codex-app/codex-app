@@ -175,16 +175,16 @@ export default async function PoliticianPage({ params }: PageProps) {
     if (s.issues?.id) stanceMap.set(s.issues.id, s.stance)
   }
 
-  // Find like-minded officials: only compare same-party politicians for speed
+  // Find like-minded officials: compare same-party + same-chamber for speed
   let likeMinded: LikeMindedPolitician[] = []
   if (stanceMap.size > 0) {
-    // Fetch stances for same-party politicians only (much smaller dataset)
     const { data: sameParyPols } = await supabase
       .from('politicians')
       .select('id')
       .eq('party', pol.party)
+      .eq('chamber', pol.chamber)
       .neq('id', pol.id)
-      .limit(200)
+      .limit(50)
 
     if (sameParyPols && sameParyPols.length > 0) {
       const samePartyIds = sameParyPols.map(p => p.id)
@@ -192,6 +192,7 @@ export default async function PoliticianPage({ params }: PageProps) {
         .from('politician_issues')
         .select('politician_id, stance, issue_id')
         .in('politician_id', samePartyIds)
+        .limit(1000)
 
       if (partyStances && partyStances.length > 0) {
         const byPol = new Map<string, Map<string, string>>()
