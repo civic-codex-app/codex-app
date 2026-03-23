@@ -434,6 +434,7 @@ function StancesTab({
               stances={grouped.favors}
               stanceHistoryByIssue={stanceHistoryByIssue}
               accentColor="#047857"
+              party={pol.party}
             />
           )}
           {grouped.mixed.length > 0 && (
@@ -443,6 +444,7 @@ function StancesTab({
               stances={grouped.mixed}
               stanceHistoryByIssue={stanceHistoryByIssue}
               accentColor="#B45309"
+              party={pol.party}
             />
           )}
           {grouped.opposes.length > 0 && (
@@ -452,6 +454,7 @@ function StancesTab({
               stances={grouped.opposes}
               stanceHistoryByIssue={stanceHistoryByIssue}
               accentColor="#B91C1C"
+              party={pol.party}
             />
           )}
         </div>
@@ -472,12 +475,14 @@ function StanceGroup({
   stances,
   stanceHistoryByIssue,
   accentColor,
+  party,
 }: {
   label: string
   count: number
   stances: PoliticianStance[]
   stanceHistoryByIssue: Record<string, StanceHistoryEntry[]>
   accentColor: string
+  party: string
 }) {
   const [expanded, setExpanded] = useState(true)
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
@@ -522,7 +527,7 @@ function StanceGroup({
       {expanded && (
         <div className="space-y-2">
           {stances.map((s) => {
-            const badge = stanceDisplayBadge(s.stance, pol.party)
+            const badge = stanceDisplayBadge(s.stance, party)
             const isEstimated = !s.is_verified
             const hasRealSummary =
               s.summary &&
