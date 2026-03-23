@@ -342,15 +342,15 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         {totalAll > 0 && (
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="text-2xl font-bold" style={{ color: '#334155' }}>{supportsAll}</div>
+              <div className="text-2xl font-bold" style={{ color: '#2563EB' }}>{supportsAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Favors</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="text-2xl font-bold" style={{ color: '#CBD5E1' }}>{opposesAll}</div>
+              <div className="text-2xl font-bold" style={{ color: '#DC2626' }}>{opposesAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Opposes</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="text-2xl font-bold" style={{ color: '#94A3B8' }}>{mixedAll}</div>
+              <div className="text-2xl font-bold" style={{ color: '#8B5CF6' }}>{mixedAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Mixed / Neutral</div>
             </div>
             <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
@@ -388,19 +388,19 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                       </div>
                       <div className="mb-1 flex h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
                         {supportPct > 0 && (
-                          <div style={{ width: `${supportPct}%`, backgroundColor: '#334155' }} />
+                          <div style={{ width: `${supportPct}%`, backgroundColor: '#2563EB' }} />
                         )}
                         {mixedPct > 0 && (
-                          <div style={{ width: `${mixedPct}%`, backgroundColor: '#94A3B8' }} />
+                          <div style={{ width: `${mixedPct}%`, backgroundColor: '#8B5CF6' }} />
                         )}
                         {opposePct > 0 && (
-                          <div style={{ width: `${opposePct}%`, backgroundColor: '#CBD5E1' }} />
+                          <div style={{ width: `${opposePct}%`, backgroundColor: '#DC2626' }} />
                         )}
                       </div>
                       <div className="flex gap-4 text-[10px] text-[var(--codex-faint)]">
-                        <span style={{ color: '#334155' }}>{supportPct}% favors</span>
-                        <span style={{ color: '#94A3B8' }}>{mixedPct}% mixed</span>
-                        <span style={{ color: '#CBD5E1' }}>{opposePct}% opposes</span>
+                        <span style={{ color: '#2563EB' }}>{supportPct}% favors</span>
+                        <span style={{ color: '#8B5CF6' }}>{mixedPct}% mixed</span>
+                        <span style={{ color: '#DC2626' }}>{opposePct}% opposes</span>
                       </div>
                     </div>
                   )

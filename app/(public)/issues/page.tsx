@@ -176,16 +176,16 @@ export default async function IssuesPage({ searchParams }: PageProps) {
                 {total > 0 && (
                   <div className="mb-3">
                     <div className="flex h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
-                      {supports > 0 && <div style={{ width: `${(supports / total) * 100}%`, background: '#334155', opacity: 0.7 }} />}
-                      {mixed > 0 && <div style={{ width: `${(mixed / total) * 100}%`, background: '#94A3B8', opacity: 0.6 }} />}
-                      {opposes > 0 && <div style={{ width: `${(opposes / total) * 100}%`, background: '#CBD5E1', opacity: 0.7 }} />}
+                      {supports > 0 && <div style={{ width: `${(supports / total) * 100}%`, background: '#2563EB' }} />}
+                      {mixed > 0 && <div style={{ width: `${(mixed / total) * 100}%`, background: '#8B5CF6' }} />}
+                      {opposes > 0 && <div style={{ width: `${(opposes / total) * 100}%`, background: '#DC2626' }} />}
                     </div>
                     <div className="mt-1.5 flex gap-3 text-[11px] text-[var(--codex-faint)]">
-                      <span style={{ color: '#334155' }}>{Math.round((supports / total) * 100)}% Favor</span>
+                      <span style={{ color: '#2563EB' }}>{Math.round((supports / total) * 100)}% Favor</span>
                       <span className="text-[var(--codex-faint)]">&middot;</span>
-                      <span style={{ color: '#94A3B8' }}>{Math.round((mixed / total) * 100)}% Mixed</span>
+                      <span style={{ color: '#8B5CF6' }}>{Math.round((mixed / total) * 100)}% Mixed</span>
                       <span className="text-[var(--codex-faint)]">&middot;</span>
-                      <span style={{ color: '#CBD5E1' }}>{Math.round((opposes / total) * 100)}% Oppose</span>
+                      <span style={{ color: '#DC2626' }}>{Math.round((opposes / total) * 100)}% Oppose</span>
                     </div>
                   </div>
                 )}
@@ -226,8 +226,8 @@ function PartyBar({ party, supports, opposes, total }: { party: string; supports
     <div className="flex items-center gap-2">
       <span className="w-7 text-[10px] font-medium" style={{ color }}>{label}</span>
       <div className="flex h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
-        {supportPct > 0 && <div style={{ width: `${supportPct}%`, background: '#334155', opacity: 0.6 }} />}
-        {opposePct > 0 && <div style={{ width: `${opposePct}%`, background: '#CBD5E1', opacity: 0.6, marginLeft: 'auto' }} />}
+        {supportPct > 0 && <div style={{ width: `${supportPct}%`, background: '#2563EB' }} />}
+        {opposePct > 0 && <div style={{ width: `${opposePct}%`, background: '#DC2626', marginLeft: 'auto' }} />}
       </div>
       <span className="w-14 text-right text-[10px] tabular-nums text-[var(--codex-faint)]">
         {supportPct > opposePct ? `${supportPct}% for` : `${opposePct}% against`}
