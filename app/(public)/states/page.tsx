@@ -11,7 +11,7 @@ export const revalidate = 1800
 
 export const metadata: Metadata = {
   title: 'States | Poli',
-  description: 'Browse U.S. states and territories to see elected officials, campaign finance, and upcoming races.',
+  description: 'Explore every U.S. state — see your senators, governor, and house reps, plus campaign finance totals, party breakdowns, and upcoming races.',
 }
 
 export default async function StatesIndexPage() {

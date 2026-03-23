@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Compare Politicians | Poli',
-  description: 'Compare politicians side by side on issues, alignment, committees, campaign finance, and voting records.',
+  description: 'Pick any two politicians and compare them side by side — stances on 14 issues, party alignment, campaign finance, voting records, and committee assignments.',
 }
 
 interface PageProps {

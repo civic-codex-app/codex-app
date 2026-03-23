@@ -12,15 +12,15 @@ export interface SiteSettings {
 
 const DEFAULTS: SiteSettings = {
   site_name: 'Poli',
-  site_tagline: 'Political Directory',
+  site_tagline: 'Know Your Politicians',
   site_description:
-    'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.',
-  og_title: 'Poli | Political Directory',
+    'Look up any U.S. politician and instantly see where they stand on the issues that matter to you. Stances, voting records, campaign finance, and elections — all in one place.',
+  og_title: 'Poli — Know Your Politicians',
   og_description:
-    'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.',
-  homepage_title: 'U.S. Politician Directory & Civic Engagement Platform',
+    'Search 8,000+ elected officials from President to school board. Compare stances on 14 key issues, track campaign finance, and find who represents you.',
+  homepage_title: 'Poli — Know Your Politicians',
   homepage_description:
-    'Track U.S. politicians, their stances on issues, voting records, campaign finance, and elections. A transparent, data-driven civic engagement platform for voters.',
+    'A nonpartisan civic transparency platform tracking 8,000+ U.S. officials. See where they stand on the issues, how they vote, who funds them, and what races are coming up.',
 }
 
 let cache: { settings: SiteSettings; fetchedAt: number } | null = null

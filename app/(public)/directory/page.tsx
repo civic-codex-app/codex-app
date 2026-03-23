@@ -16,7 +16,7 @@ export const revalidate = 1800
 
 export const metadata: Metadata = {
   title: 'Browse Politicians | Poli',
-  description: 'Browse all U.S. politicians by state, party, and chamber.',
+  description: 'Search and filter 8,000+ U.S. elected officials by state, party, and level of government — from Congress to your local school board.',
 }
 
 interface PageProps {

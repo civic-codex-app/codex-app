@@ -7,7 +7,7 @@ export const revalidate = 3600 // 1 hour
 
 export const metadata = {
   title: 'Money Map | Poli',
-  description: 'See how much politicians raise and spend by state with an interactive US map.',
+  description: 'Interactive map showing campaign fundraising and spending by state. See which politicians raise the most and where the money flows.',
 }
 
 const PAGE_SIZE = 900

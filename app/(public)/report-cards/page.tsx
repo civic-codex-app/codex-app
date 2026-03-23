@@ -12,7 +12,7 @@ export const revalidate = 3600 // 1 hour
 export const metadata: Metadata = {
   title: 'Report Cards | Poli',
   description:
-    'See how every U.S. politician scores on bipartisanship, engagement, transparency, and effectiveness.',
+    'Grade every U.S. politician on bipartisanship, engagement, transparency, and effectiveness. Data-driven scores — no opinions.',
 }
 
 // ---- helpers for paginated Supabase fetches ----

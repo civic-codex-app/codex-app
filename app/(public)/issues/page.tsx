@@ -14,7 +14,7 @@ export const revalidate = 3600 // 1 hour
 
 export const metadata = {
   title: 'Issues | Poli',
-  description: 'Explore political issues and see where politicians stand.',
+  description: 'See where every U.S. politician stands on 14 key issues — from healthcare to immigration. Filter by party and compare stances across the aisle.',
 }
 
 const CATEGORY_LABELS: Record<string, string> = {

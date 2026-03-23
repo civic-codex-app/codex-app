@@ -9,7 +9,7 @@ export const revalidate = 600 // 10 minutes
 
 export const metadata = {
   title: 'Bills & Legislation | Poli',
-  description: 'Track major bills and how your representatives voted.',
+  description: 'Follow major legislation through Congress. See bill status, how your representatives voted, and what it means for the issues you care about.',
 }
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {

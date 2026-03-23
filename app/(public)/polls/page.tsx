@@ -7,7 +7,7 @@ export const revalidate = 60 // 1 minute
 
 export const metadata = {
   title: 'Polls | Poli',
-  description: 'Vote on political races, issues, and matchups.',
+  description: 'Weigh in on political questions and see how your views compare to other voters. Quick polls on races, issues, and policy matchups.',
 }
 
 export default async function PollsPage() {

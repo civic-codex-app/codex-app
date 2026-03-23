@@ -12,7 +12,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Your Ballot Preview | Poli',
-  description: 'See the races and candidates on your ballot based on your location.',
+  description: 'Preview your personal ballot — see every race and candidate based on your location, with stance comparisons and party info.',
 }
 
 /* ── Page ─────────────────────────────────────────────────────────── */

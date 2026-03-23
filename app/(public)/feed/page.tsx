@@ -10,7 +10,7 @@ export const revalidate = 300 // 5 minutes
 
 export const metadata = {
   title: 'Activity Feed | Poli',
-  description: 'Recent political activity — votes, stance updates, and more.',
+  description: 'Live feed of political activity — new votes, stance changes, and election updates. Filter by party and state to follow what matters to you.',
 }
 
 const PAGE_SIZE = 50

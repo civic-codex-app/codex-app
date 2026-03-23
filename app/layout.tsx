@@ -89,7 +89,7 @@ export default function RootLayout({
               '@type': 'WebSite',
               name: 'Poli',
               url: 'https://getpoli.app',
-              description: 'Track U.S. politicians, their stances on issues, voting records, campaign finance, and elections.',
+              description: 'Look up any U.S. politician and see where they stand on the issues that matter to you. Stances, voting records, campaign finance, and elections for 8,000+ officials.',
             }),
           }}
         />

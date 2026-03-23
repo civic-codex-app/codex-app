@@ -19,7 +19,7 @@ export const revalidate = 3600 // 1 hour
 
 export const metadata: Metadata = {
   title: 'Insights | Poli',
-  description: 'Data-driven political insights: chamber composition, issue consensus, alignment spectrums, and bipartisan rankings.',
+  description: 'Interactive political data visualizations — chamber composition, party alignment spectrums, issue heatmaps, and bipartisan rankings. No spin, just data.',
 }
 
 export default async function InsightsPage() {

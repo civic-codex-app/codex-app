@@ -9,7 +9,7 @@ export const revalidate = 1800 // 30 minutes
 
 export const metadata = {
   title: 'Elections | Poli',
-  description: 'Track upcoming elections | Senate, House, Governor, and local races in every state.',
+  description: 'Track every 2026 race — Senate, House, Governor, and local. See candidates, countdown to election day, and find the races on your ballot.',
 }
 
 const STATE_NAMES: Record<string, string> = {
