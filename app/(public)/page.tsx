@@ -255,36 +255,31 @@ export default async function HomePage() {
                 <Link
                   key={pol.id}
                   href={`/politicians/${pol.slug}`}
-                  className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                  style={{ backgroundColor: `${color}08` }}
+                  className="group flex overflow-hidden rounded-xl no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                  style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
                 >
-                  <div className="flex items-center gap-4 p-4">
-                    <div
-                      className="h-[80px] w-[80px] flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
-                      style={{ border: `2px solid ${color}33` }}
-                    >
-                      <AvatarImage
-                        src={pol.image_url}
-                        alt={pol.name}
-                        size={80}
-                        party={pol.party}
-                        fallbackColor={color}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-lg font-semibold text-[var(--codex-text)]">
-                        {pol.name}
-                      </div>
-                      <div className="mt-1 flex items-center gap-1.5">
-                        <PartyIcon party={pol.party} size={12} />
-                        <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
-                      </div>
-                      <div className="mt-1 text-sm text-[var(--codex-faint)]">
-                        {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)}
-                      </div>
-                    </div>
+                  <div className="w-[80px] flex-shrink-0 overflow-hidden bg-[var(--codex-card)]">
+                    <AvatarImage
+                      src={pol.image_url}
+                      alt={pol.name}
+                      size={80}
+                      party={pol.party}
+                      fallbackColor={color}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
+                  <div className="min-w-0 flex-1 px-4 py-3">
+                    <div className="truncate text-lg font-semibold text-[var(--codex-text)]">
+                      {pol.name}
+                    </div>
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <PartyIcon party={pol.party} size={12} />
+                      <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
+                    </div>
+                    <div className="mt-1 text-sm text-[var(--codex-faint)]">
+                      {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)}
+                      </div>
+                    </div>
                 </Link>
               )
             })}

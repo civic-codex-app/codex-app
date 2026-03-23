@@ -90,9 +90,8 @@ export function StatePoliticianList({ politicians, pageSize = 6, size = 'default
 
 function Grid({ politicians, size }: { politicians: Politician[]; size: 'default' | 'compact' }) {
   const isCompact = size === 'compact'
-  const avatarSize = isCompact ? 44 : 56
-  const padding = isCompact ? 'p-3' : 'p-4'
-  const avatarDim = isCompact ? 'h-[44px] w-[44px]' : 'h-[56px] w-[56px]'
+  const avatarW = isCompact ? 'w-[52px]' : 'w-[64px]'
+  const avatarPx = isCompact ? 52 : 64
   const nameSize = isCompact ? 'text-[13px]' : 'text-[15px]'
 
   return (
@@ -103,43 +102,40 @@ function Grid({ politicians, size }: { politicians: Politician[]; size: 'default
           <Link
             key={pol.id}
             href={`/politicians/${pol.slug}`}
-            className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-            style={{ backgroundColor: `${color}08` }}
+            className="group flex overflow-hidden rounded-xl no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+            style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
           >
-            <div className={`flex items-center gap-${isCompact ? '3' : '4'} ${padding}`}>
-              <div
-                className={`${avatarDim} flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]`}
-                style={{ border: `${isCompact ? '1.5' : '2'}px solid ${color}33` }}
-              >
-                <AvatarImage
-                  src={pol.image_url}
-                  alt={pol.name}
-                  size={avatarSize}
-                  party={pol.party}
-                  fallbackColor={color}
-                  className="h-full w-full object-cover"
-                />
+            <div
+              className={`${avatarW} flex-shrink-0 overflow-hidden bg-[var(--codex-card)]`}
+            >
+              <AvatarImage
+                src={pol.image_url}
+                alt={pol.name}
+                size={avatarPx}
+                party={pol.party}
+                fallbackColor={color}
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className={`min-w-0 flex-1 ${isCompact ? 'px-3 py-2.5' : 'px-4 py-3'}`}>
+              <div className={`truncate ${nameSize} font-semibold text-[var(--codex-text)]`}>
+                {pol.name}
               </div>
-              <div className="min-w-0 flex-1">
-                <div className={`truncate ${nameSize} font-semibold text-[var(--codex-text)]`}>
-                  {pol.name}
-                </div>
-                <div className="mt-0.5 flex items-center gap-1.5">
-                  {pol.image_url && <PartyIcon party={pol.party} size={isCompact ? 10 : 12} />}
-                  {isCompact ? (
-                    <span className="truncate text-[11px] text-[var(--codex-faint)]">
-                      {CHAMBER_LABELS[pol.chamber as keyof typeof CHAMBER_LABELS] ?? pol.chamber}
-                    </span>
-                  ) : (
-                    <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
-                  )}
-                </div>
-                {pol.title && (
-                  <div className="mt-0.5 truncate text-[12px] text-[var(--codex-faint)]">
-                    {pol.title}
-                  </div>
+              <div className="mt-0.5 flex items-center gap-1.5">
+                {pol.image_url && <PartyIcon party={pol.party} size={isCompact ? 10 : 12} />}
+                {isCompact ? (
+                  <span className="truncate text-[11px] text-[var(--codex-faint)]">
+                    {CHAMBER_LABELS[pol.chamber as keyof typeof CHAMBER_LABELS] ?? pol.chamber}
+                  </span>
+                ) : (
+                  <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
                 )}
               </div>
+              {pol.title && (
+                <div className="mt-0.5 truncate text-[12px] text-[var(--codex-faint)]">
+                  {pol.title}
+                </div>
+              )}
             </div>
           </Link>
         )
