@@ -54,43 +54,73 @@ export default async function IssuesPage({ searchParams }: PageProps) {
   }
 
   // Stance types grouped by bucket
-  const supportStances = ['strongly_supports', 'supports', 'leans_support']
-  const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
+  const supportStances = new Set(['strongly_supports', 'supports', 'leans_support'])
+  const opposeStances = new Set(['strongly_opposes', 'opposes', 'leans_oppose'])
 
   const issueIds = issues.map(i => i.id)
 
-  // Fast parallel count queries per issue (instead of fetching 100K+ rows)
-  async function fetchIssueStats(issueId: string) {
-    const [totalR, supR, oppR, demTotalR, demSupR, demOppR, gopTotalR, gopSupR, gopOppR] = await Promise.all([
-      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issueId),
-      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issueId).in('stance', supportStances),
-      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issueId).in('stance', opposeStances),
-      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'democrat'),
-      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'democrat').in('stance', supportStances),
-      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'democrat').in('stance', opposeStances),
-      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'republican'),
-      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'republican').in('stance', supportStances),
-      supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issueId).eq('politicians.party', 'republican').in('stance', opposeStances),
-    ])
-    const total = totalR.count ?? 0
-    const supports = supR.count ?? 0
-    const opposes = oppR.count ?? 0
-    return {
-      total, supports, opposes, mixed: total - supports - opposes,
-      demTotal: demTotalR.count ?? 0, demSupports: demSupR.count ?? 0, demOpposes: demOppR.count ?? 0,
-      gopTotal: gopTotalR.count ?? 0, gopSupports: gopSupR.count ?? 0, gopOpposes: gopOppR.count ?? 0,
+  // Build a politician party map (one query)
+  const PAGE = 1000
+  const polPartyMap = new Map<string, string>()
+  let from = 0
+  while (true) {
+    const { data } = await supabase.from('politicians').select('id, party').range(from, from + PAGE - 1)
+    if (!data || !data.length) break
+    for (const p of data) polPartyMap.set(p.id, (p.party ?? 'independent').toLowerCase())
+    if (data.length < PAGE) break
+    from += PAGE
+  }
+
+  // Fetch all stances for these issues in batches (few queries instead of 198)
+  type StanceRow = { politician_id: string; issue_id: string; stance: string }
+  let allStances: StanceRow[] = []
+  for (let i = 0; i < issueIds.length; i += 10) {
+    const batch = issueIds.slice(i, i + 10)
+    let batchFrom = 0
+    while (true) {
+      const { data } = await supabase
+        .from('politician_issues')
+        .select('politician_id, issue_id, stance')
+        .in('issue_id', batch)
+        .range(batchFrom, batchFrom + PAGE - 1)
+      if (!data || !data.length) break
+      allStances = allStances.concat(data as StanceRow[])
+      if (data.length < PAGE) break
+      batchFrom += PAGE
     }
   }
 
-  // Run all issue stats in parallel
-  const statsArr = await Promise.all(issueIds.map(id => fetchIssueStats(id)))
-
-  const issueStats = new Map<string, typeof statsArr[0]>()
-  const issueTotalCounts = new Map<string, number>()
-  for (let i = 0; i < issueIds.length; i++) {
-    issueStats.set(issueIds[i], statsArr[i])
-    issueTotalCounts.set(issueIds[i], statsArr[i].total)
+  // Aggregate in memory
+  type IssueAgg = { total: number; supports: number; opposes: number; mixed: number; demTotal: number; demSupports: number; demOpposes: number; gopTotal: number; gopSupports: number; gopOpposes: number }
+  const issueStats = new Map<string, IssueAgg>()
+  for (const id of issueIds) {
+    issueStats.set(id, { total: 0, supports: 0, opposes: 0, mixed: 0, demTotal: 0, demSupports: 0, demOpposes: 0, gopTotal: 0, gopSupports: 0, gopOpposes: 0 })
   }
+
+  for (const row of allStances) {
+    const agg = issueStats.get(row.issue_id)
+    if (!agg) continue
+    const isSup = supportStances.has(row.stance)
+    const isOpp = opposeStances.has(row.stance)
+    agg.total++
+    if (isSup) agg.supports++
+    else if (isOpp) agg.opposes++
+    else agg.mixed++
+
+    const party = polPartyMap.get(row.politician_id)
+    if (party === 'democrat') {
+      agg.demTotal++
+      if (isSup) agg.demSupports++
+      else if (isOpp) agg.demOpposes++
+    } else if (party === 'republican') {
+      agg.gopTotal++
+      if (isSup) agg.gopSupports++
+      else if (isOpp) agg.gopOpposes++
+    }
+  }
+
+  const issueTotalCounts = new Map<string, number>()
+  for (const [id, agg] of issueStats) issueTotalCounts.set(id, agg.total)
 
   // Sort
   const sortKey = (params.sort as SortKey) || 'name'
