@@ -12,6 +12,7 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { StatePoliticianList } from '@/components/states/state-politician-list'
 import { Trending } from '@/components/directory/trending'
+import { SignoutToast } from '@/components/ui/signout-toast'
 import { PARTY_EXPLAINERS } from '@/lib/data/educational-content'
 import { getSiteSettings } from '@/lib/utils/site-settings'
 
@@ -93,6 +94,7 @@ export default async function HomePage() {
   return (
     <>
       <Header />
+      <Suspense><SignoutToast /></Suspense>
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
         <div className="mb-10 max-w-[740px]">
