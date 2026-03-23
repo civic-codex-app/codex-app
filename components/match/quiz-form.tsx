@@ -78,7 +78,6 @@ export function QuizForm({ issues }: Props) {
   const [userState, setUserState] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showCheck, setShowCheck] = useState(false)
-  const [milestone] = useState<string | null>(null)
   const [slideDir, setSlideDir] = useState<'left' | 'right' | null>(null)
 
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -246,7 +245,6 @@ export function QuizForm({ issues }: Props) {
     setStateResults([])
     setError(null)
     setShowCheck(false)
-    setMilestone(null)
   }
 
   function editAnswers() {
@@ -295,11 +293,6 @@ export function QuizForm({ issues }: Props) {
           50% { transform: scale(1.3); opacity: 1; }
           100% { transform: scale(1); opacity: 1; }
         }
-        @keyframes milestonePop {
-          0% { transform: scale(0.8) translateY(10px); opacity: 0; }
-          40% { transform: scale(1.05) translateY(0); opacity: 1; }
-          100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
         @keyframes slideInLeft {
           from { transform: translateX(60px); opacity: 0; }
           to { transform: translateX(0); opacity: 1; }
@@ -320,18 +313,6 @@ export function QuizForm({ issues }: Props) {
           transform: scale(0.98);
         }
       `}</style>
-
-      {/* Milestone overlay */}
-      {milestone && (
-        <div className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center">
-          <div
-            className="rounded-2xl border border-[var(--codex-border)] bg-[var(--codex-card)] px-8 py-5 text-center shadow-2xl"
-            style={{ animation: 'milestonePop 0.4s ease forwards' }}
-          >
-            <p className="text-[16px] font-semibold text-[var(--codex-text)]">{milestone}</p>
-          </div>
-        </div>
-      )}
 
       {/* Submitting overlay */}
       {isSubmitting && (
