@@ -187,9 +187,23 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
     )
   }
 
-  const topThree = results.slice(0, 3)
-  const rest = results.slice(3)
   const topSlug = results[0]?.politician.slug
+
+  // Get top match from each party for hero cards
+  const seenParties = new Set<string>()
+  const partyBests: MatchResult[] = []
+  for (const r of results) {
+    if (!seenParties.has(r.politician.party)) {
+      partyBests.push(r)
+      seenParties.add(r.politician.party)
+    }
+  }
+  // Sort hero cards: best score first
+  partyBests.sort((a, b) => b.score - a.score)
+
+  // Remaining results (everyone not in hero cards)
+  const heroSlugs = new Set(partyBests.map(r => r.politician.slug))
+  const rest = results.filter(r => !heroSlugs.has(r.politician.slug))
 
   // Party breakdown summary
   const partyCounts: Record<string, number> = {}
@@ -257,9 +271,9 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
         ))}
       </div>
 
-      {/* Podium: top 3 */}
+      {/* Top match from each party */}
       <div className="mb-8 flex flex-col gap-4">
-        {topThree.map((r, i) => {
+        {partyBests.map((r, i) => {
           const color = scoreColor(r.score)
           const pColor = partyColor(r.politician.party)
           const isExpanded = expandedCards.has(r.politician.slug)
@@ -270,12 +284,13 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
               className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5"
             >
               <div className="flex items-center gap-4">
-                {/* Rank */}
+                {/* Party badge */}
                 <span
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[15px] font-bold"
-                  style={{ backgroundColor: `${color}18`, color }}
+                  className="flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-full px-2.5 text-[11px] font-semibold uppercase tracking-wide"
+                  style={{ backgroundColor: `${pColor}15`, color: pColor }}
                 >
-                  {i + 1}
+                  <PartyIcon party={r.politician.party} size={12} />
+                  #{i + 1}
                 </span>
 
                 {/* Avatar */}
@@ -441,7 +456,7 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
                 <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
                   {/* Rank */}
                   <span className="w-5 shrink-0 text-center text-[13px] font-medium text-[var(--codex-faint)]">
-                    {i + 4}
+                    {i + 1}
                   </span>
 
                   {/* Avatar */}
@@ -517,12 +532,6 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
           className="rounded-lg border border-[var(--codex-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-sub)]"
         >
           Start Over
-        </button>
-        <button
-          onClick={handleShare}
-          className="rounded-lg bg-[var(--codex-text)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-card)] transition-opacity hover:opacity-90"
-        >
-          {copied ? 'Copied!' : 'Share Results'}
         </button>
       </div>
     </div>
