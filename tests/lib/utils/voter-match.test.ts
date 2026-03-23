@@ -30,8 +30,8 @@ describe('computeVoterMatch', () => {
     const user = { 'healthcare': 'supports' }
     const pol = { 'healthcare': 'leans_support' }
     const result = computeVoterMatch(user, pol)
-    // 1 step distance = 0.85 similarity
-    expect(result.score).toBe(85)
+    // 1 step distance = 0.9 similarity
+    expect(result.score).toBe(90)
     expect(result.matched).toBe(1)
   })
 
@@ -71,9 +71,9 @@ describe('computeVoterMatch', () => {
       'economy': 'supports',     // 1 step away
     }
     const result = computeVoterMatch(user, pol)
-    // Both are 1 step = 0.85 similarity, weighted by conviction
-    // (3.0 * 0.85 + 1.0 * 0.85) / (3.0 + 1.0) = 0.85 => 85%
-    expect(result.score).toBe(85)
+    // Both are 1 step = 0.9 similarity, weighted by conviction
+    // (3.0 * 0.9 + 1.0 * 0.9) / (3.0 + 1.0) = 0.9 => 90%
+    expect(result.score).toBe(90)
   })
 
   it('applies verification weight when verifiedMap is provided', () => {
@@ -91,18 +91,18 @@ describe('computeVoterMatch', () => {
     expect(computeVoterMatch({}, {}).matched).toBe(0)
   })
 
-  it('2-step distance gives 55% similarity', () => {
+  it('2-step distance gives 70% similarity', () => {
     const user = { 'issue': 'strongly_supports' } // numeric 6
     const pol = { 'issue': 'leans_support' }       // numeric 4
     const result = computeVoterMatch(user, pol)
-    expect(result.score).toBe(55)
+    expect(result.score).toBe(70)
   })
 
-  it('3-step distance gives 25% similarity', () => {
+  it('3-step distance gives 40% similarity', () => {
     const user = { 'issue': 'strongly_supports' } // numeric 6
     const pol = { 'issue': 'neutral' }             // numeric 3
     const result = computeVoterMatch(user, pol)
-    expect(result.score).toBe(25)
+    expect(result.score).toBe(40)
   })
 
   it('skips neutral user stances entirely — no penalty', () => {

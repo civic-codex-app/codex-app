@@ -51,10 +51,10 @@ describe('computeAlignment', () => {
 
   it('gives partial credit for 1-step deviation', () => {
     // Democrat default for economy = 'supports' (5)
-    // Giving 'strongly_supports' (6) = 1 step = 0.85
+    // Giving 'strongly_supports' (6) = 1 step = 0.9
     const stances = [{ stance: 'strongly_supports', issues: { slug: 'economy-and-jobs' } }]
     const score = computeAlignment('democrat', stances)
-    expect(score).toBe(85)
+    expect(score).toBe(90)
   })
 
   it('skips neutral stances — no penalty', () => {

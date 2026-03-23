@@ -70,10 +70,11 @@ export function computeVoterMatch(
 
     let similarity = 0
     if (distance === 0) similarity = 1.0
-    else if (distance === 1) similarity = 0.85
-    else if (distance === 2) similarity = 0.55
-    else if (distance === 3) similarity = 0.25
-    // 4+ = 0
+    else if (distance === 1) similarity = 0.9
+    else if (distance === 2) similarity = 0.7
+    else if (distance === 3) similarity = 0.4
+    else if (distance === 4) similarity = 0.15
+    // 5+ = 0
 
     // Conviction weight — how strongly the user feels about this issue
     const conviction = CONVICTION_WEIGHT[userStance] ?? 1.0

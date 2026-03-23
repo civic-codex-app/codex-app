@@ -128,9 +128,10 @@ export function computeAlignment(
     const distance = Math.abs(expectedVal - actualVal)
 
     if (distance === 0) matched += 1.0
-    else if (distance === 1) matched += 0.85
-    else if (distance === 2) matched += 0.55
-    else if (distance === 3) matched += 0.25
+    else if (distance === 1) matched += 0.9
+    else if (distance === 2) matched += 0.7
+    else if (distance === 3) matched += 0.4
+    else if (distance === 4) matched += 0.15
     else matched += 0.0
   }
 
