@@ -134,7 +134,7 @@ export default async function HomePage() {
 
             {/* Your Representatives */}
             {userRepresentatives.length > 0 && (
-              <div className="rounded-xl border border-[var(--codex-border)] p-5">
+              <div>
                 <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
                   Your Representatives
                 </h2>
@@ -197,7 +197,7 @@ export default async function HomePage() {
         {/* Quick Actions — above the fold */}
         <div className="mb-12">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link href="/quiz" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+            <Link href="/quiz" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-500/15 text-blue-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
@@ -207,7 +207,7 @@ export default async function HomePage() {
               </div>
               <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/compare" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+            <Link href="/compare" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-purple-500/15 text-purple-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -217,7 +217,7 @@ export default async function HomePage() {
               </div>
               <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/issues" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+            <Link href="/issues" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -227,7 +227,7 @@ export default async function HomePage() {
               </div>
               <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/elections" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+            <Link href="/elections" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-amber-500/15 text-amber-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
