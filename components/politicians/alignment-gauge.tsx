@@ -11,7 +11,7 @@ interface AlignmentGaugeProps {
 export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
   if (score < 0) return null
 
-  const meta = alignmentMeta(score)
+  const meta = alignmentMeta(score, party)
   const color = partyColor(party)
 
   return (

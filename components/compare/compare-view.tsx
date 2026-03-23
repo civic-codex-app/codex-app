@@ -45,8 +45,8 @@ export function CompareView({
 
   const alignA = computeAlignment(polA.party, stancesA)
   const alignB = computeAlignment(polB.party, stancesB)
-  const metaA = alignA >= 0 ? alignmentMeta(alignA) : null
-  const metaB = alignB >= 0 ? alignmentMeta(alignB) : null
+  const metaA = alignA >= 0 ? alignmentMeta(alignA, polA.party) : null
+  const metaB = alignB >= 0 ? alignmentMeta(alignB, polB.party) : null
 
   // Build a unified issue list from both sets of stances
   const issueMap = new Map<string, { name: string; slug: string; icon?: string; a?: string; b?: string }>()

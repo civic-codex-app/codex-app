@@ -10,6 +10,7 @@
  */
 
 import { STANCE_NUMERIC } from './stances'
+import { partyColor } from '@/lib/constants/parties'
 
 // Canonical party-default stances keyed by issue slug.
 // Values use the 7-point scale (or 'mixed' for genuinely split positions).
@@ -148,14 +149,18 @@ export function getPartyDefault(party: string, issueSlug: string): string | null
 
 /**
  * Label + color for an alignment score.
+ * When party is provided, high-alignment badges use the party color.
  */
-export function alignmentMeta(score: number): {
+export function alignmentMeta(score: number, party?: string): {
   label: string
   color: string
   bgColor: string
 } {
-  if (score >= 85) return { label: 'Strong Party Line', color: '#3B82F6', bgColor: '#3B82F618' }
-  if (score >= 65) return { label: 'Mostly Aligned', color: '#60A5FA', bgColor: '#60A5FA18' }
+  // Use party color for aligned tiers, neutral for low alignment
+  const pc = party ? partyColor(party) : '#3B82F6'
+
+  if (score >= 85) return { label: 'Strong Party Line', color: pc, bgColor: `${pc}18` }
+  if (score >= 65) return { label: 'Mostly Aligned', color: pc, bgColor: `${pc}12` }
   if (score >= 45) return { label: 'Moderate', color: '#A855F7', bgColor: '#A855F718' }
   if (score >= 25) return { label: 'Independent Streak', color: '#F97316', bgColor: '#F9731618' }
   return { label: 'Maverick', color: '#EF4444', bgColor: '#EF444418' }

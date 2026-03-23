@@ -97,7 +97,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
   const alignment = candidateStances.length > 0
     ? computeAlignment(candidate.party, candidateStances)
     : -1
-  const alignMeta = alignment >= 0 ? alignmentMeta(alignment) : null
+  const alignMeta = alignment >= 0 ? alignmentMeta(alignment, candidate.party) : null
 
   // Stance breakdown
   const supports = candidateStances.filter((s: any) => ['strongly_supports', 'supports', 'leans_support'].includes(s.stance)).length

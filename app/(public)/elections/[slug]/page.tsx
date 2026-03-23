@@ -253,7 +253,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                 const alignment = pol && polStances.length > 0
                   ? computeAlignment(candidate.party, polStances)
                   : -1
-                const meta = alignment >= 0 ? alignmentMeta(alignment) : null
+                const meta = alignment >= 0 ? alignmentMeta(alignment, candidate.party) : null
 
                 const supports = polStances.filter((s) => ['strongly_supports', 'supports', 'leans_support'].includes(s.stance)).length
                 const opposes = polStances.filter((s) => ['strongly_opposes', 'opposes', 'leans_oppose'].includes(s.stance)).length
