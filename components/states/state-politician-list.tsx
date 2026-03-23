@@ -90,8 +90,8 @@ export function StatePoliticianList({ politicians, pageSize = 6, size = 'default
 
 function Grid({ politicians, size }: { politicians: Politician[]; size: 'default' | 'compact' }) {
   const isCompact = size === 'compact'
-  const avatarW = isCompact ? 'w-[52px]' : 'w-[64px]'
-  const avatarPx = isCompact ? 52 : 64
+  const avatarW = isCompact ? 'w-[64px]' : 'w-[72px]'
+  const avatarPx = isCompact ? 64 : 72
   const nameSize = isCompact ? 'text-[13px]' : 'text-[15px]'
 
   return (
@@ -106,15 +106,15 @@ function Grid({ politicians, size }: { politicians: Politician[]; size: 'default
             style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
           >
             <div
-              className={`${avatarW} flex-shrink-0 overflow-hidden bg-[var(--codex-card)]`}
+              className={`${avatarW} flex-shrink-0 self-stretch overflow-hidden bg-[var(--codex-card)]`}
             >
               <AvatarImage
                 src={pol.image_url}
                 alt={pol.name}
-                size={avatarPx}
+                size={avatarPx * 2}
                 party={pol.party}
                 fallbackColor={color}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover object-top"
               />
             </div>
             <div className={`min-w-0 flex-1 ${isCompact ? 'px-3 py-2.5' : 'px-4 py-3'}`}>
