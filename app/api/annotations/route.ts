@@ -119,7 +119,6 @@ export async function GET(request: NextRequest) {
         created_at,
         issue_id,
         user_id,
-        profiles:user_id ( display_name ),
         issues:issue_id ( name, slug )
       `
       )
@@ -127,6 +126,21 @@ export async function GET(request: NextRequest) {
       .eq('status', 'approved')
       .order('created_at', { ascending: false })
       .limit(50)
+
+    // Fetch display names separately since annotations FK is to auth.users, not profiles
+    if (annotations && annotations.length > 0) {
+      const userIds = [...new Set(annotations.map(a => a.user_id).filter(Boolean))]
+      if (userIds.length > 0) {
+        const { data: profiles } = await serviceClient
+          .from('profiles')
+          .select('id, display_name')
+          .in('id', userIds)
+        const profileMap = new Map((profiles ?? []).map(p => [p.id, p.display_name]))
+        for (const a of annotations) {
+          ;(a as any).display_name = profileMap.get(a.user_id) ?? 'Anonymous'
+        }
+      }
+    }
 
     if (error) {
       console.error('Failed to fetch annotations:', error.message)
