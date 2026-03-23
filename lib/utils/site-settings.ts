@@ -36,6 +36,11 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   }
 
   try {
+    // During static generation, env vars may not be available
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return DEFAULTS
+    }
+
     const supabase = createServiceRoleClient()
     const { data, error } = await supabase.from('site_settings').select('key, value')
 
