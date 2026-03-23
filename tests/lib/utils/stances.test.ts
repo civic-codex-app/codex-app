@@ -124,17 +124,17 @@ describe('getStanceDisplay', () => {
 })
 
 describe('stanceDisplayBadge', () => {
-  it('returns slate fallback for supports without party', () => {
+  it('returns blue fallback for supports without party', () => {
     const badge = stanceDisplayBadge('supports')
     expect(badge.label).toBe('Favors')
-    expect(badge.className).toContain('slate')
-    expect(badge.color).toBe('#334155')
+    expect(badge.className).toContain('blue')
+    expect(badge.color).toBe('#1D4ED8')
   })
 
-  it('returns slate fallback for opposes without party', () => {
+  it('returns red fallback for opposes without party', () => {
     const badge = stanceDisplayBadge('opposes')
     expect(badge.label).toBe('Opposes')
-    expect(badge.className).toContain('slate')
+    expect(badge.className).toContain('red')
   })
 
   it('returns gray for mixed regardless of party', () => {
