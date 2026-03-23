@@ -552,29 +552,31 @@ function StanceGroup({
             return (
               <div
                 key={itemKey}
-                className="overflow-hidden rounded-lg border border-[var(--codex-border)]"
-                style={{ borderLeftWidth: '3px', borderLeftColor: badge.color }}
+                className="overflow-hidden rounded-xl border border-[var(--codex-border)] transition-all duration-200 hover:shadow-sm"
+                style={{ backgroundColor: `${badge.color}06` }}
               >
                 <button
                   onClick={() => hasSummaryContent && toggleItem(itemKey)}
                   className={cn(
-                    'flex w-full items-center justify-between gap-3 px-4 py-3 text-left',
-                    hasSummaryContent && 'cursor-pointer hover:bg-[var(--codex-hover)]'
+                    'flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left',
+                    hasSummaryContent && 'cursor-pointer'
                   )}
                 >
-                  <span className="flex items-center gap-2 text-[14px] font-medium text-[var(--codex-text)]">
+                  <span className="flex items-center gap-2.5 text-[14px] font-medium text-[var(--codex-text)]">
                     {s.issues?.icon && (
-                      <IssueIcon icon={s.issues.icon} size={15} className="text-[var(--codex-sub)]" />
+                      <span className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: `${badge.color}10` }}>
+                        <IssueIcon icon={s.issues.icon} size={15} className="text-[var(--codex-sub)]" />
+                      </span>
                     )}
                     {s.issues?.name}
                   </span>
                   <div className="flex shrink-0 items-center gap-2">
                     {isEstimated && (
-                      <span className="rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-[var(--codex-faint)]">
+                      <span className="rounded-full bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[9px] uppercase tracking-wider text-[var(--codex-faint)]">
                         Est.
                       </span>
                     )}
-                    <span className="rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] border" style={badge.style}>
+                    <span className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] border" style={badge.style}>
                       {badge.label}
                     </span>
                     {hasSummaryContent && (
