@@ -1,14 +1,18 @@
-import { NextResponse } from 'next/server'
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 import { computeVoterMatch } from '@/lib/utils/voter-match'
 import { STANCE_NUMERIC } from '@/lib/utils/stances'
+import { rateLimit, EXPENSIVE_OP } from '@/lib/utils/rate-limit'
 
 const PAGE_SIZE = 1000
 const MIN_MATCHING_ISSUES = 3
 const TOP_N = 20
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    const limited = rateLimit(request, EXPENSIVE_OP)
+    if (!limited.success) return limited.response
+
     const body = await request.json()
     const stances: Record<string, string> = body?.stances
 
@@ -17,17 +21,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'stances object is required' }, { status: 400 })
     }
 
+    // Limit stances count and validate slug format
+    if (Object.keys(stances).length > 20) {
+      return NextResponse.json({ error: 'Too many stances' }, { status: 400 })
+    }
+
     // Validate each stance value is a known type
     for (const [slug, stance] of Object.entries(stances)) {
       if (typeof slug !== 'string' || typeof stance !== 'string') {
         return NextResponse.json({ error: 'Invalid stance format' }, { status: 400 })
+      }
+      if (!/^[a-z0-9-]+$/.test(slug) || slug.length > 100) {
+        return NextResponse.json({ error: 'Invalid issue slug format' }, { status: 400 })
       }
       if (!(stance in STANCE_NUMERIC)) {
         return NextResponse.json({ error: `Unknown stance type: ${stance}` }, { status: 400 })
       }
     }
 
-    const supabase = createServiceRoleClient()
+    const supabase = await createClient()
     const issueSlugs = Object.keys(stances)
 
     // First get federal politician IDs only (senate, house, governor, presidential)

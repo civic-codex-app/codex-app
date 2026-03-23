@@ -1,8 +1,12 @@
-import { NextResponse } from 'next/server'
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { rateLimit, PUBLIC_READ } from '@/lib/utils/rate-limit'
 
-export async function GET() {
-  const supabase = createServiceRoleClient()
+export async function GET(request: NextRequest) {
+  const limited = rateLimit(request, PUBLIC_READ)
+  if (!limited.success) return limited.response
+
+  const supabase = await createClient()
 
   // Get top 6 most-followed politicians by counting follows per politician_id
   const { data: followCounts, error: followError } = await supabase

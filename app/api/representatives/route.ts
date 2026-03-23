@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { rateLimit, PUBLIC_READ } from '@/lib/utils/rate-limit'
 import zipToDistrictData from '@/lib/data/zip-to-district.json'
 
 type DistrictEntry = { state: string; district: string }
@@ -11,7 +12,10 @@ const zipLookup = zipToDistrictData as Record<string, DistrictEntry[]>
  * Looks up congressional district(s) for a zip code using local data,
  * then returns matching House rep(s), Senators, and Governor from the DB.
  */
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const limited = rateLimit(request, PUBLIC_READ)
+  if (!limited.success) return limited.response
+
   const { searchParams } = new URL(request.url)
   const zip = searchParams.get('zip')
 
@@ -30,7 +34,7 @@ export async function GET(request: Request) {
       return fallbackByState(zip)
     }
 
-    const supabase = createServiceRoleClient()
+    const supabase = await createClient()
 
     // Collect unique states from the district entries
     const states = [...new Set(districts.map((d) => d.state))]
@@ -113,7 +117,7 @@ async function fallbackByState(zip: string) {
     return NextResponse.json({ representatives: [], source: 'none' })
   }
 
-  const supabase = createServiceRoleClient()
+  const supabase = await createClient()
   const { data } = await supabase
     .from('politicians')
     .select('id, name, slug, party, state, chamber, title, image_url')

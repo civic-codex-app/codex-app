@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { rateLimit, WRITE_OP, PUBLIC_READ } from '@/lib/utils/rate-limit'
 
 const VALID_TYPES = ['correction', 'source', 'context'] as const
 
 export async function POST(request: NextRequest) {
   try {
+    const limited = rateLimit(request, WRITE_OP); if (!limited.success) return limited.response;
     // Auth check
     const supabase = await createClient()
     const {
@@ -93,6 +95,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const limited = rateLimit(request, PUBLIC_READ); if (!limited.success) return limited.response;
     const sp = request.nextUrl.searchParams
     const politicianId = sp.get('politicianId')
 

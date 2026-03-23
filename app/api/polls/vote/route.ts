@@ -1,8 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { rateLimit } from '@/lib/utils/rate-limit'
+
+// Strict rate limit: 5 votes per minute per IP
+const POLL_VOTE_LIMIT = { windowMs: 60_000, maxRequests: 5 }
+
+function getIP(request: NextRequest): string {
+  return (
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
+  )
+}
 
 export async function POST(request: NextRequest) {
+  const limited = rateLimit(request, POLL_VOTE_LIMIT, 'poll-vote')
+  if (!limited.success) return limited.response
+
   try {
     const body = await request.json()
     const { pollId, optionId } = body
@@ -14,7 +29,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if user already voted via cookie
+    // Check if user already voted via cookie (fast, no DB hit)
     const cookieStore = await cookies()
     const existingVote = cookieStore.get(`voted-${pollId}`)
 
@@ -25,7 +40,26 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const ip = getIP(request)
     const supabase = createServiceRoleClient()
+
+    // Check if this IP already voted on this poll
+    if (ip !== 'unknown') {
+      const { data: existingIpVote } = await supabase
+        .from('poll_votes')
+        .select('id')
+        .eq('poll_id', pollId)
+        .eq('ip_address', ip)
+        .limit(1)
+        .maybeSingle()
+
+      if (existingIpVote) {
+        return NextResponse.json(
+          { error: 'Already voted from this network' },
+          { status: 409 }
+        )
+      }
+    }
 
     // Verify poll exists and is active
     const { data: poll, error: pollError } = await supabase
@@ -70,11 +104,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Insert the vote
+    // Insert the vote with IP tracking
     const { error: voteError } = await supabase.from('poll_votes').insert({
       poll_id: pollId,
       option_id: optionId,
-      user_id: null, // cookie-based, no auth required
+      user_id: null,
+      ip_address: ip !== 'unknown' ? ip : null,
     })
 
     if (voteError) {
@@ -90,7 +125,7 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 365, // 1 year
+      maxAge: 60 * 60 * 24 * 365,
       path: '/',
     })
 

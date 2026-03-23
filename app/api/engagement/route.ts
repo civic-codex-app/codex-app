@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { checkBadges, type EngagementStats } from '@/lib/constants/badges'
+import { rateLimit, WRITE_OP } from '@/lib/utils/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
+    const limited = rateLimit(request, WRITE_OP); if (!limited.success) return limited.response;
     const supabaseAuth = await createClient()
     const {
       data: { user },
@@ -131,8 +133,9 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const limited = rateLimit(request, WRITE_OP); if (!limited.success) return limited.response;
     const supabaseAuth = await createClient()
     const {
       data: { user },

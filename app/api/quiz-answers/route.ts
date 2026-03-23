@@ -1,12 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { rateLimit, WRITE_OP } from '@/lib/utils/rate-limit'
+import { z } from 'zod'
+import { STANCE_NUMERIC } from '@/lib/utils/stances'
+
+const stanceKeys = Object.keys(STANCE_NUMERIC) as [string, ...string[]]
+
+const QuizAnswersSchema = z
+  .record(
+    z.string().regex(/^[a-z0-9-]+$/).max(100),
+    z.enum(stanceKeys),
+  )
+  .refine(obj => Object.keys(obj).length <= 20, { message: 'Too many answers' })
 
 /**
  * GET /api/quiz-answers
  * Returns the authenticated user's quiz_answers from their profile.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const limited = rateLimit(request, WRITE_OP)
+  if (!limited.success) return limited.response
+
   try {
     const supabase = await createClient()
     const {
@@ -42,6 +57,9 @@ export async function GET() {
  * Body: { answers: Record<string, string> }
  */
 export async function POST(request: NextRequest) {
+  const limited = rateLimit(request, WRITE_OP)
+  if (!limited.success) return limited.response
+
   try {
     const supabase = await createClient()
     const {
@@ -53,16 +71,16 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const answers = body?.answers
+    const parsed = QuizAnswersSchema.safeParse(body?.answers ?? {})
 
-    if (!answers || typeof answers !== 'object') {
-      return NextResponse.json({ error: 'answers object is required' }, { status: 400 })
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid answers format' }, { status: 400 })
     }
 
     const admin = createServiceRoleClient()
     const { error } = await admin
       .from('profiles')
-      .update({ quiz_answers: answers })
+      .update({ quiz_answers: parsed.data })
       .eq('id', user.id)
 
     if (error) {

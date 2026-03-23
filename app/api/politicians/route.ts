@@ -1,28 +1,38 @@
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { computeAlignment } from '@/lib/utils/alignment'
 import { stanceBucket } from '@/lib/utils/stances'
+import { rateLimit, PUBLIC_READ } from '@/lib/utils/rate-limit'
 
 const PAGE_SIZE = 50
 
 export async function GET(request: NextRequest) {
+  const limited = rateLimit(request, PUBLIC_READ)
+  if (!limited.success) return limited.response
+
   const sp = request.nextUrl.searchParams
   const page = Math.max(1, parseInt(sp.get('page') ?? '1', 10) || 1)
   const offset = (page - 1) * PAGE_SIZE
 
-  const supabase = createServiceRoleClient()
+  const supabase = await createClient()
 
   let query = supabase.from('politicians').select('*', { count: 'exact' })
 
   const chamber = sp.get('chamber')
   const state = sp.get('state')
   const party = sp.get('party')
-  const q = sp.get('q')
+  const q = sp.get('q')?.slice(0, 200)
 
   if (chamber && chamber !== 'all') query = query.eq('chamber', chamber)
   if (state) query = query.eq('state', state)
   if (party) query = query.eq('party', party)
-  if (q) query = query.or(`name.ilike.%${q}%,state.ilike.%${q}%,title.ilike.%${q}%`)
+  // Sanitize q to prevent PostgREST filter injection
+  if (q) {
+    const safeQ = q.replace(/[,().]/g, '')
+    if (safeQ.length >= 2) {
+      query = query.or(`name.ilike.%${safeQ}%,state.ilike.%${safeQ}%,title.ilike.%${safeQ}%`)
+    }
+  }
 
   const sort = sp.get('sort') ?? 'name'
   if (sort === 'name-desc') {

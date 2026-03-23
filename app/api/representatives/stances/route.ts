@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server'
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { rateLimit, PUBLIC_READ } from '@/lib/utils/rate-limit'
 
 /**
  * POST /api/representatives/stances
@@ -8,8 +9,11 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
  *
  * Returns stances for the given politicians on the given issues.
  */
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    const limited = rateLimit(request, PUBLIC_READ)
+    if (!limited.success) return limited.response
+
     const body = await request.json()
     const { politician_ids, issue_slugs } = body as {
       politician_ids: string[]
@@ -29,7 +33,7 @@ export async function POST(request: Request) {
     const polIds = politician_ids.slice(0, 20)
     const slugs = issue_slugs.slice(0, 20)
 
-    const supabase = createServiceRoleClient()
+    const supabase = await createClient()
 
     // Look up issue IDs from slugs
     const { data: issues } = await supabase

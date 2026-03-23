@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createClient } from '@/lib/supabase/server'
+import { rateLimit, PUBLIC_READ } from '@/lib/utils/rate-limit'
 
 export async function GET(request: NextRequest) {
-  const q = request.nextUrl.searchParams.get('q')?.trim()
+  const limited = rateLimit(request, PUBLIC_READ)
+  if (!limited.success) return limited.response
+
+  const q = request.nextUrl.searchParams.get('q')?.trim()?.slice(0, 200)
 
   if (!q || q.length < 2) {
     return NextResponse.json([])
   }
 
-  const supabase = createServiceRoleClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('politicians')
