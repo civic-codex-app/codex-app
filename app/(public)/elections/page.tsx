@@ -99,24 +99,23 @@ export default async function ElectionsPage() {
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Voter Registration */}
-        <div className="mb-8 flex items-center overflow-hidden rounded-xl border border-[var(--codex-border)]">
-          <div className="min-w-0 flex-1 px-5 py-4">
-            <div className="text-[14px] font-semibold text-[var(--codex-text)]">Check your voter registration</div>
-            <div className="text-[12px] text-[var(--codex-faint)]">Verify your status or register — takes 2 minutes</div>
+        <a
+          href="https://vote.org/register-to-vote/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-8 flex items-center gap-4 rounded-xl bg-[var(--codex-badge-bg)] px-5 py-4 no-underline transition-all hover:opacity-80"
+        >
+          <span className="text-2xl">🗳️</span>
+          <div className="min-w-0 flex-1">
+            <div className="text-[14px] font-semibold text-[var(--codex-text)]">Are you registered to vote?</div>
+            <div className="text-[12px] text-[var(--codex-faint)]">It takes 2 minutes to check · vote.org</div>
           </div>
-          <a
-            href="https://vote.org/register-to-vote/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-full shrink-0 items-center self-stretch bg-[var(--codex-text)] px-6 text-[13px] font-semibold text-[var(--codex-card)] no-underline transition-opacity hover:opacity-80"
-          >
-            Register &rarr;
-          </a>
-        </div>
+          <span className="shrink-0 text-[var(--codex-faint)]">&rarr;</span>
+        </a>
 
         {/* Hero */}
         <div className="mb-8">
-          <h1 className="mb-3 text-[clamp(28px,4vw,44px)] font-bold leading-[1.1]">
+          <h1 className="mb-3 font-serif text-[clamp(28px,4vw,44px)] font-bold leading-[1.1]">
             2026 Elections
           </h1>
           <p className="mb-4 max-w-lg text-[15px] leading-relaxed text-[var(--codex-sub)]">
