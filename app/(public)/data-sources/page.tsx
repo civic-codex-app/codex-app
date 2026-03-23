@@ -191,7 +191,7 @@ export default function DataSourcesPage() {
           </h2>
           <div className="space-y-4 text-[13px] leading-relaxed text-[var(--codex-sub)]">
             <p>
-              <strong className="text-[var(--codex-text)]">Accuracy.</strong> Poli strives
+              <strong className="text-[var(--codex-text)]">Accuracy.</strong>{' '}Poli strives
               for accuracy but makes no warranties or guarantees regarding the completeness,
               reliability, or currentness of any information presented on this platform. Political
               positions, voting records, and other data may change at any time. Information marked
@@ -206,25 +206,25 @@ export default function DataSourcesPage() {
               other purposes.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">Independence.</strong> Poli is an
+              <strong className="text-[var(--codex-text)]">Independence.</strong>{' '}Poli is an
               independent civic education platform. We are not affiliated with, endorsed by, or
               funded by any political party, political action committee (PAC), campaign, government
               agency, or elected official. We do not endorse any candidate or political position.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">Public Data.</strong> All information
+              <strong className="text-[var(--codex-text)]">Public Data.</strong>{' '}All information
               presented on this platform is compiled from publicly available sources as listed
               above. We respect all applicable intellectual property rights and use data in
               accordance with fair use principles and applicable terms of service.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">User Contributions.</strong> Community
+              <strong className="text-[var(--codex-text)]">User Contributions.</strong>{' '}Community
               annotations and corrections submitted by users reflect the views of their authors,
               not the views of Poli. User-submitted content is reviewed before publication but
               Poli does not guarantee its accuracy.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">Contact.</strong> If you believe any
+              <strong className="text-[var(--codex-text)]">Contact.</strong>{' '}If you believe any
               information on Poli is inaccurate or if you are an elected official and would like
               to update your information, please contact us. We are committed to correcting errors
               promptly.
@@ -236,7 +236,7 @@ export default function DataSourcesPage() {
           Last updated: March 2026
         </p>
 
-        <Footer />
+        <Footer hideDisclaimer />
       </div>
     </>
   )
