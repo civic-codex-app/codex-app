@@ -76,7 +76,7 @@ export default async function ElectionCountdownPage() {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-[720px] px-6 pt-8 pb-16 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-8 pb-16 md:px-10">
         {/* Back link */}
         <Link
           href="/elections"
