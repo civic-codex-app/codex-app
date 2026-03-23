@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 
 interface PoliticianScore {
   name: string
@@ -88,12 +89,7 @@ export function BipartisanScoreCard({
                   {p.name}
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span
-                    className="text-[10px] font-semibold uppercase tracking-[0.08em]"
-                    style={{ color }}
-                  >
-                    {partyLabel(p.party).slice(0, 3)}
-                  </span>
+                  <PartyIcon party={p.party} size={10} />
                   <span className="text-[10px] text-[var(--codex-faint)]">{p.state}</span>
                 </div>
               </div>

@@ -198,7 +198,19 @@ export default async function InsightsPage() {
     }))
 
   const mostBipartisan = [...bipartisanData].sort((a, b) => b.bipartisanScore - a.bipartisanScore)
-  const mostPartisan = [...bipartisanData].sort((a, b) => a.bipartisanScore - b.bipartisanScore)
+
+  // For "sticks with party" — show alignment score (not bipartisan inverse)
+  const mostPartisan = spectrumData
+    .filter((p) => p.alignment >= 0)
+    .map((p) => ({
+      name: p.name,
+      slug: p.slug,
+      party: p.party,
+      state: p.state,
+      imageUrl: p.imageUrl,
+      bipartisanScore: p.alignment, // use alignment directly
+    }))
+    .sort((a, b) => b.bipartisanScore - a.bipartisanScore)
 
   return (
     <>
@@ -319,7 +331,7 @@ export default async function InsightsPage() {
                 <BipartisanScoreCard
                   politicians={mostPartisan}
                   title="Sticks with their own party"
-                  subtitle="Ranked by how often they only vote with their own side"
+                  subtitle="Ranked by party alignment — higher means they almost never break ranks"
                   limit={10}
                 />
               </Suspense>
