@@ -203,7 +203,7 @@ export default async function StateDetailPage({ params }: PageProps) {
               {abbr}
             </span>
           </div>
-          <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+          <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             {stateName}
           </h1>
           <p className="text-[15px] text-[var(--codex-sub)]">

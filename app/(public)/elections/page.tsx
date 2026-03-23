@@ -116,7 +116,7 @@ export default async function ElectionsPage() {
 
         {/* Hero */}
         <div className="mb-8">
-          <h1 className="mb-3 font-serif text-[clamp(28px,4vw,44px)] font-bold leading-[1.1]">
+          <h1 className="mb-3 text-[clamp(28px,4vw,44px)] font-bold leading-[1.1]">
             2026 Elections
           </h1>
           <p className="mb-4 max-w-lg text-[15px] leading-relaxed text-[var(--codex-sub)]">

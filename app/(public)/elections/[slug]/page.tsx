@@ -170,7 +170,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
           )}
         </div>
 
-        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-serif font-bold leading-[1.1]">
+        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {race.name}
         </h1>
 
@@ -501,7 +501,7 @@ async function renderStateElection(
           &larr; All states
         </Link>
 
-        <h1 className="mb-2 text-[clamp(26px,4vw,40px)] font-serif font-bold leading-[1.1]">
+        <h1 className="mb-2 text-[clamp(26px,4vw,40px)] font-bold leading-[1.1]">
           {election.name}
         </h1>
         <p className="mb-4 text-[14px] text-[var(--codex-sub)]">

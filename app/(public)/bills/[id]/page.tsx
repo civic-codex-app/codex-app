@@ -173,7 +173,7 @@ export default async function BillDetailPage({ params }: PageProps) {
           <FollowBillButton billId={bill.id} className="ml-auto" />
         </div>
 
-        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-serif font-bold leading-[1.1]">
+        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           {bill.title}
         </h1>
 

@@ -111,7 +111,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
-          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-serif font-bold leading-[1.1]">
+          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Political Issues
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">

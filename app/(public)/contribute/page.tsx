@@ -34,7 +34,7 @@ export default function ContributePage() {
     <>
       <Header />
       <div className="mx-auto max-w-[800px] px-6 pt-6 pb-16 md:px-10">
-        <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Contribute
         </h1>
         <p className="mb-8 text-[15px] leading-[1.7] text-[var(--codex-sub)]">

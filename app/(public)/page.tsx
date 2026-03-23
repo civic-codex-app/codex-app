@@ -98,7 +98,7 @@ export default async function HomePage() {
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
         <div className="mb-10 max-w-[740px]">
-          <h1 className="mb-5 animate-fade-up font-serif text-[clamp(36px,5vw,60px)] font-bold leading-[1.08]">
+          <h1 className="mb-5 animate-fade-up text-[clamp(36px,5vw,60px)] font-bold leading-[1.08]">
             Track Every Politician in America
           </h1>
           <p className="max-w-[520px] animate-fade-up text-[15.5px] leading-[1.7] text-[var(--codex-subtle)]">

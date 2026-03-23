@@ -218,7 +218,7 @@ export default async function InsightsPage() {
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
         <div className="mb-14 max-w-[650px]">
-          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-serif font-bold leading-[1.1]">
+          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Political Insights
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">

@@ -41,7 +41,7 @@ export default async function BallotPreviewPage() {
   if (!userState) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-        <h1 className="mb-2 font-serif text-3xl font-bold">Your Ballot Preview</h1>
+        <h1 className="mb-2 text-3xl font-bold">Your Ballot Preview</h1>
         <p className="mb-8 text-sm text-[var(--codex-sub)]">
           See the races and candidates that will appear on your ballot.
         </p>
@@ -110,7 +110,7 @@ export default async function BallotPreviewPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-      <h1 className="mb-2 font-serif text-3xl font-bold">Your Ballot Preview</h1>
+      <h1 className="mb-2 text-3xl font-bold">Your Ballot Preview</h1>
       <p className="mb-1 text-sm text-[var(--codex-sub)]">
         Races and candidates for {stateName}
         {userZip ? ` (${userZip})` : ''}

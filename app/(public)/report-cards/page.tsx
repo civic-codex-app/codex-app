@@ -191,7 +191,7 @@ export default async function ReportCardsPage() {
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         {/* Page title */}
-        <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-serif font-bold leading-tight text-[var(--codex-text)]">
+        <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight text-[var(--codex-text)]">
           Civic Profiles
         </h1>
         <p className="mb-8 max-w-2xl text-sm leading-relaxed text-[var(--codex-sub)]">

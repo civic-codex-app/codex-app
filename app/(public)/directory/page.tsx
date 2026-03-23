@@ -152,7 +152,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <h1 className="mb-1 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-1 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Directory
         </h1>
         <p className="mb-6 text-[14px] text-[var(--codex-sub)]">

@@ -137,7 +137,7 @@ export default function DataSourcesPage() {
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <h1 className="mb-2 text-[clamp(1.5rem,4vw,2.25rem)] font-serif font-bold leading-tight text-[var(--codex-text)]">
+        <h1 className="mb-2 text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--codex-text)]">
           Data Sources & Disclaimer
         </h1>
         <p className="mb-10 max-w-2xl text-[14px] leading-relaxed text-[var(--codex-sub)]">

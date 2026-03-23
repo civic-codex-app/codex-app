@@ -136,7 +136,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
 
           {/* Name + meta */}
           <div className="min-w-0 flex-1 pt-1">
-            <h1 className="mb-2 text-[clamp(24px,4vw,42px)] font-serif font-bold leading-[1.1]">
+            <h1 className="mb-2 text-[clamp(24px,4vw,42px)] font-bold leading-[1.1]">
               {candidate.name}
             </h1>
             <div className="flex flex-wrap items-center gap-2">

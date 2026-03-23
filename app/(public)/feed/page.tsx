@@ -201,7 +201,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
       >
         {/* Page header */}
         <div className="mb-8">
-          <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+          <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             Activity Feed
           </h1>
           <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">

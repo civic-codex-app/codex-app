@@ -329,7 +329,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         </div>
 
         <div className="mb-3 flex items-start justify-between gap-3">
-          <h1 className="text-[clamp(28px,4vw,42px)] font-serif font-bold leading-[1.1]">
+          <h1 className="text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--codex-sub)]" />}
             {issue.name}
           </h1>

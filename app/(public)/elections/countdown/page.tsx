@@ -98,7 +98,7 @@ export default async function ElectionCountdownPage() {
         </Link>
 
         {/* Title */}
-        <h1 className="mb-2 font-serif text-3xl font-bold text-[var(--codex-text)]">
+        <h1 className="mb-2 text-3xl font-bold text-[var(--codex-text)]">
           Election Countdown
         </h1>
         <p className="mb-8 text-sm text-[var(--codex-sub)]">
@@ -139,7 +139,7 @@ export default async function ElectionCountdownPage() {
 
         {/* State date picker with timeline */}
         <div className="mb-10">
-          <h2 className="mb-4 font-serif text-xl font-bold text-[var(--codex-text)]">
+          <h2 className="mb-4 text-xl font-bold text-[var(--codex-text)]">
             Key Dates by State
           </h2>
           <StateDatePicker
