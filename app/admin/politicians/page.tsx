@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import type { Politician } from '@/lib/types/politician'
 
@@ -171,8 +172,8 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
                 className="border-b border-[var(--codex-border)] transition-colors hover:bg-[var(--codex-hover)]"
               >
                 <td className="px-4 py-3 text-sm font-medium">{pol.name}</td>
-                <td className="px-4 py-3 text-sm" style={{ color: partyColor(pol.party) }}>
-                  {partyLabel(pol.party)}
+                <td className="px-4 py-3 text-sm">
+                  <PartyIcon party={pol.party} size={14} />
                 </td>
                 <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">{pol.state}</td>
                 <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">

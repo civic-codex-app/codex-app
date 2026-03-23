@@ -26,10 +26,10 @@ interface PageProps {
 }
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
-  running: { bg: 'bg-green-500/10', text: 'text-green-400', label: 'Running' },
-  withdrawn: { bg: 'bg-yellow-500/10', text: 'text-yellow-400', label: 'Withdrawn' },
-  won: { bg: 'bg-blue-500/10', text: 'text-blue-400', label: 'Won' },
-  lost: { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Lost' },
+  running: { bg: 'bg-green-500/20', text: 'text-green-500', label: 'Running' },
+  withdrawn: { bg: 'bg-yellow-500/20', text: 'text-yellow-500', label: 'Withdrawn' },
+  won: { bg: 'bg-blue-500/20', text: 'text-blue-500', label: 'Won' },
+  lost: { bg: 'bg-red-500/20', text: 'text-red-500', label: 'Lost' },
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -202,7 +202,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                 <div key={party} className="flex items-center gap-1.5">
                   <PartyIcon party={party} size={10} />
                   <span className="text-[11px]" style={{ color: partyColor(party) }}>
-                    {count} {partyLabel(party)}
+                    {count}
                   </span>
                 </div>
               ))}
@@ -301,12 +301,6 @@ export default async function RaceDetailPage({ params }: PageProps) {
                               </Link>
                             )}
                             <PartyIcon party={candidate.party} size={14} />
-                            <span
-                              className="text-[10px] font-medium uppercase"
-                              style={{ color }}
-                            >
-                              {partyLabel(candidate.party)}
-                            </span>
                             {candidate.is_incumbent && (
                               <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[9px] uppercase tracking-[0.06em] text-[var(--codex-badge-text)]">
                                 Incumbent

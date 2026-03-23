@@ -183,9 +183,6 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
               <span className="text-[12px] font-semibold" style={{ color }}>
                 {group.count}
               </span>
-              <span className="text-[11px] text-[var(--codex-faint)]">
-                {partyLabel(group.party)}
-              </span>
             </button>
           )
         })}

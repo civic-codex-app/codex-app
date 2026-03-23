@@ -80,7 +80,7 @@ export function SurpriseMatches({ matches }: SurpriseMatchesProps) {
                   />
                 </div>
                 <div className="text-xs text-[var(--codex-sub)]">
-                  {partyLabel(m.party)} &middot; {m.state} &middot; {m.matched} issues compared
+                  {m.state} &middot; {m.matched} issues compared
                 </div>
               </div>
               <div className="flex flex-col items-end gap-0.5">

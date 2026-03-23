@@ -263,10 +263,7 @@ export default async function BillDetailPage({ params }: PageProps) {
                 return (
                   <div key={party} className="flex items-center gap-3">
                     <div className="flex w-28 items-center gap-1.5">
-                      <PartyIcon party={party} size={10} />
-                      <span className="text-[12px] font-medium" style={{ color: partyColor(party) }}>
-                        {partyLabel(party)}
-                      </span>
+                      <PartyIcon party={party} size={12} />
                     </div>
                     <div className="flex h-2.5 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
                       {counts.yea > 0 && (

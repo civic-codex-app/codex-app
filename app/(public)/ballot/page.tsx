@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { STATE_NAMES } from '@/lib/constants/us-states'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { fetchBallotRaces, raceGroup, type Race, type RaceGroup, type Candidate } from '@/lib/utils/fetch-ballot'
 import Link from 'next/link'
@@ -242,11 +243,7 @@ function CandidateRow({ candidate }: { candidate: Candidate }) {
           )}
         </div>
         <div className="flex items-center gap-2 text-xs text-[var(--codex-sub)]">
-          <span
-            className="inline-block h-2 w-2 rounded-full"
-            style={{ backgroundColor: partyColor(candidate.party) }}
-          />
-          <span>{partyLabel(candidate.party)}</span>
+          <PartyIcon party={candidate.party} size={10} />
           {candidate.stance_count > 0 && (
             <>
               <span className="text-[var(--codex-faint)]">&middot;</span>

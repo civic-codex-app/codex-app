@@ -124,47 +124,47 @@ describe('getStanceDisplay', () => {
 })
 
 describe('stanceDisplayBadge', () => {
-  it('returns blue fallback for supports without party', () => {
+  it('returns blue style for supports without party', () => {
     const badge = stanceDisplayBadge('supports')
     expect(badge.label).toBe('Favors')
-    expect(badge.className).toContain('blue')
     expect(badge.color).toBe('#1D4ED8')
+    expect(badge.style?.backgroundColor).toBe('#EFF6FF')
   })
 
-  it('returns red fallback for opposes without party', () => {
+  it('returns red style for opposes without party', () => {
     const badge = stanceDisplayBadge('opposes')
     expect(badge.label).toBe('Opposes')
-    expect(badge.className).toContain('red')
+    expect(badge.style?.color).toBe('#B91C1C')
   })
 
-  it('returns gray for mixed regardless of party', () => {
+  it('returns gray style for mixed regardless of party', () => {
     const badge = stanceDisplayBadge('mixed', 'democrat')
     expect(badge.label).toBe('Mixed')
-    expect(badge.className).toContain('gray')
+    expect(badge.style?.color).toBe('#4B5563')
   })
 
-  it('returns gray for unknown regardless of party', () => {
+  it('returns gray style for unknown regardless of party', () => {
     const badge = stanceDisplayBadge('unknown', 'republican')
     expect(badge.label).toBe('Unknown')
-    expect(badge.className).toContain('gray')
+    expect(badge.style?.color).toBe('#6B7280')
   })
 
   it('always uses blue for favors regardless of party', () => {
     const badge = stanceDisplayBadge('supports', 'democrat')
     expect(badge.label).toBe('Favors')
-    expect(badge.className).toContain('blue')
+    expect(badge.color).toBe('#1D4ED8')
 
     const badge2 = stanceDisplayBadge('supports', 'republican')
-    expect(badge2.className).toContain('blue')
+    expect(badge2.color).toBe('#1D4ED8')
   })
 
   it('always uses red for opposes regardless of party', () => {
     const badge = stanceDisplayBadge('opposes', 'democrat')
     expect(badge.label).toBe('Opposes')
-    expect(badge.className).toContain('red')
+    expect(badge.style?.color).toBe('#B91C1C')
 
     const badge2 = stanceDisplayBadge('opposes', 'republican')
-    expect(badge2.className).toContain('red')
+    expect(badge2.style?.color).toBe('#B91C1C')
   })
 
   it('handles intensity stances correctly', () => {

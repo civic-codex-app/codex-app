@@ -91,7 +91,7 @@ export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumPr
             }`}
           >
             {p !== 'all' && <PartyIcon party={p} size={10} />}
-            {p === 'all' ? 'All' : partyLabel(p)}
+            {p === 'all' ? 'All' : ''}
           </button>
         ))}
         <span className="ml-auto text-[11px] text-[var(--codex-faint)]">
@@ -209,7 +209,7 @@ export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumPr
                       return (
                         <span key={p} className="flex items-center gap-1 text-[11px] text-[var(--codex-faint)]">
                           <PartyIcon party={p} size={10} />
-                          {count} {partyLabel(p)}{count !== 1 ? 's' : ''}
+                          {count}
                         </span>
                       )
                     })}

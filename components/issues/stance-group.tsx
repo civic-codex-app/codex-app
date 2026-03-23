@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 
 export interface StanceEntry {
   summary: string | null
@@ -74,12 +75,7 @@ export function StanceGroup({ label, color, bgClass, textClass, entries, totalCo
                     <span className="text-sm font-medium transition-colors group-hover:text-[var(--codex-text)]">
                       {rep.name}
                     </span>
-                    <span
-                      className="text-[10px] font-medium uppercase"
-                      style={{ color: partyColor(rep.party) }}
-                    >
-                      {partyLabel(rep.party)}
-                    </span>
+                    <PartyIcon party={rep.party} size={10} />
                   </div>
                   <div className="text-[11px] text-[var(--codex-faint)]">
                     {rep.title} &middot; {rep.state}

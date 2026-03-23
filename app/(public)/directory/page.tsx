@@ -99,7 +99,6 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
                   <div className="truncate text-[14px] font-medium text-[var(--codex-text)]">{pol.name}</div>
                   <div className="flex items-center gap-1.5 text-[11px] text-[var(--codex-faint)]">
                     <PartyIcon party={pol.party} size={10} />
-                    <span style={{ color }}>{partyLabel(pol.party)}</span>
                     <span>·</span>
                     <span>{pol.state}</span>
                     {pol.title && <><span>·</span><span>{pol.title}</span></>}

@@ -17,10 +17,10 @@ interface PageProps {
 }
 
 const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
-  running: { bg: 'bg-green-500/10', text: 'text-green-400', label: 'Running' },
-  withdrawn: { bg: 'bg-yellow-500/10', text: 'text-yellow-400', label: 'Withdrawn' },
-  won: { bg: 'bg-blue-500/10', text: 'text-blue-400', label: 'Won' },
-  lost: { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Lost' },
+  running: { bg: 'bg-green-500/20', text: 'text-green-500', label: 'Running' },
+  withdrawn: { bg: 'bg-yellow-500/20', text: 'text-yellow-500', label: 'Withdrawn' },
+  won: { bg: 'bg-blue-500/20', text: 'text-blue-500', label: 'Won' },
+  lost: { bg: 'bg-red-500/20', text: 'text-red-500', label: 'Lost' },
 }
 
 const STANCE_COLORS: Record<string, { bg: string; text: string; label: string }> = {
@@ -141,12 +141,6 @@ export default async function CandidateProfilePage({ params }: PageProps) {
             </h1>
             <div className="flex flex-wrap items-center gap-2">
               <PartyIcon party={candidate.party} size={16} />
-              <span
-                className="text-[12px] font-medium uppercase tracking-[0.08em]"
-                style={{ color }}
-              >
-                {partyLabel(candidate.party)}
-              </span>
               <span
                 className={`rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] ${status.bg} ${status.text}`}
               >

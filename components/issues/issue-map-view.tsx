@@ -6,6 +6,7 @@ import { USMap, STATE_NAMES } from '@/components/visualizations/us-map'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { stanceStyle, stanceDisplayBadge, STANCE_STYLES } from '@/lib/utils/stances'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 import { X, MapPin, ChevronDown } from 'lucide-react'
 import { QUIZ_CONTENT } from '@/lib/data/quiz-content'
 
@@ -311,11 +312,7 @@ export function IssueMapView({
                         {pol.name}
                       </div>
                       <div className="text-xs text-[var(--codex-sub)]">
-                        <span
-                          className="inline-block h-2 w-2 rounded-full mr-1"
-                          style={{ background: partyColor(pol.party) }}
-                        />
-                        {partyLabel(pol.party)}
+                        <PartyIcon party={pol.party} size={10} />
                       </div>
                     </div>
 

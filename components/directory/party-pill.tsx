@@ -19,7 +19,6 @@ export function PartyPill({ party, size = 'sm' }: PartyPillProps) {
       }}
     >
       <PartyIcon party={party} size={size === 'lg' ? 16 : 12} color="white" />
-      {partyLabel(party)}
     </span>
   )
 }

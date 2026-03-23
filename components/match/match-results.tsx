@@ -248,7 +248,6 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                     <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
                     <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
-                      <span>{partyLabel(r.politician.party)}</span>
                       <span>·</span>
                       <span>{r.politician.chamber}</span>
                     </div>
@@ -277,7 +276,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
             style={{ backgroundColor: `${partyColor(party)}15`, color: partyColor(party) }}
           >
             <PartyIcon party={party} size={12} />
-            <span>{count} {partyLabel(party)}{count !== 1 ? 's' : ''}</span>
+            <span>{count}</span>
           </div>
         ))}
       </div>
@@ -328,7 +327,6 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                   </Link>
                   <div className="mt-0.5 flex items-center gap-1.5 text-[13px] text-[var(--codex-sub)]">
                     <PartyIcon party={r.politician.party} size={12} />
-                    <span>{partyLabel(r.politician.party)}</span>
                     <span className="text-[var(--codex-faint)]">·</span>
                     <span>{r.politician.state}</span>
                   </div>
@@ -491,7 +489,6 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                     </span>
                     <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
-                      <span>{partyLabel(r.politician.party)}</span>
                       <span>·</span>
                       <span>{r.politician.state}</span>
                     </div>
@@ -542,7 +539,6 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                     <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
                     <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
-                      <span>{partyLabel(r.politician.party)}</span>
                       <span>·</span>
                       <span>{r.politician.state}</span>
                     </div>
@@ -582,7 +578,6 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                     <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
                     <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
-                      <span>{partyLabel(r.politician.party)}</span>
                       <span>·</span>
                       <span>{r.politician.state}</span>
                     </div>

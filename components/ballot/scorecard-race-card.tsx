@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { AlignmentBar } from './alignment-bar'
 import type { Race, Candidate } from '@/lib/utils/fetch-ballot'
@@ -125,11 +126,7 @@ function ScorecardCandidateRow({
             )}
           </div>
           <div className="flex items-center gap-2 text-xs text-[var(--codex-sub)]">
-            <span
-              className="inline-block h-2 w-2 rounded-full"
-              style={{ backgroundColor: partyColor(candidate.party) }}
-            />
-            <span>{partyLabel(candidate.party)}</span>
+            <PartyIcon party={candidate.party} size={10} />
           </div>
         </div>
       </div>

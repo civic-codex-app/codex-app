@@ -246,7 +246,6 @@ function ProfileCard({
           </Link>
           <div className="flex flex-wrap items-center gap-1 text-[11px] text-[var(--codex-sub)] sm:gap-1.5">
             <PartyIcon party={pol.party} size={10} />
-            <span style={{ color }}>{partyLabel(pol.party)}</span>
             <span className="text-[var(--codex-faint)]">·</span>
             <span>{pol.state}</span>
             <span className="hidden text-[var(--codex-faint)] sm:inline">·</span>

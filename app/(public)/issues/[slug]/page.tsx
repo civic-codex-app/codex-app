@@ -5,6 +5,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { IssueIcon } from '@/components/icons/issue-icon'
+import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { stanceBucket, stanceDisplayBadge, STANCE_STYLES } from '@/lib/utils/stances'
 import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
@@ -378,8 +379,8 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                   return (
                     <div key={party}>
                       <div className="mb-1.5 flex items-center justify-between">
-                        <span className="text-[12px] font-medium" style={{ color }}>
-                          {partyLabel(party)}
+                        <span className="flex items-center gap-1 text-[12px] font-medium" style={{ color }}>
+                          <PartyIcon party={party} size={12} />
                         </span>
                         <span className="text-[11px] tabular-nums text-[var(--codex-faint)]">
                           {stats.total} official{stats.total !== 1 ? 's' : ''}
