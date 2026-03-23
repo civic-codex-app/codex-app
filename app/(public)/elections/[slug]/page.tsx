@@ -263,11 +263,9 @@ export default async function RaceDetailPage({ params }: PageProps) {
                 return (
                   <div
                     key={candidate.id}
-                    className="overflow-hidden rounded-md border border-[var(--codex-border)]"
+                    className="overflow-hidden rounded-xl border border-[var(--codex-border)] transition-all duration-200 hover:shadow-sm"
+                    style={{ backgroundColor: `${color}06` }}
                   >
-                    {/* Color accent */}
-                    <div className="h-1" style={{ background: `${color}55` }} />
-
                     <div className="p-5">
                       <div className="flex items-start gap-4">
                         {/* Avatar */}
