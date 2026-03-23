@@ -51,23 +51,8 @@ export function RaceCard({ race }: RaceCardProps) {
   return (
     <Link
       href={`/elections/${race.slug}`}
-      className="group block rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all hover:border-[var(--codex-input-border)]"
+      className="group block rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
     >
-      {/* Party color bar at top */}
-      {totalCandidates > 0 && (
-        <div className="mb-4 flex h-1 overflow-hidden rounded-full">
-          {Object.entries(partyGroups).map(([party, count]) => (
-            <div
-              key={party}
-              style={{
-                width: `${(count / totalCandidates) * 100}%`,
-                background: partyColor(party),
-                opacity: 0.6,
-              }}
-            />
-          ))}
-        </div>
-      )}
 
       <div className="mb-2 flex items-center gap-2">
         <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
