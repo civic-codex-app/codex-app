@@ -6,5 +6,6 @@ export async function POST(request: NextRequest) {
   const limited = rateLimit(request, WRITE_OP); if (!limited.success) return limited.response;
   const supabase = await createClient()
   await supabase.auth.signOut()
-  return NextResponse.redirect(new URL('/login', process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'))
+  const origin = request.nextUrl.origin
+  return NextResponse.redirect(new URL('/login', origin))
 }

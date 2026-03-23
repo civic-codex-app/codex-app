@@ -143,7 +143,7 @@ export default async function DashboardPage() {
   // Try to find House rep via zip lookup
   if (userZip && /^\d{5}$/.test(userZip)) {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
       const repRes = await fetch(`${baseUrl}/api/representatives?zip=${userZip}`, { next: { revalidate: 86400 } })
       if (repRes.ok) {
         const repData = await repRes.json()
