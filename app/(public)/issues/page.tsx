@@ -11,7 +11,6 @@ import { IssueSortSelect } from '@/components/filters/issue-sort-select'
 import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 
 export const revalidate = 3600 // 1 hour
-export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Issues | Poli',

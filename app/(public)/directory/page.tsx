@@ -11,7 +11,6 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 
 export const revalidate = 1800 // 30 minutes
-export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Browse Politicians | Poli',

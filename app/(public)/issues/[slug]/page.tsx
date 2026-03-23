@@ -13,7 +13,6 @@ import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
 import { StanceGroup, type StanceEntry } from '@/components/issues/stance-group'
 
 export const revalidate = 3600 // 1 hour
-export const dynamic = 'force-dynamic'
 
 interface PageProps {
   params: Promise<{ slug: string }>

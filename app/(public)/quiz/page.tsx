@@ -6,7 +6,7 @@ import { QuizForm } from '@/components/match/quiz-form'
 
 export const dynamic = 'force-dynamic'
 
-const BASE_URL = 'https://codex-app-gold.vercel.app'
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://getpoli.app'
 
 interface PageProps {
   searchParams: Promise<{ result?: string; score?: string }>

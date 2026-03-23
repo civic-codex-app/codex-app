@@ -6,7 +6,6 @@ import { ElectionCountdown } from '@/components/elections/election-countdown'
 import { ElectionsMap } from '@/components/elections/elections-map'
 
 export const revalidate = 1800 // 30 minutes
-export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Elections | Poli',

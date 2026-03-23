@@ -14,7 +14,6 @@ import { LikeButton } from '@/components/directory/like-button'
 import { BackButton } from '@/components/ui/back-button'
 import { ProfileTabs } from '@/components/politicians/profile-tabs'
 export const revalidate = 1800 // 30 minutes
-export const dynamic = 'force-dynamic'
 
 import type { Politician } from '@/lib/types/politician'
 import type {
