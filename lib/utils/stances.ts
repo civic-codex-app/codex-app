@@ -188,9 +188,9 @@ export function stanceDisplayBadge(stance: string, party?: string): StanceBadge 
     return { label, ...partyColors }
   }
 
-  // Fallback (no party) — use emerald/red for aggregate contexts
+  // Fallback (no party) — use neutral slate for aggregate contexts
   if (bucket === 'supports') {
-    return { label, className: 'text-emerald-700 bg-emerald-50 border border-emerald-200', color: '#047857' }
+    return { label, className: 'text-slate-700 bg-slate-100 border border-slate-300', color: '#334155' }
   }
-  return { label, className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' }
+  return { label, className: 'text-slate-500 bg-slate-50 border border-slate-200', color: '#64748B' }
 }
