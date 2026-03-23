@@ -156,7 +156,7 @@ export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumPr
 
       {/* Tier breakdown */}
       <div className="space-y-2">
-        {tieredData.map((tier) => {
+        {tieredData.filter((tier) => tier.members.length > 0).map((tier) => {
           const isExpanded = expandedTier === tier.key
           const showMembers = tier.members.slice(0, isExpanded ? 20 : 0)
           const pct = filtered.length > 0 ? Math.round((tier.members.length / filtered.length) * 100) : 0
