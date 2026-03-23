@@ -67,7 +67,8 @@ function divisionScore(row: IssueStanceRow): number {
 
 export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
   const [sortMode, setSortMode] = useState<SortMode>('divided')
-  const [hoveredCell, setHoveredCell] = useState<{ issue: string; party: string } | null>(null)
+  const [activeCell, setActiveCell] = useState<{ issue: string; party: string } | null>(null)
+  const [expandedRow, setExpandedRow] = useState<string | null>(null)
 
   const sorted = useMemo(() => {
     const copy = [...stanceData]
@@ -139,7 +140,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                 {PARTY_COLUMNS.map((col) => {
                   const data = row.parties[col.key]
                   const total = stanceTotal(data)
-                  const isHovered = hoveredCell?.issue === row.issueSlug && hoveredCell?.party === col.key
+                  const isActive = activeCell?.issue === row.issueSlug && activeCell?.party === col.key
                   const color = stanceColor(data)
                   const opacity = stanceOpacity(data)
 
@@ -147,10 +148,9 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                     <div
                       key={col.key}
                       className="relative cursor-default"
-                      onMouseEnter={() => setHoveredCell({ issue: row.issueSlug, party: col.key })}
-                      onMouseLeave={() => setHoveredCell(null)}
-                      onFocus={() => setHoveredCell({ issue: row.issueSlug, party: col.key })}
-                      onBlur={() => setHoveredCell(null)}
+                      onClick={() => setActiveCell(isActive ? null : { issue: row.issueSlug, party: col.key })}
+                      onMouseEnter={() => setActiveCell({ issue: row.issueSlug, party: col.key })}
+                      onMouseLeave={() => setActiveCell(null)}
                       tabIndex={0}
                       role="gridcell"
                       aria-label={`${row.issue}, ${col.label}: ${data.supports} support, ${data.neutral ?? 0} neutral, ${data.mixed} mixed, ${data.opposes} oppose`}
@@ -161,8 +161,8 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                         style={{
                           background: color,
                           opacity,
-                          transform: isHovered ? 'scale(1.04)' : 'scale(1)',
-                          boxShadow: isHovered ? `0 0 12px ${color}33` : 'none',
+                          transform: isActive ? 'scale(1.04)' : 'scale(1)',
+                          boxShadow: isActive ? `0 0 12px ${color}33` : 'none',
                         }}
                       >
                         {total > 0 && (
@@ -196,7 +196,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                       </div>
 
                       {/* Tooltip */}
-                      {isHovered && total > 0 && (
+                      {isActive && total > 0 && (
                         <div
                           className="absolute -top-2 left-1/2 z-20 -translate-x-1/2 -translate-y-full rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-3 py-2 shadow-lg"
                           role="tooltip"
@@ -233,20 +233,25 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
             ))}
           </div>
 
+          {/* Tap hint for mobile */}
+          <p className="mt-3 text-center text-[11px] text-[var(--codex-faint)] sm:hidden">
+            Tap any colored bar to see the breakdown
+          </p>
+
           {/* Legend */}
-          <div className="mt-5 flex items-center gap-5 border-t border-[var(--codex-border)] pt-4">
+          <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-[var(--codex-border)] pt-4 sm:gap-5">
             <span className="text-[10px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">Legend</span>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-blue-500" style={{ opacity: 0.75 }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">Progressive</span>
+              <span className="text-[11px] text-[var(--codex-faint)]">For this issue</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-purple-500" style={{ opacity: 0.75 }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">Mixed</span>
+              <span className="text-[11px] text-[var(--codex-faint)]">Mixed views</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-red-500" style={{ opacity: 0.75 }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">Conservative</span>
+              <span className="text-[11px] text-[var(--codex-faint)]">Against this issue</span>
             </div>
           </div>
         </div>

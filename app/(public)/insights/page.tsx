@@ -210,7 +210,7 @@ export default async function InsightsPage() {
             Political Insights
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
-            See how politicians vote, where the money goes, and who works together.
+            These charts break down how the government is split between parties, where politicians agree and disagree, and who works across the aisle. Everything here is based on real data from official records.
           </p>
         </div>
 
@@ -222,6 +222,9 @@ export default async function InsightsPage() {
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
               Which party has the most seats in each part of government
+            </p>
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+              Each dot represents one official. The party with more than half the seats is &quot;in the majority&quot; — they get to decide which bills come up for a vote and lead the committees.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -258,6 +261,9 @@ export default async function InsightsPage() {
             <p className="text-[13px] text-[var(--codex-faint)]">
               Where the two parties agree and disagree the most
             </p>
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+              Each bar shows how politicians from that party feel about an issue. Blue means they support it, red means they oppose it. When both parties have mostly the same color, they agree. When the colors are opposite, that issue is a major dividing line.
+            </p>
           </div>
           <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
             <Suspense fallback={<ChartSkeleton />}>
@@ -275,6 +281,9 @@ export default async function InsightsPage() {
             <p className="text-[13px] text-[var(--codex-faint)]">
               How closely each politician votes with their own party
             </p>
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+              Every politician gets an alignment score from 0% to 100%. A score near 100% means they almost always agree with their party. A low score means they often break away and vote differently. Tap any dot to see who it is.
+            </p>
           </div>
           <Suspense fallback={<ChartSkeleton />}>
             <PartyAlignmentSpectrum politicians={spectrumData} />
@@ -288,7 +297,10 @@ export default async function InsightsPage() {
               Bipartisan Index
             </h2>
             <p className="text-[13px] text-[var(--codex-faint)]">
-              Which politicians work with the other party the most -- and the least
+              Which politicians work with the other party the most — and the least
+            </p>
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+              The left list shows politicians who vote across party lines the most — they don&apos;t always follow their party. The right list shows those who almost never break from their party&apos;s position.
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2">

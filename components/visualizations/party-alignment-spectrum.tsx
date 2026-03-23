@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef } from 'react'
 import Link from 'next/link'
 import { partyColor } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 
 interface PoliticianDot {
   name: string
@@ -30,7 +31,7 @@ const SPECTRUM_LABELS = [
 
 export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumProps) {
   const [chamber, setChamber] = useState<ChamberFilter>('all')
-  const [hoveredDot, setHoveredDot] = useState<string | null>(null)
+  const [activeDot, setActiveDot] = useState<string | null>(null)
   const svgRef = useRef<SVGSVGElement>(null)
 
   const filtered = useMemo(() => {
@@ -206,33 +207,42 @@ export function PartyAlignmentSpectrum({ politicians }: PartyAlignmentSpectrumPr
             const cx = xScale(pos.x)
             const cy = dotYScale(pos.y)
             const color = partyColor(p.party)
-            const isHovered = hoveredDot === p.slug
-            const dotR = isHovered ? 6 : 4
+            const isActive = activeDot === p.slug
+            const iconSize = isActive ? 14 : 10
 
             return (
               <g key={p.slug}>
-                <Link href={`/politicians/${p.slug}`} tabIndex={-1}>
-                  <circle
-                    cx={cx}
-                    cy={cy}
-                    r={dotR}
-                    fill={color}
-                    opacity={isHovered ? 1 : 0.75}
-                    stroke={isHovered ? 'var(--codex-text)' : 'none'}
-                    strokeWidth={isHovered ? 1.5 : 0}
-                    className="cursor-pointer transition-all duration-150"
-                    onMouseEnter={() => setHoveredDot(p.slug)}
-                    onMouseLeave={() => setHoveredDot(null)}
-                    onFocus={() => setHoveredDot(p.slug)}
-                    onBlur={() => setHoveredDot(null)}
-                    tabIndex={0}
-                    role="button"
-                    aria-label={`${p.name} (${p.party}, ${p.state}) - ${p.alignment}% alignment`}
-                  />
-                </Link>
+                <foreignObject
+                  x={cx - iconSize / 2}
+                  y={cy - iconSize / 2}
+                  width={iconSize}
+                  height={iconSize}
+                  className="cursor-pointer overflow-visible"
+                  onClick={(e) => { e.preventDefault(); setActiveDot(isActive ? null : p.slug) }}
+                  onMouseEnter={() => setActiveDot(p.slug)}
+                  onMouseLeave={() => setActiveDot(null)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`${p.name} (${p.party}, ${p.state}) - ${p.alignment}% alignment`}
+                >
+                  <Link href={`/politicians/${p.slug}`} tabIndex={-1} className="block">
+                    <div
+                      className="flex items-center justify-center rounded-full transition-all duration-150"
+                      style={{
+                        width: iconSize,
+                        height: iconSize,
+                        backgroundColor: `${color}25`,
+                        border: isActive ? `1.5px solid ${color}` : 'none',
+                        opacity: isActive ? 1 : 0.85,
+                      }}
+                    >
+                      <PartyIcon party={p.party} size={iconSize * 0.65} />
+                    </div>
+                  </Link>
+                </foreignObject>
 
                 {/* Tooltip */}
-                {isHovered && (
+                {isActive && (
                   <g>
                     <rect
                       x={cx - 70}
