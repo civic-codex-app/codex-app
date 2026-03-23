@@ -343,7 +343,7 @@ export default async function InsightsPage() {
             </a>
             <a href="/report-cards" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
               <div className="mb-2 text-lg font-semibold">Report Cards</div>
-              <p className="text-[13px] text-[var(--codex-sub)]">Every politician graded A through F</p>
+              <p className="text-[13px] text-[var(--codex-sub)]">How active and bipartisan is each politician? Scored on real data.</p>
             </a>
           </div>
         </section>
