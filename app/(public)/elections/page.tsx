@@ -171,7 +171,7 @@ export default async function ElectionsPage() {
               <Link
                 key={election.id}
                 href={`/elections/${election.slug}`}
-                className="group rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                className="group cursor-pointer rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all duration-200 hover:border-[var(--codex-text)] hover:shadow-md"
               >
                 <div className="mb-1 flex items-center gap-2">
                   <span className="text-[11px] font-bold text-[var(--codex-faint)]">{stateCode}</span>
@@ -179,9 +179,9 @@ export default async function ElectionsPage() {
                     {stateName}
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1.5">
                   {chips.map(chip => (
-                    <span key={chip} className="rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] text-[var(--codex-faint)]">
+                    <span key={chip} className="rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-xs font-medium text-[var(--codex-badge-text)]">
                       {chip}
                     </span>
                   ))}

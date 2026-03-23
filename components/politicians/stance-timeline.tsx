@@ -1,4 +1,4 @@
-import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
+import { stanceStyle, stanceBucket, stanceDisplayBadge } from '@/lib/utils/stances'
 
 interface StanceTimelineEntry {
   stance: string
@@ -88,15 +88,16 @@ export function StanceTimeline({ entries, currentStance, issueName }: StanceTime
 
         {allNodes.map((node, i) => {
           const style = stanceStyle(node.stance)
+          const badge = stanceDisplayBadge(node.stance)
           return (
             <div key={i} className="relative mb-4 last:mb-0">
               {/* Stance dot */}
               <div
                 className="absolute -left-7 top-[3px] h-3 w-3 rounded-full border-2"
                 style={{
-                  backgroundColor: style.color,
-                  borderColor: node.isCurrent ? 'var(--codex-text)' : style.color,
-                  boxShadow: node.isCurrent ? `0 0 0 2px ${style.color}33` : undefined,
+                  backgroundColor: badge.color,
+                  borderColor: node.isCurrent ? 'var(--codex-text)' : badge.color,
+                  boxShadow: node.isCurrent ? `0 0 0 2px ${badge.color}33` : undefined,
                 }}
               />
 
@@ -148,8 +149,8 @@ export function StanceTimeline({ entries, currentStance, issueName }: StanceTime
                 </div>
 
                 {/* Stance label */}
-                <div className="mt-0.5 text-[13px] font-medium" style={{ color: style.color }}>
-                  {style.label}
+                <div className="mt-0.5 text-[13px] font-medium" style={{ color: badge.color }}>
+                  {badge.label}
                 </div>
 
                 {/* Source description */}

@@ -106,33 +106,45 @@ export default async function HomePage() {
         {/* Quick Actions — above the fold */}
         <div className="mb-12">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link href="/quiz" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <Link href="/quiz" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="min-w-0 flex-1">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-500/15 text-blue-400">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                </div>
+                <div className="text-[15px] font-bold text-[var(--codex-text)]">Who Represents You?</div>
+                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Discover officials who align with your views</p>
               </div>
-              <div className="text-[15px] font-bold text-[var(--codex-text)]">Who Represents You?</div>
-              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Discover officials who align with your views</p>
+              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/compare" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-400">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <Link href="/compare" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="min-w-0 flex-1">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-purple-500/15 text-purple-400">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div className="text-[15px] font-bold text-[var(--codex-text)]">Compare Officials</div>
+                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Side-by-side on issues, finance, and votes</p>
               </div>
-              <div className="text-[15px] font-bold text-[var(--codex-text)]">Compare Officials</div>
-              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Side-by-side on issues, finance, and votes</p>
+              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/issues" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <Link href="/issues" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="min-w-0 flex-1">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <div className="text-[15px] font-bold text-[var(--codex-text)]">Explore Issues</div>
+                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">See where every politician stands on key topics</p>
               </div>
-              <div className="text-[15px] font-bold text-[var(--codex-text)]">Explore Issues</div>
-              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">See where every politician stands on key topics</p>
+              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/elections" className="group rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all hover:shadow-md hover:border-[var(--codex-text)]">
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <Link href="/elections" className="group flex items-center gap-4 rounded-lg border border-[var(--codex-border)] p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-text)]">
+              <div className="min-w-0 flex-1">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-amber-500/15 text-amber-400">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <div className="text-[15px] font-bold text-[var(--codex-text)]">Track Elections</div>
+                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Follow races and candidates across the country</p>
               </div>
-              <div className="text-[15px] font-bold text-[var(--codex-text)]">Track Elections</div>
-              <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Follow races and candidates across the country</p>
+              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
           </div>
         </div>
@@ -152,34 +164,35 @@ export default async function HomePage() {
                 <Link
                   key={pol.id}
                   href={`/politicians/${pol.slug}`}
-                  className="group overflow-hidden rounded-lg border border-[var(--codex-border)] no-underline transition-all hover:border-[var(--codex-text)]"
-                  style={{ borderLeftWidth: '4px', borderLeftColor: color }}
+                  className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                  style={{ backgroundColor: `${color}08` }}
                 >
                   <div className="flex items-center gap-4 p-4">
                     <div
-                      className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]"
-                      style={{ border: `2px solid ${color}44` }}
+                      className="h-[80px] w-[80px] flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
+                      style={{ border: `2px solid ${color}33` }}
                     >
                       <AvatarImage
                         src={pol.image_url}
                         alt={pol.name}
-                        size={56}
+                        size={80}
                         party={pol.party}
                         fallbackColor={color}
                         className="h-full w-full object-cover"
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="truncate text-[15px] font-semibold text-[var(--codex-text)] transition-colors group-hover:text-[var(--codex-text)]">
+                      <div className="truncate text-lg font-semibold text-[var(--codex-text)]">
                         {pol.name}
                       </div>
-                      <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-[var(--codex-sub)]">
-                        <PartyIcon party={pol.party} size={10} />
-                        <span style={{ color }}>{partyLabel(pol.party)}</span>
-                        <span className="text-[var(--codex-faint)]">·</span>
-                        <span>{pol.state}</span>
+                      <div className="mt-1 flex items-center gap-1.5">
+                        <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium" style={{ backgroundColor: `${color}18`, color }}>
+                          <PartyIcon party={pol.party} size={10} />
+                          {partyLabel(pol.party)}
+                        </span>
+                        <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
                       </div>
-                      <div className="mt-0.5 text-[11px] text-[var(--codex-faint)]">
+                      <div className="mt-1 text-sm text-[var(--codex-faint)]">
                         {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)}
                       </div>
                     </div>

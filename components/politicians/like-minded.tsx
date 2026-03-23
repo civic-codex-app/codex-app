@@ -64,19 +64,19 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
 
               {/* Similarity */}
               <div className="flex items-center gap-2">
-                <div className="h-1 w-12 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                <span className={`text-[12px] font-semibold tabular-nums ${
+                  p.overlap > 70 ? 'text-emerald-600' : p.overlap >= 50 ? 'text-amber-600' : 'text-red-500'
+                }`}>
+                  {p.overlap}% match
+                </span>
+                <div className="h-1 w-16 overflow-hidden rounded-full bg-[var(--codex-border)]">
                   <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${p.overlap}%`,
-                      background: color,
-                      opacity: 0.6,
-                    }}
+                    className={`h-full rounded-full ${
+                      p.overlap > 70 ? 'bg-emerald-500' : p.overlap >= 50 ? 'bg-amber-500' : 'bg-red-500'
+                    }`}
+                    style={{ width: `${p.overlap}%` }}
                   />
                 </div>
-                <span className="text-[11px] tabular-nums text-[var(--codex-faint)]">
-                  {p.overlap}%
-                </span>
               </div>
             </Link>
           )

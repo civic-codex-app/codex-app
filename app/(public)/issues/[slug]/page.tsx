@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
-import { stanceBucket, STANCE_STYLES } from '@/lib/utils/stances'
+import { stanceBucket, stanceDisplayBadge, STANCE_STYLES } from '@/lib/utils/stances'
 import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
 import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
 import { StanceGroup, type StanceEntry } from '@/components/issues/stance-group'
@@ -128,11 +128,15 @@ function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]) {
     return true
   })
 
+  const forBadge = stanceDisplayBadge('supports')
+  const mixedBadge = stanceDisplayBadge('mixed')
+  const againstBadge = stanceDisplayBadge('opposes')
+  const unknownBadge = stanceDisplayBadge('unknown')
   const BUCKET_CONFIG = {
-    supports: { label: 'Progressive', style: STANCE_STYLES.supports },
-    mixed: { label: 'Centrist / Mixed', style: STANCE_STYLES.mixed },
-    opposes: { label: 'Conservative', style: STANCE_STYLES.opposes },
-    unknown: { label: 'Unknown', style: STANCE_STYLES.unknown },
+    supports: { label: 'For', style: { ...STANCE_STYLES.supports, bg: 'bg-emerald-50', text: 'text-emerald-700', color: forBadge.color } },
+    mixed: { label: 'Mixed', style: { ...STANCE_STYLES.mixed, bg: 'bg-amber-50', text: 'text-amber-700', color: mixedBadge.color } },
+    opposes: { label: 'Against', style: { ...STANCE_STYLES.opposes, bg: 'bg-red-50', text: 'text-red-700', color: againstBadge.color } },
+    unknown: { label: 'Unknown', style: { ...STANCE_STYLES.unknown, bg: 'bg-gray-50', text: 'text-gray-500', color: unknownBadge.color } },
   }
 
   // Group into buckets, merging neutral into mixed

@@ -144,7 +144,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
               <Link
                 key={bill.id}
                 href={`/bills/${bill.id}`}
-                className="group block overflow-hidden rounded-md border border-[var(--codex-border)] no-underline transition-all hover:border-[var(--codex-input-border)]"
+                className="group block cursor-pointer overflow-hidden rounded-md border border-[var(--codex-border)] no-underline transition-all duration-200 hover:border-[var(--codex-input-border)] hover:shadow-md"
               >
                 {/* Vote bar at top */}
                 {vc && vc.total > 0 && (

@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from 'react'
 import Link from 'next/link'
 import { USMap, STATE_NAMES } from '@/components/visualizations/us-map'
 import { IssueIcon } from '@/components/icons/issue-icon'
-import { stanceStyle, STANCE_STYLES } from '@/lib/utils/stances'
+import { stanceStyle, stanceDisplayBadge, STANCE_STYLES } from '@/lib/utils/stances'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { X, MapPin, ChevronDown } from 'lucide-react'
 import { QUIZ_CONTENT } from '@/lib/data/quiz-content'
@@ -281,7 +281,7 @@ export function IssueMapView({
           ) : (
             <div className="grid gap-2">
               {statePoliticians.map((pol) => {
-                const style = stanceStyle(pol.stance)
+                const badge = stanceDisplayBadge(pol.stance)
                 return (
                   <Link
                     key={pol.slug}
@@ -321,9 +321,9 @@ export function IssueMapView({
 
                     {/* Stance badge */}
                     <span
-                      className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${style.bg} ${style.text}`}
+                      className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${badge.className}`}
                     >
-                      {style.shortLabel}
+                      {badge.label}
                     </span>
                   </Link>
                 )

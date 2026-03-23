@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { loadQuizAnswers, loadQuizFromServer, mergeQuizAnswers } from '@/lib/utils/quiz-storage'
-import { STANCE_STYLES } from '@/lib/utils/stances'
+import { STANCE_STYLES, stanceDisplayBadge } from '@/lib/utils/stances'
 
 interface Stance {
   issue_slug: string
@@ -147,13 +147,13 @@ export function YourAlignment({ politicianName, politicianStances }: Props) {
             </div>
             <div className="space-y-1.5">
               {agrees.map(issue => {
-                const userStyle = STANCE_STYLES[issue.userStance]
+                const userBadge = stanceDisplayBadge(issue.userStance)
                 return (
                   <div key={issue.slug} className="flex items-center justify-between text-[12px]">
                     <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ color: userStyle?.color, backgroundColor: `${userStyle?.color}15` }}>
-                        {userStyle?.shortLabel}
+                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${userBadge.className}`}>
+                        {userBadge.label}
                       </span>
                     </div>
                   </div>
@@ -171,17 +171,17 @@ export function YourAlignment({ politicianName, politicianStances }: Props) {
             </div>
             <div className="space-y-1.5">
               {disagrees.map(issue => {
-                const userStyle = STANCE_STYLES[issue.userStance]
-                const polStyle = STANCE_STYLES[issue.polStance]
+                const userBadge = stanceDisplayBadge(issue.userStance)
+                const polBadge = stanceDisplayBadge(issue.polStance)
                 return (
                   <div key={issue.slug} className="flex items-center justify-between text-[12px]">
                     <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
                     <div className="flex items-center gap-1">
-                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ color: userStyle?.color, backgroundColor: `${userStyle?.color}15` }}>
+                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${userBadge.className}`}>
                         You
                       </span>
                       <span className="text-[var(--codex-faint)]">vs</span>
-                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ color: polStyle?.color, backgroundColor: `${polStyle?.color}15` }}>
+                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${polBadge.className}`}>
                         {lastName}
                       </span>
                     </div>

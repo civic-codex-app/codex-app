@@ -126,3 +126,34 @@ export function getStanceDisplay(stance: string): StanceDisplay {
       return { label: 'Unknown', color: '#9CA3AF', bgColor: '#F3F4F6' }
   }
 }
+
+/**
+ * 3-tier display badge for stance badges throughout the UI.
+ * Returns a label + Tailwind className string for consistent badge rendering.
+ *
+ * Mapping:
+ *   strongly_supports, supports, leans_support → "For" (green)
+ *   neutral, mixed                             → "Mixed" (amber)
+ *   leans_oppose, opposes, strongly_opposes     → "Against" (red)
+ *   unknown / anything else                     → "Unknown" (gray)
+ */
+export interface StanceBadge {
+  label: string
+  className: string
+  color: string // hex color for inline style usage
+}
+
+export function stanceDisplayBadge(stance: string): StanceBadge {
+  const bucket = stanceBucket(stance)
+  switch (bucket) {
+    case 'supports':
+      return { label: 'For', className: 'text-emerald-700 bg-emerald-50 border border-emerald-200', color: '#047857' }
+    case 'opposes':
+      return { label: 'Against', className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' }
+    case 'neutral':
+    case 'mixed':
+      return { label: 'Mixed', className: 'text-amber-700 bg-amber-50 border border-amber-200', color: '#B45309' }
+    default:
+      return { label: 'Unknown', className: 'text-gray-500 bg-gray-50 border border-gray-200', color: '#6B7280' }
+  }
+}

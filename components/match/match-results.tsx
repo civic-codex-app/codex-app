@@ -6,7 +6,7 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { alignmentMeta } from '@/lib/utils/alignment'
-import { stanceStyle } from '@/lib/utils/stances'
+import { stanceStyle, stanceDisplayBadge } from '@/lib/utils/stances'
 import { QUIZ_CONTENT } from '@/lib/data/quiz-content'
 import { trackEvent } from '@/lib/utils/analytics'
 
@@ -108,18 +108,18 @@ function IssueBreakdown({ issues }: { issues: IssueComparison[] }) {
 }
 
 function IssueRow({ issue }: { issue: IssueComparison }) {
-  const userStyle = stanceStyle(issue.userStance)
-  const polStyle = stanceStyle(issue.polStance)
+  const userBadge = stanceDisplayBadge(issue.userStance)
+  const polBadge = stanceDisplayBadge(issue.polStance)
   return (
     <div className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[12px]">
       <span className="min-w-0 flex-1 truncate text-[var(--codex-sub)]">{issueLabel(issue.slug)}</span>
       <div className="flex shrink-0 items-center gap-1.5">
-        <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ backgroundColor: `${userStyle.color}18`, color: userStyle.color }}>
-          You: {userStyle.shortLabel}
+        <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${userBadge.className}`}>
+          You: {userBadge.label}
         </span>
         <span className="text-[var(--codex-faint)]">vs</span>
-        <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ backgroundColor: `${polStyle.color}18`, color: polStyle.color }}>
-          {polStyle.shortLabel}
+        <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${polBadge.className}`}>
+          {polBadge.label}
         </span>
       </div>
     </div>

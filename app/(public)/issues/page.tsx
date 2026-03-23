@@ -155,7 +155,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
               <Link
                 key={issue.id}
                 href={`/issues/${issue.slug}`}
-                className="touch-feedback group block rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all hover:border-[var(--codex-input-border)]"
+                className="touch-feedback group block cursor-pointer rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all duration-200 hover:border-[var(--codex-input-border)] hover:shadow-md"
               >
                 <div className="mb-2 flex items-center gap-2">
                   <IssueIcon icon={issue.icon} size={18} className="text-[var(--codex-sub)]" />
@@ -181,9 +181,11 @@ export default async function IssuesPage({ searchParams }: PageProps) {
                       {opposes > 0 && <div style={{ width: `${(opposes / total) * 100}%`, background: '#EF4444', opacity: 0.7 }} />}
                     </div>
                     <div className="mt-1.5 flex gap-3 text-[11px] text-[var(--codex-faint)]">
-                      <span style={{ color: '#3B82F6' }}>{supports}</span>
-                      <span style={{ color: '#A855F7' }}>{mixed}</span>
-                      <span style={{ color: '#EF4444' }}>{opposes}</span>
+                      <span style={{ color: '#3B82F6' }}>{Math.round((supports / total) * 100)}% For</span>
+                      <span className="text-[var(--codex-faint)]">&middot;</span>
+                      <span style={{ color: '#A855F7' }}>{Math.round((mixed / total) * 100)}% Mixed</span>
+                      <span className="text-[var(--codex-faint)]">&middot;</span>
+                      <span style={{ color: '#EF4444' }}>{Math.round((opposes / total) * 100)}% Against</span>
                     </div>
                   </div>
                 )}
@@ -200,7 +202,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
                   </div>
                 )}
 
-                <div className="text-[11px] text-[var(--codex-faint)]">
+                <div className="text-[10px] text-[var(--codex-faint)]">
                   {(issueTotalCounts.get(issue.id) ?? total).toLocaleString()} officials with stances
                 </div>
               </Link>

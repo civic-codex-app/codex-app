@@ -28,13 +28,13 @@ export function IssueCategoryFilter({ categories, labels }: IssueCategoryFilterP
   }
 
   return (
-    <div className="mb-8 flex animate-fade-up flex-wrap gap-1.5" role="radiogroup" aria-label="Filter by issue category">
+    <div className="mb-8 flex animate-fade-up flex-nowrap gap-1.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" role="radiogroup" aria-label="Filter by issue category">
       <button
         onClick={() => handleClick('')}
         role="radio"
         aria-checked={!current}
         className={cn(
-          'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+          'shrink-0 whitespace-nowrap rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
           !current
             ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)] border-[var(--codex-border)]'
             : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)] border-transparent'
@@ -49,7 +49,7 @@ export function IssueCategoryFilter({ categories, labels }: IssueCategoryFilterP
           role="radio"
           aria-checked={current === cat}
           className={cn(
-            'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+            'shrink-0 whitespace-nowrap rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
             current === cat
               ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)] border-[var(--codex-border)]'
               : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)] border-transparent'

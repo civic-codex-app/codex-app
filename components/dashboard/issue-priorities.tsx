@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor } from '@/lib/constants/parties'
-import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
+import { stanceStyle, stanceBucket, stanceDisplayBadge } from '@/lib/utils/stances'
 
 /* ── Hardcoded issue metadata (same as onboarding) ─────────────── */
 const ISSUE_META: Record<string, { name: string; icon: string }> = {
@@ -207,6 +207,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
               <div className="flex flex-wrap gap-2">
                 {reps.map((rep) => {
                   const stance = issueStances?.get(rep.id)
+                  const badge = stance ? stanceDisplayBadge(stance) : null
                   const style = stance ? stanceStyle(stance) : null
                   const bucket = stance ? stanceBucket(stance) : 'unknown'
 
@@ -226,12 +227,11 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
                           party={rep.party}
                         />
                       </div>
-                      {style ? (
+                      {badge ? (
                         <span
-                          className="text-[11px] font-medium"
-                          style={{ color: style.color }}
+                          className={`rounded px-1.5 py-0.5 text-[11px] font-medium ${badge.className}`}
                         >
-                          {style.shortLabel}
+                          {badge.label}
                         </span>
                       ) : (
                         <span className="text-[11px] text-[var(--codex-faint)]">

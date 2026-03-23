@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { IssueIcon } from '@/components/icons/issue-icon'
-import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
+import { stanceStyle, stanceBucket, stanceDisplayBadge } from '@/lib/utils/stances'
 import { partyColor } from '@/lib/constants/parties'
 
 interface Candidate {
@@ -123,14 +123,13 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
                         </div>
                       )
                     }
-                    const style = stanceStyle(stance)
+                    const badge = stanceDisplayBadge(stance)
                     return (
                       <div key={c.id} className="flex justify-center">
                         <span
-                          className="rounded-sm px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.06em]"
-                          style={{ color: style.color, background: `${style.color}18` }}
+                          className={`rounded-sm px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.06em] ${badge.className}`}
                         >
-                          {style.shortLabel}
+                          {badge.label}
                         </span>
                       </div>
                     )

@@ -84,7 +84,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
               <Link
                 key={pol.id}
                 href={`/politicians/${pol.slug}`}
-                className="flex items-center gap-4 rounded-md border border-[var(--codex-border)] p-3 no-underline transition-colors hover:border-[var(--codex-text)]"
+                className="flex cursor-pointer items-center gap-4 rounded-md border border-[var(--codex-border)] p-3 no-underline transition-all duration-200 hover:border-[var(--codex-text)] hover:shadow-md"
               >
                 <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]">
                   <AvatarImage

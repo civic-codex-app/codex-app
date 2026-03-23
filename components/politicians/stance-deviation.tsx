@@ -1,6 +1,6 @@
 import { getPartyDefault } from '@/lib/utils/alignment'
 import { partyLabel } from '@/lib/constants/parties'
-import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
+import { stanceStyle, stanceBucket, stanceDisplayBadge } from '@/lib/utils/stances'
 
 interface StanceDeviationProps {
   party: string
@@ -63,8 +63,8 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
       </p>
       <div className="grid gap-2">
         {deviations.map((d) => {
-          const expectedStyle = stanceStyle(d.expected)
-          const actualStyle = stanceStyle(d.stance)
+          const expectedBadge = stanceDisplayBadge(d.expected)
+          const actualBadge = stanceDisplayBadge(d.stance)
 
           return (
             <div
@@ -77,16 +77,15 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
               <div className="flex items-center gap-2">
                 <span
                   className="text-[11px] uppercase tracking-[0.06em] line-through opacity-40"
-                  style={{ color: expectedStyle.color }}
+                  style={{ color: expectedBadge.color }}
                 >
-                  {expectedStyle.shortLabel}
+                  {expectedBadge.label}
                 </span>
                 <span className="text-[11px] text-[var(--codex-faint)]">→</span>
                 <span
-                  className="rounded-sm px-1.5 py-0.5 text-[11px] uppercase tracking-[0.06em]"
-                  style={{ color: actualStyle.color, background: `${actualStyle.color}18` }}
+                  className={`rounded-sm px-1.5 py-0.5 text-[11px] uppercase tracking-[0.06em] ${actualBadge.className}`}
                 >
-                  {actualStyle.shortLabel}
+                  {actualBadge.label}
                 </span>
               </div>
             </div>

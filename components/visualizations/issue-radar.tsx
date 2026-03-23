@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { partyColor } from '@/lib/constants/parties'
-import { STANCE_NUMERIC, MAX_STANCE_VALUE, stanceStyle } from '@/lib/utils/stances'
+import { STANCE_NUMERIC, MAX_STANCE_VALUE, stanceStyle, stanceDisplayBadge } from '@/lib/utils/stances'
 import { IssueIcon } from '@/components/icons/issue-icon'
 
 interface PoliticianRadarData {
@@ -278,10 +278,10 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                       stroke="var(--codex-border)"
                     />
                     <text x={pt.x} y={pt.y + 27} textAnchor="middle" fontSize={9} fill={color1}>
-                      {politician1.name.split(' ').pop()}: {stanceStyle(politician1.stances[issue.slug] ?? 'unknown').shortLabel}
+                      {politician1.name.split(' ').pop()}: {stanceDisplayBadge(politician1.stances[issue.slug] ?? 'unknown').label}
                     </text>
                     <text x={pt.x} y={pt.y + 40} textAnchor="middle" fontSize={9} fill={color2}>
-                      {politician2.name.split(' ').pop()}: {stanceStyle(politician2.stances[issue.slug] ?? 'unknown').shortLabel}
+                      {politician2.name.split(' ').pop()}: {stanceDisplayBadge(politician2.stances[issue.slug] ?? 'unknown').label}
                     </text>
                   </>
                 )}

@@ -43,7 +43,7 @@ import { CompareSuggestions } from '@/components/politicians/compare-suggestions
 import { VotingHistory } from '@/components/politicians/voting-history'
 import { CampaignFinance } from '@/components/politicians/campaign-finance'
 import { ElectionHistory } from '@/components/politicians/election-history'
-import { stanceStyle } from '@/lib/utils/stances'
+import { stanceStyle, stanceDisplayBadge } from '@/lib/utils/stances'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
 import { getStanceContext } from '@/lib/data/educational-content'
 import { AskYourRep } from '@/components/politicians/ask-your-rep'
@@ -464,11 +464,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                     </p>
                     <Link
                       href="/signup"
-                      className="inline-flex items-center justify-center rounded-full px-8 py-3 text-[14px] font-semibold text-white no-underline shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl"
-                      style={{
-                        background: `linear-gradient(135deg, ${color}, ${color}dd)`,
-                        boxShadow: `0 4px 14px ${color}40`,
-                      }}
+                      className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-[14px] font-semibold text-white no-underline shadow-lg transition-all hover:scale-[1.02] hover:bg-blue-700 hover:shadow-xl"
                     >
                       Create Free Account
                     </Link>
@@ -530,6 +526,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 <div className="space-y-2">
                   {politicianStances.map((s) => {
                     const sc = stanceStyle(s.stance)
+                    const badge = stanceDisplayBadge(s.stance)
                     const isEstimated = !s.is_verified
                     const hasRealSummary = s.summary && !s.summary.includes('key aspects') && !s.summary.includes('Estimated position') && !s.summary.includes('generally been')
                     const issueHistory = s.issues?.id ? (stanceHistoryByIssue.get(s.issues.id) ?? []) : []
@@ -537,7 +534,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                       <div
                         key={s.id}
                         className="overflow-hidden rounded-lg border border-[var(--codex-border)]"
-                        style={{ borderLeftWidth: '3px', borderLeftColor: sc.color }}
+                        style={{ borderLeftWidth: '3px', borderLeftColor: badge.color }}
                       >
                         <div className="px-4 py-3">
                           <div className="flex items-center justify-between gap-3">
@@ -555,10 +552,9 @@ export default async function PoliticianPage({ params }: PageProps) {
                                 </span>
                               )}
                               <span
-                                className="rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em]"
-                                style={{ color: sc.color, backgroundColor: `${sc.color}15` }}
+                                className={`rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] ${badge.className}`}
                               >
-                                {sc.label}
+                                {badge.label}
                               </span>
                             </div>
                           </div>

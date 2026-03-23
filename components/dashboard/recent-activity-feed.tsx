@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor } from '@/lib/constants/parties'
-import { STANCE_STYLES } from '@/lib/utils/stances'
+import { STANCE_STYLES, stanceDisplayBadge } from '@/lib/utils/stances'
 
 export type ActivityItem =
   | {
@@ -189,7 +189,7 @@ function StanceActivityContent({
 }: {
   item: Extract<ActivityItem, { type: 'stance' }>
 }) {
-  const style = STANCE_STYLES[item.stance] ?? STANCE_STYLES.unknown
+  const badge = stanceDisplayBadge(item.stance)
 
   return (
     <div>
@@ -207,10 +207,9 @@ function StanceActivityContent({
         </Link>
         {' '}
         <span
-          className="inline-block rounded-sm px-1.5 py-px text-[10px] font-semibold"
-          style={{ color: style.color, background: `${style.color}18` }}
+          className={`inline-block rounded-sm px-1.5 py-px text-[10px] font-semibold ${badge.className}`}
         >
-          {style.shortLabel}
+          {badge.label}
         </span>
         {' '}
         <Link

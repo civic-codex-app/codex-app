@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { stanceStyle } from '@/lib/utils/stances'
+import { stanceStyle, stanceDisplayBadge } from '@/lib/utils/stances'
 import { matchBillToIssues, doesVoteAlignWithStance } from '@/lib/utils/bill-issue-map'
 
 interface Vote {
@@ -120,7 +120,7 @@ export function AccountabilityScore({ votes, stances }: AccountabilityScoreProps
             </h3>
             <div className="space-y-1.5">
               {uniqueContradictions.slice(0, 5).map((c, i) => {
-                const ss = stanceStyle(c.stance)
+                const badge = stanceDisplayBadge(c.stance)
                 return (
                   <div key={i} className="rounded-md border border-[var(--codex-border)] px-3 py-2 text-[12px]">
                     <div className="flex items-center justify-between gap-2">
@@ -140,10 +140,9 @@ export function AccountabilityScore({ votes, stances }: AccountabilityScoreProps
                     <div className="mt-1 flex items-center gap-2 text-[11px] text-[var(--codex-faint)]">
                       <span>Stance on {c.issueName}:</span>
                       <span
-                        className="rounded-sm px-1.5 py-0.5 text-[10px] uppercase"
-                        style={{ color: ss.color, background: `${ss.color}18` }}
+                        className={`rounded-sm px-1.5 py-0.5 text-[10px] uppercase ${badge.className}`}
                       >
-                        {ss.shortLabel}
+                        {badge.label}
                       </span>
                     </div>
                   </div>

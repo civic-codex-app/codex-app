@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { IssueIcon } from '@/components/icons/issue-icon'
-import { stanceStyle, stanceBucket } from '@/lib/utils/stances'
+import { stanceStyle, stanceBucket, stanceDisplayBadge } from '@/lib/utils/stances'
 import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 
 interface StanceScaleProps {
@@ -30,8 +30,8 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
         </div>
 
         {issues.map((issue) => {
-          const styleA = stanceStyle(issue.a ?? 'unknown')
-          const styleB = stanceStyle(issue.b ?? 'unknown')
+          const badgeA = stanceDisplayBadge(issue.a ?? 'unknown')
+          const badgeB = stanceDisplayBadge(issue.b ?? 'unknown')
           const bucketA = stanceBucket(issue.a ?? 'unknown')
           const bucketB = stanceBucket(issue.b ?? 'unknown')
           const match = bucketA !== 'unknown' && bucketB !== 'unknown' && bucketA === bucketB
@@ -66,20 +66,18 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
                 <div className="flex items-center gap-1.5 sm:justify-center">
                   <span className="text-[10px] text-[var(--codex-faint)] sm:hidden">{lastA}:</span>
                   <span
-                    className="rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em]"
-                    style={{ color: styleA.color, background: `${styleA.color}18` }}
+                    className={`rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em] ${badgeA.className}`}
                   >
-                    {styleA.shortLabel || styleA.label}
+                    {badgeA.label}
                   </span>
                 </div>
                 <span className="text-[11px] text-[var(--codex-faint)] sm:hidden">vs</span>
                 <div className="flex items-center gap-1.5 sm:justify-center">
                   <span className="text-[10px] text-[var(--codex-faint)] sm:hidden">{lastB}:</span>
                   <span
-                    className="rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em]"
-                    style={{ color: styleB.color, background: `${styleB.color}18` }}
+                    className={`rounded-sm px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.06em] ${badgeB.className}`}
                   >
-                    {styleB.shortLabel || styleB.label}
+                    {badgeB.label}
                   </span>
                 </div>
               </div>
