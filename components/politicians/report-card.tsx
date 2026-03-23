@@ -16,11 +16,14 @@ function tierLabel(score: number): string {
 }
 
 function tierColor(score: number): string {
-  if (score >= 80) return '#22C55E'
-  if (score >= 65) return '#3B82F6'
-  if (score >= 50) return '#8B5CF6'
-  if (score >= 35) return '#EAB308'
-  return '#9CA3AF'
+  // Stoplight gradient with forgiving curve:
+  // 60+ is green, 40-60 is yellow, under 40 is red
+  // Most politicians should land in green/yellow territory
+  if (score >= 70) return '#16A34A' // green-600
+  if (score >= 55) return '#65A30D' // lime-600
+  if (score >= 40) return '#CA8A04' // yellow-600
+  if (score >= 25) return '#EA580C' // orange-600
+  return '#DC2626' // red-600
 }
 
 function dimensionInsight(key: string, value: number): string {
