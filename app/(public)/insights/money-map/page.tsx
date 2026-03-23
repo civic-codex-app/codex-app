@@ -84,11 +84,49 @@ export default async function MoneyMapPage() {
     sf.politicians.sort((a, b) => b.raised - a.raised)
   }
 
+  // Compute party totals
+  const partyTotals: Record<string, { raised: number; spent: number; cash: number; count: number }> = {}
+  for (const sf of Object.values(stateFinance)) {
+    for (const p of sf.politicians) {
+      if (!partyTotals[p.party]) partyTotals[p.party] = { raised: 0, spent: 0, cash: 0, count: 0 }
+      partyTotals[p.party].raised += p.raised
+      partyTotals[p.party].spent += p.spent
+      partyTotals[p.party].cash += p.cash
+      partyTotals[p.party].count++
+    }
+  }
+
+  // Top 20 nationally
+  const allPols = Object.values(stateFinance).flatMap((sf) => sf.politicians)
+  const topRaised = [...allPols].sort((a, b) => b.raised - a.raised).slice(0, 20)
+  const topSpent = [...allPols].sort((a, b) => b.spent - a.spent).slice(0, 20)
+
+  // Dominant party per state for map coloring
+  const stateDominantParty: Record<string, string> = {}
+  for (const [state, sf] of Object.entries(stateFinance)) {
+    const partyRaised: Record<string, number> = {}
+    for (const p of sf.politicians) {
+      partyRaised[p.party] = (partyRaised[p.party] ?? 0) + p.raised
+    }
+    let maxParty = ''
+    let maxVal = 0
+    for (const [party, val] of Object.entries(partyRaised)) {
+      if (val > maxVal) { maxParty = party; maxVal = val }
+    }
+    stateDominantParty[state] = maxParty
+  }
+
   return (
     <>
       <Header />
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-6">
-        <MoneyMapView stateFinance={stateFinance} />
+        <MoneyMapView
+          stateFinance={stateFinance}
+          partyTotals={partyTotals}
+          topRaised={topRaised}
+          topSpent={topSpent}
+          stateDominantParty={stateDominantParty}
+        />
         <Footer />
       </main>
     </>
