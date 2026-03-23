@@ -13,6 +13,13 @@ import {
   HardHat,
   Home,
   Zap,
+  Heart,
+  Pill,
+  Vote,
+  DollarSign,
+  Hammer,
+  Eye,
+  ArrowLeftRight,
   type LucideProps,
 } from 'lucide-react'
 
@@ -31,6 +38,15 @@ const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
   'hard-hat': HardHat,
   home: Home,
   zap: Zap,
+  // New issue icons
+  Heart: Heart,
+  Pill: Pill,
+  Vote: Vote,
+  DollarSign: DollarSign,
+  Hammer: Hammer,
+  Eye: Eye,
+  ArrowLeftRight: ArrowLeftRight,
+  Users: Users,
 }
 
 interface IssueIconProps extends LucideProps {

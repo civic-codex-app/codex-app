@@ -28,7 +28,7 @@ const MAX_VALUE = MAX_STANCE_VALUE
 const RINGS = [2, 4, 6]  // Show 3 concentric rings at key levels
 
 export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps) {
-  const [hoveredAxis, setHoveredAxis] = useState<string | null>(null)
+  const [activeAxis, setActiveAxis] = useState<string | null>(null)
   const [hoveredPolitician, setHoveredPolitician] = useState<1 | 2 | null>(null)
 
   const size = 550
@@ -136,7 +136,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
           {/* Axis lines */}
           {issues.map((issue, i) => {
             const pt = getPoint(i, MAX_VALUE)
-            const isHovered = hoveredAxis === issue.slug
+            const isHovered = activeAxis === issue.slug
             return (
               <line
                 key={issue.slug}
@@ -218,7 +218,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
           {/* Axis labels (icons + short names) */}
           {issues.map((issue, i) => {
             const pt = getLabelPoint(i)
-            const isHovered = hoveredAxis === issue.slug
+            const isHovered = activeAxis === issue.slug
 
             // Determine text anchor based on position
             const angle = startAngle + i * angleStep
@@ -230,9 +230,10 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
             return (
               <g
                 key={issue.slug}
-                onMouseEnter={() => setHoveredAxis(issue.slug)}
-                onMouseLeave={() => setHoveredAxis(null)}
-                className="cursor-default"
+                onClick={() => setActiveAxis(activeAxis === issue.slug ? null : issue.slug)}
+                onMouseEnter={() => setActiveAxis(issue.slug)}
+                onMouseLeave={() => setActiveAxis(null)}
+                className="cursor-pointer"
               >
                 <foreignObject
                   x={textAnchor === 'end' ? pt.x - 20 : textAnchor === 'start' ? pt.x : pt.x - 10}

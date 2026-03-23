@@ -67,7 +67,7 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
               className="cursor-pointer transition-opacity duration-150"
               onMouseEnter={() => setHovered(code)}
               onMouseLeave={() => setHovered(null)}
-              onClick={() => onStateClick?.(code)}
+              onClick={() => { setHovered(code); onStateClick?.(code) }}
               role="button"
               tabIndex={0}
               aria-label={STATE_NAMES[code] ?? code}
@@ -82,10 +82,10 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
         })}
       </svg>
 
-      {/* Tooltip */}
+      {/* Tooltip — follows mouse on desktop, fixed bar on mobile */}
       {hovered && tooltipPos && (
         <div
-          className="pointer-events-none absolute z-10 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-3 py-1.5 shadow-lg"
+          className="pointer-events-none absolute z-10 hidden rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-3 py-1.5 shadow-lg sm:block"
           style={{
             left: tooltipPos.x + 12,
             top: tooltipPos.y - 30,
@@ -100,6 +100,21 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
             </div>
           )}
         </div>
+      )}
+
+      {/* Mobile info bar — tap a state to see details */}
+      {hovered && (
+        <div className="mt-2 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-3 py-2 text-center sm:hidden">
+          <span className="text-[13px] font-medium text-[var(--codex-text)]">{STATE_NAMES[hovered] ?? hovered}</span>
+          {stateData[hovered]?.label && (
+            <span className="ml-2 text-[12px] text-[var(--codex-sub)]">{stateData[hovered].label}</span>
+          )}
+        </div>
+      )}
+      {!hovered && (
+        <p className="mt-2 text-center text-[11px] text-[var(--codex-faint)] sm:hidden">
+          Tap a state to see details
+        </p>
       )}
 
       {/* Legend */}

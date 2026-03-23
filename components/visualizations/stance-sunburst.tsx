@@ -44,7 +44,7 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
   return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 0 ${end.x} ${end.y}`
 }
 
-export function StanceSunburst({ stances, size = 120 }: StanceSunburstProps) {
+export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
   const [hoveredSegment, setHoveredSegment] = useState<string | null>(null)
   const [animationProgress, setAnimationProgress] = useState(0)
 
@@ -137,11 +137,10 @@ export function StanceSunburst({ stances, size = 120 }: StanceSunburstProps) {
                 strokeWidth={isHovered ? strokeWidth + 4 : strokeWidth}
                 strokeLinecap="butt"
                 opacity={isHovered ? 1 : 0.85}
-                className="cursor-default transition-all duration-200"
+                className="cursor-pointer transition-all duration-200"
+                onClick={() => setHoveredSegment(hoveredSegment === seg.key ? null : seg.key)}
                 onMouseEnter={() => setHoveredSegment(seg.key)}
                 onMouseLeave={() => setHoveredSegment(null)}
-                onFocus={() => setHoveredSegment(seg.key)}
-                onBlur={() => setHoveredSegment(null)}
                 tabIndex={0}
                 role="button"
                 aria-label={`${seg.label}: ${seg.value} issues (${Math.round((seg.value / total) * 100)}%)`}
