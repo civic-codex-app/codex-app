@@ -98,23 +98,19 @@ export default async function ElectionsPage() {
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        {/* Voter Registration Banner */}
-        <div className="mb-8 flex items-center gap-4 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-5 py-4" style={{ borderLeftWidth: '3px', borderLeftColor: '#10b981' }}>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/15 text-emerald-400">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-[15px] font-semibold text-[var(--codex-text)]">Make sure you&apos;re registered to vote</div>
-            <div className="text-[13px] text-[var(--codex-sub)]">Check your registration status or register for the first time — it only takes a few minutes.</div>
+        {/* Voter Registration */}
+        <div className="mb-8 flex items-center overflow-hidden rounded-xl border border-[var(--codex-border)]">
+          <div className="min-w-0 flex-1 px-5 py-4">
+            <div className="text-[14px] font-semibold text-[var(--codex-text)]">Check your voter registration</div>
+            <div className="text-[12px] text-[var(--codex-faint)]">Verify your status or register — takes 2 minutes</div>
           </div>
           <a
             href="https://vote.org/register-to-vote/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-600 px-5 py-2.5 text-[13px] font-semibold text-white no-underline transition-all hover:bg-emerald-700"
+            className="flex h-full shrink-0 items-center self-stretch bg-[var(--codex-text)] px-6 text-[13px] font-semibold text-[var(--codex-card)] no-underline transition-opacity hover:opacity-80"
           >
-            Register Now
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Register &rarr;
           </a>
         </div>
 
