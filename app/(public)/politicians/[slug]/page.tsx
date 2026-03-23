@@ -323,7 +323,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 <PartyIcon party={pol.party} size={40} />
               </div>
             )}
-            <h1 className="mb-4 hidden text-[38px] font-bold leading-[1.05] md:block">
+            <h1 className="mb-4 hidden text-[38px] font-serif font-bold leading-[1.05] md:block">
               {pol.name}
             </h1>
 

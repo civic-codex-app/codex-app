@@ -65,18 +65,56 @@ export default async function AdminOverviewPage() {
     { label: 'Users', value: userCount ?? 0, href: '/admin/users' },
   ]
 
+  // New registrations in last 24h
+  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+  const { count: newUserCount } = await supabase
+    .from('profiles')
+    .select('*', { count: 'exact', head: true })
+    .gte('created_at', yesterday)
+
+  // Unread inbox submissions
+  const { count: inboxNewCount } = await supabase
+    .from('public_submissions')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'new')
+
   const quickActions = [
     { label: 'Add Politician', href: '/admin/politicians/new' },
     { label: 'Create Poll', href: '/admin/polls/new' },
     { label: 'Add Election', href: '/admin/elections/new' },
     { label: 'Add Issue', href: '/admin/issues/new' },
     { label: 'Add Bill', href: '/admin/bills/new' },
+    { label: 'View Inbox', href: '/admin/inbox' },
   ]
 
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">Admin Overview</h1>
-      <p className="mb-10 text-sm text-[var(--codex-sub)]">Manage your political directory data</p>
+      <p className="mb-6 text-sm text-[var(--codex-sub)]">Manage your political directory data</p>
+
+      {/* Notifications */}
+      {((newUserCount ?? 0) > 0 || (inboxNewCount ?? 0) > 0) && (
+        <div className="mb-8 flex flex-wrap gap-3">
+          {(newUserCount ?? 0) > 0 && (
+            <Link
+              href="/admin/users"
+              className="flex items-center gap-2 rounded-lg border border-blue-500/20 bg-blue-500/5 px-4 py-3 text-sm no-underline transition-all hover:border-blue-500/40"
+            >
+              <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-blue-500 px-1.5 text-[11px] font-bold text-white">{newUserCount}</span>
+              <span className="text-[var(--codex-text)]">new user{(newUserCount ?? 0) !== 1 ? 's' : ''} registered today</span>
+            </Link>
+          )}
+          {(inboxNewCount ?? 0) > 0 && (
+            <Link
+              href="/admin/inbox"
+              className="flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm no-underline transition-all hover:border-amber-500/40"
+            >
+              <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-amber-500 px-1.5 text-[11px] font-bold text-white">{inboxNewCount}</span>
+              <span className="text-[var(--codex-text)]">unread submission{(inboxNewCount ?? 0) !== 1 ? 's' : ''}</span>
+            </Link>
+          )}
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">

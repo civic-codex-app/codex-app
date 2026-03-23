@@ -12,7 +12,7 @@ export default function ContactPage() {
   return (
     <>
       <Header />
-      <div className="mx-auto max-w-[600px] px-6 pt-6 pb-16 md:px-10">
+      <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Contact Us
         </h1>
