@@ -278,8 +278,40 @@ export async function POST(request: NextRequest) {
       .map(buildResult)
       .filter(Boolean)
 
+    // Outliers: surprising cross-party matches and unexpected disagreements
+    // Find the user's "expected" party (party with highest avg score)
+    const partyAvgs: Record<string, { total: number; count: number }> = {}
+    for (const s of scored) {
+      const pol = polMap.get(s.politicianId)
+      if (!pol) continue
+      if (!partyAvgs[pol.party]) partyAvgs[pol.party] = { total: 0, count: 0 }
+      partyAvgs[pol.party].total += s.score
+      partyAvgs[pol.party].count++
+    }
+    const sortedParties = Object.entries(partyAvgs)
+      .map(([party, { total, count }]) => ({ party, avg: total / count }))
+      .sort((a, b) => b.avg - a.avg)
+
+    const userParty = sortedParties[0]?.party
+    const oppositeParties = sortedParties.slice(1).map(p => p.party)
+
+    // "Across the aisle" — best matches from opposite parties
+    const acrossTheAisle = oppositeParties
+      .flatMap(party => (byParty.get(party) ?? []).slice(0, 2))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map(buildResult)
+      .filter(Boolean)
+
+    // "Might surprise you" — lowest-scoring from user's expected party
+    const surprises = (byParty.get(userParty ?? '') ?? [])
+      .slice(-5)
+      .reverse()
+      .map(buildResult)
+      .filter(Boolean)
+
     return NextResponse.json(
-      { results, yourState },
+      { results, yourState, acrossTheAisle, surprises, userParty },
       { headers: { 'Cache-Control': 'no-store' } }
     )
   } catch (err) {

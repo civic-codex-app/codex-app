@@ -75,6 +75,9 @@ export function QuizForm({ issues }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [results, setResults] = useState<MatchResult[] | null>(null)
   const [stateResults, setStateResults] = useState<MatchResult[]>([])
+  const [acrossTheAisle, setAcrossTheAisle] = useState<MatchResult[]>([])
+  const [surprises, setSurprises] = useState<MatchResult[]>([])
+  const [userParty, setUserParty] = useState<string | null>(null)
   const [userState, setUserState] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showCheck, setShowCheck] = useState(false)
@@ -223,6 +226,9 @@ export function QuizForm({ issues }: Props) {
       if (!res.ok) { setError(data.error ?? 'Something went wrong.'); return }
       setResults(data.results)
       setStateResults(data.yourState ?? [])
+      setAcrossTheAisle(data.acrossTheAisle ?? [])
+      setSurprises(data.surprises ?? [])
+      setUserParty(data.userParty ?? null)
       saveQuizResults(data.results, data.yourState ?? [], userId.current)
       trackEvent('quiz_completed', {
         totalQuestions: Object.keys(validStances).length,
@@ -260,7 +266,7 @@ export function QuizForm({ issues }: Props) {
   }
 
   // Show results if we have them (cached or fresh)
-  if (results) return <MatchResults results={results} stateResults={stateResults} userState={userState} isLoggedIn={isLoggedIn.current} onRetake={retake} onEditAnswers={editAnswers} onUpdateResults={updateResults} />
+  if (results) return <MatchResults results={results} stateResults={stateResults} acrossTheAisle={acrossTheAisle} surprises={surprises} userParty={userParty} userState={userState} isLoggedIn={isLoggedIn.current} onRetake={retake} onEditAnswers={editAnswers} onUpdateResults={updateResults} />
 
   // Show loading while checking for cached results (prevents quiz flash)
   if (!initialLoaded) {

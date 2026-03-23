@@ -42,6 +42,9 @@ interface MatchResult {
 interface Props {
   results: MatchResult[]
   stateResults?: MatchResult[]
+  acrossTheAisle?: MatchResult[]
+  surprises?: MatchResult[]
+  userParty?: string | null
   userState?: string | null
   isLoggedIn?: boolean
   onRetake: () => void
@@ -123,7 +126,7 @@ function IssueRow({ issue }: { issue: IssueComparison }) {
   )
 }
 
-export function MatchResults({ results, stateResults = [], userState, isLoggedIn, onRetake, onEditAnswers, onUpdateResults }: Props) {
+export function MatchResults({ results, stateResults = [], acrossTheAisle = [], surprises = [], userParty, userState, isLoggedIn, onRetake, onEditAnswers, onUpdateResults }: Props) {
   const [copied, setCopied] = useState(false)
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
 
@@ -515,6 +518,86 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
             })}
           </div>
         </>
+      )}
+
+      {/* Across the Aisle — cross-party matches */}
+      {acrossTheAisle.length > 0 && (
+        <div className="mb-10">
+          <h3 className="mb-1 text-sm font-semibold text-[var(--codex-text)]">
+            Across the Aisle
+          </h3>
+          <p className="mb-3 text-[12px] text-[var(--codex-faint)]">
+            Politicians from other parties who still share some of your views
+          </p>
+          <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
+            {acrossTheAisle.map((r) => {
+              const color = scoreColor(r.score)
+              const pColor = partyColor(r.politician.party)
+              return (
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
+                  <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border" style={{ borderColor: pColor }}>
+                    <AvatarImage src={r.politician.image_url} alt={r.politician.name} size={36} fallbackColor={pColor} party={r.politician.party} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
+                    <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
+                      <PartyIcon party={r.politician.party} size={10} />
+                      <span>{partyLabel(r.politician.party)}</span>
+                      <span>·</span>
+                      <span>{r.politician.state}</span>
+                    </div>
+                  </div>
+                  <div className="flex w-24 shrink-0 items-center gap-2">
+                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                      <div className="h-full rounded-full" style={{ width: `${r.score}%`, backgroundColor: color }} />
+                    </div>
+                    <span className="text-[13px] font-semibold tabular-nums" style={{ color }}>{r.score}%</span>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Might Surprise You — lowest from your closest party */}
+      {surprises.length > 0 && userParty && (
+        <div className="mb-10">
+          <h3 className="mb-1 text-sm font-semibold text-[var(--codex-text)]">
+            Might Surprise You
+          </h3>
+          <p className="mb-3 text-[12px] text-[var(--codex-faint)]">
+            {partyLabel(userParty)} politicians you align with the least
+          </p>
+          <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
+            {surprises.map((r) => {
+              const color = scoreColor(r.score)
+              const pColor = partyColor(r.politician.party)
+              return (
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
+                  <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border" style={{ borderColor: pColor }}>
+                    <AvatarImage src={r.politician.image_url} alt={r.politician.name} size={36} fallbackColor={pColor} party={r.politician.party} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
+                    <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
+                      <PartyIcon party={r.politician.party} size={10} />
+                      <span>{partyLabel(r.politician.party)}</span>
+                      <span>·</span>
+                      <span>{r.politician.state}</span>
+                    </div>
+                  </div>
+                  <div className="flex w-24 shrink-0 items-center gap-2">
+                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                      <div className="h-full rounded-full" style={{ width: `${r.score}%`, backgroundColor: color }} />
+                    </div>
+                    <span className="text-[13px] font-semibold tabular-nums" style={{ color }}>{r.score}%</span>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
       )}
 
       {/* Actions */}
