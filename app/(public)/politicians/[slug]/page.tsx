@@ -120,12 +120,12 @@ export default async function PoliticianPage({ params }: PageProps) {
 
   // Run all queries in parallel for performance
   const [stancesResult, committeeResult, votingResult, financeResult, electionResult, stanceHistoryResult] = await Promise.all([
-    supabase.from('politician_issues').select('*, issues:issue_id(id, name, slug, icon, category)').eq('politician_id', pol.id).order('created_at'),
+    supabase.from('politician_issues').select('politician_id, issue_id, stance, is_verified, summary, source_url, issues:issue_id(id, name, slug, icon, category)').eq('politician_id', pol.id).order('created_at'),
     supabase.from('politician_committees').select('role, committees:committee_id(id, name, slug, chamber)').eq('politician_id', pol.id),
     supabase.from('voting_records').select('id, bill_name, bill_number, bill_id, vote, vote_date').eq('politician_id', pol.id).order('vote_date', { ascending: false }),
-    supabase.from('campaign_finance').select('*').eq('politician_id', pol.id).order('cycle', { ascending: false }),
-    supabase.from('election_results').select('*').eq('politician_id', pol.id).order('election_year', { ascending: false }),
-    supabase.from('stance_history').select('id, issue_id, stance, effective_date, source_url, source_description').eq('politician_id', pol.id).order('effective_date', { ascending: false }),
+    supabase.from('campaign_finance').select('id, politician_id, cycle, total_raised, total_spent, cash_on_hand, source_url').eq('politician_id', pol.id).order('cycle', { ascending: false }).limit(10),
+    supabase.from('election_results').select('id, politician_id, election_year, state, chamber, district, race_name, party, result, vote_percentage, total_votes, opponent_name, opponent_party, opponent_vote_percentage').eq('politician_id', pol.id).order('election_year', { ascending: false }).limit(20),
+    supabase.from('stance_history').select('id, issue_id, stance, effective_date, source_url, source_description').eq('politician_id', pol.id).order('effective_date', { ascending: false }).limit(50),
   ])
 
   const politicianStances = (stancesResult.data ?? []) as any as PoliticianStanceRow[]
