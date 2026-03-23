@@ -26,11 +26,20 @@ describe('computeVoterMatch', () => {
     expect(result.score).toBe(0)
   })
 
-  it('returns partial score for close but not identical stances', () => {
+  it('no penalty when politician is more extreme on same side', () => {
+    const user = { 'healthcare': 'supports' }
+    const pol = { 'healthcare': 'strongly_supports' }
+    const result = computeVoterMatch(user, pol)
+    // Same side, politician more extreme = perfect match
+    expect(result.score).toBe(100)
+    expect(result.matched).toBe(1)
+  })
+
+  it('penalizes when politician is less extreme (toward center)', () => {
     const user = { 'healthcare': 'supports' }
     const pol = { 'healthcare': 'leans_support' }
     const result = computeVoterMatch(user, pol)
-    // 1 step distance = 0.9 similarity
+    // Same side but politician is closer to center = 1 step penalty
     expect(result.score).toBe(90)
     expect(result.matched).toBe(1)
   })
@@ -61,19 +70,19 @@ describe('computeVoterMatch', () => {
 
   it('weights strongly-felt issues higher via conviction', () => {
     // User strongly supports healthcare, leans on economy
-    // Politician opposes both (same distance for both)
+    // Politician opposes both — crossing sides
     const user = {
       'healthcare': 'strongly_supports', // conviction 3.0
       'economy': 'leans_support',        // conviction 1.0
     }
     const pol = {
-      'healthcare': 'supports',  // 1 step away
-      'economy': 'supports',     // 1 step away
+      'healthcare': 'leans_oppose',  // crosses neutral, distance matters
+      'economy': 'leans_oppose',     // crosses neutral, distance matters
     }
     const result = computeVoterMatch(user, pol)
-    // Both are 1 step = 0.9 similarity, weighted by conviction
-    // (3.0 * 0.9 + 1.0 * 0.9) / (3.0 + 1.0) = 0.9 => 90%
-    expect(result.score).toBe(90)
+    // healthcare: distance 4 = 0.15, economy: distance 2 = 0.7
+    // (3.0 * 0.15 + 1.0 * 0.7) / (3.0 + 1.0) = 1.15 / 4.0 = 0.2875 => 29%
+    expect(result.score).toBe(29)
   })
 
   it('applies verification weight when verifiedMap is provided', () => {

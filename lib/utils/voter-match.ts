@@ -66,7 +66,14 @@ export function computeVoterMatch(
     if (userStance === 'neutral' || userStance === 'mixed') continue
 
     matched++
-    const distance = Math.abs(userVal - polVal)
+
+    // If both are on the same side and politician is more extreme, no penalty.
+    // e.g. user "supports" (5) + politician "strongly_supports" (6) = same side, full match.
+    // Only penalize distance when crossing toward the other side.
+    const NEUTRAL = 3
+    const sameSide = (userVal > NEUTRAL && polVal > NEUTRAL) || (userVal < NEUTRAL && polVal < NEUTRAL)
+    const polMoreExtreme = sameSide && Math.abs(polVal - NEUTRAL) >= Math.abs(userVal - NEUTRAL)
+    const distance = polMoreExtreme ? 0 : Math.abs(userVal - polVal)
 
     let similarity = 0
     if (distance === 0) similarity = 1.0
