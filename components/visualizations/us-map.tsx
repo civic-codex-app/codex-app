@@ -56,28 +56,34 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
       >
         {Object.entries(STATE_PATHS).map(([code, d]) => {
           const isHovered = hovered === code
+          // Scale up AK and HI and push them to the far left
+          const transform =
+            code === 'AK' ? 'translate(-30, -40) scale(1.3)' :
+            code === 'HI' ? 'translate(-60, -20) scale(1.3)' :
+            undefined
           return (
-            <path
-              key={code}
-              d={d}
-              fill={getFill(code)}
-              stroke="var(--codex-border)"
-              strokeWidth={isHovered ? 1.2 : 0.5}
-              opacity={hovered && !isHovered ? 0.6 : 1}
-              className="cursor-pointer transition-opacity duration-150"
-              onMouseEnter={() => setHovered(code)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={() => { setHovered(code); onStateClick?.(code) }}
-              role="button"
-              tabIndex={0}
-              aria-label={STATE_NAMES[code] ?? code}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  onStateClick?.(code)
-                }
-              }}
-            />
+            <g key={code} transform={transform}>
+              <path
+                d={d}
+                fill={getFill(code)}
+                stroke="var(--codex-border)"
+                strokeWidth={isHovered ? 1.2 : 0.5}
+                opacity={hovered && !isHovered ? 0.6 : 1}
+                className="cursor-pointer transition-opacity duration-150"
+                onMouseEnter={() => setHovered(code)}
+                onMouseLeave={() => setHovered(null)}
+                onClick={() => { setHovered(code); onStateClick?.(code) }}
+                role="button"
+                tabIndex={0}
+                aria-label={STATE_NAMES[code] ?? code}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onStateClick?.(code)
+                  }
+                }}
+              />
+            </g>
           )
         })}
       </svg>
