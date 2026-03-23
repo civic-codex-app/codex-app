@@ -10,11 +10,11 @@ import {
 
 describe('stanceStyle', () => {
   it('returns correct style for known stances', () => {
-    expect(stanceStyle('supports').label).toBe('Progressive')
-    expect(stanceStyle('opposes').label).toBe('Conservative')
-    expect(stanceStyle('strongly_supports').label).toBe('Strong Progressive')
-    expect(stanceStyle('neutral').label).toBe('Centrist')
-    expect(stanceStyle('mixed').label).toBe('Mixed')
+    expect(stanceStyle('supports').label).toBe('For')
+    expect(stanceStyle('opposes').label).toBe('Against')
+    expect(stanceStyle('strongly_supports').label).toBe('Strongly For')
+    expect(stanceStyle('neutral').label).toBe('Undecided')
+    expect(stanceStyle('mixed').label).toBe('Mixed Views')
   })
 
   it('falls back to unknown for unrecognized stances', () => {
@@ -100,14 +100,14 @@ describe('STANCE_STYLES', () => {
 })
 
 describe('getStanceDisplay', () => {
-  it('maps support stances to Progressive', () => {
-    expect(getStanceDisplay('supports').label).toBe('Progressive')
-    expect(getStanceDisplay('strongly_supports').label).toBe('Progressive')
+  it('maps support stances to For', () => {
+    expect(getStanceDisplay('supports').label).toBe('For')
+    expect(getStanceDisplay('strongly_supports').label).toBe('For')
   })
 
-  it('maps oppose stances to Conservative', () => {
-    expect(getStanceDisplay('opposes').label).toBe('Conservative')
-    expect(getStanceDisplay('strongly_opposes').label).toBe('Conservative')
+  it('maps oppose stances to Against', () => {
+    expect(getStanceDisplay('opposes').label).toBe('Against')
+    expect(getStanceDisplay('strongly_opposes').label).toBe('Against')
   })
 
   it('maps neutral and mixed to Mixed', () => {

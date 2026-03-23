@@ -23,7 +23,7 @@ describe('StanceTimeline', () => {
         issueName="Climate"
       />
     )
-    expect(screen.getByText('Strong Progressive')).toBeInTheDocument()
+    expect(screen.getByText('Strongly For')).toBeInTheDocument()
   })
 
   it('renders historical entries', () => {
@@ -48,7 +48,7 @@ describe('StanceTimeline', () => {
       />
     )
     expect(screen.getByText('Current')).toBeInTheDocument()
-    expect(screen.getByText('Conservative')).toBeInTheDocument()
+    expect(screen.getByText('Against')).toBeInTheDocument()
     expect(screen.getByText('Voted against bill')).toBeInTheDocument()
     expect(screen.getByText('Public statement')).toBeInTheDocument()
   })
