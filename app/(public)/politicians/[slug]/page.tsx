@@ -6,7 +6,7 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { createClient as createServerAuthClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { PartyPill } from '@/components/directory/party-pill'
+import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { FollowButton } from '@/components/directory/follow-button'
@@ -303,16 +303,16 @@ export default async function PoliticianPage({ params }: PageProps) {
                 )}
               </div>
               <div className="min-w-0">
-                <PartyPill party={pol.party} size="lg" />
+                <PartyIcon party={pol.party} size={32} />
                 <h1 className="mt-1.5 text-[28px] font-bold leading-[1.05]">
                   {pol.name}
                 </h1>
               </div>
             </div>
 
-            {/* Desktop: party pill + name */}
+            {/* Desktop: party icon + name */}
             <div className="mb-3 hidden md:block">
-              <PartyPill party={pol.party} size="lg" />
+              <PartyIcon party={pol.party} size={40} />
             </div>
             <h1 className="mb-4 hidden text-[38px] font-bold leading-[1.05] md:block">
               {pol.name}
