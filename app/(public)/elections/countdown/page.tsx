@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/footer'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
 import { StateDatePicker } from '@/components/elections/state-date-picker'
 
-export const revalidate = 600
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Election Countdown -- Poli',
