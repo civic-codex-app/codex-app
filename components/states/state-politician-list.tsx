@@ -90,8 +90,8 @@ export function StatePoliticianList({ politicians, pageSize = 6, size = 'default
 
 function Grid({ politicians, size }: { politicians: Politician[]; size: 'default' | 'compact' }) {
   const isCompact = size === 'compact'
-  const avatarW = isCompact ? 'w-[64px]' : 'w-[72px]'
-  const avatarPx = isCompact ? 64 : 72
+  const avatarW = 'w-[68px]'
+  const avatarPx = 68
   const nameSize = isCompact ? 'text-[13px]' : 'text-[15px]'
 
   return (

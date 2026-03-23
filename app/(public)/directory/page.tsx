@@ -178,14 +178,14 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
                 className="group flex overflow-hidden rounded-xl no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
                 style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
               >
-                <div className="w-[64px] flex-shrink-0 overflow-hidden bg-[var(--codex-card)]">
+                <div className="w-[68px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--codex-card)]">
                   <AvatarImage
                     src={pol.image_url}
                     alt={pol.name}
-                    size={64}
+                    size={136}
                     party={pol.party}
                     fallbackColor={color}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover object-top"
                   />
                 </div>
                 <div className="min-w-0 flex-1 px-4 py-3">
