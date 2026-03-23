@@ -189,7 +189,7 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
 
   const topSlug = results[0]?.politician.slug
 
-  // Get top match from each party for hero cards
+  // Get top match from each party for hero cards, then fill to at least 3
   const seenParties = new Set<string>()
   const partyBests: MatchResult[] = []
   for (const r of results) {
@@ -198,11 +198,19 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
       seenParties.add(r.politician.party)
     }
   }
+  // Fill up to at least 3 hero cards from top results
+  const heroSlugs = new Set(partyBests.map(r => r.politician.slug))
+  for (const r of results) {
+    if (partyBests.length >= 3) break
+    if (!heroSlugs.has(r.politician.slug)) {
+      partyBests.push(r)
+      heroSlugs.add(r.politician.slug)
+    }
+  }
   // Sort hero cards: best score first
   partyBests.sort((a, b) => b.score - a.score)
 
-  // Remaining results (everyone not in hero cards)
-  const heroSlugs = new Set(partyBests.map(r => r.politician.slug))
+  // Remaining results
   const rest = results.filter(r => !heroSlugs.has(r.politician.slug))
 
   // Party breakdown summary
