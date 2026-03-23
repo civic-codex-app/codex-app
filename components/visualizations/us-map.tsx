@@ -57,10 +57,10 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
         {Object.entries(STATE_PATHS).map(([code, d]) => {
           const isHovered = hovered === code
           // Scale up AK and HI and push them to the far left
-          // Make AK/HI bigger, push left and up
+          // Make AK/HI bigger, push left and way up
           const transform =
-            code === 'AK' ? 'translate(-70, -50) scale(1.3)' :
-            code === 'HI' ? 'translate(-100, -40) scale(1.3)' :
+            code === 'AK' ? 'translate(-70, -180) scale(1.3)' :
+            code === 'HI' ? 'translate(-100, -150) scale(1.3)' :
             undefined
           return (
             <g key={code} transform={transform}>
