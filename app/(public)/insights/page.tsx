@@ -15,7 +15,7 @@ import type {
   InsightsIssueRow,
 } from '@/lib/types/supabase'
 
-export const revalidate = 900 // 15 minutes
+export const revalidate = 3600 // 1 hour
 
 export const metadata: Metadata = {
   title: 'Insights -- Poli',

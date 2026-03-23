@@ -10,7 +10,7 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 
-export const revalidate = 600
+export const revalidate = 1800 // 30 minutes
 
 export const metadata: Metadata = {
   title: 'Browse Politicians — Poli',

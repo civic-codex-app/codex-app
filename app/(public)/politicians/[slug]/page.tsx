@@ -18,7 +18,7 @@ import { SubmitAnnotation } from '@/components/annotations/submit-annotation'
 import { YourAlignment } from '@/components/politicians/your-alignment'
 import { StanceTimeline } from '@/components/politicians/stance-timeline'
 import { StanceTimelineToggle } from '@/components/politicians/stance-timeline-toggle'
-export const revalidate = 600 // 10 minutes
+export const revalidate = 1800 // 30 minutes
 
 import type { Politician } from '@/lib/types/politician'
 import type {

@@ -4,7 +4,7 @@ import { Footer } from '@/components/layout/footer'
 import { STANCE_NUMERIC } from '@/lib/utils/stances'
 import { IssueMapView } from '@/components/issues/issue-map-view'
 
-export const revalidate = 600
+export const revalidate = 3600 // 1 hour
 
 export const metadata = {
   title: 'Issue Map — Poli',

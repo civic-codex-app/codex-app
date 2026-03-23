@@ -3,7 +3,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { MoneyMapView } from '@/components/insights/money-map-view'
 
-export const revalidate = 600
+export const revalidate = 3600 // 1 hour
 
 export const metadata = {
   title: 'Money Map — Poli',

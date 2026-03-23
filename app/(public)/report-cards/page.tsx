@@ -7,7 +7,7 @@ import { partyColor } from '@/lib/constants/parties'
 import { ReportCardList } from './report-card-list'
 import type { Metadata } from 'next'
 
-export const revalidate = 900 // 15 minutes
+export const revalidate = 3600 // 1 hour
 
 export const metadata: Metadata = {
   title: 'Report Cards — Poli',

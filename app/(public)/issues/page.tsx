@@ -10,7 +10,7 @@ import { partyColor } from '@/lib/constants/parties'
 import { IssueSortSelect } from '@/components/filters/issue-sort-select'
 import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 
-export const revalidate = 600 // 10 minutes
+export const revalidate = 3600 // 1 hour
 
 export const metadata = {
   title: 'Issues -- Poli',

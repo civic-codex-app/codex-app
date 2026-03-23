@@ -11,7 +11,7 @@ import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabas
 import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
 import { StanceGroup, type StanceEntry } from '@/components/issues/stance-group'
 
-export const revalidate = 600 // 10 minutes
+export const revalidate = 3600 // 1 hour
 
 interface PageProps {
   params: Promise<{ slug: string }>

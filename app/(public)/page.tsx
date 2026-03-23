@@ -13,7 +13,7 @@ import { Trending } from '@/components/directory/trending'
 import { PARTY_EXPLAINERS } from '@/lib/data/educational-content'
 import { getSiteSettings } from '@/lib/utils/site-settings'
 
-export const revalidate = 300
+export const revalidate = 1800 // 30 minutes
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings()
