@@ -45,20 +45,20 @@ interface IssueMapViewProps {
 /* ------------------------------------------------------------------ */
 
 function stanceColorScale(value: number): string {
-  // 6 = strongly supports (deep navy)
-  // 5 = supports (navy)
-  // 4 = leans support (light navy)
-  // 3 = neutral/mixed (gray)
-  // 2 = leans oppose (warm tan)
-  // 1 = opposes (warm brown)
-  // 0 = strongly opposes (deep warm)
-  if (value >= 5.5) return '#1E3A5F' // deep navy
-  if (value >= 4.5) return '#2E5984' // navy
-  if (value >= 3.5) return '#5B8DB8' // light navy
-  if (value >= 2.5) return '#9CA3AF' // gray (neutral)
-  if (value >= 1.5) return '#C4956A' // warm tan
-  if (value >= 0.5) return '#B8734A' // warm brown
-  return '#8B4513' // deep warm
+  // 6 = strongly supports (deep blue)
+  // 5 = supports (blue)
+  // 4 = leans support (light blue)
+  // 3 = neutral/mixed (purple)
+  // 2 = leans oppose (light red)
+  // 1 = opposes (red)
+  // 0 = strongly opposes (deep red)
+  if (value >= 5.5) return '#1D4ED8' // deep blue
+  if (value >= 4.5) return '#2563EB' // blue
+  if (value >= 3.5) return '#60A5FA' // light blue
+  if (value >= 2.5) return '#8B5CF6' // purple (mixed)
+  if (value >= 1.5) return '#F87171' // light red
+  if (value >= 0.5) return '#DC2626' // red
+  return '#991B1B' // deep red
 }
 
 function stanceLabelFromAvg(value: number): string {
@@ -76,13 +76,13 @@ function stanceLabelFromAvg(value: number): string {
 /* ------------------------------------------------------------------ */
 
 const LEGEND = [
-  { color: '#1E3A5F', label: 'Overwhelmingly back this' },
-  { color: '#2E5984', label: 'Most support' },
-  { color: '#5B8DB8', label: 'Lean toward supporting' },
-  { color: '#9CA3AF', label: 'Split on this issue' },
-  { color: '#C4956A', label: 'Lean toward opposing' },
-  { color: '#B8734A', label: 'Most oppose' },
-  { color: '#8B4513', label: 'Overwhelmingly oppose' },
+  { color: '#1D4ED8', label: 'Overwhelmingly back this' },
+  { color: '#2563EB', label: 'Most support' },
+  { color: '#60A5FA', label: 'Lean toward supporting' },
+  { color: '#8B5CF6', label: 'Split on this issue' },
+  { color: '#F87171', label: 'Lean toward opposing' },
+  { color: '#DC2626', label: 'Most oppose' },
+  { color: '#991B1B', label: 'Overwhelmingly oppose' },
 ]
 
 /* ------------------------------------------------------------------ */
