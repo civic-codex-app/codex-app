@@ -522,7 +522,7 @@ function StanceGroup({
       {expanded && (
         <div className="space-y-2">
           {stances.map((s) => {
-            const badge = stanceDisplayBadge(s.stance)
+            const badge = stanceDisplayBadge(s.stance, pol.party)
             const isEstimated = !s.is_verified
             const hasRealSummary =
               s.summary &&
