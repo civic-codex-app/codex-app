@@ -34,7 +34,7 @@ export default async function HomePage() {
     'ted-cruz',
     'chuck-schumer',
     'bernie-sanders',
-    'mitch-mcconnell',
+    'jd-vance-vp',
   ]
   const { data: featuredData } = await supabase
     .from('politicians')
