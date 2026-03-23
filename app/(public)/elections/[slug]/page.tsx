@@ -463,9 +463,10 @@ async function renderStateElection(
     from += 500
   }
 
-  // Group by chamber
+  // Group by chamber, excluding races with no candidates
   const grouped: Record<string, typeof allRaces> = {}
   for (const race of allRaces) {
+    if ((race.candidates ?? []).length === 0) continue
     if (!grouped[race.chamber]) grouped[race.chamber] = []
     grouped[race.chamber].push(race)
   }

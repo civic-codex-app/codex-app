@@ -41,15 +41,15 @@ export default async function ElectionsPage() {
     )
   }
 
-  // Get race counts per election
+  // Get race counts per election (only races with candidates)
   const electionIds = elections.map(e => e.id)
   const PAGE = 1000
-  let allRaces: { election_id: string; chamber: string }[] = []
+  let allRaces: { election_id: string; chamber: string; candidates: { id: string }[] }[] = []
   let from = 0
   while (true) {
     const { data } = await supabase
       .from('races')
-      .select('election_id, chamber')
+      .select('election_id, chamber, candidates(id)')
       .in('election_id', electionIds)
       .range(from, from + PAGE - 1)
     if (!data || data.length === 0) break
@@ -60,6 +60,7 @@ export default async function ElectionsPage() {
 
   const raceCounts: Record<string, { total: number; senate: number; house: number; governor: number; local: number }> = {}
   for (const r of allRaces) {
+    if ((r.candidates ?? []).length === 0) continue
     if (!raceCounts[r.election_id]) raceCounts[r.election_id] = { total: 0, senate: 0, house: 0, governor: 0, local: 0 }
     raceCounts[r.election_id].total++
     if (r.chamber === 'senate') raceCounts[r.election_id].senate++
