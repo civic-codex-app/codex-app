@@ -167,20 +167,22 @@ export interface StanceBadge {
   label: string
   className: string
   color: string // hex color for inline style usage
+  style: { color: string; backgroundColor: string; borderColor: string }
 }
 
 export function stanceDisplayBadge(stance: string, _party?: string): StanceBadge {
   const bucket = stanceBucket(stance)
 
-  // Favors = blue, Opposes = red, Mixed = gray — always, regardless of party
+  // Favors = blue, Opposes = red, Mixed = gray — always
+  // Uses inline styles to avoid Tailwind purging issues
   if (bucket === 'supports') {
-    return { label: 'Favors', className: 'text-blue-700 bg-blue-50 border border-blue-200', color: '#1D4ED8' }
+    return { label: 'Favors', className: '', color: '#1D4ED8', style: { color: '#1E40AF', backgroundColor: '#EFF6FF', borderColor: '#BFDBFE' } }
   }
   if (bucket === 'opposes') {
-    return { label: 'Opposes', className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' }
+    return { label: 'Opposes', className: '', color: '#B91C1C', style: { color: '#B91C1C', backgroundColor: '#FEF2F2', borderColor: '#FECACA' } }
   }
   if (bucket === 'neutral' || bucket === 'mixed') {
-    return { label: 'Mixed', className: 'text-gray-600 bg-gray-100 border border-gray-200', color: '#4B5563' }
+    return { label: 'Mixed', className: '', color: '#4B5563', style: { color: '#4B5563', backgroundColor: '#F3F4F6', borderColor: '#D1D5DB' } }
   }
-  return { label: 'Unknown', className: 'text-gray-500 bg-gray-50 border border-gray-200', color: '#6B7280' }
+  return { label: 'Unknown', className: '', color: '#6B7280', style: { color: '#6B7280', backgroundColor: '#F9FAFB', borderColor: '#E5E7EB' } }
 }

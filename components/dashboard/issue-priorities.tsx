@@ -229,7 +229,8 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
                       </div>
                       {badge ? (
                         <span
-                          className={`rounded px-1.5 py-0.5 text-[11px] font-medium ${badge.className}`}
+                          className="rounded px-1.5 py-0.5 text-[11px] font-medium border"
+                          style={badge.style}
                         >
                           {badge.label}
                         </span>

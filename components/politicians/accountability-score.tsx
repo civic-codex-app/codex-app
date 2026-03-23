@@ -141,7 +141,8 @@ export function AccountabilityScore({ votes, stances, party }: AccountabilitySco
                     <div className="mt-1 flex items-center gap-2 text-[11px] text-[var(--codex-faint)]">
                       <span>Stance on {c.issueName}:</span>
                       <span
-                        className={`rounded-sm px-1.5 py-0.5 text-[10px] uppercase ${badge.className}`}
+                        className="rounded-sm px-1.5 py-0.5 text-[10px] uppercase border"
+                        style={badge.style}
                       >
                         {badge.label}
                       </span>

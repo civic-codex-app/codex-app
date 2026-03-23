@@ -83,7 +83,8 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
                 </span>
                 <span className="text-[11px] text-[var(--codex-faint)]">→</span>
                 <span
-                  className={`rounded-sm px-1.5 py-0.5 text-[11px] uppercase tracking-[0.06em] ${actualBadge.className}`}
+                  className="rounded-sm px-1.5 py-0.5 text-[11px] uppercase tracking-[0.06em] border"
+                  style={actualBadge.style}
                 >
                   {actualBadge.label}
                 </span>

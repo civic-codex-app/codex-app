@@ -114,11 +114,11 @@ function IssueRow({ issue, politicianParty }: { issue: IssueComparison; politici
     <div className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[12px]">
       <span className="min-w-0 flex-1 truncate text-[var(--codex-sub)]">{issueLabel(issue.slug)}</span>
       <div className="flex shrink-0 items-center gap-1.5">
-        <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${userBadge.className}`}>
+        <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={userBadge.style}>
           You: {userBadge.label}
         </span>
         <span className="text-[var(--codex-faint)]">vs</span>
-        <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${polBadge.className}`}>
+        <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={polBadge.style}>
           {polBadge.label}
         </span>
       </div>

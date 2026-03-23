@@ -564,7 +564,7 @@ function StanceGroup({
                         Est.
                       </span>
                     )}
-                    <span className={`rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] ${badge.className}`}>
+                    <span className="rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] border" style={badge.style}>
                       {badge.label}
                     </span>
                     {hasSummaryContent && (

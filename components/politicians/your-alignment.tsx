@@ -153,7 +153,7 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
                   <div key={issue.slug} className="flex items-center justify-between text-[12px]">
                     <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
                     <div className="flex items-center gap-1.5">
-                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${userBadge.className}`}>
+                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={userBadge.style}>
                         {userBadge.label}
                       </span>
                     </div>
@@ -178,11 +178,11 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
                   <div key={issue.slug} className="flex items-center justify-between text-[12px]">
                     <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
                     <div className="flex items-center gap-1">
-                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${userBadge.className}`}>
+                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={userBadge.style}>
                         You
                       </span>
                       <span className="text-[var(--codex-faint)]">vs</span>
-                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${polBadge.className}`}>
+                      <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={polBadge.style}>
                         {lastName}
                       </span>
                     </div>

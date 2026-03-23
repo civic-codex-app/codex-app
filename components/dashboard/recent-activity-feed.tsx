@@ -207,7 +207,8 @@ function StanceActivityContent({
         </Link>
         {' '}
         <span
-          className={`inline-block rounded-sm px-1.5 py-px text-[10px] font-semibold ${badge.className}`}
+          className="inline-block rounded-sm px-1.5 py-px text-[10px] font-semibold border"
+          style={badge.style}
         >
           {badge.label}
         </span>

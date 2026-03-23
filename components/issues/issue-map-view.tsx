@@ -321,7 +321,8 @@ export function IssueMapView({
 
                     {/* Stance badge */}
                     <span
-                      className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${badge.className}`}
+                      className="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium border"
+                      style={badge.style}
                     >
                       {badge.label}
                     </span>

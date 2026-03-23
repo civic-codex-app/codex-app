@@ -127,7 +127,8 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
                     return (
                       <div key={c.id} className="flex justify-center">
                         <span
-                          className={`rounded-sm px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.06em] ${badge.className}`}
+                          className="rounded-sm px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.06em] border"
+                          style={badge.style}
                         >
                           {badge.label}
                         </span>
