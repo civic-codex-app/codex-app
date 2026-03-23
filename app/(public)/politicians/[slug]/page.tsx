@@ -262,7 +262,7 @@ export default async function PoliticianPage({ params }: PageProps) {
 
         <div className="grid gap-10 md:grid-cols-[340px_1fr]">
           {/* Image -- large on desktop, hidden on mobile */}
-          <div className="relative hidden overflow-hidden rounded-xl md:block">
+          <div className="relative hidden md:block">
             {pol.image_url ? (
               <Image
                 src={pol.image_url}
@@ -270,10 +270,10 @@ export default async function PoliticianPage({ params }: PageProps) {
                 width={300}
                 height={400}
                 unoptimized
-                className="aspect-[3/4] w-full object-cover object-top"
-                              />
+                className="aspect-[3/4] w-full rounded-xl object-cover object-top"
+              />
             ) : (
-              <div className="flex aspect-[3/4] w-full items-center justify-center bg-[var(--codex-card)] text-[120px] text-[var(--codex-text)] opacity-10" aria-hidden="true">
+              <div className="flex aspect-[3/4] w-full items-center justify-center rounded-xl bg-[var(--codex-card)] text-[120px] text-[var(--codex-text)] opacity-10" aria-hidden="true">
                 {pol.name.charAt(0)}
               </div>
             )}
