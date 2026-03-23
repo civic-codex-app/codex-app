@@ -30,8 +30,8 @@ export function StanceScale({ issues, polA, polB }: StanceScaleProps) {
         </div>
 
         {issues.map((issue) => {
-          const badgeA = stanceDisplayBadge(issue.a ?? 'unknown')
-          const badgeB = stanceDisplayBadge(issue.b ?? 'unknown')
+          const badgeA = stanceDisplayBadge(issue.a ?? 'unknown', polA.party)
+          const badgeB = stanceDisplayBadge(issue.b ?? 'unknown', polB.party)
           const bucketA = stanceBucket(issue.a ?? 'unknown')
           const bucketB = stanceBucket(issue.b ?? 'unknown')
           const match = bucketA !== 'unknown' && bucketB !== 'unknown' && bucketA === bucketB

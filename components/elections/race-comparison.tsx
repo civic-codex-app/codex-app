@@ -123,7 +123,7 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
                         </div>
                       )
                     }
-                    const badge = stanceDisplayBadge(stance)
+                    const badge = stanceDisplayBadge(stance, c.party)
                     return (
                       <div key={c.id} className="flex justify-center">
                         <span

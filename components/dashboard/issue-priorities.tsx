@@ -207,7 +207,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
               <div className="flex flex-wrap gap-2">
                 {reps.map((rep) => {
                   const stance = issueStances?.get(rep.id)
-                  const badge = stance ? stanceDisplayBadge(stance) : null
+                  const badge = stance ? stanceDisplayBadge(stance, rep.party) : null
                   const style = stance ? stanceStyle(stance) : null
                   const bucket = stance ? stanceBucket(stance) : 'unknown'
 

@@ -11,6 +11,7 @@ interface StanceTimelineProps {
   entries: StanceTimelineEntry[]
   currentStance: string
   issueName: string
+  party?: string
 }
 
 function formatDate(dateStr: string | null): string {
@@ -28,7 +29,7 @@ function isFlip(prevStance: string, nextStance: string): boolean {
   return prevBucket !== nextBucket
 }
 
-export function StanceTimeline({ entries, currentStance, issueName }: StanceTimelineProps) {
+export function StanceTimeline({ entries, currentStance, issueName, party }: StanceTimelineProps) {
   const currentStyle = stanceStyle(currentStance)
 
   // Sort historical entries reverse-chronological (most recent first)
@@ -88,7 +89,7 @@ export function StanceTimeline({ entries, currentStance, issueName }: StanceTime
 
         {allNodes.map((node, i) => {
           const style = stanceStyle(node.stance)
-          const badge = stanceDisplayBadge(node.stance)
+          const badge = stanceDisplayBadge(node.stance, party)
           return (
             <div key={i} className="relative mb-4 last:mb-0">
               {/* Stance dot */}

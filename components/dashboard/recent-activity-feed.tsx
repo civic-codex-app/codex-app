@@ -189,7 +189,7 @@ function StanceActivityContent({
 }: {
   item: Extract<ActivityItem, { type: 'stance' }>
 }) {
-  const badge = stanceDisplayBadge(item.stance)
+  const badge = stanceDisplayBadge(item.stance, item.politician_party)
 
   return (
     <div>

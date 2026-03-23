@@ -2,9 +2,11 @@ import { describe, it, expect } from 'vitest'
 import {
   stanceStyle,
   stanceBucket,
+  stanceDisplayBadge,
   STANCE_STYLES,
   STANCE_NUMERIC,
   STANCE_ORDER,
+  PARTY_BADGE_COLORS,
   getStanceDisplay,
 } from '@/lib/utils/stances'
 
@@ -118,5 +120,96 @@ describe('getStanceDisplay', () => {
   it('maps unknown values to Unknown', () => {
     expect(getStanceDisplay('unknown').label).toBe('Unknown')
     expect(getStanceDisplay('garbage').label).toBe('Unknown')
+  })
+})
+
+describe('stanceDisplayBadge', () => {
+  it('returns emerald fallback for supports without party', () => {
+    const badge = stanceDisplayBadge('supports')
+    expect(badge.label).toBe('Favors')
+    expect(badge.className).toContain('emerald')
+    expect(badge.color).toBe('#047857')
+  })
+
+  it('returns red fallback for opposes without party', () => {
+    const badge = stanceDisplayBadge('opposes')
+    expect(badge.label).toBe('Opposes')
+    expect(badge.className).toContain('red')
+  })
+
+  it('returns gray for mixed regardless of party', () => {
+    const badge = stanceDisplayBadge('mixed', 'democrat')
+    expect(badge.label).toBe('Mixed')
+    expect(badge.className).toContain('gray')
+  })
+
+  it('returns gray for unknown regardless of party', () => {
+    const badge = stanceDisplayBadge('unknown', 'republican')
+    expect(badge.label).toBe('Unknown')
+    expect(badge.className).toContain('gray')
+  })
+
+  it('uses blue classes for democrat supports', () => {
+    const badge = stanceDisplayBadge('supports', 'democrat')
+    expect(badge.label).toBe('Favors')
+    expect(badge.className).toContain('blue')
+    expect(badge.color).toBe('#1D4ED8')
+  })
+
+  it('uses blue classes for democrat opposes (same party color)', () => {
+    const badge = stanceDisplayBadge('opposes', 'democrat')
+    expect(badge.label).toBe('Opposes')
+    expect(badge.className).toContain('blue')
+    expect(badge.color).toBe('#1D4ED8')
+  })
+
+  it('uses red classes for republican supports', () => {
+    const badge = stanceDisplayBadge('supports', 'republican')
+    expect(badge.label).toBe('Favors')
+    expect(badge.className).toContain('red')
+    expect(badge.color).toBe('#B91C1C')
+  })
+
+  it('uses purple classes for independent', () => {
+    const badge = stanceDisplayBadge('supports', 'independent')
+    expect(badge.label).toBe('Favors')
+    expect(badge.className).toContain('purple')
+    expect(badge.color).toBe('#6D28D9')
+  })
+
+  it('uses green classes for green party', () => {
+    const badge = stanceDisplayBadge('opposes', 'green')
+    expect(badge.label).toBe('Opposes')
+    expect(badge.className).toContain('green')
+    expect(badge.color).toBe('#15803D')
+  })
+
+  it('falls back to independent for unknown party', () => {
+    const badge = stanceDisplayBadge('supports', 'libertarian')
+    expect(badge.className).toContain('purple')
+    expect(badge.color).toBe('#6D28D9')
+  })
+
+  it('handles intensity stances correctly', () => {
+    expect(stanceDisplayBadge('strongly_supports', 'democrat').label).toBe('Favors')
+    expect(stanceDisplayBadge('leans_support', 'republican').label).toBe('Favors')
+    expect(stanceDisplayBadge('strongly_opposes', 'democrat').label).toBe('Opposes')
+    expect(stanceDisplayBadge('leans_oppose', 'republican').label).toBe('Opposes')
+  })
+})
+
+describe('PARTY_BADGE_COLORS', () => {
+  it('has entries for all four parties', () => {
+    expect(PARTY_BADGE_COLORS.democrat).toBeDefined()
+    expect(PARTY_BADGE_COLORS.republican).toBeDefined()
+    expect(PARTY_BADGE_COLORS.independent).toBeDefined()
+    expect(PARTY_BADGE_COLORS.green).toBeDefined()
+  })
+
+  it('each entry has className and color', () => {
+    for (const key of Object.keys(PARTY_BADGE_COLORS)) {
+      expect(PARTY_BADGE_COLORS[key].className).toBeTruthy()
+      expect(PARTY_BADGE_COLORS[key].color).toMatch(/^#/)
+    }
   })
 })

@@ -278,10 +278,10 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                       stroke="var(--codex-border)"
                     />
                     <text x={pt.x} y={pt.y + 27} textAnchor="middle" fontSize={9} fill={color1}>
-                      {politician1.name.split(' ').pop()}: {stanceDisplayBadge(politician1.stances[issue.slug] ?? 'unknown').label}
+                      {politician1.name.split(' ').pop()}: {stanceDisplayBadge(politician1.stances[issue.slug] ?? 'unknown', politician1.party).label}
                     </text>
                     <text x={pt.x} y={pt.y + 40} textAnchor="middle" fontSize={9} fill={color2}>
-                      {politician2.name.split(' ').pop()}: {stanceDisplayBadge(politician2.stances[issue.slug] ?? 'unknown').label}
+                      {politician2.name.split(' ').pop()}: {stanceDisplayBadge(politician2.stances[issue.slug] ?? 'unknown', politician2.party).label}
                     </text>
                   </>
                 )}

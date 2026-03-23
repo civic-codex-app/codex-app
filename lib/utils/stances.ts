@@ -108,33 +108,59 @@ export function stanceBucket(stance: string): 'supports' | 'opposes' | 'neutral'
  * Collapses 7-point scale into Favors / Mixed / Opposes / Unknown.
  */
 export interface StanceDisplay {
-  label: 'Favors' | 'Mixed' | 'Opposes' | 'Unknown'
+  label: string
   color: string
   bgColor: string
 }
 
-export function getStanceDisplay(stance: string): StanceDisplay {
-  switch (stanceBucket(stance)) {
-    case 'supports':
-      return { label: 'Favors', color: '#3B82F6', bgColor: '#EFF6FF' }
-    case 'opposes':
-      return { label: 'Opposes', color: '#EF4444', bgColor: '#FEF2F2' }
-    case 'neutral':
-    case 'mixed':
-      return { label: 'Mixed', color: '#A855F7', bgColor: '#FAF5FF' }
-    default:
-      return { label: 'Unknown', color: '#9CA3AF', bgColor: '#F3F4F6' }
+export function getStanceDisplay(stance: string, party?: string): StanceDisplay {
+  const bucket = stanceBucket(stance)
+
+  // Mixed and unknown are always gray regardless of party
+  if (bucket === 'neutral' || bucket === 'mixed') {
+    return { label: 'Mixed', color: '#A855F7', bgColor: '#FAF5FF' }
   }
+  if (bucket === 'unknown') {
+    return { label: 'Unknown', color: '#9CA3AF', bgColor: '#F3F4F6' }
+  }
+
+  const label = bucket === 'supports' ? 'Favors' : 'Opposes'
+
+  if (party) {
+    const pc = PARTY_BADGE_COLORS[party.toLowerCase()] ?? PARTY_BADGE_COLORS.independent
+    return { label, color: pc.color, bgColor: pc.color + '0D' }
+  }
+
+  // Fallback (no party)
+  if (bucket === 'supports') {
+    return { label, color: '#3B82F6', bgColor: '#EFF6FF' }
+  }
+  return { label, color: '#EF4444', bgColor: '#FEF2F2' }
+}
+
+/**
+ * Party-aware badge colors for stance display.
+ * When a party is provided, BOTH "Favors" and "Opposes" use the party color
+ * so that badges visually communicate who holds the stance.
+ */
+export const PARTY_BADGE_COLORS: Record<string, { className: string; color: string }> = {
+  democrat:    { className: 'text-blue-700 bg-blue-50 border border-blue-200', color: '#1D4ED8' },
+  republican:  { className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' },
+  independent: { className: 'text-purple-700 bg-purple-50 border border-purple-200', color: '#6D28D9' },
+  green:       { className: 'text-green-700 bg-green-50 border border-green-200', color: '#15803D' },
 }
 
 /**
  * 3-tier display badge for stance badges throughout the UI.
  * Returns a label + Tailwind className string for consistent badge rendering.
  *
+ * When `party` is provided, uses the politician's party color for both
+ * Favors and Opposes so badges visually identify party affiliation.
+ *
  * Mapping:
- *   strongly_supports, supports, leans_support → "Favors" (green)
- *   neutral, mixed                             → "Mixed" (amber)
- *   leans_oppose, opposes, strongly_opposes     → "Opposes" (red)
+ *   strongly_supports, supports, leans_support → "Favors"
+ *   neutral, mixed                             → "Mixed" (gray)
+ *   leans_oppose, opposes, strongly_opposes     → "Opposes"
  *   unknown / anything else                     → "Unknown" (gray)
  */
 export interface StanceBadge {
@@ -143,17 +169,28 @@ export interface StanceBadge {
   color: string // hex color for inline style usage
 }
 
-export function stanceDisplayBadge(stance: string): StanceBadge {
+export function stanceDisplayBadge(stance: string, party?: string): StanceBadge {
   const bucket = stanceBucket(stance)
-  switch (bucket) {
-    case 'supports':
-      return { label: 'Favors', className: 'text-emerald-700 bg-emerald-50 border border-emerald-200', color: '#047857' }
-    case 'opposes':
-      return { label: 'Opposes', className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' }
-    case 'neutral':
-    case 'mixed':
-      return { label: 'Mixed', className: 'text-amber-700 bg-amber-50 border border-amber-200', color: '#B45309' }
-    default:
-      return { label: 'Unknown', className: 'text-gray-500 bg-gray-50 border border-gray-200', color: '#6B7280' }
+
+  // Mixed and unknown are always gray regardless of party
+  if (bucket === 'neutral' || bucket === 'mixed') {
+    return { label: 'Mixed', className: 'text-gray-600 bg-gray-100 border border-gray-200', color: '#4B5563' }
   }
+  if (bucket === 'unknown') {
+    return { label: 'Unknown', className: 'text-gray-500 bg-gray-50 border border-gray-200', color: '#6B7280' }
+  }
+
+  const label = bucket === 'supports' ? 'Favors' : 'Opposes'
+
+  // If party provided, use party color for BOTH favors and opposes
+  if (party) {
+    const partyColors = PARTY_BADGE_COLORS[party.toLowerCase()] ?? PARTY_BADGE_COLORS.independent
+    return { label, ...partyColors }
+  }
+
+  // Fallback (no party) — use emerald/red for aggregate contexts
+  if (bucket === 'supports') {
+    return { label, className: 'text-emerald-700 bg-emerald-50 border border-emerald-200', color: '#047857' }
+  }
+  return { label, className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' }
 }

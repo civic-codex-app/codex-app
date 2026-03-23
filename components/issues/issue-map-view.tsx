@@ -44,20 +44,20 @@ interface IssueMapViewProps {
 /* ------------------------------------------------------------------ */
 
 function stanceColorScale(value: number): string {
-  // 6 = strongly supports (deep blue)
-  // 5 = supports (blue)
-  // 4 = leans support (light blue)
+  // 6 = strongly supports (deep navy)
+  // 5 = supports (navy)
+  // 4 = leans support (light navy)
   // 3 = neutral/mixed (gray)
-  // 2 = leans oppose (light red)
-  // 1 = opposes (red)
-  // 0 = strongly opposes (deep red)
-  if (value >= 5.5) return '#1D4ED8' // blue-700
-  if (value >= 4.5) return '#3B82F6' // blue-500
-  if (value >= 3.5) return '#60A5FA' // blue-400
-  if (value >= 2.5) return '#9CA3AF' // gray-400
-  if (value >= 1.5) return '#F87171' // red-400
-  if (value >= 0.5) return '#EF4444' // red-500
-  return '#DC2626' // red-600
+  // 2 = leans oppose (warm tan)
+  // 1 = opposes (warm brown)
+  // 0 = strongly opposes (deep warm)
+  if (value >= 5.5) return '#1E3A5F' // deep navy
+  if (value >= 4.5) return '#2E5984' // navy
+  if (value >= 3.5) return '#5B8DB8' // light navy
+  if (value >= 2.5) return '#9CA3AF' // gray (neutral)
+  if (value >= 1.5) return '#C4956A' // warm tan
+  if (value >= 0.5) return '#B8734A' // warm brown
+  return '#8B4513' // deep warm
 }
 
 function stanceLabelFromAvg(value: number): string {
@@ -75,13 +75,13 @@ function stanceLabelFromAvg(value: number): string {
 /* ------------------------------------------------------------------ */
 
 const LEGEND = [
-  { color: '#1D4ED8', label: 'Overwhelmingly back this' },
-  { color: '#3B82F6', label: 'Most support' },
-  { color: '#60A5FA', label: 'Lean toward supporting' },
+  { color: '#1E3A5F', label: 'Overwhelmingly back this' },
+  { color: '#2E5984', label: 'Most support' },
+  { color: '#5B8DB8', label: 'Lean toward supporting' },
   { color: '#9CA3AF', label: 'Split on this issue' },
-  { color: '#F87171', label: 'Lean toward opposing' },
-  { color: '#EF4444', label: 'Most oppose' },
-  { color: '#DC2626', label: 'Overwhelmingly oppose' },
+  { color: '#C4956A', label: 'Lean toward opposing' },
+  { color: '#B8734A', label: 'Most oppose' },
+  { color: '#8B4513', label: 'Overwhelmingly oppose' },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -226,18 +226,18 @@ export function IssueMapView({
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="flex gap-3 rounded-lg border border-[var(--codex-border)] p-3">
-                <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#3B82F6' }} />
+                <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#2E5984' }} />
                 <div>
-                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Blue states</p>
+                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Dark states (supports)</p>
                   <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--codex-sub)]">
                     {content.supportsMeans}
                   </p>
                 </div>
               </div>
               <div className="flex gap-3 rounded-lg border border-[var(--codex-border)] p-3">
-                <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#EF4444' }} />
+                <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#B8734A' }} />
                 <div>
-                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Red states</p>
+                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Warm states (opposes)</p>
                   <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--codex-sub)]">
                     {content.opposesMeans}
                   </p>
@@ -281,7 +281,7 @@ export function IssueMapView({
           ) : (
             <div className="grid gap-2">
               {statePoliticians.map((pol) => {
-                const badge = stanceDisplayBadge(pol.stance)
+                const badge = stanceDisplayBadge(pol.stance, pol.party)
                 return (
                   <Link
                     key={pol.slug}

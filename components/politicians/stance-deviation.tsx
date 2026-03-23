@@ -63,8 +63,8 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
       </p>
       <div className="grid gap-2">
         {deviations.map((d) => {
-          const expectedBadge = stanceDisplayBadge(d.expected)
-          const actualBadge = stanceDisplayBadge(d.stance)
+          const expectedBadge = stanceDisplayBadge(d.expected, party)
+          const actualBadge = stanceDisplayBadge(d.stance, party)
 
           return (
             <div

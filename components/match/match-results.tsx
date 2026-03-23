@@ -63,7 +63,7 @@ function issueLabel(slug: string): string {
   return QUIZ_CONTENT[slug]?.question?.replace(/\?.*/, '') ?? slug.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
 }
 
-function IssueBreakdown({ issues }: { issues: IssueComparison[] }) {
+function IssueBreakdown({ issues, politicianParty }: { issues: IssueComparison[]; politicianParty?: string }) {
   const agree = issues.filter(i => i.distance <= 1)
   const close = issues.filter(i => i.distance === 2)
   const differ = issues.filter(i => i.distance >= 3)
@@ -77,7 +77,7 @@ function IssueBreakdown({ issues }: { issues: IssueComparison[] }) {
             Agree ({agree.length})
           </div>
           {agree.map(i => (
-            <IssueRow key={i.slug} issue={i} />
+            <IssueRow key={i.slug} issue={i} politicianParty={politicianParty} />
           ))}
         </div>
       )}
@@ -88,7 +88,7 @@ function IssueBreakdown({ issues }: { issues: IssueComparison[] }) {
             Close ({close.length})
           </div>
           {close.map(i => (
-            <IssueRow key={i.slug} issue={i} />
+            <IssueRow key={i.slug} issue={i} politicianParty={politicianParty} />
           ))}
         </div>
       )}
@@ -99,7 +99,7 @@ function IssueBreakdown({ issues }: { issues: IssueComparison[] }) {
             Differ ({differ.length})
           </div>
           {differ.map(i => (
-            <IssueRow key={i.slug} issue={i} />
+            <IssueRow key={i.slug} issue={i} politicianParty={politicianParty} />
           ))}
         </div>
       )}
@@ -107,9 +107,9 @@ function IssueBreakdown({ issues }: { issues: IssueComparison[] }) {
   )
 }
 
-function IssueRow({ issue }: { issue: IssueComparison }) {
+function IssueRow({ issue, politicianParty }: { issue: IssueComparison; politicianParty?: string }) {
   const userBadge = stanceDisplayBadge(issue.userStance)
-  const polBadge = stanceDisplayBadge(issue.polStance)
+  const polBadge = stanceDisplayBadge(issue.polStance, politicianParty)
   return (
     <div className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[12px]">
       <span className="min-w-0 flex-1 truncate text-[var(--codex-sub)]">{issueLabel(issue.slug)}</span>
@@ -383,7 +383,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
 
               {/* Expandable issue breakdown */}
               {isExpanded && hasBreakdown && (
-                <IssueBreakdown issues={r.issueBreakdown!} />
+                <IssueBreakdown issues={r.issueBreakdown!} politicianParty={r.politician.party} />
               )}
 
               {/* Social links + View Profile */}

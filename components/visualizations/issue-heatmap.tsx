@@ -42,9 +42,9 @@ function stanceColor(data: PartyStanceData): string {
   if (total === 0) return 'var(--codex-border)'
   const supportPct = data.supports / total
   const opposePct = data.opposes / total
-  if (supportPct > 0.6) return '#3B82F6'
-  if (opposePct > 0.6) return '#EF4444'
-  return '#A855F7'
+  if (supportPct > 0.6) return '#334155'
+  if (opposePct > 0.6) return '#CBD5E1'
+  return '#94A3B8'
 }
 
 function stanceOpacity(data: PartyStanceData): number {
@@ -169,26 +169,26 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                           <div className="flex h-full w-full overflow-hidden rounded-[3px]">
                             {data.supports > 0 && (
                               <div
-                                className="h-full bg-blue-500"
-                                style={{ width: `${(data.supports / total) * 100}%`, opacity: 0.85 }}
+                                className="h-full"
+                                style={{ width: `${(data.supports / total) * 100}%`, opacity: 0.85, backgroundColor: '#334155' }}
                               />
                             )}
                             {(data.neutral ?? 0) > 0 && (
                               <div
-                                className="h-full bg-gray-400"
-                                style={{ width: `${((data.neutral ?? 0) / total) * 100}%`, opacity: 0.6 }}
+                                className="h-full"
+                                style={{ width: `${((data.neutral ?? 0) / total) * 100}%`, opacity: 0.6, backgroundColor: '#9CA3AF' }}
                               />
                             )}
                             {data.mixed > 0 && (
                               <div
-                                className="h-full bg-purple-500"
-                                style={{ width: `${(data.mixed / total) * 100}%`, opacity: 0.85 }}
+                                className="h-full"
+                                style={{ width: `${(data.mixed / total) * 100}%`, opacity: 0.85, backgroundColor: '#94A3B8' }}
                               />
                             )}
                             {data.opposes > 0 && (
                               <div
-                                className="h-full bg-red-500"
-                                style={{ width: `${(data.opposes / total) * 100}%`, opacity: 0.85 }}
+                                className="h-full"
+                                style={{ width: `${(data.opposes / total) * 100}%`, opacity: 0.85, backgroundColor: '#CBD5E1' }}
                               />
                             )}
                           </div>
@@ -206,18 +206,18 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                               {row.issue}
                             </div>
                             <div className="flex items-center gap-2 text-[12px]">
-                              <span className="text-blue-400">
+                              <span style={{ color: '#334155' }}>
                                 {data.supports} <span className="text-[10px]">for</span>
                               </span>
                               {(data.neutral ?? 0) > 0 && (
-                                <span className="text-gray-400">
+                                <span style={{ color: '#9CA3AF' }}>
                                   {data.neutral} <span className="text-[10px]">neutral</span>
                                 </span>
                               )}
-                              <span className="text-purple-400">
+                              <span style={{ color: '#94A3B8' }}>
                                 {data.mixed} <span className="text-[10px]">mixed</span>
                               </span>
-                              <span className="text-red-400">
+                              <span style={{ color: '#CBD5E1' }}>
                                 {data.opposes} <span className="text-[10px]">against</span>
                               </span>
                             </div>
@@ -242,15 +242,15 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
           <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-[var(--codex-border)] pt-4 sm:gap-5">
             <span className="text-[10px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">Legend</span>
             <div className="flex items-center gap-1.5">
-              <div className="h-3 w-3 rounded-sm bg-blue-500" style={{ opacity: 0.75 }} />
+              <div className="h-3 w-3 rounded-sm" style={{ opacity: 0.75, backgroundColor: '#334155' }} />
               <span className="text-[11px] text-[var(--codex-faint)]">Favors this issue</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="h-3 w-3 rounded-sm bg-purple-500" style={{ opacity: 0.75 }} />
+              <div className="h-3 w-3 rounded-sm" style={{ opacity: 0.75, backgroundColor: '#94A3B8' }} />
               <span className="text-[11px] text-[var(--codex-faint)]">Mixed views</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="h-3 w-3 rounded-sm bg-red-500" style={{ opacity: 0.75 }} />
+              <div className="h-3 w-3 rounded-sm" style={{ opacity: 0.75, backgroundColor: '#CBD5E1' }} />
               <span className="text-[11px] text-[var(--codex-faint)]">Opposes this issue</span>
             </div>
           </div>

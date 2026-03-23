@@ -23,7 +23,7 @@ describe('StanceTimeline', () => {
         issueName="Climate"
       />
     )
-    expect(screen.getByText('Strongly For')).toBeInTheDocument()
+    expect(screen.getByText('Favors')).toBeInTheDocument()
   })
 
   it('renders historical entries', () => {

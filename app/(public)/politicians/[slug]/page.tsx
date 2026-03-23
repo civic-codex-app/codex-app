@@ -7,17 +7,12 @@ import { createClient as createServerAuthClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { PartyPill } from '@/components/directory/party-pill'
-import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { FollowButton } from '@/components/directory/follow-button'
 import { LikeButton } from '@/components/directory/like-button'
-import { AnnotationList } from '@/components/annotations/annotation-list'
 import { BackButton } from '@/components/ui/back-button'
-import { SubmitAnnotation } from '@/components/annotations/submit-annotation'
-import { YourAlignment } from '@/components/politicians/your-alignment'
-import { StanceTimeline } from '@/components/politicians/stance-timeline'
-import { StanceTimelineToggle } from '@/components/politicians/stance-timeline-toggle'
+import { ProfileTabs } from '@/components/politicians/profile-tabs'
 export const revalidate = 1800 // 30 minutes
 export const dynamic = 'force-dynamic'
 
@@ -31,22 +26,10 @@ import type {
   ComparisonStanceRow,
   LikeMindedPoliticianRow,
 } from '@/lib/types/supabase'
-import { IssueIcon } from '@/components/icons/issue-icon'
 import { computeAlignment } from '@/lib/utils/alignment'
-import { AlignmentGauge } from '@/components/politicians/alignment-gauge'
-import { LikeMinded, type LikeMindedPolitician } from '@/components/politicians/like-minded'
-import { StanceDeviation } from '@/components/politicians/stance-deviation'
-import { PoliticianReportCard } from '@/components/politicians/report-card'
+import { type LikeMindedPolitician } from '@/components/politicians/like-minded'
 import { computeReportCard } from '@/lib/utils/report-card'
-import { AccountabilityScore } from '@/components/politicians/accountability-score'
-import { CompareSuggestions } from '@/components/politicians/compare-suggestions'
-import { VotingHistory } from '@/components/politicians/voting-history'
-import { CampaignFinance } from '@/components/politicians/campaign-finance'
-import { ElectionHistory } from '@/components/politicians/election-history'
-import { stanceStyle, stanceDisplayBadge } from '@/lib/utils/stances'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
-import { getStanceContext } from '@/lib/data/educational-content'
-import { AskYourRep } from '@/components/politicians/ask-your-rep'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker'
 
 interface PageProps {
@@ -396,244 +379,32 @@ export default async function PoliticianPage({ params }: PageProps) {
               ].filter(Boolean).join(' \u00b7 ')}
             </div>
 
-            {/* Your Alignment — shows if user took the quiz */}
-            <div className="mt-6">
-              <YourAlignment
-                politicianName={pol.name}
-                politicianSlug={pol.slug}
-                politicianStances={politicianStances.map((s: any) => ({
-                  issue_slug: s.issues?.slug ?? '',
-                  issue_name: s.issues?.name ?? '',
-                  stance: s.stance,
-                  is_verified: s.is_verified === true,
-                }))}
-              />
-            </div>
-
-            {/* Party Alignment Gauge */}
-            {alignmentScore >= 0 && (
-              <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-                <AlignmentGauge score={alignmentScore} party={pol.party} />
-              </div>
-            )}
-
-            {/* Report Card — auth-gated */}
-            <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-              {isAuthenticated ? (
-                <PoliticianReportCard
-                  {...reportCard}
-                  stanceCount={politicianStances.length}
-                  voteCount={votingRecords.length}
-                  committeeCount={committees.length}
-                  yearsInOffice={pol.since_year ? new Date().getFullYear() - pol.since_year : undefined}
-                />
-              ) : (
-                <div className="relative overflow-hidden rounded-lg border border-[var(--codex-border)]">
-                  {/* Blurred preview of the real report card */}
-                  <div className="pointer-events-none select-none" aria-hidden="true" style={{ filter: 'blur(6px)' }}>
-                    <PoliticianReportCard
-                      {...reportCard}
-                      stanceCount={politicianStances.length}
-                      voteCount={votingRecords.length}
-                      committeeCount={committees.length}
-                      yearsInOffice={pol.since_year ? new Date().getFullYear() - pol.since_year : undefined}
-                    />
-                  </div>
-
-                  {/* Gradient overlay + CTA */}
-                  <div
-                    className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
-                    style={{
-                      background: `linear-gradient(180deg, transparent 0%, var(--codex-card) 40%, var(--codex-card) 100%)`,
-                    }}
-                  >
-                    <div
-                      className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-full"
-                      style={{ background: `${color}15`, color }}
-                    >
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                      </svg>
-                    </div>
-                    <h3 className="mb-1.5 text-[18px] font-bold text-[var(--codex-text)]">
-                      Civic Profile
-                    </h3>
-                    <p className="mb-5 max-w-[320px] text-[13px] leading-[1.6] text-[var(--codex-sub)]">
-                      Unlock detailed scores on bipartisanship, transparency, engagement, and effectiveness
-                    </p>
-                    <Link
-                      href="/signup"
-                      className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-[14px] font-semibold text-white no-underline shadow-lg transition-all hover:scale-[1.02] hover:bg-blue-700 hover:shadow-xl"
-                    >
-                      Create Free Account
-                    </Link>
-                    <p className="mt-3 text-[11px] text-[var(--codex-faint)]">
-                      Free forever. No credit card required.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Breaks from Party Line */}
-            <StanceDeviation party={pol.party} stances={politicianStances as any} />
-
-            {/* Like-Minded Officials */}
-            <LikeMinded politicians={likeMinded} />
-
-            {/* Committee Memberships */}
-            {committees.length > 0 && (
-              <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-                <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
-                  Committee Memberships
-                </h2>
-                <div className="space-y-2">
-                  {committees.map((cm, i) => {
-                    const roleLabels: Record<string, { label: string; style: string }> = {
-                      chair: { label: 'Chair', style: 'text-green-400 bg-green-500/10' },
-                      ranking_member: { label: 'Ranking Member', style: 'text-blue-400 bg-blue-500/10' },
-                      member: { label: 'Member', style: 'text-[var(--codex-faint)] bg-[var(--codex-badge-bg)]' },
-                    }
-                    const r = roleLabels[cm.role] ?? roleLabels.member
-                    return (
-                      <div
-                        key={i}
-                        className="flex items-center justify-between rounded-md border border-[var(--codex-border)] px-4 py-2.5"
-                      >
-                        <span className="text-[13px] text-[var(--codex-text)]">
-                          {cm.committees?.name}
-                        </span>
-                        <span className={`rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em] ${r.style}`}>
-                          {r.label}
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Issues & Stances */}
-            {politicianStances.length > 0 && (
-              <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-                <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
-                  Issues & Stances
-                </h2>
-                <p className="mb-4 text-[11px] text-[var(--codex-faint)]">
-                  Positions based on voting record, public statements, and party platform
-                </p>
-                <div className="space-y-2">
-                  {politicianStances.map((s) => {
-                    const sc = stanceStyle(s.stance)
-                    const badge = stanceDisplayBadge(s.stance)
-                    const isEstimated = !s.is_verified
-                    const hasRealSummary = s.summary && !s.summary.includes('key aspects') && !s.summary.includes('Estimated position') && !s.summary.includes('generally been')
-                    const issueHistory = s.issues?.id ? (stanceHistoryByIssue.get(s.issues.id) ?? []) : []
-                    return (
-                      <div
-                        key={s.id}
-                        className="overflow-hidden rounded-lg border border-[var(--codex-border)]"
-                        style={{ borderLeftWidth: '3px', borderLeftColor: badge.color }}
-                      >
-                        <div className="px-4 py-3">
-                          <div className="flex items-center justify-between gap-3">
-                            <Link
-                              href={`/issues/${s.issues?.slug}`}
-                              className="flex items-center gap-2 text-[14px] font-medium hover:text-[var(--codex-text)]"
-                            >
-                              {s.issues?.icon && <IssueIcon icon={s.issues.icon} size={15} className="text-[var(--codex-sub)]" />}
-                              {s.issues?.name}
-                            </Link>
-                            <div className="flex shrink-0 items-center gap-2">
-                              {isEstimated && (
-                                <span className="rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-[var(--codex-faint)]" title="Based on party platform — not yet verified">
-                                  Est.
-                                </span>
-                              )}
-                              <span
-                                className={`rounded-md px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.04em] ${badge.className}`}
-                              >
-                                {badge.label}
-                              </span>
-                            </div>
-                          </div>
-                          {hasRealSummary && (
-                            <p className="mt-2 text-[13px] leading-[1.6] text-[var(--codex-sub)]">{s.summary}</p>
-                          )}
-                          {isEstimated && !hasRealSummary && (
-                            <p className="mt-1.5 text-[11px] italic text-[var(--codex-faint)]">Estimated from party affiliation — not yet verified</p>
-                          )}
-                          {!hasRealSummary && s.issues?.slug && getStanceContext(s.issues.slug, s.stance) && (
-                            <p className="mt-1 text-[11px] leading-[1.5] text-[var(--codex-faint)]">
-                              {getStanceContext(s.issues.slug, s.stance)}
-                            </p>
-                          )}
-                          {/* Stance change timeline */}
-                          <StanceTimelineToggle hasHistory={issueHistory.length > 0}>
-                            <StanceTimeline
-                              entries={issueHistory.map(h => ({
-                                stance: h.stance,
-                                effective_date: h.effective_date,
-                                source_url: h.source_url,
-                                source_description: h.source_description,
-                              }))}
-                              currentStance={s.stance}
-                              issueName={s.issues?.name ?? 'this issue'}
-                            />
-                          </StanceTimelineToggle>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Smart Compare Suggestions */}
-            <CompareSuggestions
-              politicianId={pol.id}
-              slug={pol.slug}
-              state={pol.state}
-              chamber={pol.chamber}
-              party={pol.party}
-              stances={politicianStances.map((s: any) => ({
-                issue_id: s.issue_id,
-                stance: s.stance,
-                issues: s.issues ? { slug: s.issues.slug } : null,
-              }))}
-            />
-
-            {/* Voting Record */}
-            {/* Votes vs Stances */}
-            <AccountabilityScore
-              votes={votingRecords.map((v: any) => ({ bill_name: v.bill_name, bill_number: v.bill_number, vote: v.vote }))}
+            <ProfileTabs
+              politician={{
+                id: pol.id,
+                name: pol.name,
+                slug: pol.slug,
+                party: pol.party,
+                state: pol.state,
+                chamber: pol.chamber,
+                title: pol.title,
+                image_url: pol.image_url,
+                website_url: pol.website_url,
+                twitter_url: pol.twitter_url,
+                facebook_url: pol.facebook_url,
+                since_year: pol.since_year,
+              }}
+              isAuthenticated={isAuthenticated}
+              alignmentScore={alignmentScore}
               stances={politicianStances as any}
+              stanceHistoryByIssue={Object.fromEntries(stanceHistoryByIssue)}
+              committees={committees as any}
+              votingRecords={votingRecords as any}
+              financeRecords={financeRecords as any}
+              electionResults={electionResults as any}
+              reportCard={reportCard as any}
+              likeMinded={likeMinded}
             />
-
-            <VotingHistory votes={votingRecords} />
-
-            {/* Campaign Finance */}
-            <CampaignFinance records={financeRecords} party={pol.party} />
-
-            {/* Election History */}
-            <ElectionHistory results={electionResults as any} party={pol.party} />
-
-            {/* Ask Your Rep — Contact Templates */}
-            <AskYourRep
-              politicianName={pol.name}
-              state={pol.state}
-              websiteUrl={pol.website_url}
-              twitterUrl={pol.twitter_url ?? null}
-              facebookUrl={pol.facebook_url ?? null}
-              issues={politicianStances
-                .filter((s: any) => s.issues?.slug && s.issues?.name)
-                .map((s: any) => ({ slug: s.issues.slug, name: s.issues.name }))}
-            />
-
-            {/* Community Annotations */}
-            <AnnotationList politicianId={pol.id} />
-            <SubmitAnnotation politicianId={pol.id} />
           </div>
         </div>
 

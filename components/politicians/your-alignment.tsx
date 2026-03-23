@@ -15,6 +15,7 @@ interface Props {
   politicianName: string
   politicianSlug: string
   politicianStances: Stance[]
+  politicianParty?: string
 }
 
 const NUMERIC: Record<string, number> = {
@@ -86,7 +87,7 @@ function scoreLabel(score: number): string {
   return 'Very different views'
 }
 
-export function YourAlignment({ politicianName, politicianStances }: Props) {
+export function YourAlignment({ politicianName, politicianStances, politicianParty }: Props) {
   const [data, setData] = useState<{ score: number; issues: IssueComparison[] } | null>(null)
 
   useEffect(() => {
@@ -172,7 +173,7 @@ export function YourAlignment({ politicianName, politicianStances }: Props) {
             <div className="space-y-1.5">
               {disagrees.map(issue => {
                 const userBadge = stanceDisplayBadge(issue.userStance)
-                const polBadge = stanceDisplayBadge(issue.polStance)
+                const polBadge = stanceDisplayBadge(issue.polStance, politicianParty)
                 return (
                   <div key={issue.slug} className="flex items-center justify-between text-[12px]">
                     <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>

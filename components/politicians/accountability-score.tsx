@@ -16,6 +16,7 @@ interface Stance {
 interface AccountabilityScoreProps {
   votes: Vote[]
   stances: Stance[]
+  party?: string
 }
 
 interface Contradiction {
@@ -26,7 +27,7 @@ interface Contradiction {
   stance: string
 }
 
-export function AccountabilityScore({ votes, stances }: AccountabilityScoreProps) {
+export function AccountabilityScore({ votes, stances, party }: AccountabilityScoreProps) {
   // Build stance map: issueSlug -> { stance, issueName }
   const stanceMap = new Map<string, { stance: string; name: string }>()
   for (const s of stances) {
@@ -120,7 +121,7 @@ export function AccountabilityScore({ votes, stances }: AccountabilityScoreProps
             </h3>
             <div className="space-y-1.5">
               {uniqueContradictions.slice(0, 5).map((c, i) => {
-                const badge = stanceDisplayBadge(c.stance)
+                const badge = stanceDisplayBadge(c.stance, party)
                 return (
                   <div key={i} className="rounded-md border border-[var(--codex-border)] px-3 py-2 text-[12px]">
                     <div className="flex items-center justify-between gap-2">
