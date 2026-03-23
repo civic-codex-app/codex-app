@@ -46,7 +46,7 @@ async function fetchFeedItems(
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
   const dateThreshold = thirtyDaysAgo.toISOString().split('T')[0]
 
-  // --- Fetch voting records ---
+  // --- Fetch voting records (capped to avoid slow queries) ---
   let voteQuery = supabase
     .from('voting_records')
     .select(
@@ -54,27 +54,17 @@ async function fetchFeedItems(
     )
     .gte('vote_date', dateThreshold)
     .order('vote_date', { ascending: false })
+    .limit(PAGE_SIZE)
 
   if (party) {
     voteQuery = voteQuery.eq('politicians.party', party)
   }
 
-  // We need to paginate to stay under 1000-row limit
-  const allVotes: VoteRow[] = []
-  let voteFrom = 0
-  while (true) {
-    const { data, error } = await voteQuery.range(voteFrom, voteFrom + 999)
-    if (error) {
-      console.error('Failed to fetch voting records:', error.message)
-      break
-    }
-    if (!data || data.length === 0) break
-    allVotes.push(...(data as unknown as VoteRow[]))
-    if (data.length < 1000) break
-    voteFrom += 1000
-  }
+  const { data: voteData, error: voteErr } = await voteQuery
+  if (voteErr) console.error('Failed to fetch voting records:', voteErr.message)
+  const allVotes = (voteData ?? []) as unknown as VoteRow[]
 
-  // --- Fetch stance updates ---
+  // --- Fetch stance updates (capped) ---
   let stanceQuery = supabase
     .from('politician_issues')
     .select(
@@ -82,24 +72,15 @@ async function fetchFeedItems(
     )
     .gte('updated_at', dateThreshold)
     .order('updated_at', { ascending: false })
+    .limit(PAGE_SIZE)
 
   if (party) {
     stanceQuery = stanceQuery.eq('politicians.party', party)
   }
 
-  const allStances: StanceRow[] = []
-  let stanceFrom = 0
-  while (true) {
-    const { data, error } = await stanceQuery.range(stanceFrom, stanceFrom + 999)
-    if (error) {
-      console.error('Failed to fetch stance updates:', error.message)
-      break
-    }
-    if (!data || data.length === 0) break
-    allStances.push(...(data as unknown as StanceRow[]))
-    if (data.length < 1000) break
-    stanceFrom += 1000
-  }
+  const { data: stanceData, error: stanceErr } = await stanceQuery
+  if (stanceErr) console.error('Failed to fetch stance updates:', stanceErr.message)
+  const allStances = (stanceData ?? []) as unknown as StanceRow[]
 
   // --- Merge into unified feed ---
   const items: FeedItem[] = []
