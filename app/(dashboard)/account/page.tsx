@@ -4,6 +4,8 @@ import { ChangePasswordForm } from '@/components/account/change-password-form'
 import { NotificationPreferences } from '@/components/account/notification-preferences'
 import { DeleteAccount } from '@/components/account/delete-account'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AccountPage() {
   const supabase = await createClient()
   const {

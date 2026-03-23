@@ -19,6 +19,7 @@ import { YourAlignment } from '@/components/politicians/your-alignment'
 import { StanceTimeline } from '@/components/politicians/stance-timeline'
 import { StanceTimelineToggle } from '@/components/politicians/stance-timeline-toggle'
 export const revalidate = 1800 // 30 minutes
+export const dynamic = 'force-dynamic'
 
 import type { Politician } from '@/lib/types/politician'
 import type {

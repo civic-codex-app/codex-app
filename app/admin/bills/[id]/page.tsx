@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { BillForm } from '@/components/admin/bill-form'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ id: string }>
 }

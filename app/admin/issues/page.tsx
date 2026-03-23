@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
+export const dynamic = 'force-dynamic'
+
 const CATEGORY_LABELS: Record<string, string> = {
   economy: 'Economy',
   healthcare: 'Healthcare',

@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/footer'
 import { PollCard } from '@/components/polls/poll-card'
 
 export const revalidate = 60 // 1 minute
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Polls — Poli',

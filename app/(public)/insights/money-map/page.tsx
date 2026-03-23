@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/footer'
 import { MoneyMapView } from '@/components/insights/money-map-view'
 
 export const revalidate = 3600 // 1 hour
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Money Map — Poli',

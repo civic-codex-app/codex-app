@@ -10,6 +10,8 @@ import { IssueIcon } from '@/components/icons/issue-icon'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ id: string }>
 }

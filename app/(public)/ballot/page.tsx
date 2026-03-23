@@ -7,6 +7,8 @@ import { AvatarImage } from '@/components/ui/avatar-image'
 import { fetchBallotRaces, raceGroup, type Race, type RaceGroup, type Candidate } from '@/lib/utils/fetch-ballot'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Your Ballot Preview — Poli',
   description: 'See the races and candidates on your ballot based on your location.',

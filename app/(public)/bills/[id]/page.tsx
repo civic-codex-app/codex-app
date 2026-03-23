@@ -10,6 +10,8 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { FollowBillButton } from '@/components/bills/follow-bill-button'
 import { BILL_STATUS_EXPLAINERS, BILL_PROCESS_EXPLAINER, VOTE_EXPLAINERS } from '@/lib/data/educational-content'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ id: string }>
 }

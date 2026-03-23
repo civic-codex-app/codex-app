@@ -5,6 +5,8 @@ import { CompareSelector } from '@/components/compare/compare-selector'
 import { CompareView } from '@/components/compare/compare-view'
 import type { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Compare Politicians — Poli',
   description: 'Compare politicians side by side on issues, alignment, committees, campaign finance, and voting records.',

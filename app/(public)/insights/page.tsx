@@ -16,6 +16,7 @@ import type {
 } from '@/lib/types/supabase'
 
 export const revalidate = 3600 // 1 hour
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Insights -- Poli',

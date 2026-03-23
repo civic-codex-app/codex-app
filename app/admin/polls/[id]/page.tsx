@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PollForm } from '@/components/admin/poll-form'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ id: string }>
 }

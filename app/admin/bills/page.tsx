@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminBillsPage() {
   const supabase = createServiceRoleClient()
   const { data } = await supabase

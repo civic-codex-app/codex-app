@@ -7,6 +7,8 @@ import { computeVoterMatch } from '@/lib/utils/voter-match'
 import { ScorecardRaceCard, type CandidateScore } from '@/components/ballot/scorecard-race-card'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'Your Ballot Scorecard — Poli',
   description: 'See how each candidate on your ballot aligns with your views.',

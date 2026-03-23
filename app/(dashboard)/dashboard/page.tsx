@@ -10,6 +10,8 @@ import { SurpriseMatches } from '@/components/dashboard/surprise-matches'
 import { computeVoterMatch } from '@/lib/utils/voter-match'
 import { stanceBucket } from '@/lib/utils/stances'
 import type { Politician } from '@/lib/types/politician'
+
+export const dynamic = 'force-dynamic'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor } from '@/lib/constants/parties'

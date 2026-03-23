@@ -3,6 +3,8 @@ import { PoliticianCard } from '@/components/directory/politician-card'
 import type { Politician } from '@/lib/types/politician'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 export default async function FollowingPage() {
   const supabase = await createClient()
   const {

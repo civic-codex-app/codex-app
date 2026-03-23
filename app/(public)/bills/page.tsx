@@ -6,6 +6,7 @@ import type { BillRow, BillStatRow, BillVoteRow } from '@/lib/types/supabase'
 import { BILL_PROCESS_EXPLAINER, BILL_STATUS_EXPLAINERS } from '@/lib/data/educational-content'
 
 export const revalidate = 600 // 10 minutes
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Bills & Legislation -- Poli',

@@ -10,6 +10,8 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { CHAMBER_LABELS } from '@/lib/constants/chambers'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
 import { RaceComparison } from '@/components/elections/race-comparison'
+
+export const dynamic = 'force-dynamic'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
 import type {
   RaceDetailRow,

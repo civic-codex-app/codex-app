@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { CandidateForm } from '@/components/admin/candidate-form'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ id: string; raceId: string }>
 }

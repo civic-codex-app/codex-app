@@ -4,6 +4,8 @@ import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import type { Politician } from '@/lib/types/politician'
 
+export const dynamic = 'force-dynamic'
+
 const PAGE_SIZE = 50
 
 interface PageProps {

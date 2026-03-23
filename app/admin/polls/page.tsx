@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PollStatusToggle } from '@/components/admin/poll-status-toggle'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminPollsPage() {
   const supabase = createServiceRoleClient()
   const { data } = await supabase

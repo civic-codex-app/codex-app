@@ -4,6 +4,8 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { QuizForm } from '@/components/match/quiz-form'
 
+export const dynamic = 'force-dynamic'
+
 const BASE_URL = 'https://codex-app-gold.vercel.app'
 
 interface PageProps {

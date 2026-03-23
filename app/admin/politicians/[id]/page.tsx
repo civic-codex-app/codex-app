@@ -3,6 +3,8 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PoliticianEditForm } from '@/components/admin/politician-edit-form'
 import type { Politician } from '@/lib/types/politician'
 
+export const dynamic = 'force-dynamic'
+
 interface PageProps {
   params: Promise<{ id: string }>
 }
