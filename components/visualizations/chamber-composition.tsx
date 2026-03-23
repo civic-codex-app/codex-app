@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { PartyIcon } from '@/components/icons/party-icons'
 
 interface SeatGroup {
   party: string
@@ -141,18 +142,20 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
           {dots.map((dot, i) => {
             const show = i < animatedCount
             const isActive = activeParty === null || activeParty === dot.party
-            const color = partyColor(dot.party)
+            const iconSize = dots.length > 200 ? 6 : dots.length > 100 ? 7 : 8
 
             return (
-              <circle
+              <foreignObject
                 key={i}
-                cx={dot.x}
-                cy={dot.y}
-                r={dots.length > 200 ? 2.5 : dots.length > 100 ? 3 : 3.5}
-                fill={color}
-                opacity={show ? (isActive ? 0.85 : 0.12) : 0}
+                x={dot.x - iconSize / 2}
+                y={dot.y - iconSize / 2}
+                width={iconSize}
+                height={iconSize}
+                opacity={show ? (isActive ? 0.9 : 0.12) : 0}
                 className="transition-opacity duration-200"
-              />
+              >
+                <PartyIcon party={dot.party} size={iconSize} />
+              </foreignObject>
             )
           })}
         </svg>
