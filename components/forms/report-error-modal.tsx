@@ -1,0 +1,92 @@
+'use client'
+
+import { useState, useRef } from 'react'
+
+export function ReportErrorButton() {
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState('')
+  const tsRef = useRef(Date.now())
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    const form = new FormData(e.currentTarget)
+
+    try {
+      const res = await fetch('/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'report_error',
+          data: {
+            page_url: window.location.href,
+            description: form.get('description') ?? '',
+          },
+          website: '',
+          _ts: tsRef.current,
+        }),
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw new Error(body.error ?? 'Failed to submit')
+      }
+      setSuccess(true)
+      setTimeout(() => { setOpen(false); setSuccess(false) }, 2000)
+    } catch (err: any) {
+      setError(err.message ?? 'Something went wrong')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]"
+      >
+        Report an error
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setOpen(false)}>
+          <div className="w-full max-w-md rounded-xl border border-[var(--codex-border)] bg-[var(--codex-bg)] p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            {success ? (
+              <div className="text-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-2 text-[var(--codex-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                <div className="text-[14px] font-semibold text-[var(--codex-text)]">Report submitted</div>
+              </div>
+            ) : (
+              <>
+                <h2 className="mb-1 text-[16px] font-semibold text-[var(--codex-text)]">Report an Error</h2>
+                <p className="mb-4 text-[12px] text-[var(--codex-faint)]">Found something wrong on this page? Let us know.</p>
+                <form onSubmit={handleSubmit}>
+                  <textarea
+                    name="description"
+                    required
+                    maxLength={2000}
+                    rows={4}
+                    placeholder="Describe the error..."
+                    className="mb-3 w-full resize-none rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-text)]"
+                  />
+                  {error && <p className="mb-2 text-[12px] text-red-400">{error}</p>}
+                  <div className="flex gap-2">
+                    <button type="button" onClick={() => setOpen(false)} className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)]">
+                      Cancel
+                    </button>
+                    <button type="submit" disabled={loading} className="rounded-lg bg-[var(--codex-text)] px-4 py-2 text-[13px] font-semibold text-[var(--codex-card)] transition-opacity hover:opacity-80 disabled:opacity-50">
+                      {loading ? 'Sending...' : 'Submit Report'}
+                    </button>
+                  </div>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  )
+}

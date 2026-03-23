@@ -30,6 +30,7 @@ import { type LikeMindedPolitician } from '@/components/politicians/like-minded'
 import { computeReportCard } from '@/lib/utils/report-card'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker'
+import { UpdatePoliticianButton } from '@/components/forms/update-politician-modal'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -337,6 +338,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 Compare
               </Link>
               <ExportPdfButton />
+              <UpdatePoliticianButton politicianId={pol.id} politicianName={pol.name} />
               {pol.twitter_url && (
                 <a href={pol.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--codex-border)] text-[var(--codex-sub)] transition-all hover:border-[var(--codex-input-focus)] hover:text-[var(--codex-text)]" aria-label="X (Twitter)">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>

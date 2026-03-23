@@ -17,16 +17,21 @@ export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } 
         </div>
         <div className="flex items-center gap-4">
           {!hideDisclaimer && (
-            <Link
-              href="/data-sources"
-              className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]"
-            >
-              Data Sources & Disclaimer
-            </Link>
+            <>
+              <Link href="/data-sources" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+                Data Sources
+              </Link>
+              <Link href="/contact" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+                Contact
+              </Link>
+              <Link href="/privacy" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+                Privacy
+              </Link>
+              <Link href="/terms" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+                Terms
+              </Link>
+            </>
           )}
-          <span className="hidden text-[13px] text-[var(--codex-faint)] sm:inline">
-            Built for civic transparency
-          </span>
           <button
             onClick={toggle}
             className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]"

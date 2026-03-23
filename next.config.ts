@@ -73,6 +73,16 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Security headers on all routes
+        source: '/(.*)',
+        headers: [
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=()' },
+        ],
+      },
+      {
         // Static assets (icons, fonts)
         source: '/(favicon|icon-|apple-touch)(.*)\\.(ico|png|svg)',
         headers: [
