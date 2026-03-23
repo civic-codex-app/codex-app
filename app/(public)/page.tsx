@@ -10,6 +10,7 @@ import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
+import { StatePoliticianList } from '@/components/states/state-politician-list'
 import { Trending } from '@/components/directory/trending'
 import { PARTY_EXPLAINERS } from '@/lib/data/educational-content'
 import { getSiteSettings } from '@/lib/utils/site-settings'
@@ -137,43 +138,7 @@ export default async function HomePage() {
                 <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
                   Your Representatives
                 </h2>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {userRepresentatives.map((rep) => {
-                    const repColor = partyColor(rep.party)
-                    return (
-                      <Link
-                        key={rep.id}
-                        href={`/politicians/${rep.slug}`}
-                        className="group flex items-center gap-3 rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
-                      >
-                        <div
-                          className="h-11 w-11 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]"
-                          style={{ border: `1.5px solid ${repColor}33` }}
-                        >
-                          <AvatarImage
-                            src={rep.image_url}
-                            alt={rep.name}
-                            size={44}
-                            party={rep.party}
-                            fallbackColor={repColor}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="truncate text-[14px] font-semibold text-[var(--codex-text)]">
-                            {rep.name}
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <PartyIcon party={rep.party} size={10} />
-                            <span className="text-[11px] text-[var(--codex-faint)]">
-                              {CHAMBER_LABELS[rep.chamber as ChamberKey] ?? rep.chamber}
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    )
-                  })}
-                </div>
+                <StatePoliticianList politicians={userRepresentatives} initialCount={6} size="compact" />
               </div>
             )}
 

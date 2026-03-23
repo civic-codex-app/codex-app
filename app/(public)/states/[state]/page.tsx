@@ -9,6 +9,7 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS } from '@/lib/constants/chambers'
 import { US_STATES, STATE_NAMES } from '@/lib/constants/us-states'
+import { StatePoliticianList } from '@/components/states/state-politician-list'
 
 export const revalidate = 1800
 
@@ -229,49 +230,7 @@ export default async function StateDetailPage({ params }: PageProps) {
                     {label}
                     <span className="ml-2 text-[var(--codex-faint)]">{group.length}</span>
                   </h3>
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {group.map((pol) => {
-                      const color = partyColor(pol.party)
-                      return (
-                        <Link
-                          key={pol.id}
-                          href={`/politicians/${pol.slug}`}
-                          className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                          style={{ backgroundColor: `${color}08` }}
-                        >
-                          <div className="flex items-center gap-4 p-4">
-                            <div
-                              className="h-[56px] w-[56px] flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
-                              style={{ border: `2px solid ${color}33` }}
-                            >
-                              <AvatarImage
-                                src={pol.image_url}
-                                alt={pol.name}
-                                size={56}
-                                party={pol.party}
-                                fallbackColor={color}
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="truncate text-[15px] font-semibold text-[var(--codex-text)]">
-                                {pol.name}
-                              </div>
-                              <div className="mt-1 flex items-center gap-1.5">
-                                {pol.image_url && <PartyIcon party={pol.party} size={12} />}
-                                <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
-                              </div>
-                              {pol.title && (
-                                <div className="mt-0.5 truncate text-[12px] text-[var(--codex-faint)]">
-                                  {pol.title}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
+                  <StatePoliticianList politicians={group} initialCount={6} />
                 </div>
               )
             })}
@@ -410,46 +369,7 @@ export default async function StateDetailPage({ params }: PageProps) {
               All Officials
               <span className="ml-2 text-[var(--codex-faint)]">{politicians.length}</span>
             </h2>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {politicians.map((pol) => {
-                const color = partyColor(pol.party)
-                return (
-                  <Link
-                    key={pol.id}
-                    href={`/politicians/${pol.slug}`}
-                    className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                    style={{ backgroundColor: `${color}08` }}
-                  >
-                    <div className="flex items-center gap-3 p-3">
-                      <div
-                        className="h-[44px] w-[44px] flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
-                        style={{ border: `1.5px solid ${color}33` }}
-                      >
-                        <AvatarImage
-                          src={pol.image_url}
-                          alt={pol.name}
-                          size={44}
-                          party={pol.party}
-                          fallbackColor={color}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="truncate text-[13px] font-semibold text-[var(--codex-text)]">
-                          {pol.name}
-                        </div>
-                        <div className="mt-0.5 flex items-center gap-1.5">
-                          {pol.image_url && <PartyIcon party={pol.party} size={10} />}
-                          <span className="truncate text-[11px] text-[var(--codex-faint)]">
-                            {CHAMBER_LABELS[pol.chamber as keyof typeof CHAMBER_LABELS] ?? pol.chamber}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
+            <StatePoliticianList politicians={politicians} initialCount={6} size="compact" />
           </section>
         )}
 

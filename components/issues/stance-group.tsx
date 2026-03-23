@@ -30,15 +30,16 @@ interface StanceGroupProps {
   initialLimit?: number
 }
 
-const INITIAL_LIMIT = 10
+const INITIAL_LIMIT = 6
 
 export function StanceGroup({ label, color, bgClass, textClass, entries, totalCount, initialLimit = INITIAL_LIMIT }: StanceGroupProps) {
-  const [expanded, setExpanded] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(initialLimit)
 
   if (entries.length === 0) return null
 
-  const visible = expanded ? entries : entries.slice(0, initialLimit)
-  const hasMore = entries.length > initialLimit
+  const visible = entries.slice(0, visibleCount)
+  const hasMore = visibleCount < entries.length
+  const remaining = entries.length - visibleCount
 
   return (
     <section className="mb-10">
@@ -99,16 +100,14 @@ export function StanceGroup({ label, color, bgClass, textClass, entries, totalCo
         })}
       </div>
 
-      {/* Show all / Show less toggle */}
+      {/* Show more */}
       {hasMore && (
-        <div className="mt-3 text-center">
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="rounded-sm border border-[var(--codex-border)] bg-[var(--codex-card)] px-6 py-2 text-[12px] font-medium tracking-wide text-[var(--codex-sub)] transition-all hover:border-[var(--codex-input-border)] hover:text-[var(--codex-text)]"
-          >
-            {expanded ? 'Show less' : `Show all ${entries.length} stances`}
-          </button>
-        </div>
+        <button
+          onClick={() => setVisibleCount((v) => v + initialLimit)}
+          className="mt-3 w-full rounded-lg border border-[var(--codex-border)] py-2.5 text-[13px] font-medium text-[var(--codex-sub)] transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+        >
+          Show {Math.min(remaining, initialLimit)} more of {entries.length}
+        </button>
       )}
     </section>
   )
