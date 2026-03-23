@@ -48,7 +48,7 @@ describe('StanceTimeline', () => {
       />
     )
     expect(screen.getByText('Current')).toBeInTheDocument()
-    expect(screen.getByText('Against')).toBeInTheDocument()
+    expect(screen.getByText('Opposes')).toBeInTheDocument()
     expect(screen.getByText('Voted against bill')).toBeInTheDocument()
     expect(screen.getByText('Public statement')).toBeInTheDocument()
   })

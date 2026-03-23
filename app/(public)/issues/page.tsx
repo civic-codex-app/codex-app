@@ -181,11 +181,11 @@ export default async function IssuesPage({ searchParams }: PageProps) {
                       {opposes > 0 && <div style={{ width: `${(opposes / total) * 100}%`, background: '#EF4444', opacity: 0.7 }} />}
                     </div>
                     <div className="mt-1.5 flex gap-3 text-[11px] text-[var(--codex-faint)]">
-                      <span style={{ color: '#3B82F6' }}>{Math.round((supports / total) * 100)}% For</span>
+                      <span style={{ color: '#3B82F6' }}>{Math.round((supports / total) * 100)}% Favor</span>
                       <span className="text-[var(--codex-faint)]">&middot;</span>
                       <span style={{ color: '#A855F7' }}>{Math.round((mixed / total) * 100)}% Mixed</span>
                       <span className="text-[var(--codex-faint)]">&middot;</span>
-                      <span style={{ color: '#EF4444' }}>{Math.round((opposes / total) * 100)}% Against</span>
+                      <span style={{ color: '#EF4444' }}>{Math.round((opposes / total) * 100)}% Oppose</span>
                     </div>
                   </div>
                 )}

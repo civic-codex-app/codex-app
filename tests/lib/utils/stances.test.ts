@@ -10,9 +10,9 @@ import {
 
 describe('stanceStyle', () => {
   it('returns correct style for known stances', () => {
-    expect(stanceStyle('supports').label).toBe('For')
-    expect(stanceStyle('opposes').label).toBe('Against')
-    expect(stanceStyle('strongly_supports').label).toBe('Strongly For')
+    expect(stanceStyle('supports').label).toBe('Favors')
+    expect(stanceStyle('opposes').label).toBe('Opposes')
+    expect(stanceStyle('strongly_supports').label).toBe('Strongly Favors')
     expect(stanceStyle('neutral').label).toBe('Undecided')
     expect(stanceStyle('mixed').label).toBe('Mixed Views')
   })
@@ -100,14 +100,14 @@ describe('STANCE_STYLES', () => {
 })
 
 describe('getStanceDisplay', () => {
-  it('maps support stances to For', () => {
-    expect(getStanceDisplay('supports').label).toBe('For')
-    expect(getStanceDisplay('strongly_supports').label).toBe('For')
+  it('maps support stances to Favors', () => {
+    expect(getStanceDisplay('supports').label).toBe('Favors')
+    expect(getStanceDisplay('strongly_supports').label).toBe('Favors')
   })
 
-  it('maps oppose stances to Against', () => {
-    expect(getStanceDisplay('opposes').label).toBe('Against')
-    expect(getStanceDisplay('strongly_opposes').label).toBe('Against')
+  it('maps oppose stances to Opposes', () => {
+    expect(getStanceDisplay('opposes').label).toBe('Opposes')
+    expect(getStanceDisplay('strongly_opposes').label).toBe('Opposes')
   })
 
   it('maps neutral and mixed to Mixed', () => {

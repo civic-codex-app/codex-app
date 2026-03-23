@@ -31,14 +31,14 @@ export interface StanceStyle {
  *  No good/bad judgment, just where on the spectrum it falls.
  */
 export const STANCE_STYLES: Record<string, StanceStyle> = {
-  strongly_supports: { bg: 'bg-blue-600/15',    text: 'text-blue-400',    label: 'Strongly For',   color: '#1D4ED8', shortLabel: 'Strongly For' },
-  supports:          { bg: 'bg-blue-500/10',     text: 'text-blue-400',    label: 'For',            color: '#3B82F6', shortLabel: 'For' },
-  leans_support:     { bg: 'bg-blue-400/10',     text: 'text-blue-300',    label: 'Leans For',      color: '#60A5FA', shortLabel: 'Leans For' },
+  strongly_supports: { bg: 'bg-blue-600/15',    text: 'text-blue-400',    label: 'Strongly Favors',   color: '#1D4ED8', shortLabel: 'Favors' },
+  supports:          { bg: 'bg-blue-500/10',     text: 'text-blue-400',    label: 'Favors',            color: '#3B82F6', shortLabel: 'Favors' },
+  leans_support:     { bg: 'bg-blue-400/10',     text: 'text-blue-300',    label: 'Leans Toward',      color: '#60A5FA', shortLabel: 'Favors' },
   neutral:           { bg: 'bg-gray-500/10',     text: 'text-gray-400',    label: 'Undecided',      color: '#9CA3AF', shortLabel: 'Undecided' },
   mixed:             { bg: 'bg-purple-500/10',   text: 'text-purple-400',  label: 'Mixed Views',    color: '#A855F7', shortLabel: 'Mixed' },
-  leans_oppose:      { bg: 'bg-red-400/10',      text: 'text-red-300',     label: 'Leans Against',  color: '#F87171', shortLabel: 'Leans Against' },
-  opposes:           { bg: 'bg-red-500/10',      text: 'text-red-400',     label: 'Against',        color: '#EF4444', shortLabel: 'Against' },
-  strongly_opposes:  { bg: 'bg-red-600/15',      text: 'text-red-400',     label: 'Strongly Against', color: '#DC2626', shortLabel: 'Strongly Against' },
+  leans_oppose:      { bg: 'bg-red-400/10',      text: 'text-red-300',     label: 'Leans Against',  color: '#F87171', shortLabel: 'Opposes' },
+  opposes:           { bg: 'bg-red-500/10',      text: 'text-red-400',     label: 'Opposes',        color: '#EF4444', shortLabel: 'Opposes' },
+  strongly_opposes:  { bg: 'bg-red-600/15',      text: 'text-red-400',     label: 'Strongly Opposes', color: '#DC2626', shortLabel: 'Opposes' },
   unknown:           { bg: 'bg-[var(--codex-badge-bg)]', text: 'text-[var(--codex-faint)]', label: 'Unknown', color: '#6B7280', shortLabel: 'Unknown' },
 }
 
@@ -105,10 +105,10 @@ export function stanceBucket(stance: string): 'supports' | 'opposes' | 'neutral'
 
 /**
  * Simplified 3-tier stance display for the redesigned UI.
- * Collapses 7-point scale into For / Mixed / Against / Unknown.
+ * Collapses 7-point scale into Favors / Mixed / Opposes / Unknown.
  */
 export interface StanceDisplay {
-  label: 'For' | 'Mixed' | 'Against' | 'Unknown'
+  label: 'Favors' | 'Mixed' | 'Opposes' | 'Unknown'
   color: string
   bgColor: string
 }
@@ -116,9 +116,9 @@ export interface StanceDisplay {
 export function getStanceDisplay(stance: string): StanceDisplay {
   switch (stanceBucket(stance)) {
     case 'supports':
-      return { label: 'For', color: '#3B82F6', bgColor: '#EFF6FF' }
+      return { label: 'Favors', color: '#3B82F6', bgColor: '#EFF6FF' }
     case 'opposes':
-      return { label: 'Against', color: '#EF4444', bgColor: '#FEF2F2' }
+      return { label: 'Opposes', color: '#EF4444', bgColor: '#FEF2F2' }
     case 'neutral':
     case 'mixed':
       return { label: 'Mixed', color: '#A855F7', bgColor: '#FAF5FF' }
@@ -132,9 +132,9 @@ export function getStanceDisplay(stance: string): StanceDisplay {
  * Returns a label + Tailwind className string for consistent badge rendering.
  *
  * Mapping:
- *   strongly_supports, supports, leans_support → "For" (green)
+ *   strongly_supports, supports, leans_support → "Favors" (green)
  *   neutral, mixed                             → "Mixed" (amber)
- *   leans_oppose, opposes, strongly_opposes     → "Against" (red)
+ *   leans_oppose, opposes, strongly_opposes     → "Opposes" (red)
  *   unknown / anything else                     → "Unknown" (gray)
  */
 export interface StanceBadge {
@@ -147,9 +147,9 @@ export function stanceDisplayBadge(stance: string): StanceBadge {
   const bucket = stanceBucket(stance)
   switch (bucket) {
     case 'supports':
-      return { label: 'For', className: 'text-emerald-700 bg-emerald-50 border border-emerald-200', color: '#047857' }
+      return { label: 'Favors', className: 'text-emerald-700 bg-emerald-50 border border-emerald-200', color: '#047857' }
     case 'opposes':
-      return { label: 'Against', className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' }
+      return { label: 'Opposes', className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' }
     case 'neutral':
     case 'mixed':
       return { label: 'Mixed', className: 'text-amber-700 bg-amber-50 border border-amber-200', color: '#B45309' }

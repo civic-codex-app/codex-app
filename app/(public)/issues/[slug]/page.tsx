@@ -133,9 +133,9 @@ function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]) {
   const againstBadge = stanceDisplayBadge('opposes')
   const unknownBadge = stanceDisplayBadge('unknown')
   const BUCKET_CONFIG = {
-    supports: { label: 'For', style: { ...STANCE_STYLES.supports, bg: 'bg-emerald-50', text: 'text-emerald-700', color: forBadge.color } },
+    supports: { label: 'Favors', style: { ...STANCE_STYLES.supports, bg: 'bg-emerald-50', text: 'text-emerald-700', color: forBadge.color } },
     mixed: { label: 'Mixed', style: { ...STANCE_STYLES.mixed, bg: 'bg-amber-50', text: 'text-amber-700', color: mixedBadge.color } },
-    opposes: { label: 'Against', style: { ...STANCE_STYLES.opposes, bg: 'bg-red-50', text: 'text-red-700', color: againstBadge.color } },
+    opposes: { label: 'Opposes', style: { ...STANCE_STYLES.opposes, bg: 'bg-red-50', text: 'text-red-700', color: againstBadge.color } },
     unknown: { label: 'Unknown', style: { ...STANCE_STYLES.unknown, bg: 'bg-gray-50', text: 'text-gray-500', color: unknownBadge.color } },
   }
 

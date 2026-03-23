@@ -243,7 +243,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
             <span className="text-[10px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">Legend</span>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-blue-500" style={{ opacity: 0.75 }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">For this issue</span>
+              <span className="text-[11px] text-[var(--codex-faint)]">Favors this issue</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-purple-500" style={{ opacity: 0.75 }} />
@@ -251,7 +251,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-3 w-3 rounded-sm bg-red-500" style={{ opacity: 0.75 }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">Against this issue</span>
+              <span className="text-[11px] text-[var(--codex-faint)]">Opposes this issue</span>
             </div>
           </div>
         </div>

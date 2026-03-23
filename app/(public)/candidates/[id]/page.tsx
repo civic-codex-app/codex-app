@@ -24,8 +24,8 @@ const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }>
 }
 
 const STANCE_COLORS: Record<string, { bg: string; text: string; label: string }> = {
-  supports: { bg: 'bg-blue-500/10', text: 'text-blue-400', label: 'For' },
-  opposes: { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Against' },
+  supports: { bg: 'bg-blue-500/10', text: 'text-blue-400', label: 'Favors' },
+  opposes: { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Opposes' },
   mixed: { bg: 'bg-purple-500/10', text: 'text-purple-400', label: 'Mixed' },
   unknown: { bg: 'bg-[var(--codex-badge-bg)]', text: 'text-[var(--codex-faint)]', label: 'Unknown' },
 }
