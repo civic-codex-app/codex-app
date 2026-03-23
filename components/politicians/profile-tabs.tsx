@@ -164,6 +164,16 @@ export function ProfileTabs({
     })
   }
 
+  // Filter tabs: hide tabs with no data
+  const visibleTabs = TABS.filter((t) => {
+    if (t === 'overview') return true // always show
+    if (t === 'stances') return stances.length > 0
+    if (t === 'voting') return votingRecords.length > 0
+    if (t === 'finance') return financeRecords.length > 0
+    if (t === 'elections') return electionResults.length > 0
+    return true
+  })
+
   return (
     <>
       {/* ── Tab Bar ── */}
@@ -174,7 +184,7 @@ export function ProfileTabs({
       >
         {/* Mobile: pill scroller */}
         <div className="flex gap-2 overflow-x-auto pb-2 pt-2 sm:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {TABS.map((t) => (
+          {visibleTabs.map((t) => (
             <button
               key={t}
               onClick={() => switchTab(t)}
@@ -194,7 +204,7 @@ export function ProfileTabs({
 
         {/* Desktop: underline tabs */}
         <div className="hidden min-w-max gap-0 sm:flex">
-          {TABS.map((t) => (
+          {visibleTabs.map((t) => (
             <button
               key={t}
               onClick={() => switchTab(t)}
