@@ -23,9 +23,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params
   const supabase = createServiceRoleClient()
   const { data } = await supabase.from('polls').select('title').eq('id', id).single()
-  if (!data) return { title: 'Not Found — Poli' }
+  if (!data) return { title: 'Not Found | Poli' }
   return {
-    title: `${data.title} — Poli Polls`,
+    title: `${data.title} | Poli Polls`,
     description: `Vote on: ${data.title}`,
   }
 }

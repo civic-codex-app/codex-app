@@ -9,7 +9,7 @@ import { StateDatePicker } from '@/components/elections/state-date-picker'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Election Countdown -- Poli',
+  title: 'Election Countdown | Poli',
   description: 'Countdown to the next election with key dates for your state.',
 }
 

@@ -19,7 +19,7 @@ export const revalidate = 3600 // 1 hour
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Insights -- Poli',
+  title: 'Insights | Poli',
   description: 'Data-driven political insights: chamber composition, issue consensus, alignment spectrums, and bipartisan rankings.',
 }
 

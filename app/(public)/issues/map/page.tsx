@@ -8,7 +8,7 @@ export const revalidate = 3600 // 1 hour
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Issue Map — Poli',
+  title: 'Issue Map | Poli',
   description:
     'Explore how politicians across each state stand on key issues with an interactive US map.',
 }

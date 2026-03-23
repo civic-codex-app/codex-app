@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Compare Politicians — Poli',
+  title: 'Compare Politicians | Poli',
   description: 'Compare politicians side by side on issues, alignment, committees, campaign finance, and voting records.',
 }
 

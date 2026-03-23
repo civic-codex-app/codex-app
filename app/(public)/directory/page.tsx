@@ -14,7 +14,7 @@ export const revalidate = 1800 // 30 minutes
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Browse Politicians — Poli',
+  title: 'Browse Politicians | Poli',
   description: 'Browse all U.S. politicians by state, party, and chamber.',
 }
 

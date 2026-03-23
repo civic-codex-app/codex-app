@@ -3,7 +3,7 @@ import { SiteSettingsForm } from '@/components/admin/site-settings-form'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata = { title: 'Site Settings — Admin' }
+export const metadata = { title: 'Site Settings | Admin' }
 
 export default async function AdminSettingsPage() {
   const supabase = createServiceRoleClient()

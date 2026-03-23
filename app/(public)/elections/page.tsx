@@ -9,8 +9,8 @@ export const revalidate = 1800 // 30 minutes
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Elections -- Poli',
-  description: 'Track upcoming elections — Senate, House, Governor, and local races in every state.',
+  title: 'Elections | Poli',
+  description: 'Track upcoming elections | Senate, House, Governor, and local races in every state.',
 }
 
 const STATE_NAMES: Record<string, string> = {

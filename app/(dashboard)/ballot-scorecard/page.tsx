@@ -10,7 +10,7 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Your Ballot Scorecard — Poli',
+  title: 'Your Ballot Scorecard | Poli',
   description: 'See how each candidate on your ballot aligns with your views.',
 }
 

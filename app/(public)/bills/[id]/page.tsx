@@ -49,14 +49,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .eq('id', id)
     .single()
 
-  if (!data) return { title: 'Not Found -- Poli' }
+  if (!data) return { title: 'Not Found | Poli' }
 
   const description = data.summary?.slice(0, 160) || `Track votes and details for ${data.number}`
   const statusLabel = STATUS_CONFIG[data.status]?.label ?? data.status
   const ogUrl = `/api/og?title=${encodeURIComponent(data.number)}&subtitle=${encodeURIComponent(data.title)}&type=bill`
 
   return {
-    title: `${data.number}: ${data.title} -- Poli`,
+    title: `${data.number}: ${data.title} | Poli`,
     description,
     openGraph: {
       title: `${data.number}: ${data.title}`,

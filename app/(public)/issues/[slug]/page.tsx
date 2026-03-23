@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const supabase = createServiceRoleClient()
   const { data, error } = await supabase.from('issues').select('name, description').eq('slug', slug).single()
   if (error) console.error('Failed to fetch issue metadata:', error.message)
-  if (!data) return { title: 'Not Found -- Poli' }
+  if (!data) return { title: 'Not Found | Poli' }
 
   const description = data.description?.slice(0, 160) || `Track where U.S. politicians stand on ${data.name}`
   const ogUrl = `/api/og?title=${encodeURIComponent(data.name)}&subtitle=${encodeURIComponent('Political Stances')}&type=issue`

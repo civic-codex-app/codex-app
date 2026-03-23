@@ -7,7 +7,7 @@ export const revalidate = 60 // 1 minute
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Polls — Poli',
+  title: 'Polls | Poli',
   description: 'Vote on political races, issues, and matchups.',
 }
 

@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { data, error } = await supabase.from('politicians').select('name, title, party, state, bio').eq('slug', slug).single()
   if (error) console.error('Failed to fetch politician metadata:', error.message)
 
-  if (!data) return { title: 'Not Found -- Poli' }
+  if (!data) return { title: 'Not Found | Poli' }
 
   const description = data.bio?.slice(0, 160) || `${data.title} from ${data.state}`
   const ogUrl = `/api/og?title=${encodeURIComponent(data.name)}&subtitle=${encodeURIComponent(data.title)}&party=${data.party}&type=politician`

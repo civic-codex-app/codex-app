@@ -5,7 +5,7 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
   const s = await getSiteSettings()
 
   return {
-    name: `${s.site_name} — ${s.site_tagline}`,
+    name: `${s.site_name} | ${s.site_tagline}`,
     short_name: s.site_name,
     description: s.site_description,
     start_url: '/',

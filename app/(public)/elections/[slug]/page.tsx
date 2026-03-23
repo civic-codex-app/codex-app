@@ -39,15 +39,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Check if it's a state election first
   const { data: election } = await supabase.from('elections').select('name').eq('slug', slug).single()
   if (election) {
-    return { title: `${election.name} -- Poli` }
+    return { title: `${election.name} | Poli` }
   }
 
   // Otherwise it's a race slug
   const { data } = await supabase.from('races').select('name, state').eq('slug', slug).single()
-  if (!data) return { title: 'Not Found -- Poli' }
+  if (!data) return { title: 'Not Found | Poli' }
 
   return {
-    title: `${data.name} -- Poli Elections`,
+    title: `${data.name} | Poli Elections`,
     openGraph: { title: data.name, description: `${data.name} - ${data.state}` },
   }
 }

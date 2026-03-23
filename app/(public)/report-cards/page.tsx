@@ -11,7 +11,7 @@ export const revalidate = 3600 // 1 hour
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Report Cards — Poli',
+  title: 'Report Cards | Poli',
   description:
     'See how every U.S. politician scores on bipartisanship, engagement, transparency, and effectiveness.',
 }

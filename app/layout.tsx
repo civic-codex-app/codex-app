@@ -21,7 +21,7 @@ const instrumentSerif = Instrument_Serif({
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings()
-  const fullTitle = `${s.site_name} — ${s.site_tagline}`
+  const fullTitle = `${s.site_name} | ${s.site_tagline}`
   const ogImageUrl = `/api/og?title=${encodeURIComponent(s.site_name)}&subtitle=${encodeURIComponent(s.site_tagline)}`
 
   return {

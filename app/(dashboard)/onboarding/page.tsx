@@ -5,7 +5,7 @@ import { OnboardingWizard } from '@/components/onboarding/onboarding-wizard'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Welcome -- Poli',
+  title: 'Welcome | Poli',
   description: 'Set up your Poli profile in a few quick steps.',
 }
 

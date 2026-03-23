@@ -15,7 +15,7 @@ const DEFAULTS: SiteSettings = {
   site_tagline: 'Political Directory',
   site_description:
     'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.',
-  og_title: 'Poli — Political Directory',
+  og_title: 'Poli | Political Directory',
   og_description:
     'Biographies, official websites, campaign links, and donation pages for current U.S. politicians and candidates.',
   homepage_title: 'U.S. Politician Directory & Civic Engagement Platform',

@@ -7,7 +7,7 @@ export const revalidate = 3600 // 1 hour
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Money Map — Poli',
+  title: 'Money Map | Poli',
   description: 'See how much politicians raise and spend by state with an interactive US map.',
 }
 

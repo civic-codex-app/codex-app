@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 
 export const metadata: Metadata = {
-  title: 'Data Sources & Disclaimer — Poli',
+  title: 'Data Sources & Disclaimer | Poli',
   description:
     'Where Poli gets its data: public government sources, official records, and how we verify political information.',
 }

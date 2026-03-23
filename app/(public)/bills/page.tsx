@@ -9,7 +9,7 @@ export const revalidate = 600 // 10 minutes
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Bills & Legislation -- Poli',
+  title: 'Bills & Legislation | Poli',
   description: 'Track major bills and how your representatives voted.',
 }
 

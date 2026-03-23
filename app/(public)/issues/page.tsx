@@ -14,7 +14,7 @@ export const revalidate = 3600 // 1 hour
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Issues -- Poli',
+  title: 'Issues | Poli',
   description: 'Explore political issues and see where politicians stand.',
 }
 
