@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { PartyIcon } from '@/components/icons/party-icons'
@@ -20,37 +20,93 @@ interface Politician {
 
 interface Props {
   politicians: Politician[]
-  initialCount?: number
   size?: 'default' | 'compact'
 }
 
-const GRID_CLASS = 'grid gap-3 sm:grid-cols-2 lg:grid-cols-3'
+export function StatePoliticianList({ politicians, size = 'default' }: Props) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
 
-export function StatePoliticianList({ politicians, initialCount = 6, size = 'default' }: Props) {
-  const [visible, setVisible] = useState(initialCount)
-  const total = politicians.length
-  const showing = Math.min(visible, total)
-  const hasMore = showing < total
-  const remaining = total - showing
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 4)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4)
+  }, [])
 
-  if (total === 0) return null
+  useEffect(() => {
+    checkScroll()
+    const el = scrollRef.current
+    if (!el) return
+    el.addEventListener('scroll', checkScroll, { passive: true })
+    const observer = new ResizeObserver(checkScroll)
+    observer.observe(el)
+    return () => {
+      el.removeEventListener('scroll', checkScroll)
+      observer.disconnect()
+    }
+  }, [checkScroll])
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = scrollRef.current
+    if (!el) return
+    const cardWidth = el.querySelector('a')?.offsetWidth ?? 280
+    const gap = 12
+    const scrollAmount = (cardWidth + gap) * 3
+    el.scrollBy({ left: direction === 'right' ? scrollAmount : -scrollAmount, behavior: 'smooth' })
+  }
+
+  if (politicians.length === 0) return null
 
   const isCompact = size === 'compact'
   const avatarSize = isCompact ? 44 : 56
   const padding = isCompact ? 'p-3' : 'p-4'
   const avatarDim = isCompact ? 'h-[44px] w-[44px]' : 'h-[56px] w-[56px]'
   const nameSize = isCompact ? 'text-[13px]' : 'text-[15px]'
+  const cardWidth = isCompact ? 'w-[240px]' : 'w-[280px]'
 
   return (
-    <div>
-      <div className={GRID_CLASS}>
-        {politicians.slice(0, showing).map((pol) => {
+    <div className="relative">
+      {/* Left arrow */}
+      {canScrollLeft && (
+        <button
+          onClick={() => scroll('left')}
+          className="absolute -left-3 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-[var(--codex-border)] bg-[var(--codex-card)] p-2 shadow-md transition-all hover:border-[var(--codex-text)] md:flex"
+          aria-label="Scroll left"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+      )}
+
+      {/* Right arrow */}
+      {canScrollRight && (
+        <button
+          onClick={() => scroll('right')}
+          className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-[var(--codex-border)] bg-[var(--codex-card)] p-2 shadow-md transition-all hover:border-[var(--codex-text)] md:flex"
+          aria-label="Scroll right"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      )}
+
+      {/* Scrollable container */}
+      <div
+        ref={scrollRef}
+        className="flex gap-3 overflow-x-auto scroll-smooth pb-2 scrollbar-none"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {politicians.map((pol) => {
           const color = partyColor(pol.party)
           return (
             <Link
               key={pol.id}
               href={`/politicians/${pol.slug}`}
-              className="group overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+              className={`${cardWidth} flex-shrink-0 overflow-hidden rounded-xl border border-[var(--codex-border)] no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5`}
               style={{ backgroundColor: `${color}08` }}
             >
               <div className={`flex items-center gap-${isCompact ? '3' : '4'} ${padding}`}>
@@ -92,14 +148,6 @@ export function StatePoliticianList({ politicians, initialCount = 6, size = 'def
           )
         })}
       </div>
-      {hasMore && (
-        <button
-          onClick={() => setVisible((v) => v + (initialCount || 6))}
-          className="mt-3 w-full rounded-lg border border-[var(--codex-border)] py-2.5 text-[13px] font-medium text-[var(--codex-sub)] transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
-        >
-          Show {Math.min(remaining, initialCount)} more of {total}
-        </button>
-      )}
     </div>
   )
 }

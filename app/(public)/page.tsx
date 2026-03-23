@@ -138,7 +138,7 @@ export default async function HomePage() {
                 <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
                   Your Representatives
                 </h2>
-                <StatePoliticianList politicians={userRepresentatives} initialCount={6} size="compact" />
+                <StatePoliticianList politicians={userRepresentatives} size="compact" />
               </div>
             )}
 

@@ -230,7 +230,7 @@ export default async function StateDetailPage({ params }: PageProps) {
                     {label}
                     <span className="ml-2 text-[var(--codex-faint)]">{group.length}</span>
                   </h3>
-                  <StatePoliticianList politicians={group} initialCount={6} />
+                  <StatePoliticianList politicians={group} />
                 </div>
               )
             })}
@@ -369,7 +369,7 @@ export default async function StateDetailPage({ params }: PageProps) {
               All Officials
               <span className="ml-2 text-[var(--codex-faint)]">{politicians.length}</span>
             </h2>
-            <StatePoliticianList politicians={politicians} initialCount={6} size="compact" />
+            <StatePoliticianList politicians={politicians} size="compact" />
           </section>
         )}
 
