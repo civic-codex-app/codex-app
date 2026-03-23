@@ -30,10 +30,10 @@ export default async function HomePage() {
   // Featured politicians — most likely searched (top federal officials)
   const FEATURED_SLUGS = [
     'donald-trump',
-    'jd-vance-vp',
-    'bernie-sanders',
-    'ted-cruz',
     'nancy-pelosi',
+    'ted-cruz',
+    'chuck-schumer',
+    'bernie-sanders',
     'mitch-mcconnell',
   ]
   const { data: featuredData } = await supabase
