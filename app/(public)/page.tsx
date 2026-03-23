@@ -291,7 +291,7 @@ export default async function HomePage() {
         {/* Mobile disclaimer — footer is hidden on mobile */}
         <div className="mt-8 pb-24 sm:hidden">
           <p className="text-[11px] leading-relaxed text-[var(--codex-faint)]">
-            Poli is an independent civic education platform. We are not affiliated with any political party, campaign, or government agency.
+            Poli is currently in beta. We are an independent civic education platform, not affiliated with any political party, campaign, or government agency.
             All data is compiled from public sources and may contain errors.{' '}
             <a href="/data-sources" className="underline hover:text-[var(--codex-sub)]">
               Data sources & disclaimer.

@@ -147,13 +147,12 @@ export function Header() {
         Skip to main content
       </a>
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3 md:px-10 md:py-4">
-        {/* Left: Logo + Beta + Nav */}
+        {/* Left: Logo + Nav */}
         <div className="flex items-center gap-3.5">
           <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Poli Home">
             <ElephantIcon size={22} color="#DC2626" />
             <DonkeyIcon size={22} color="#2563EB" />
           </Link>
-          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700">Beta</span>
 
           <nav ref={navRef} className="ml-4 hidden items-center gap-1 sm:flex" aria-label="Main navigation">
             {NAV_ITEMS.map((item) => {

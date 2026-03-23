@@ -55,7 +55,7 @@ export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } 
       </div>
       {!hideDisclaimer && (
         <p className="mt-4 text-[11px] leading-relaxed text-[var(--codex-faint)]">
-          Poli is an independent civic education platform. We are not affiliated with any political party, campaign, or government agency.
+          Poli is currently in beta. We are an independent civic education platform, not affiliated with any political party, campaign, or government agency.
           All data is compiled from public sources and may contain errors.{' '}
           <Link href="/data-sources" className="underline hover:text-[var(--codex-sub)]">
             View our full data sources and disclaimer.
