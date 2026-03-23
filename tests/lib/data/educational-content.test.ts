@@ -20,10 +20,18 @@ const ALL_ISSUES = [
   'infrastructure-and-transportation',
   'housing-and-affordability',
   'energy-policy-and-oil-gas',
+  'reproductive-rights',
+  'lgbtq-rights',
+  'drug-policy',
+  'voting-rights',
+  'taxes-and-spending',
+  'labor-and-unions',
+  'privacy-and-surveillance',
+  'trade-and-tariffs',
 ]
 
 describe('ISSUE_SUBTITLES', () => {
-  it('has a subtitle for all 14 issues', () => {
+  it('has a subtitle for all 22 issues', () => {
     for (const slug of ALL_ISSUES) {
       expect(ISSUE_SUBTITLES[slug], `Missing subtitle for ${slug}`).toBeTruthy()
     }
@@ -37,7 +45,7 @@ describe('ISSUE_SUBTITLES', () => {
 })
 
 describe('ISSUE_EXPLAINERS', () => {
-  it('has an explainer for all 14 issues', () => {
+  it('has an explainer for all 22 issues', () => {
     for (const slug of ALL_ISSUES) {
       expect(ISSUE_EXPLAINERS[slug], `Missing explainer for ${slug}`).toBeDefined()
     }

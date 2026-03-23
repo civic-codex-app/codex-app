@@ -244,4 +244,132 @@ export const QUIZ_CONTENT: Record<string, QuizIssueContent> = {
       { label: 'Hands off completely', description: 'The government does not understand tech. Stay out of it and let the market decide what works.', stance: 'strongly_opposes' },
     ],
   },
+  'reproductive-rights': {
+    question: 'Should abortion be legal? Who should decide?',
+    whyItMatters:
+      'This affects what health care options are available to women. It decides who makes choices about pregnancy — individuals, states, or the federal government.',
+    supportsMeans:
+      'Keep abortion legal everywhere. Let women and their doctors decide. Use tax money to help cover costs.',
+    opposesMeans:
+      'Ban or limit abortion. Let states make their own rules. Protect the unborn from the moment of conception.',
+    positions: [
+      { label: 'Full access everywhere', description: 'Abortion should be legal at any point. It is health care and the government should protect the right.', stance: 'strongly_supports' },
+      { label: 'Legal with some limits', description: 'Abortion should be legal in most cases. Reasonable time limits are OK but no outright bans.', stance: 'supports' },
+      { label: 'Conflicted', description: 'You see both sides. It is a personal and moral issue that is hard to have one answer on.', stance: 'neutral' },
+      { label: 'Limit it more', description: 'Abortion should only be allowed early in pregnancy or in special cases like health emergencies.', stance: 'opposes' },
+      { label: 'Ban it', description: 'Abortion should be illegal in almost all cases. Life starts at conception and should be protected.', stance: 'strongly_opposes' },
+    ],
+  },
+  'lgbtq-rights': {
+    question: 'Should LGBTQ+ people have the same legal protections as everyone else?',
+    whyItMatters:
+      'This affects whether people can be fired or denied housing for being gay or transgender. It also decides what is taught in schools about gender and identity.',
+    supportsMeans:
+      'Pass laws banning discrimination based on gender identity or sexual orientation. Protect transgender health care. Allow same-sex marriage everywhere.',
+    opposesMeans:
+      'Let religious businesses opt out. Keep biological sex as the standard in sports and bathrooms. Let parents decide what kids learn about gender.',
+    positions: [
+      { label: 'Full equality', description: 'Pass strong anti-discrimination laws. Protect transgender rights including health care and sports participation.', stance: 'strongly_supports' },
+      { label: 'Equal rights with balance', description: 'Protect LGBTQ+ people from discrimination but find fair compromises on sports and religious freedom.', stance: 'supports' },
+      { label: 'Unsure', description: 'You support treating people fairly but are not sure about every policy detail.', stance: 'neutral' },
+      { label: 'Protect traditions', description: 'Marriage is between a man and a woman. Biological sex should matter in sports and bathrooms.', stance: 'opposes' },
+      { label: 'Keep things as they were', description: 'No special protections needed. Religious freedom comes first. Keep gender policies based on biology.', stance: 'strongly_opposes' },
+    ],
+  },
+  'drug-policy': {
+    question: 'Should marijuana be legal? What about other drugs?',
+    whyItMatters:
+      'This affects whether people go to jail for using drugs. It also changes how your community handles addiction and treatment.',
+    supportsMeans:
+      'Legalize marijuana everywhere. Treat drug use as a health issue not a crime. Fund treatment programs.',
+    opposesMeans:
+      'Keep drugs illegal. Tougher sentences for dealers. Do not normalize drug use.',
+    positions: [
+      { label: 'Legalize and treat', description: 'Legalize marijuana. Decriminalize other drugs. Spend money on treatment instead of jail.', stance: 'strongly_supports' },
+      { label: 'Legal weed, treat addiction', description: 'Make marijuana legal for adults. Keep hard drugs illegal but help addicts get treatment not prison.', stance: 'supports' },
+      { label: 'Not sure', description: 'Marijuana seems fine but you worry about harder drugs. The right answer is not obvious.', stance: 'neutral' },
+      { label: 'Keep most illegal', description: 'Maybe ease up on marijuana but hard drugs should stay illegal with real consequences.', stance: 'opposes' },
+      { label: 'Zero tolerance', description: 'All drugs should be illegal. Dealers should get long sentences. Legalization sends the wrong message.', stance: 'strongly_opposes' },
+    ],
+  },
+  'voting-rights': {
+    question: 'Should it be easier or harder to vote?',
+    whyItMatters:
+      'This affects whether you need an ID to vote, how many days you can vote, and whether your vote is counted fairly.',
+    supportsMeans:
+      'Automatic voter registration. More early voting days. No voter ID required. Make Election Day a holiday.',
+    opposesMeans:
+      'Require photo ID to vote. Clean up voter rolls. Limit mail-in voting. Prevent fraud first.',
+    positions: [
+      { label: 'Make it super easy', description: 'Register everyone automatically. Vote by mail anywhere. Make Election Day a national holiday.', stance: 'strongly_supports' },
+      { label: 'Remove barriers', description: 'More early voting. Same-day registration. Voter ID is fine if free IDs are available to everyone.', stance: 'supports' },
+      { label: 'Balance access and security', description: 'You want everyone to vote but also want to make sure the system is trustworthy.', stance: 'neutral' },
+      { label: 'Verify every voter', description: 'Require ID to vote. Clean up old voter rolls. Limit mail-in ballots to people who need them.', stance: 'opposes' },
+      { label: 'Lock it down', description: 'Strict ID laws. Vote in person only. Proof of citizenship required. Stop any chance of fraud.', stance: 'strongly_opposes' },
+    ],
+  },
+  'taxes-and-spending': {
+    question: 'Should the government tax more and spend more, or tax less and spend less?',
+    whyItMatters:
+      'This directly affects your paycheck and what the government can pay for — schools, roads, military, health care, and more.',
+    supportsMeans:
+      'Raise taxes on the wealthy and corporations. Use the money for public programs like health care, education, and infrastructure.',
+    opposesMeans:
+      'Cut taxes for everyone. Shrink the government. Stop wasteful spending and let people keep more of their money.',
+    positions: [
+      { label: 'Tax the rich, fund programs', description: 'Wealthy people and big companies should pay a lot more. Use that money for free health care, college, and social programs.', stance: 'strongly_supports' },
+      { label: 'Fair share taxes', description: 'Close tax loopholes for the wealthy. Keep middle-class taxes low. Fund the programs people rely on.', stance: 'supports' },
+      { label: 'Somewhere in between', description: 'You do not love paying taxes but you also see that the government needs money to run things.', stance: 'neutral' },
+      { label: 'Lower taxes', description: 'Cut taxes across the board. The government wastes too much money. Let people keep what they earn.', stance: 'opposes' },
+      { label: 'Slash it all', description: 'Massive tax cuts. Shrink government to the basics — military, courts, borders. Stop the spending.', stance: 'strongly_opposes' },
+    ],
+  },
+  'labor-and-unions': {
+    question: 'Should workers have more power through unions?',
+    whyItMatters:
+      'This affects your pay, benefits, and working conditions. It decides how much say employees have compared to their employers.',
+    supportsMeans:
+      'Make it easier to form unions. Require companies to negotiate with workers. Raise the minimum wage.',
+    opposesMeans:
+      'Let workers choose not to join unions. Stop forced union dues. Let companies and workers negotiate on their own.',
+    positions: [
+      { label: 'Workers unite', description: 'Make it much easier to unionize. Require companies to bargain. Fine companies that block unions.', stance: 'strongly_supports' },
+      { label: 'Strengthen worker rights', description: 'Protect the right to unionize. Raise the minimum wage. Give workers more say in their jobs.', stance: 'supports' },
+      { label: 'Depends on the job', description: 'Unions help in some jobs but not others. You are not sure if they should be everywhere.', stance: 'neutral' },
+      { label: 'Keep it voluntary', description: 'Nobody should be forced to join a union. Let workers and companies negotiate directly.', stance: 'opposes' },
+      { label: 'Unions do more harm than good', description: 'Unions drive up costs, protect bad workers, and hurt businesses. Workers do better without them.', stance: 'strongly_opposes' },
+    ],
+  },
+  'privacy-and-surveillance': {
+    question: 'How much should the government be able to watch what you do?',
+    whyItMatters:
+      'This decides whether the government can read your texts, track your location, or use cameras to watch public spaces — all in the name of safety.',
+    supportsMeans:
+      'Pass strong privacy laws. Limit government surveillance. Require a warrant to access personal data. Ban facial recognition.',
+    opposesMeans:
+      'Give law enforcement the tools they need. Allow surveillance to stop terrorism. Safety comes before privacy.',
+    positions: [
+      { label: 'Privacy is sacred', description: 'Ban mass surveillance. Require warrants for everything. Strong encryption should be a right.', stance: 'strongly_supports' },
+      { label: 'Protect my data', description: 'The government should need a good reason and a warrant to look at your personal information.', stance: 'supports' },
+      { label: 'It is complicated', description: 'You value privacy but also understand why the government might need to watch for threats.', stance: 'neutral' },
+      { label: 'Safety first', description: 'Give police and intelligence agencies what they need. If you have nothing to hide it should not matter.', stance: 'opposes' },
+      { label: 'Watch everything', description: 'Full surveillance powers to stop crime and terrorism. National security is more important than privacy.', stance: 'strongly_opposes' },
+    ],
+  },
+  'trade-and-tariffs': {
+    question: 'Should we put taxes on goods from other countries?',
+    whyItMatters:
+      'Tariffs change prices at the store. They affect which jobs stay in America and which go overseas. They also shape our relationships with other countries.',
+    supportsMeans:
+      'Put tariffs on imports to protect American jobs. Make things in America again. Punish countries that cheat on trade.',
+    opposesMeans:
+      'Free trade keeps prices low. Tariffs are taxes on consumers. Let countries trade openly.',
+    positions: [
+      { label: 'Free trade for all', description: 'No tariffs. Open trade keeps prices low and helps everyone. Let countries specialize in what they do best.', stance: 'strongly_supports' },
+      { label: 'Trade with guardrails', description: 'Mostly free trade but protect key industries. Make deals that are fair to American workers.', stance: 'supports' },
+      { label: 'Depends on the deal', description: 'Some tariffs make sense, others do not. You just want prices to stay reasonable.', stance: 'neutral' },
+      { label: 'Protect American jobs', description: 'Put tariffs on cheap imports that kill American factories. Buy American first.', stance: 'opposes' },
+      { label: 'Tariff everything', description: 'Heavy tariffs on all imports. Force companies to make things here. Other countries have taken advantage of us.', stance: 'strongly_opposes' },
+    ],
+  },
 }

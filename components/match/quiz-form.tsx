@@ -6,6 +6,7 @@ import { MatchResults } from './match-results'
 import { QUIZ_CONTENT, type QuizPosition } from '@/lib/data/quiz-content'
 import { saveQuizAnswers, loadQuizAnswers, saveQuizStep, loadQuizStep, clearQuizProgress, syncQuizToServer, loadQuizFromServer, mergeQuizAnswers, saveQuizResults, loadQuizResults } from '@/lib/utils/quiz-storage'
 import { createClient } from '@/lib/supabase/client'
+import { trackEvent } from '@/lib/utils/analytics'
 
 interface Issue {
   id: string
@@ -39,11 +40,7 @@ const POSITION_COLORS = [
   { bg: 'rgba(220, 38, 38, 0.15)', border: 'rgba(220, 38, 38, 0.4)', text: '#DC2626', dot: '#DC2626' },  // strongly against — deep red
 ]
 
-const MILESTONES: Record<number, string> = {
-  4: 'Nice! 10 more to go',
-  7: 'Halfway there!',
-  11: 'Almost done! Just 3 left',
-}
+// Milestones are computed dynamically based on total issue count
 
 function isForSide(stance: string): boolean {
   return stance === 'strongly_supports' || stance === 'supports' || stance === 'leans_support'
@@ -81,7 +78,7 @@ export function QuizForm({ issues }: Props) {
   const [userState, setUserState] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showCheck, setShowCheck] = useState(false)
-  const [milestone, setMilestone] = useState<string | null>(null)
+  const [milestone] = useState<string | null>(null)
   const [slideDir, setSlideDir] = useState<'left' | 'right' | null>(null)
 
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -132,6 +129,10 @@ export function QuizForm({ issues }: Props) {
           setStateResults(cached.stateResults)
         }
       }
+      // Track quiz start for users who don't have cached results
+      if (!cancelled && !results) {
+        trackEvent('quiz_started', { source: document.referrer.includes('/dashboard') ? 'dashboard' : 'direct' })
+      }
       if (!cancelled) setInitialLoaded(true)
     }
     init()
@@ -166,6 +167,11 @@ export function QuizForm({ issues }: Props) {
   }, [currentStep, total])
 
   function selectPosition(stance: string) {
+    trackEvent('quiz_question_answered', {
+      issueSlug: issue.slug,
+      stance,
+      questionNumber: currentStep + 1,
+    })
     setAnswers(prev => {
       const next = { ...prev, [issue.slug]: stance }
       saveQuizAnswers(next, userId.current)
@@ -178,24 +184,13 @@ export function QuizForm({ issues }: Props) {
     })
     setShowCheck(true)
 
-    const newCount = answeredCount + (answers[issue.slug] ? 0 : 1)
     const nextStep = currentStep + 1
-    const milestoneMsg = MILESTONES[newCount]
 
     if (advanceTimer.current) clearTimeout(advanceTimer.current)
 
     advanceTimer.current = setTimeout(() => {
-      if (milestoneMsg) {
-        setMilestone(milestoneMsg)
-        setTimeout(() => {
-          setMilestone(null)
-          if (nextStep >= total) submit()
-          else goToStep(nextStep)
-        }, 1200)
-      } else {
-        if (nextStep >= total) submit()
-        else goToStep(nextStep)
-      }
+      if (nextStep >= total) submit()
+      else goToStep(nextStep)
     }, 600)
   }
 
@@ -230,6 +225,11 @@ export function QuizForm({ issues }: Props) {
       setResults(data.results)
       setStateResults(data.yourState ?? [])
       saveQuizResults(data.results, data.yourState ?? [], userId.current)
+      trackEvent('quiz_completed', {
+        totalQuestions: Object.keys(validStances).length,
+        topMatch: data.results?.[0]?.politician?.slug ?? '',
+        topScore: data.results?.[0]?.score ?? 0,
+      })
     } catch {
       setError('Network error. Please try again.')
     } finally {
@@ -346,7 +346,7 @@ export function QuizForm({ issues }: Props) {
       {/* Progress */}
       <div className="mb-2 flex items-center justify-between text-[12px] font-medium text-[var(--codex-sub)]">
         <span className="uppercase tracking-[0.1em]">Question {currentStep + 1} of {total}</span>
-        <span>{answeredCount} answered</span>
+        <span>{answeredCount} answered · skip any you're unsure about</span>
       </div>
       <div className="mb-6 h-1 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
         <div
@@ -454,13 +454,11 @@ export function QuizForm({ issues }: Props) {
         </div>
 
         <div className="mt-3 text-center text-[12px] text-[var(--codex-sub)]">
-          {answeredCount >= 7 ? (
+          {answeredCount >= 3 ? (
             <p>
-              Halfway! <span className="font-semibold" style={{ color: '#3B82F6' }}>{forCount}</span> leaning blue,{' '}
+              Answered {answeredCount} of {issues.length} · <span className="font-semibold" style={{ color: '#3B82F6' }}>{forCount}</span> leaning blue,{' '}
               <span className="font-semibold" style={{ color: '#EF4444' }}>{againstCount}</span> leaning red
             </p>
-          ) : answeredCount >= 3 ? (
-            <p className="text-[var(--codex-faint)]">Your profile is taking shape...</p>
           ) : null}
         </div>
       </div>

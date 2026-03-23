@@ -15,7 +15,7 @@ interface Suggestion {
   image_url: string | null
 }
 
-export function SearchInput({ size = 'default' }: { size?: 'default' | 'lg' }) {
+export function SearchInput({ size = 'default', basePath }: { size?: 'default' | 'lg'; basePath?: string }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -73,15 +73,19 @@ export function SearchInput({ size = 'default' }: { size?: 'default' | 'lg' }) {
         params.delete('q')
       }
       params.delete('page')
-      router.push(`/?${params.toString()}`)
+      const base = basePath ?? '/'
+      router.push(`${base}?${params.toString()}`)
     })
   }
 
   function handleChange(val: string) {
     setValue(val)
     fetchSuggestions(val)
-    if (timerRef.current) clearTimeout(timerRef.current)
-    timerRef.current = setTimeout(() => pushSearch(val), 300)
+    // Only push search params on the homepage (no basePath)
+    if (!basePath) {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => pushSearch(val), 300)
+    }
   }
 
   function handleClear() {
@@ -90,7 +94,7 @@ export function SearchInput({ size = 'default' }: { size?: 'default' | 'lg' }) {
     setShowDropdown(false)
     setActiveIndex(-1)
     if (inputRef.current) inputRef.current.focus()
-    pushSearch('')
+    if (!basePath) pushSearch('')
   }
 
   function selectSuggestion(suggestion: Suggestion) {
@@ -169,7 +173,7 @@ export function SearchInput({ size = 'default' }: { size?: 'default' | 'lg' }) {
         autoCorrect="off"
         autoCapitalize="off"
         autoComplete="off"
-        className={`w-full rounded-xl border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] pr-12 font-sans text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-input-focus)] focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)] ${
+        className={`w-full rounded-xl border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] pr-12 font-sans text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-input-focus)] focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)] [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden ${
           size === 'lg'
             ? 'h-12 px-5 text-base sm:h-14 sm:text-[16px]'
             : 'px-5 py-3.5 text-[15px] sm:py-4 sm:text-[14.5px]'

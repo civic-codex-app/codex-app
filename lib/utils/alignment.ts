@@ -29,6 +29,14 @@ const PARTY_DEFAULTS: Record<string, Record<string, string>> = {
     'infrastructure-and-transportation': 'supports',
     'housing-and-affordability': 'strongly_supports',
     'energy-policy-and-oil-gas': 'leans_oppose',
+    'reproductive-rights': 'strongly_supports',
+    'lgbtq-rights': 'strongly_supports',
+    'drug-policy': 'supports',
+    'voting-rights': 'strongly_supports',
+    'taxes-and-spending': 'strongly_supports',
+    'labor-and-unions': 'strongly_supports',
+    'privacy-and-surveillance': 'supports',
+    'trade-and-tariffs': 'supports',
   },
   republican: {
     'economy-and-jobs': 'supports',
@@ -45,6 +53,14 @@ const PARTY_DEFAULTS: Record<string, Record<string, string>> = {
     'infrastructure-and-transportation': 'supports',
     'housing-and-affordability': 'leans_oppose',
     'energy-policy-and-oil-gas': 'strongly_supports',
+    'reproductive-rights': 'strongly_opposes',
+    'lgbtq-rights': 'opposes',
+    'drug-policy': 'opposes',
+    'voting-rights': 'opposes',
+    'taxes-and-spending': 'strongly_opposes',
+    'labor-and-unions': 'opposes',
+    'privacy-and-surveillance': 'opposes',
+    'trade-and-tariffs': 'opposes',
   },
   independent: {
     'economy-and-jobs': 'supports',
@@ -61,6 +77,14 @@ const PARTY_DEFAULTS: Record<string, Record<string, string>> = {
     'infrastructure-and-transportation': 'supports',
     'housing-and-affordability': 'supports',
     'energy-policy-and-oil-gas': 'neutral',
+    'reproductive-rights': 'supports',
+    'lgbtq-rights': 'supports',
+    'drug-policy': 'supports',
+    'voting-rights': 'supports',
+    'taxes-and-spending': 'neutral',
+    'labor-and-unions': 'neutral',
+    'privacy-and-surveillance': 'supports',
+    'trade-and-tariffs': 'neutral',
   },
 }
 
@@ -96,6 +120,9 @@ export function computeAlignment(
     const expectedVal = STANCE_NUMERIC[defaults[slug]]
     const actualVal = STANCE_NUMERIC[s.stance]
     if (expectedVal == null || actualVal == null || expectedVal < 0 || actualVal < 0) continue
+
+    // Neutral stances don't indicate alignment or misalignment — skip
+    if (s.stance === 'neutral' || s.stance === 'mixed') continue
 
     total++
     const distance = Math.abs(expectedVal - actualVal)

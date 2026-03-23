@@ -16,10 +16,18 @@ const ALL_ISSUES = [
   'infrastructure-and-transportation',
   'housing-and-affordability',
   'energy-policy-and-oil-gas',
+  'reproductive-rights',
+  'lgbtq-rights',
+  'drug-policy',
+  'voting-rights',
+  'taxes-and-spending',
+  'labor-and-unions',
+  'privacy-and-surveillance',
+  'trade-and-tariffs',
 ]
 
 describe('QUIZ_CONTENT', () => {
-  it('has content for all 14 issues', () => {
+  it('has content for all 22 issues', () => {
     for (const slug of ALL_ISSUES) {
       expect(QUIZ_CONTENT[slug], `Missing quiz content for ${slug}`).toBeDefined()
     }

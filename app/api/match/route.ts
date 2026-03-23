@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Limit stances count and validate slug format
-    if (Object.keys(stances).length > 20) {
+    if (Object.keys(stances).length > 30) {
       return NextResponse.json({ error: 'Too many stances' }, { status: 400 })
     }
 
@@ -166,6 +166,24 @@ export async function POST(request: NextRequest) {
     function buildResult(t: typeof scored[0]) {
       const politician = polMap.get(t.politicianId)
       if (!politician) return null
+
+      // Build per-issue comparison
+      const polStances = byPolitician.get(t.politicianId) ?? {}
+      const issueBreakdown: Array<{ slug: string; userStance: string; polStance: string; distance: number }> = []
+      for (const slug of Object.keys(stances)) {
+        const userStance = stances[slug]
+        const polStance = polStances[slug]
+        if (!polStance) continue
+        const uVal = STANCE_NUMERIC[userStance]
+        const pVal = STANCE_NUMERIC[polStance]
+        if (uVal == null || pVal == null || uVal < 0 || pVal < 0) continue
+        // Skip neutral/mixed user stances (same as scoring)
+        if (userStance === 'neutral' || userStance === 'mixed') continue
+        issueBreakdown.push({ slug, userStance, polStance, distance: Math.abs(uVal - pVal) })
+      }
+      // Sort: agreed first, then disagreed
+      issueBreakdown.sort((a, b) => a.distance - b.distance)
+
       return {
         politician: {
           name: politician.name,
@@ -183,22 +201,79 @@ export async function POST(request: NextRequest) {
         score: t.score,
         matchedIssues: t.matched,
         totalIssues: t.total,
+        issueBreakdown,
       }
     }
 
-    // Split into state-specific and national results
-    const yourState = userState
-      ? scored
-          .filter(t => {
-            const pol = polMap.get(t.politicianId)
-            return pol?.state === userState
-          })
-          .slice(0, 10)
-          .map(buildResult)
-          .filter(Boolean)
-      : []
+    // Split into state-specific results with party diversity
+    let yourState: ReturnType<typeof buildResult>[] = []
+    if (userState) {
+      const stateScored = scored.filter(t => {
+        const pol = polMap.get(t.politicianId)
+        return pol?.state === userState
+      })
+      const stateByParty = new Map<string, typeof scored>()
+      for (const s of stateScored) {
+        const pol = polMap.get(s.politicianId)
+        if (!pol) continue
+        if (!stateByParty.has(pol.party)) stateByParty.set(pol.party, [])
+        stateByParty.get(pol.party)!.push(s)
+      }
+      // Top 1 from each party first
+      const stateDiv: typeof scored = []
+      const stateUsed = new Set<string>()
+      const stateBests = [...stateByParty.entries()]
+        .map(([, ps]) => ps[0])
+        .filter(Boolean)
+        .sort((a, b) => b.score - a.score)
+      for (const s of stateBests) {
+        stateDiv.push(s)
+        stateUsed.add(s.politicianId)
+      }
+      for (const s of stateScored) {
+        if (stateDiv.length >= 10) break
+        if (!stateUsed.has(s.politicianId)) {
+          stateDiv.push(s)
+          stateUsed.add(s.politicianId)
+        }
+      }
+      yourState = stateDiv.map(buildResult).filter(Boolean) as typeof yourState
+    }
 
-    const results = scored
+    // Build diverse results: top 1 from each party first, then fill by score
+    const byParty = new Map<string, typeof scored>()
+    for (const s of scored) {
+      const pol = polMap.get(s.politicianId)
+      if (!pol) continue
+      const party = pol.party
+      if (!byParty.has(party)) byParty.set(party, [])
+      byParty.get(party)!.push(s)
+    }
+
+    const diverse: typeof scored = []
+    const usedIds = new Set<string>()
+
+    // Top 1 from each party (sorted by best score first)
+    const partyBests = [...byParty.entries()]
+      .map(([, ps]) => ps[0])
+      .filter(Boolean)
+      .sort((a, b) => b.score - a.score)
+
+    for (const s of partyBests) {
+      diverse.push(s)
+      usedIds.add(s.politicianId)
+    }
+
+    // Fill remaining slots from overall top scores
+    for (const s of scored) {
+      if (diverse.length >= TOP_N) break
+      if (!usedIds.has(s.politicianId)) {
+        diverse.push(s)
+        usedIds.add(s.politicianId)
+      }
+    }
+
+    const results = diverse
       .slice(0, TOP_N)
       .map(buildResult)
       .filter(Boolean)

@@ -21,6 +21,14 @@ export const ISSUE_SUBTITLES: Record<string, string> = {
   'energy-policy-and-oil-gas': 'Should we use more solar and wind or more oil and gas?',
   'infrastructure-and-transportation': 'How should we pay to fix roads, bridges, and internet?',
   'social-security-and-medicare': 'How do we make sure seniors get their retirement checks?',
+  'reproductive-rights': 'Should abortion be legal? Who gets to decide?',
+  'lgbtq-rights': 'Should LGBTQ+ people have the same legal protections?',
+  'drug-policy': 'Should marijuana be legal? How should we handle drug use?',
+  'voting-rights': 'Should it be easier or harder to vote in elections?',
+  'taxes-and-spending': 'Should the government tax and spend more or less?',
+  'labor-and-unions': 'Should workers have more power through unions?',
+  'privacy-and-surveillance': 'How much should the government be able to watch what you do?',
+  'trade-and-tariffs': 'Should we put taxes on goods from other countries?',
 }
 
 // ─── Issue Explainers (for issue detail pages) ───────────────────────────────
@@ -101,6 +109,46 @@ export const ISSUE_EXPLAINERS: Record<string, IssueExplainer> = {
     description: 'Social Security is money the government pays to people when they retire or cannot work. The money comes from everyone\'s paychecks.',
     progressiveView: 'Wants to protect these payments and maybe make them bigger.',
     conservativeView: 'Thinks the program costs too much. May want to raise the retirement age.',
+  },
+  'reproductive-rights': {
+    description: 'Reproductive rights is about whether abortion should be legal, who decides, and what health care options are available for women.',
+    progressiveView: 'Wants abortion to be legal and available. Sees it as a personal health care choice.',
+    conservativeView: 'Wants to ban or limit abortion. Believes life begins at conception and should be protected.',
+  },
+  'lgbtq-rights': {
+    description: 'LGBTQ+ rights covers laws about same-sex marriage, transgender protections, workplace discrimination, and what schools teach about gender.',
+    progressiveView: 'Wants strong protections for LGBTQ+ people in jobs, housing, health care, and schools.',
+    conservativeView: 'Wants to protect religious freedom and keep traditional definitions of gender and marriage.',
+  },
+  'drug-policy': {
+    description: 'Drug policy is about which substances are legal and how the government handles drug use — through jail time, treatment, or legalization.',
+    progressiveView: 'Wants to legalize marijuana and treat addiction as a health issue, not a crime.',
+    conservativeView: 'Wants to keep most drugs illegal and punish dealers with tough sentences.',
+  },
+  'voting-rights': {
+    description: 'Voting rights is about how easy or hard it is to vote. It covers voter ID, mail-in voting, early voting, and how voter rolls are managed.',
+    progressiveView: 'Wants to make voting easier with automatic registration, more early voting, and no ID barriers.',
+    conservativeView: 'Wants stricter rules like photo ID and limited mail-in voting to prevent fraud.',
+  },
+  'taxes-and-spending': {
+    description: 'Tax policy is about how much the government takes from your paycheck and how it spends that money on things like schools, roads, and health care.',
+    progressiveView: 'Wants wealthy people and corporations to pay more taxes to fund public programs.',
+    conservativeView: 'Wants lower taxes for everyone. Thinks the government wastes too much money.',
+  },
+  'labor-and-unions': {
+    description: 'Labor policy is about the balance of power between workers and employers. It covers unions, minimum wage, working conditions, and worker rights.',
+    progressiveView: 'Wants stronger unions and higher minimum wages to give workers more power.',
+    conservativeView: 'Thinks unions raise costs and hurt businesses. Workers should negotiate on their own.',
+  },
+  'privacy-and-surveillance': {
+    description: 'Privacy policy is about how much the government can monitor your calls, texts, location, and online activity in the name of safety.',
+    progressiveView: 'Wants strong privacy protections. Government should need a warrant to access your data.',
+    conservativeView: 'Wants law enforcement to have the tools to keep people safe, even if it means more surveillance.',
+  },
+  'trade-and-tariffs': {
+    description: 'Trade policy is about taxes on imported goods (tariffs) and deals with other countries. It affects prices you pay and which jobs stay in America.',
+    progressiveView: 'Wants mostly free trade that keeps prices low but with protections for workers.',
+    conservativeView: 'Wants tariffs to protect American jobs and factories from cheap foreign competition.',
   },
 }
 

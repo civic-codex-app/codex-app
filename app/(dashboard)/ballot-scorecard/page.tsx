@@ -249,12 +249,15 @@ export default async function BallotScorecardPage() {
   }
 
   for (const race of races) {
+    // Only show races that have candidates
+    if (race.candidates.length === 0) continue
     const group = raceGroup(race.chamber)
     grouped[group].push(race)
   }
 
   const groups: RaceGroup[] = ['Federal', 'State', 'Local']
   const quizCount = Object.keys(quizAnswers).length
+  const totalRacesWithCandidates = groups.reduce((sum, g) => sum + grouped[g].length, 0)
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
@@ -270,7 +273,7 @@ export default async function BallotScorecardPage() {
         <Link href="/account" className="underline hover:text-[var(--codex-text)]">Update location</Link>
       </p>
 
-      {races.length === 0 ? (
+      {totalRacesWithCandidates === 0 ? (
         <div className="rounded-md border border-[var(--codex-border)] py-16 text-center">
           <p className="mb-2 text-sm font-medium text-[var(--codex-text)]">
             No upcoming races found

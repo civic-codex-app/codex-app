@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, PUBLIC_READ } from '@/lib/utils/rate-limit'
+import { trackServerEvent } from '@/lib/utils/analytics-server'
 
 export async function GET(request: NextRequest) {
   const limited = rateLimit(request, PUBLIC_READ)
@@ -24,6 +25,12 @@ export async function GET(request: NextRequest) {
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  // Track search (fire-and-forget)
+  trackServerEvent('search_performed', {
+    query: q,
+    resultCount: data?.length ?? 0,
+  }, { request })
 
   return NextResponse.json(data ?? [], {
     headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' },

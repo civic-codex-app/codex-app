@@ -12,7 +12,7 @@ const QuizAnswersSchema = z
     z.string().regex(/^[a-z0-9-]+$/).max(100),
     z.enum(stanceKeys),
   )
-  .refine(obj => Object.keys(obj).length <= 20, { message: 'Too many answers' })
+  .refine(obj => Object.keys(obj).length <= 30, { message: 'Too many answers' })
 
 /**
  * GET /api/quiz-answers

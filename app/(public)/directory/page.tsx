@@ -72,7 +72,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
         </p>
 
         <Suspense>
-          <SearchInput />
+          <SearchInput basePath="/directory" />
         </Suspense>
 
         {/* Results */}

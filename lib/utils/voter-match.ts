@@ -62,6 +62,9 @@ export function computeVoterMatch(
     // Skip if either side is missing or unknown (-1)
     if (userVal == null || polVal == null || userVal < 0 || polVal < 0) continue
 
+    // Neutral/mixed = no opinion — skip so it doesn't penalize the score
+    if (userStance === 'neutral' || userStance === 'mixed') continue
+
     matched++
     const distance = Math.abs(userVal - polVal)
 

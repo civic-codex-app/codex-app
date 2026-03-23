@@ -56,6 +56,48 @@ describe('computeAlignment', () => {
     const score = computeAlignment('democrat', stances)
     expect(score).toBe(85)
   })
+
+  it('skips neutral stances — no penalty', () => {
+    const stances = [
+      { stance: 'supports', issues: { slug: 'economy-and-jobs' } },           // matches dem default
+      { stance: 'neutral', issues: { slug: 'healthcare-and-medicare' } },      // should be skipped
+    ]
+    const score = computeAlignment('democrat', stances)
+    // Only economy counted, perfect match
+    expect(score).toBe(100)
+  })
+
+  it('skips mixed stances', () => {
+    const stances = [
+      { stance: 'strongly_supports', issues: { slug: 'immigration-and-border-security' } }, // rep default
+      { stance: 'mixed', issues: { slug: 'economy-and-jobs' } },
+    ]
+    const score = computeAlignment('republican', stances)
+    expect(score).toBe(100)
+  })
+
+  it('returns -1 when all stances are neutral', () => {
+    const stances = [
+      { stance: 'neutral', issues: { slug: 'economy-and-jobs' } },
+      { stance: 'neutral', issues: { slug: 'healthcare-and-medicare' } },
+    ]
+    expect(computeAlignment('democrat', stances)).toBe(-1)
+  })
+})
+
+describe('getPartyDefault — new issues', () => {
+  const NEW_ISSUES = [
+    'reproductive-rights', 'lgbtq-rights', 'drug-policy', 'voting-rights',
+    'taxes-and-spending', 'labor-and-unions', 'privacy-and-surveillance', 'trade-and-tariffs',
+  ]
+
+  it('has party defaults for all new issues', () => {
+    for (const slug of NEW_ISSUES) {
+      expect(getPartyDefault('democrat', slug), `democrat missing ${slug}`).toBeTruthy()
+      expect(getPartyDefault('republican', slug), `republican missing ${slug}`).toBeTruthy()
+      expect(getPartyDefault('independent', slug), `independent missing ${slug}`).not.toBeNull()
+    }
+  })
 })
 
 describe('getPartyDefault', () => {

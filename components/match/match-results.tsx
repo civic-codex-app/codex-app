@@ -1,11 +1,14 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Link from 'next/link'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { alignmentMeta } from '@/lib/utils/alignment'
+import { stanceStyle } from '@/lib/utils/stances'
+import { QUIZ_CONTENT } from '@/lib/data/quiz-content'
+import { trackEvent } from '@/lib/utils/analytics'
 
 interface Politician {
   name: string
@@ -21,11 +24,19 @@ interface Politician {
   website_url?: string | null
 }
 
+interface IssueComparison {
+  slug: string
+  userStance: string
+  polStance: string
+  distance: number
+}
+
 interface MatchResult {
   politician: Politician
   score: number
   matchedIssues: number
   totalIssues: number
+  issueBreakdown?: IssueComparison[]
 }
 
 interface Props {
@@ -45,8 +56,98 @@ function scoreColor(score: number): string {
   return '#EF4444'
 }
 
+function issueLabel(slug: string): string {
+  return QUIZ_CONTENT[slug]?.question?.replace(/\?.*/, '') ?? slug.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
+}
+
+function IssueBreakdown({ issues }: { issues: IssueComparison[] }) {
+  const agree = issues.filter(i => i.distance <= 1)
+  const close = issues.filter(i => i.distance === 2)
+  const differ = issues.filter(i => i.distance >= 3)
+
+  return (
+    <div className="mt-3 space-y-3 border-t border-[var(--codex-border)] pt-3">
+      {agree.length > 0 && (
+        <div>
+          <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-emerald-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Agree ({agree.length})
+          </div>
+          {agree.map(i => (
+            <IssueRow key={i.slug} issue={i} />
+          ))}
+        </div>
+      )}
+      {close.length > 0 && (
+        <div>
+          <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-amber-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Close ({close.length})
+          </div>
+          {close.map(i => (
+            <IssueRow key={i.slug} issue={i} />
+          ))}
+        </div>
+      )}
+      {differ.length > 0 && (
+        <div>
+          <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-red-400">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Differ ({differ.length})
+          </div>
+          {differ.map(i => (
+            <IssueRow key={i.slug} issue={i} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function IssueRow({ issue }: { issue: IssueComparison }) {
+  const userStyle = stanceStyle(issue.userStance)
+  const polStyle = stanceStyle(issue.polStance)
+  return (
+    <div className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[12px]">
+      <span className="min-w-0 flex-1 truncate text-[var(--codex-sub)]">{issueLabel(issue.slug)}</span>
+      <div className="flex shrink-0 items-center gap-1.5">
+        <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ backgroundColor: `${userStyle.color}18`, color: userStyle.color }}>
+          You: {userStyle.shortLabel}
+        </span>
+        <span className="text-[var(--codex-faint)]">vs</span>
+        <span className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ backgroundColor: `${polStyle.color}18`, color: polStyle.color }}>
+          {polStyle.shortLabel}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 export function MatchResults({ results, stateResults = [], userState, isLoggedIn, onRetake, onEditAnswers, onUpdateResults }: Props) {
   const [copied, setCopied] = useState(false)
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
+
+  function toggleExpand(slug: string) {
+    setExpandedCards(prev => {
+      const next = new Set(prev)
+      if (next.has(slug)) next.delete(slug)
+      else next.add(slug)
+      return next
+    })
+  }
+
+  // Track result view on mount
+  useEffect(() => {
+    if (results.length > 0) {
+      trackEvent('quiz_result_viewed', {
+        topMatch: results[0].politician.slug,
+        topScore: results[0].score,
+        totalResults: results.length,
+        isLoggedIn: isLoggedIn ?? false,
+      })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleShare = useCallback(() => {
     const top = results[0]
@@ -54,7 +155,9 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
 
     const shareUrl = `${window.location.origin}/quiz?result=${top.politician.slug}&score=${top.score}`
 
-    if (navigator.share) {
+    const canShare = typeof navigator.share === 'function'
+    trackEvent('quiz_results_shared', { method: canShare ? 'native' : 'clipboard', topMatch: top.politician.slug })
+    if (canShare) {
       navigator.share({
         title: `I'm ${top.score}% aligned with ${top.politician.name}`,
         text: 'Take the Who Represents You quiz on Poli!',
@@ -87,6 +190,14 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
   const topThree = results.slice(0, 3)
   const rest = results.slice(3)
   const topSlug = results[0]?.politician.slug
+
+  // Party breakdown summary
+  const partyCounts: Record<string, number> = {}
+  for (const r of results) {
+    const p = r.politician.party
+    partyCounts[p] = (partyCounts[p] ?? 0) + 1
+  }
+  const partyEntries = Object.entries(partyCounts).sort((a, b) => b[1] - a[1])
 
   return (
     <div>
@@ -128,16 +239,31 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
       <h2 className="mb-2 text-center text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-[var(--codex-text)]">
         Across the Country
       </h2>
-      <p className="mb-8 text-center text-[14px] text-[var(--codex-sub)]">
+      <p className="mb-4 text-center text-[14px] text-[var(--codex-sub)]">
         Based on {results[0]?.matchedIssues ?? 0} issues you answered
       </p>
+
+      {/* Party breakdown summary */}
+      <div className="mb-8 flex flex-wrap items-center justify-center gap-3">
+        {partyEntries.map(([party, count]) => (
+          <div
+            key={party}
+            className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium"
+            style={{ backgroundColor: `${partyColor(party)}15`, color: partyColor(party) }}
+          >
+            <PartyIcon party={party} size={12} />
+            <span>{count} {partyLabel(party)}{count !== 1 ? 's' : ''}</span>
+          </div>
+        ))}
+      </div>
 
       {/* Podium: top 3 */}
       <div className="mb-8 flex flex-col gap-4">
         {topThree.map((r, i) => {
           const color = scoreColor(r.score)
           const pColor = partyColor(r.politician.party)
-          const meta = alignmentMeta(r.score)
+          const isExpanded = expandedCards.has(r.politician.slug)
+          const hasBreakdown = r.issueBreakdown && r.issueBreakdown.length > 0
           return (
             <div
               key={r.politician.slug}
@@ -207,9 +333,20 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
                 />
               </div>
 
-              {/* Meta + social row */}
+              {/* Meta row */}
               <div className="mt-2.5 flex items-center justify-between text-[12px] text-[var(--codex-faint)]">
-                <span>{r.matchedIssues} issues matched</span>
+                <div className="flex items-center gap-3">
+                  <span>{r.matchedIssues} issues compared</span>
+                  {hasBreakdown && (
+                    <button
+                      onClick={() => toggleExpand(r.politician.slug)}
+                      className="font-medium text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                    >
+                      {isExpanded ? 'Hide breakdown' : 'See issue breakdown'}
+                    </button>
+                  )}
+                </div>
                 <Link
                   href={`/compare?a=${topSlug}&b=${r.politician.slug}`}
                   className="text-[var(--codex-sub)] hover:text-[var(--codex-text)] hover:underline"
@@ -217,6 +354,11 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
                   Compare
                 </Link>
               </div>
+
+              {/* Expandable issue breakdown */}
+              {isExpanded && hasBreakdown && (
+                <IssueBreakdown issues={r.issueBreakdown!} />
+              )}
 
               {/* Social links + View Profile */}
               <div className="mt-3 flex items-center gap-2 border-t border-[var(--codex-border)] pt-3">
@@ -267,6 +409,7 @@ export function MatchResults({ results, stateResults = [], userState, isLoggedIn
             </p>
             <Link
               href="/signup"
+              onClick={() => trackEvent('quiz_cta_signup_clicked', { topMatch: results[0]?.politician.slug ?? '' })}
               className="mt-5 inline-block rounded-lg px-8 py-3 text-[14px] font-semibold text-white no-underline transition-opacity hover:opacity-90"
               style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
             >

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { DM_Sans, Instrument_Serif } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/react'
+import Script from 'next/script'
+import { VercelAnalytics } from '@/components/analytics/vercel-analytics'
 import { getSiteSettings } from '@/lib/utils/site-settings'
 import './globals.css'
 
@@ -71,16 +72,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${dmSans.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
-      <head>
-        <script
+      <head />
+      <body className="font-sans antialiased" suppressHydrationWarning>
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('codex-theme');if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.add('light')}}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem('codex-theme');if(t==='dark'){document.documentElement.classList.add('dark')}else if(t==='light'){document.documentElement.classList.add('light')}else{var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;document.documentElement.classList.add(d?'dark':'light')}}catch(e){}})()`,
           }}
         />
-      </head>
-      <body className="font-sans antialiased" suppressHydrationWarning>
         {children}
-        <Analytics />
+        <VercelAnalytics />
       </body>
     </html>
   )

@@ -104,4 +104,41 @@ describe('computeVoterMatch', () => {
     const result = computeVoterMatch(user, pol)
     expect(result.score).toBe(25)
   })
+
+  it('skips neutral user stances entirely — no penalty', () => {
+    const user = {
+      'healthcare': 'supports',
+      'economy': 'neutral',
+    }
+    const pol = {
+      'healthcare': 'supports',
+      'economy': 'strongly_opposes', // would be max distance if counted
+    }
+    const result = computeVoterMatch(user, pol)
+    // Only healthcare should count — perfect match
+    expect(result.score).toBe(100)
+    expect(result.matched).toBe(1)
+  })
+
+  it('skips mixed user stances entirely', () => {
+    const user = {
+      'healthcare': 'opposes',
+      'economy': 'mixed',
+    }
+    const pol = {
+      'healthcare': 'opposes',
+      'economy': 'strongly_supports',
+    }
+    const result = computeVoterMatch(user, pol)
+    expect(result.score).toBe(100)
+    expect(result.matched).toBe(1)
+  })
+
+  it('returns 0 matched when all user stances are neutral', () => {
+    const user = { 'healthcare': 'neutral', 'economy': 'neutral' }
+    const pol = { 'healthcare': 'supports', 'economy': 'opposes' }
+    const result = computeVoterMatch(user, pol)
+    expect(result.matched).toBe(0)
+    expect(result.score).toBe(0)
+  })
 })

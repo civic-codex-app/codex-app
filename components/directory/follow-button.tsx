@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
+import { trackEvent } from '@/lib/utils/analytics'
 
 interface FollowButtonProps {
   politicianId: string
@@ -63,7 +64,10 @@ export function FollowButton({ politicianId, className }: FollowButtonProps) {
       const { error } = await supabase
         .from('follows')
         .insert({ user_id: userId, politician_id: politicianId })
-      if (!error) setFollowing(true)
+      if (!error) {
+        setFollowing(true)
+        trackEvent('politician_followed', { politicianId })
+      }
     }
 
     setLoading(false)

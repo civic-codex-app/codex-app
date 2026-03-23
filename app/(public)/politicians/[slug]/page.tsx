@@ -46,6 +46,7 @@ import { stanceStyle } from '@/lib/utils/stances'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
 import { getStanceContext } from '@/lib/data/educational-content'
 import { AskYourRep } from '@/components/politicians/ask-your-rep'
+import { PageViewTracker } from '@/components/analytics/page-view-tracker'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -264,6 +265,7 @@ export default async function PoliticianPage({ params }: PageProps) {
 
   return (
     <>
+      <PageViewTracker event="politician_viewed" data={{ slug, party: pol.party, chamber: pol.chamber, state: pol.state }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

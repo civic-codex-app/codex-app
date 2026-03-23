@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { rateLimit } from '@/lib/utils/rate-limit'
+import { trackServerEvent } from '@/lib/utils/analytics-server'
 
 // Strict rate limit: 5 votes per minute per IP
 const POLL_VOTE_LIMIT = { windowMs: 60_000, maxRequests: 5 }
@@ -152,6 +153,9 @@ export async function POST(request: NextRequest) {
         pct: totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0,
       }
     })
+
+    // Track poll vote
+    trackServerEvent('poll_voted', { pollId, optionId, totalVotes }, { request })
 
     return NextResponse.json({
       success: true,

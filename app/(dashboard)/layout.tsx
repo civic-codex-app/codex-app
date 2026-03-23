@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { useTheme } from '@/lib/hooks/use-theme'
+import { useAnalytics } from '@/lib/hooks/use-analytics'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { createClient } from '@/lib/supabase/client'
 import { DonkeyIcon, ElephantIcon } from '@/components/icons/party-icons'
@@ -72,6 +73,7 @@ const MORE_LINKS = [
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   useTheme()
+  useAnalytics()
   const pathname = usePathname()
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [moreOpen, setMoreOpen] = useState(false)
