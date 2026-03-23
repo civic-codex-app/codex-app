@@ -109,8 +109,8 @@ export default async function IssueMapPage() {
           stateIssueAverages={stateIssueAverages}
           politiciansByStateIssue={politiciansByStateIssue}
         />
+        <Footer />
       </main>
-      <Footer />
     </>
   )
 }

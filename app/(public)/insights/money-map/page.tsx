@@ -89,8 +89,8 @@ export default async function MoneyMapPage() {
       <Header />
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-6">
         <MoneyMapView stateFinance={stateFinance} />
+        <Footer />
       </main>
-      <Footer />
     </>
   )
 }
