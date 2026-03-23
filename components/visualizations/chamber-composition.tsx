@@ -179,10 +179,7 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
               aria-pressed={isActive}
               aria-label={`${partyLabel(group.party)}: ${group.count} seats`}
             >
-              <div
-                className="h-2.5 w-2.5 rounded-full"
-                style={{ background: color }}
-              />
+              <PartyIcon party={group.party} size={12} />
               <span className="text-[12px] font-semibold" style={{ color }}>
                 {group.count}
               </span>
