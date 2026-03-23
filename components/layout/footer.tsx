@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { DonkeyIcon, ElephantIcon, GreenDiamond } from '@/components/icons/party-icons'
 import { useThemeStore } from '@/lib/hooks/use-theme'
 
@@ -7,7 +8,7 @@ export function Footer() {
   const { mode, toggle } = useThemeStore()
 
   return (
-    <footer className="mt-10 border-t border-[var(--codex-border)] py-12 max-sm:hidden">
+    <footer className="mt-10 border-t border-[var(--codex-border)] py-10 max-sm:hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <DonkeyIcon size={12} color="var(--codex-faint)" />
@@ -15,6 +16,12 @@ export function Footer() {
           <GreenDiamond size={12} color="var(--codex-faint)" />
         </div>
         <div className="flex items-center gap-4">
+          <Link
+            href="/data-sources"
+            className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]"
+          >
+            Data Sources & Disclaimer
+          </Link>
           <span className="hidden text-[13px] text-[var(--codex-faint)] sm:inline">
             Built for civic transparency
           </span>
@@ -44,6 +51,13 @@ export function Footer() {
           </button>
         </div>
       </div>
+      <p className="mt-4 text-[11px] leading-relaxed text-[var(--codex-faint)]">
+        Poli is an independent civic education platform. We are not affiliated with any political party, campaign, or government agency.
+        All data is compiled from public sources and may contain errors.{' '}
+        <Link href="/data-sources" className="underline hover:text-[var(--codex-sub)]">
+          View our full data sources and disclaimer.
+        </Link>
+      </p>
     </footer>
   )
 }
