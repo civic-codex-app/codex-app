@@ -94,12 +94,15 @@ async function fetchPoliticianNews(name: string): Promise<NewsArticle[]> {
       console.warn(`[News] No items parsed for "${name}" (xml length: ${xml.length})`)
     }
 
-    return items
-      .slice(0, 30) // Take top 30 raw items
+    // Map ALL items (not just first 30) so we get balanced perspective coverage
+    const allArticles = items
       .map((item) => {
-        const sourceDomain = item.sourceUrl
-          ? new URL(item.sourceUrl).hostname.replace(/^www\./, '')
-          : ''
+        let sourceDomain = ''
+        try {
+          sourceDomain = item.sourceUrl
+            ? new URL(item.sourceUrl).hostname.replace(/^www\./, '')
+            : ''
+        } catch {}
         const bias = getBias(item.sourceUrl || item.link)
         return {
           title: item.title,
@@ -111,8 +114,25 @@ async function fetchPoliticianNews(name: string): Promise<NewsArticle[]> {
           publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
         }
       })
-      .filter((a) => a.title && a.url) // Sanity check
-      .slice(0, 20) // Cap at 20
+      .filter((a) => a.title && a.url)
+
+    // Build balanced selection: up to 5 per perspective, sorted by date
+    const byGroup: Record<string, NewsArticle[]> = { left: [], center: [], right: [], unknown: [] }
+    for (const a of allArticles) {
+      byGroup[a.biasGroup].push(a)
+    }
+
+    const PER_GROUP = 5
+    const balanced: NewsArticle[] = [
+      ...byGroup.left.slice(0, PER_GROUP),
+      ...byGroup.center.slice(0, PER_GROUP),
+      ...byGroup.right.slice(0, PER_GROUP),
+    ]
+
+    // Sort final selection by date (newest first)
+    return balanced.sort((a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    )
   } catch {
     return []
   }
