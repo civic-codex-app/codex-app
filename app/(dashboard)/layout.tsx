@@ -10,6 +10,7 @@ import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { createClient } from '@/lib/supabase/client'
 import { DonkeyIcon, ElephantIcon } from '@/components/icons/party-icons'
 import { cn } from '@/lib/utils'
+import { Header } from '@/components/layout/header'
 
 interface UserProfile {
   display_name: string | null
@@ -105,26 +106,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen bg-[var(--poli-bg)] pb-16 sm:pb-0">
-      {/* Desktop top nav — logo + avatar + sign out */}
+      {/* Full site header on desktop, minimal on mobile */}
+      <div className="hidden sm:block">
+        <Header />
+      </div>
       <nav
-        className="sticky z-40 border-b border-[var(--poli-border)] bg-[var(--poli-bg)]"
+        className="sticky z-40 border-b border-[var(--poli-border)] bg-[var(--poli-bg)] sm:hidden"
         style={{ top: 'env(safe-area-inset-top, 0px)' }}
       >
         <div
           className="fixed left-0 right-0 top-0 -z-10 bg-[var(--poli-bg)]"
           style={{ height: 'env(safe-area-inset-top, 0px)' }}
         />
-        <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3 md:px-10 md:py-4">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Home">
-              <ElephantIcon size={20} color="#DC2626" />
-              <DonkeyIcon size={20} color="#2563EB" />
-            </Link>
-          </div>
+        <div className="mx-auto flex items-center justify-between px-6 py-3">
+          <Link href="/" className="flex items-center gap-1 no-underline" aria-label="Home">
+            <ElephantIcon size={20} color="#DC2626" />
+            <DonkeyIcon size={20} color="#2563EB" />
+          </Link>
           <div className="flex items-center gap-3">
             {profile && (
               <Link href="/account" className="no-underline">
-                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)] transition-colors hover:border-[var(--poli-text)]">
+                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)]">
                   {profile.avatar_url ? (
                     <Image
                       src={profile.avatar_url}
@@ -142,21 +144,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
               </Link>
             )}
-            <ThemeToggle />
-            <form action="/api/auth/signout" method="POST" className="hidden sm:block">
-              <button
-                type="submit"
-                className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
-                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-              >
-                Sign out
-              </button>
-            </form>
           </div>
         </div>
       </nav>
 
-      {/* Secondary nav — desktop only, pill-style tabs */}
+      {/* Secondary nav — desktop only, pill-style tabs below header */}
       <div className="hidden border-b border-[var(--poli-border)] bg-[var(--poli-bg)] sm:block">
         <div className="mx-auto flex max-w-[1200px] items-center gap-2 px-6 py-2 md:px-10">
           {SECONDARY_NAV.map((item) => {
@@ -217,6 +209,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 {link.label}
               </Link>
             ))}
+
+            {/* Theme toggle */}
+            <div className="flex items-center justify-between rounded-lg px-4 py-3">
+              <span className="text-sm font-medium text-[var(--poli-text)]">Theme</span>
+              <ThemeToggle />
+            </div>
 
             {/* Divider */}
             <div className="my-1 border-t border-[var(--poli-border)]" />

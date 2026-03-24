@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { ThemeToggle } from '@/components/layout/theme-toggle'
 
 const TABS = [
   {
@@ -133,6 +134,12 @@ export function BottomTabs() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Theme toggle */}
+            <div className="flex items-center justify-between rounded-lg px-4 py-3">
+              <span className="text-sm font-medium text-[var(--poli-text)]">Theme</span>
+              <ThemeToggle />
+            </div>
 
             {/* Divider */}
             <div className="my-1 border-t border-[var(--poli-border)]" />
