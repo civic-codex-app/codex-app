@@ -1,18 +1,20 @@
 'use client'
 
 import Link from 'next/link'
-import { stanceBucket } from '@/lib/utils/stances'
+import { stanceBucket, STANCE_NUMERIC } from '@/lib/utils/stances'
 import { STATE_NAMES } from '@/lib/constants/us-states'
 import { StanceAvatar } from './stance-avatar'
+import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
 
 interface VoterCardProps {
   anonymousId: string
   state?: string | null
   stances: Record<string, string>
   issues: Array<{ slug: string; name: string }>
+  myStances?: Record<string, string> | null
 }
 
-export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProps) {
+export function VoterCard({ anonymousId, state, stances, issues, myStances }: VoterCardProps) {
   const displayId = anonymousId.slice(0, 4).toUpperCase()
   const entries = Object.entries(stances)
   const total = entries.length
@@ -51,6 +53,37 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
 
   const stateName = state ? STATE_NAMES[state as keyof typeof STATE_NAMES] ?? state : null
 
+  // Compute alignment with both parties
+  const stanceArray = entries.map(([slug, stance]) => ({ issue_slug: slug, stance }))
+  const demAlign = computeAlignment('democrat', stanceArray)
+  const repAlign = computeAlignment('republican', stanceArray)
+  const leanLabel = Math.abs(demAlign - repAlign) < 5
+    ? 'Centrist'
+    : demAlign > repAlign
+      ? 'Leans Left'
+      : 'Leans Right'
+  const leanColor = Math.abs(demAlign - repAlign) < 5
+    ? 'var(--codex-faint)'
+    : demAlign > repAlign
+      ? '#60a5fa'
+      : '#f87171'
+
+  // Compute match with current viewer
+  let matchPct: number | null = null
+  if (myStances && Object.keys(myStances).length > 0) {
+    const sharedSlugs = entries.filter(([slug]) => slug in myStances).map(([slug]) => slug)
+    if (sharedSlugs.length > 0) {
+      let totalDist = 0
+      for (const slug of sharedSlugs) {
+        const a = STANCE_NUMERIC[stances[slug] as keyof typeof STANCE_NUMERIC] ?? 3
+        const b = STANCE_NUMERIC[myStances[slug] as keyof typeof STANCE_NUMERIC] ?? 3
+        totalDist += Math.abs(a - b)
+      }
+      const maxDist = sharedSlugs.length * 6
+      matchPct = Math.round((1 - totalDist / maxDist) * 100)
+    }
+  }
+
   return (
     <div className="rounded-lg border border-[var(--codex-border)] p-4 transition-all hover:border-[var(--codex-input-border)] hover:bg-[var(--codex-hover)]">
       {/* Header */}
@@ -60,9 +93,10 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
           <div className="text-[14px] font-medium text-[var(--codex-text)]">
             Voter #{displayId}
           </div>
-          <div className="flex items-center gap-2 text-[11px] text-[var(--codex-faint)]">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-[var(--codex-faint)]">
             {stateName && <span>{stateName}</span>}
             <span>{total} issues answered</span>
+            <span style={{ color: leanColor }}>{leanLabel}</span>
           </div>
         </div>
       </div>
@@ -132,7 +166,20 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
         </div>
       )}
 
-      {/* Compare button */}
+      {/* Match % + Compare button */}
+      {matchPct !== null && (
+        <div className="mb-2 flex items-center justify-between text-[11px]">
+          <span className="text-[var(--codex-faint)]">Match with you</span>
+          <span
+            className="font-semibold"
+            style={{
+              color: matchPct >= 70 ? '#34d399' : matchPct >= 40 ? '#fbbf24' : '#f87171',
+            }}
+          >
+            {matchPct}%
+          </span>
+        </div>
+      )}
       <Link
         href={`/compare/users?them=${anonymousId}`}
         className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--codex-border)] px-3 py-2 text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-blue-500/50 hover:text-blue-400"

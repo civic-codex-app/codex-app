@@ -1,7 +1,7 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { VoterCard } from '@/components/community/voter-card'
+import { VoterGrid } from '@/components/community/voter-grid'
 import { StateFilterSelect } from '@/components/community/state-filter-select'
 import Link from 'next/link'
 import type { Metadata } from 'next'
@@ -123,17 +123,14 @@ export default async function CommunityPage({ searchParams }: PageProps) {
           </div>
         ) : (
           <>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {validVoters.map((v) => (
-                <VoterCard
-                  key={v.anonymous_id!}
-                  anonymousId={v.anonymous_id!}
-                  state={v.state}
-                  stances={v.quiz_answers as Record<string, string>}
-                  issues={issues ?? []}
-                />
-              ))}
-            </div>
+            <VoterGrid
+              voters={validVoters.map((v) => ({
+                anonymousId: v.anonymous_id!,
+                state: v.state,
+                stances: v.quiz_answers as Record<string, string>,
+              }))}
+              issues={issues ?? []}
+            />
 
             {/* Pagination */}
             {totalPages > 1 && (
