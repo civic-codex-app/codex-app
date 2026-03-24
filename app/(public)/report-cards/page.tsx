@@ -1,10 +1,12 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { createClient as createServerAuthClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { computeReportCard, gradeColor } from '@/lib/utils/report-card'
 import type { ReportCard } from '@/lib/utils/report-card'
 import { partyColor } from '@/lib/constants/parties'
 import { ReportCardList } from './report-card-list'
+import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const revalidate = 3600 // 1 hour
@@ -52,6 +54,52 @@ export interface RankedPolitician {
 }
 
 export default async function ReportCardsPage() {
+  // Check authentication
+  let isAuthenticated = false
+  try {
+    const authClient = await createServerAuthClient()
+    const { data: { user } } = await authClient.auth.getUser()
+    isAuthenticated = !!user
+  } catch {}
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Header />
+        <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
+          <div className="py-20 text-center">
+            <div
+              className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full"
+              style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <h1 className="mb-2 font-serif text-[clamp(24px,3vw,36px)] font-bold text-[var(--codex-text)]">
+              Civic Report Cards
+            </h1>
+            <p className="mx-auto mb-6 max-w-[400px] text-[14px] leading-[1.7] text-[var(--codex-sub)]">
+              Unlock detailed scores on bipartisanship, transparency, engagement,
+              and effectiveness for every politician.
+            </p>
+            <Link
+              href="/signup"
+              className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-[14px] font-semibold text-white no-underline shadow-lg transition-all hover:scale-[1.02] hover:bg-blue-700 hover:shadow-xl"
+            >
+              Create Free Account
+            </Link>
+            <p className="mt-3 text-[12px] text-[var(--codex-faint)]">
+              Free forever. No credit card required.
+            </p>
+          </div>
+          <Footer />
+        </main>
+      </>
+    )
+  }
+
   const supabase = createServiceRoleClient()
 
   const CHAMBERS = ['senate', 'house', 'governor']
