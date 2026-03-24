@@ -1,12 +1,15 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { ImageCropper } from '@/components/ui/image-cropper'
 import { fieldClass, labelClass } from '@/lib/utils'
 import { US_STATES } from '@/lib/constants/us-states'
+import { StanceAvatar } from '@/components/community/stance-avatar'
+import { stanceBucket } from '@/lib/utils/stances'
+import { loadQuizAnswers } from '@/lib/utils/quiz-storage'
 import Image from 'next/image'
 
 interface Profile {
@@ -33,6 +36,22 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
   const [uploading, setUploading] = useState(false)
   const [cropSrc, setCropSrc] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [stanceCounts, setStanceCounts] = useState<{ supports: number; opposes: number; neutral: number; total: number } | null>(null)
+
+  useEffect(() => {
+    const answers = loadQuizAnswers(profile?.id)
+    const entries = Object.values(answers)
+    if (entries.length > 0) {
+      let supports = 0, opposes = 0, neutral = 0
+      for (const stance of entries) {
+        const bucket = stanceBucket(stance)
+        if (bucket === 'supports') supports++
+        else if (bucket === 'opposes') opposes++
+        else neutral++
+      }
+      setStanceCounts({ supports, opposes, neutral, total: entries.length })
+    }
+  }, [profile?.id])
 
   const userInitial = (profile?.display_name ?? profile?.email ?? 'U').charAt(0).toUpperCase()
 
@@ -172,6 +191,15 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
               height={80}
               unoptimized
               className="h-full w-full object-cover"
+            />
+          ) : stanceCounts && stanceCounts.total > 0 ? (
+            <StanceAvatar
+              supports={stanceCounts.supports}
+              opposes={stanceCounts.opposes}
+              neutral={stanceCounts.neutral}
+              total={stanceCounts.total}
+              size={80}
+              seed={profile?.id ?? ''}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
