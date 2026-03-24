@@ -201,9 +201,70 @@ async function run() {
     }
   }
 
+  // ── Also add ~1000 likes for high-profile politicians ──
+  // Likes use the same table structure, weighted same way
+  const existingLikes = new Set()
+  from = 0
+  while (true) {
+    const { data } = await supabase.from('likes').select('user_id, politician_id').range(from, from + 999)
+    if (!data?.length) break
+    for (const l of data) existingLikes.add(`${l.user_id}:${l.politician_id}`)
+    from += 1000
+  }
+
+  const newLikes = []
+  const shuffledDemos2 = [...demos].sort(() => Math.random() - 0.5)
+
+  for (const polId of orderedIds) {
+    if (newLikes.length >= TARGET) break
+    const ps = polStances[polId]
+    if (!ps) continue
+
+    const candidates = []
+    for (const demo of shuffledDemos2) {
+      if (!demo.quiz_answers || Object.keys(demo.quiz_answers).length === 0) continue
+      const key = `${demo.id}:${polId}`
+      if (existingLikes.has(key)) continue
+
+      const score = alignmentScore(demo.quiz_answers, ps)
+      if (score > 0.5) {
+        candidates.push({ userId: demo.id, score })
+      }
+    }
+
+    candidates.sort((a, b) => b.score - a.score)
+    const chamber = polChamber[polId] || 'governor'
+    const numToAdd = Math.min(followsForChamber(chamber), candidates.length, TARGET - newLikes.length)
+
+    for (let i = 0; i < numToAdd; i++) {
+      const key = `${candidates[i].userId}:${polId}`
+      if (!existingLikes.has(key)) {
+        newLikes.push({ user_id: candidates[i].userId, politician_id: polId })
+        existingLikes.add(key)
+      }
+    }
+  }
+
+  console.log(`\nInserting ${newLikes.length} new likes for high-profile politicians...`)
+
+  let likesCreated = 0, likesFailed = 0
+  for (let i = 0; i < newLikes.length; i += 500) {
+    const batch = newLikes.slice(i, i + 500)
+    const { error } = await supabase
+      .from('likes')
+      .upsert(batch, { onConflict: 'user_id,politician_id', ignoreDuplicates: true })
+
+    if (error) {
+      console.error(`Likes batch error: ${error.message}`)
+      likesFailed += batch.length
+    } else {
+      likesCreated += batch.length
+    }
+  }
+
   console.log(`\n=== SUMMARY ===`)
-  console.log(`New follows created: ${created}`)
-  console.log(`Failed: ${failed}`)
+  console.log(`New follows: ${created} (failed: ${failed})`)
+  console.log(`New likes: ${likesCreated} (failed: ${likesFailed})`)
 }
 
 run().catch(console.error)

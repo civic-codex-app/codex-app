@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
+import { trackEvent } from '@/lib/utils/analytics'
 
 interface LikeButtonProps {
   politicianId: string
@@ -60,22 +61,28 @@ export function LikeButton({ politicianId, initialCount = 0, className }: LikeBu
     const supabase = createClient()
 
     if (liked) {
-      const { error } = await supabase
-        .from('likes')
-        .delete()
-        .eq('user_id', userId)
-        .eq('politician_id', politicianId)
-      if (!error) {
+      // Unlike = also unfollow
+      const [{ error: likeErr }, { error: followErr }] = await Promise.all([
+        supabase.from('likes').delete().eq('user_id', userId).eq('politician_id', politicianId),
+        supabase.from('follows').delete().eq('user_id', userId).eq('politician_id', politicianId),
+      ])
+      if (!likeErr) {
         setLiked(false)
         setCount((c) => Math.max(0, c - 1))
       }
     } else {
-      const { error } = await supabase
-        .from('likes')
-        .insert({ user_id: userId, politician_id: politicianId })
-      if (!error) {
+      // Like = also follow
+      const [{ error: likeErr }, { error: followErr }] = await Promise.all([
+        supabase.from('likes').insert({ user_id: userId, politician_id: politicianId }),
+        supabase.from('follows').upsert(
+          { user_id: userId, politician_id: politicianId },
+          { onConflict: 'user_id,politician_id', ignoreDuplicates: true }
+        ),
+      ])
+      if (!likeErr) {
         setLiked(true)
         setCount((c) => c + 1)
+        trackEvent('politician_followed', { politicianId })
       }
     }
 

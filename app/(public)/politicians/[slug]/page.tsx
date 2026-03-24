@@ -9,7 +9,6 @@ import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
-import { FollowButton } from '@/components/directory/follow-button'
 import { LikeButton } from '@/components/directory/like-button'
 import { BackButton } from '@/components/ui/back-button'
 import { ProfileTabs } from '@/components/politicians/profile-tabs'
@@ -330,7 +329,6 @@ export default async function PoliticianPage({ params }: PageProps) {
             </h1>
 
             <div className="mb-7 flex flex-wrap items-center gap-3 print:hidden">
-              <FollowButton politicianId={pol.id} />
               <LikeButton politicianId={pol.id} />
               <Link
                 href={`/compare?a=${pol.slug}`}
