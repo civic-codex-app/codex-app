@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { stanceBucket } from '@/lib/utils/stances'
 import { STATE_NAMES } from '@/lib/constants/us-states'
+import { StanceAvatar } from './stance-avatar'
 
 interface VoterCardProps {
   anonymousId: string
@@ -39,7 +40,7 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
     <div className="rounded-lg border border-[var(--codex-border)] p-4 transition-all hover:border-[var(--codex-input-border)] hover:bg-[var(--codex-hover)]">
       {/* Header */}
       <div className="mb-3 flex items-center gap-3">
-        <StanceAvatar supports={counts.supports} opposes={counts.opposes} neutral={counts.neutral + counts.mixed} total={total} />
+        <StanceAvatar supports={counts.supports} opposes={counts.opposes} neutral={counts.neutral + counts.mixed + counts.unknown} total={total} size={40} />
         <div className="min-w-0 flex-1">
           <div className="text-[14px] font-medium text-[var(--codex-text)]">
             Voter #{displayId}
@@ -132,37 +133,3 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
   )
 }
 
-/** Radial gradient avatar showing stance distribution */
-function StanceAvatar({
-  supports,
-  opposes,
-  neutral,
-  total,
-}: {
-  supports: number
-  opposes: number
-  neutral: number
-  total: number
-}) {
-  if (total === 0) {
-    return <div className="h-10 w-10 shrink-0 rounded-full bg-[var(--codex-border)]" />
-  }
-
-  const sPct = Math.round((supports / total) * 100)
-  const oPct = Math.round((opposes / total) * 100)
-
-  // Conic gradient: blue (supports) → gray (neutral) → red (opposes)
-  const gradient = `conic-gradient(
-    #3b82f6 0% ${sPct}%,
-    #6b7280 ${sPct}% ${sPct + Math.round((neutral / total) * 100)}%,
-    #ef4444 ${sPct + Math.round((neutral / total) * 100)}% 100%
-  )`
-
-  return (
-    <div
-      className="h-10 w-10 shrink-0 rounded-full"
-      style={{ background: gradient }}
-      title={`${sPct}% support, ${oPct}% oppose`}
-    />
-  )
-}

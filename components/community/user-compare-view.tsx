@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { stanceBucket, stanceDisplayBadge, type StanceBadge } from '@/lib/utils/stances'
 import { loadQuizAnswers } from '@/lib/utils/quiz-storage'
 import { IssueIcon } from '@/components/icons/issue-icon'
+import { StanceAvatar } from './stance-avatar'
 
 interface UserProfile {
   anonymousId: string
@@ -255,20 +256,11 @@ function ProfileHeader({
   const opposes = entries.filter((s) => stanceBucket(s) === 'opposes').length
   const neutral = total - supports - opposes
 
-  const sPct = total > 0 ? Math.round((supports / total) * 100) : 33
-  const nPct = total > 0 ? Math.round((neutral / total) * 100) : 34
-  const gradient = `conic-gradient(
-    #3b82f6 0% ${sPct}%,
-    #6b7280 ${sPct}% ${sPct + nPct}%,
-    #ef4444 ${sPct + nPct}% 100%
-  )`
-
   return (
     <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
-      <div
-        className="mx-auto mb-2 h-12 w-12 rounded-full"
-        style={{ background: gradient }}
-      />
+      <div className="mx-auto mb-2 flex justify-center">
+        <StanceAvatar supports={supports} opposes={opposes} neutral={neutral} total={total} size={48} />
+      </div>
       <div className="mb-1 text-[14px] font-semibold text-[var(--codex-text)]">{label}</div>
       <div className="text-[11px] text-[var(--codex-faint)]">
         {total} issues | {supports} support | {opposes} oppose
