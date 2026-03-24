@@ -57,7 +57,7 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Candidate Issue Comparison
       </h2>
 
@@ -65,7 +65,7 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
         <div className="min-w-[500px]">
           {/* Header row with candidate names */}
           <div
-            className="mb-2 grid items-end gap-2 px-4 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]"
+            className="mb-2 grid items-end gap-2 px-4 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]"
             style={{
               gridTemplateColumns: `1fr ${candidates.map(() => '100px').join(' ')}`,
             }}
@@ -97,18 +97,18 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
                   style={{
                     gridTemplateColumns: `1fr ${candidates.map(() => '100px').join(' ')}`,
                     background: allAgree ? '#3B82F608' : undefined,
-                    border: `1px solid ${allAgree ? '#3B82F618' : 'var(--codex-border)'}`,
+                    border: `1px solid ${allAgree ? '#3B82F618' : 'var(--poli-border)'}`,
                   }}
                 >
                   <Link
                     href={`/issues/${issue.issueSlug}`}
-                    className="flex items-center gap-2 text-[13px] font-medium text-[var(--codex-text)] hover:underline"
+                    className="flex items-center gap-2 text-[13px] font-medium text-[var(--poli-text)] hover:underline"
                   >
                     {issue.issueIcon && (
                       <IssueIcon
                         icon={issue.issueIcon}
                         size={14}
-                        className="text-[var(--codex-sub)]"
+                        className="text-[var(--poli-sub)]"
                       />
                     )}
                     <span className="truncate">{issue.issueName}</span>
@@ -118,7 +118,7 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
                     const stance = issue.stances[c.id]
                     if (!stance || stanceBucket(stance) === 'unknown') {
                       return (
-                        <div key={c.id} className="text-center text-[11px] text-[var(--codex-faint)]">
+                        <div key={c.id} className="text-center text-[11px] text-[var(--poli-faint)]">
                           —
                         </div>
                       )
@@ -149,7 +149,7 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
           <div className="mt-4 text-center">
             <Link
               href={`/compare?a=${candidates[0].politician.slug}&b=${candidates[1].politician.slug}`}
-              className="inline-flex items-center gap-1.5 rounded-md border border-[var(--codex-border)] px-4 py-2 text-[12px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+              className="inline-flex items-center gap-1.5 rounded-md border border-[var(--poli-border)] px-4 py-2 text-[12px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
             >
               Full Comparison →
             </Link>

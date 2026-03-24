@@ -50,7 +50,7 @@ export function StateDatePicker({
       <div className="mb-6">
         <label
           htmlFor="state-select"
-          className="mb-2 block text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]"
+          className="mb-2 block text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]"
         >
           Select your state
         </label>
@@ -58,7 +58,7 @@ export function StateDatePicker({
           id="state-select"
           value={selectedState}
           onChange={e => setSelectedState(e.target.value)}
-          className="w-full max-w-xs rounded-md border border-[var(--codex-input-border)] bg-[var(--codex-card)] px-3 py-2 text-sm text-[var(--codex-text)] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full max-w-xs rounded-md border border-[var(--poli-input-border)] bg-[var(--poli-card)] px-3 py-2 text-sm text-[var(--poli-text)] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         >
           <option value="">Choose a state...</option>
           {stateEntries.map(([code, name]) => (
@@ -73,17 +73,17 @@ export function StateDatePicker({
       {selectedState ? (
         timelineDates.length > 0 ? (
           <div>
-            <h3 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h3 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Key Dates for {STATE_NAMES[selectedState] || selectedState}
             </h3>
             <KeyDatesTimeline dates={timelineDates} electionDate={electionDate} />
           </div>
         ) : (
-          <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-hover)] px-4 py-6 text-center">
-            <p className="text-sm text-[var(--codex-faint)]">
+          <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-hover)] px-4 py-6 text-center">
+            <p className="text-sm text-[var(--poli-faint)]">
               No key dates available for {STATE_NAMES[selectedState] || selectedState} yet.
             </p>
-            <p className="mt-1 text-[12px] text-[var(--codex-faint)]">
+            <p className="mt-1 text-[12px] text-[var(--poli-faint)]">
               Election Day is {new Date(electionDate + 'T00:00:00').toLocaleDateString('en-US', {
                 month: 'long',
                 day: 'numeric',
@@ -93,8 +93,8 @@ export function StateDatePicker({
           </div>
         )
       ) : (
-        <div className="rounded-md border border-dashed border-[var(--codex-border)] px-4 py-8 text-center">
-          <p className="text-sm text-[var(--codex-faint)]">
+        <div className="rounded-md border border-dashed border-[var(--poli-border)] px-4 py-8 text-center">
+          <p className="text-sm text-[var(--poli-faint)]">
             Select a state above to see registration deadlines, early voting dates, and more.
           </p>
         </div>

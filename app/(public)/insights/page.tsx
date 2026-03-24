@@ -40,8 +40,8 @@ export default async function InsightsPage() {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
-            <div className="mb-3 text-2xl font-bold text-[var(--codex-text)]">Something went wrong</div>
-            <p className="text-sm text-[var(--codex-sub)]">
+            <div className="mb-3 text-2xl font-bold text-[var(--poli-text)]">Something went wrong</div>
+            <p className="text-sm text-[var(--poli-sub)]">
               We couldn&apos;t load insights right now. Please try again later.
             </p>
           </div>
@@ -221,7 +221,7 @@ export default async function InsightsPage() {
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Political Insights
           </h1>
-          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
+          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
             These charts break down how the government is split between parties, where politicians agree and disagree, and who works across the aisle. Everything here is based on real data from official records.
           </p>
         </div>
@@ -229,13 +229,13 @@ export default async function InsightsPage() {
         {/* Section 1: Chamber Composition */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
               Chamber Composition
             </h2>
-            <p className="text-[13px] text-[var(--codex-faint)]">
+            <p className="text-[13px] text-[var(--poli-faint)]">
               Which party has the most seats in each part of government
             </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--poli-faint)]">
               Each dot represents one official. The party with more than half the seats is &quot;in the majority&quot; — they get to decide which bills come up for a vote and lead the committees.
             </p>
           </div>
@@ -267,17 +267,17 @@ export default async function InsightsPage() {
         {/* Section 2: Issue Consensus Heatmap */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
               Issue Consensus Heatmap
             </h2>
-            <p className="text-[13px] text-[var(--codex-faint)]">
+            <p className="text-[13px] text-[var(--poli-faint)]">
               Where the two parties agree and disagree the most
             </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--poli-faint)]">
               Each bar shows how politicians from that party feel about an issue. Blue means they support it, red means they oppose it. When both parties have mostly the same color, they agree. When the colors are opposite, that issue is a major dividing line.
             </p>
           </div>
-          <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
+          <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
             <Suspense fallback={<ChartSkeleton />}>
               <IssueHeatmap stanceData={heatmapData} />
             </Suspense>
@@ -287,13 +287,13 @@ export default async function InsightsPage() {
         {/* Section 3: Political Spectrum */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
               Political Spectrum
             </h2>
-            <p className="text-[13px] text-[var(--codex-faint)]">
+            <p className="text-[13px] text-[var(--poli-faint)]">
               How closely each politician votes with their own party
             </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--poli-faint)]">
               Every politician gets an alignment score from 0% to 100%. A score near 100% means they almost always agree with their party. A low score means they often break away and vote differently. Tap any dot to see who it is.
             </p>
           </div>
@@ -305,18 +305,18 @@ export default async function InsightsPage() {
         {/* Section 4: Bipartisan Rankings */}
         <section className="mb-16">
           <div className="mb-6">
-            <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
               Bipartisan Index
             </h2>
-            <p className="text-[13px] text-[var(--codex-faint)]">
+            <p className="text-[13px] text-[var(--poli-faint)]">
               Which politicians work with the other party the most — and the least
             </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-[var(--codex-faint)]">
+            <p className="mt-2 text-[13px] leading-relaxed text-[var(--poli-faint)]">
               The left list shows politicians who vote across party lines the most — they don&apos;t always follow their party. The right list shows those who almost never break from their party&apos;s position.
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2">
-            <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
+            <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
               <Suspense fallback={<ChartSkeleton />}>
                 <BipartisanScoreCard
                   politicians={mostBipartisan}
@@ -326,7 +326,7 @@ export default async function InsightsPage() {
                 />
               </Suspense>
             </div>
-            <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
+            <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
               <Suspense fallback={<ChartSkeleton />}>
                 <BipartisanScoreCard
                   politicians={mostPartisan}
@@ -341,21 +341,21 @@ export default async function InsightsPage() {
 
         {/* Explore More */}
         <section className="mb-16">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
             Explore More
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            <a href="/issues/map" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
+            <a href="/issues/map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
               <div className="mb-2 text-lg font-semibold">Issue Map</div>
-              <p className="text-[13px] text-[var(--codex-sub)]">See how each state&apos;s delegation leans on key issues</p>
+              <p className="text-[13px] text-[var(--poli-sub)]">See how each state&apos;s delegation leans on key issues</p>
             </a>
-            <a href="/insights/money-map" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
+            <a href="/insights/money-map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
               <div className="mb-2 text-lg font-semibold">Money Map</div>
-              <p className="text-[13px] text-[var(--codex-sub)]">Campaign finance totals by state</p>
+              <p className="text-[13px] text-[var(--poli-sub)]">Campaign finance totals by state</p>
             </a>
-            <a href="/report-cards" className="rounded-md border border-[var(--codex-border)] p-5 transition-colors hover:border-[var(--codex-text)]">
+            <a href="/report-cards" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
               <div className="mb-2 text-lg font-semibold">Report Cards</div>
-              <p className="text-[13px] text-[var(--codex-sub)]">How active and bipartisan is each politician? Scored on real data.</p>
+              <p className="text-[13px] text-[var(--poli-sub)]">How active and bipartisan is each politician? Scored on real data.</p>
             </a>
           </div>
         </section>
@@ -368,9 +368,9 @@ export default async function InsightsPage() {
 
 function ChartSkeleton() {
   return (
-    <div className="animate-pulse rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-6">
-      <div className="mb-4 h-4 w-32 rounded bg-[var(--codex-border)]" />
-      <div className="h-40 rounded bg-[var(--codex-border)]" style={{ opacity: 0.3 }} />
+    <div className="animate-pulse rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-6">
+      <div className="mb-4 h-4 w-32 rounded bg-[var(--poli-border)]" />
+      <div className="h-40 rounded bg-[var(--poli-border)]" style={{ opacity: 0.3 }} />
     </div>
   )
 }

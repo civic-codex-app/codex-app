@@ -43,11 +43,11 @@ export function StanceGroup({ label, color, bgClass, textClass, entries, totalCo
 
   return (
     <section className="mb-10">
-      <h2 className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+      <h2 className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
         <span className={`rounded-sm px-2 py-0.5 text-[10px] ${bgClass} ${textClass}`}>
           {label}
         </span>
-        <span className="text-[var(--codex-faint)]">{totalCount}</span>
+        <span className="text-[var(--poli-faint)]">{totalCount}</span>
       </h2>
       <div className="space-y-2">
         {visible.map((entry, i) => {
@@ -56,13 +56,13 @@ export function StanceGroup({ label, color, bgClass, textClass, entries, totalCo
           const hasSummary = entry.summary && entry.summary.trim().length > 0
 
           return (
-            <div key={i} className="rounded-md border border-[var(--codex-border)] p-4">
+            <div key={i} className="rounded-md border border-[var(--poli-border)] p-4">
               {/* Representative politician */}
               <Link
                 href={`/politicians/${rep.slug}`}
                 className="group flex items-center gap-3 no-underline"
               >
-                <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]">
+                <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--poli-card)]">
                   <AvatarImage
                     src={rep.image_url}
                     alt={rep.name}
@@ -73,12 +73,12 @@ export function StanceGroup({ label, color, bgClass, textClass, entries, totalCo
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium transition-colors group-hover:text-[var(--codex-text)]">
+                    <span className="text-sm font-medium transition-colors group-hover:text-[var(--poli-text)]">
                       {rep.name}
                     </span>
                     <PartyIcon party={rep.party} size={10} />
                   </div>
-                  <div className="text-[11px] text-[var(--codex-faint)]">
+                  <div className="text-[11px] text-[var(--poli-faint)]">
                     {rep.title} &middot; {rep.state}
                   </div>
                 </div>
@@ -86,7 +86,7 @@ export function StanceGroup({ label, color, bgClass, textClass, entries, totalCo
 
               {/* Summary text */}
               {hasSummary && (
-                <p className="mt-2 text-[12px] leading-[1.6] text-[var(--codex-sub)]">
+                <p className="mt-2 text-[12px] leading-[1.6] text-[var(--poli-sub)]">
                   {entry.summary}
                 </p>
               )}
@@ -104,7 +104,7 @@ export function StanceGroup({ label, color, bgClass, textClass, entries, totalCo
       {hasMore && (
         <button
           onClick={() => setVisibleCount((v) => v + initialLimit)}
-          className="mt-3 w-full rounded-lg border border-[var(--codex-border)] py-2.5 text-[13px] font-medium text-[var(--codex-sub)] transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+          className="mt-3 w-full rounded-lg border border-[var(--poli-border)] py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
         >
           Show {Math.min(remaining, initialLimit)} more of {entries.length}
         </button>
@@ -121,19 +121,19 @@ function OthersRow({ politicians }: { politicians: StanceEntry['politicians'] })
   const remainingCount = politicians.length - PREVIEW_COUNT
 
   return (
-    <div className="mt-2 border-t border-[var(--codex-border)] pt-2">
+    <div className="mt-2 border-t border-[var(--poli-border)] pt-2">
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="text-[11px] text-[var(--codex-faint)]">
+        <span className="text-[11px] text-[var(--poli-faint)]">
           and {politicians.length} other{politicians.length !== 1 ? 's' : ''}:
         </span>
         {visible.map((pol) => (
           <Link
             key={pol.id}
             href={`/politicians/${pol.slug}`}
-            className="inline-flex items-center gap-1 rounded-full border border-[var(--codex-border)] px-2 py-0.5 text-[11px] no-underline transition-colors hover:border-[var(--codex-input-border)]"
+            className="inline-flex items-center gap-1 rounded-full border border-[var(--poli-border)] px-2 py-0.5 text-[11px] no-underline transition-colors hover:border-[var(--poli-input-border)]"
             title={`${pol.name} (${partyLabel(pol.party)}, ${pol.state})`}
           >
-            <div className="h-4 w-4 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]">
+            <div className="h-4 w-4 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]">
               <AvatarImage
                 src={pol.image_url}
                 alt={pol.name}
@@ -142,13 +142,13 @@ function OthersRow({ politicians }: { politicians: StanceEntry['politicians'] })
                 fallbackColor={partyColor(pol.party)}
               />
             </div>
-            <span className="text-[var(--codex-sub)]">{pol.name.split(' ').pop()}</span>
+            <span className="text-[var(--poli-sub)]">{pol.name.split(' ').pop()}</span>
           </Link>
         ))}
         {!showAll && remainingCount > 0 && (
           <button
             onClick={() => setShowAll(true)}
-            className="text-[11px] text-[var(--codex-faint)] underline hover:text-[var(--codex-sub)]"
+            className="text-[11px] text-[var(--poli-faint)] underline hover:text-[var(--poli-sub)]"
           >
             +{remainingCount} more
           </button>

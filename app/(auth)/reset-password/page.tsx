@@ -46,7 +46,7 @@ export default function ResetPasswordPage() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-3xl font-bold">New password</h1>
-        <p className="text-sm text-[var(--codex-sub)]">Enter your new password below</p>
+        <p className="text-sm text-[var(--poli-sub)]">Enter your new password below</p>
       </div>
 
       {error && (
@@ -56,7 +56,7 @@ export default function ResetPasswordPage() {
       )}
 
       <div>
-        <label htmlFor="reset-password" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="reset-password" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--poli-sub)]">
           New Password
         </label>
         <input
@@ -66,12 +66,12 @@ export default function ResetPasswordPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          className="w-full border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-3 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+          className="w-full border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
         />
       </div>
 
       <div>
-        <label htmlFor="reset-confirm" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="reset-confirm" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--poli-sub)]">
           Confirm Password
         </label>
         <input
@@ -81,7 +81,7 @@ export default function ResetPasswordPage() {
           onChange={(e) => setConfirm(e.target.value)}
           required
           minLength={6}
-          className="w-full border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-3 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+          className="w-full border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
         />
       </div>
 
@@ -89,8 +89,8 @@ export default function ResetPasswordPage() {
         {loading ? 'Updating...' : 'Update password'}
       </Button>
 
-      <div className="text-center text-xs text-[var(--codex-sub)]">
-        <Link href="/login" className="hover:text-[var(--codex-text)]">
+      <div className="text-center text-xs text-[var(--poli-sub)]">
+        <Link href="/login" className="hover:text-[var(--poli-text)]">
           ← Back to sign in
         </Link>
       </div>

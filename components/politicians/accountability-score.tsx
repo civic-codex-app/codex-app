@@ -80,17 +80,17 @@ export function AccountabilityScore({ votes, stances, party }: AccountabilitySco
   })
 
   return (
-    <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Votes vs. Stances
       </h2>
 
-      <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
+      <div className="rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
         {/* Score */}
         <div className="mb-4 flex items-center gap-4">
           <div className="relative flex-shrink-0">
             <svg width="60" height="60" viewBox="0 0 60 60">
-              <circle cx="30" cy="30" r="25" fill="none" stroke="var(--codex-border)" strokeWidth="4" />
+              <circle cx="30" cy="30" r="25" fill="none" stroke="var(--poli-border)" strokeWidth="4" />
               <circle
                 cx="30" cy="30" r="25" fill="none" stroke={color} strokeWidth="4"
                 strokeLinecap="round"
@@ -104,10 +104,10 @@ export function AccountabilityScore({ votes, stances, party }: AccountabilitySco
             </div>
           </div>
           <div>
-            <div className="text-[13px] font-medium text-[var(--codex-text)]">
+            <div className="text-[13px] font-medium text-[var(--poli-text)]">
               {alignPct >= 80 ? 'Walks the talk' : alignPct >= 60 ? 'Mostly consistent' : alignPct >= 40 ? 'Some contradictions' : 'Frequently contradicts'}
             </div>
-            <div className="text-[11px] text-[var(--codex-faint)]">
+            <div className="text-[11px] text-[var(--poli-faint)]">
               {aligned} of {total} votes match stated positions
             </div>
           </div>
@@ -116,16 +116,16 @@ export function AccountabilityScore({ votes, stances, party }: AccountabilitySco
         {/* Contradictions */}
         {uniqueContradictions.length > 0 && (
           <div>
-            <h3 className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--codex-faint)]">
+            <h3 className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--poli-faint)]">
               Notable Contradictions
             </h3>
             <div className="space-y-1.5">
               {uniqueContradictions.slice(0, 5).map((c, i) => {
                 const badge = stanceDisplayBadge(c.stance, party)
                 return (
-                  <div key={i} className="rounded-md border border-[var(--codex-border)] px-3 py-2 text-[12px]">
+                  <div key={i} className="rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px]">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-[var(--codex-text)]">
+                      <span className="truncate text-[var(--poli-text)]">
                         {c.billNumber && c.billNumber !== c.billName ? `${c.billName} (${c.billNumber})` : c.billName}
                       </span>
                       <span
@@ -138,7 +138,7 @@ export function AccountabilityScore({ votes, stances, party }: AccountabilitySco
                         Voted {c.vote}
                       </span>
                     </div>
-                    <div className="mt-1 flex items-center gap-2 text-[11px] text-[var(--codex-faint)]">
+                    <div className="mt-1 flex items-center gap-2 text-[11px] text-[var(--poli-faint)]">
                       <span>Stance on {c.issueName}:</span>
                       <span
                         className="rounded-sm px-1.5 py-0.5 text-[10px] uppercase border"

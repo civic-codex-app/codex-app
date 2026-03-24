@@ -41,29 +41,29 @@ export default async function EditElectionPage({ params }: PageProps) {
           <h2 className="text-2xl font-bold">Races</h2>
           <Link
             href={`/admin/elections/${id}/races/new`}
-            className="rounded-md bg-[var(--codex-text)] px-4 py-2 text-sm font-medium text-[var(--codex-bg)] no-underline hover:opacity-90"
+            className="rounded-md bg-[var(--poli-text)] px-4 py-2 text-sm font-medium text-[var(--poli-bg)] no-underline hover:opacity-90"
           >
             + Add Race
           </Link>
         </div>
 
-        <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">
+        <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[var(--codex-border)] bg-[var(--codex-card)]">
-                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">
+                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                   Race
                 </th>
-                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                   State
                 </th>
-                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                   Chamber
                 </th>
-                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+                <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                   Candidates
                 </th>
-                <th className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+                <th className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                   Actions
                 </th>
               </tr>
@@ -72,22 +72,22 @@ export default async function EditElectionPage({ params }: PageProps) {
               {raceList.map((race: any) => (
                 <tr
                   key={race.id}
-                  className="border-b border-[var(--codex-border)] transition-colors hover:bg-[var(--codex-hover)]"
+                  className="border-b border-[var(--poli-border)] transition-colors hover:bg-[var(--poli-hover)]"
                 >
                   <td className="px-4 py-3 text-sm font-medium">{race.name}</td>
-                  <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">{race.state}</td>
+                  <td className="px-4 py-3 text-sm text-[var(--poli-sub)]">{race.state}</td>
                   <td className="px-4 py-3">
-                    <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+                    <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
                       {race.chamber}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">
+                  <td className="px-4 py-3 text-sm text-[var(--poli-sub)]">
                     {(race.candidates as any[])?.length ?? 0} candidates
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/admin/elections/${id}/races/${race.id}`}
-                      className="text-xs text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
+                      className="text-xs text-[var(--poli-sub)] hover:text-[var(--poli-text)]"
                     >
                       Edit
                     </Link>
@@ -96,7 +96,7 @@ export default async function EditElectionPage({ params }: PageProps) {
               ))}
               {raceList.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-[var(--codex-faint)]">
+                  <td colSpan={5} className="px-4 py-8 text-center text-sm text-[var(--poli-faint)]">
                     No races yet
                   </td>
                 </tr>

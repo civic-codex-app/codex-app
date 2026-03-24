@@ -16,8 +16,8 @@ export default async function AdminSettingsPage() {
 
   return (
     <div>
-      <h1 className="mb-1 text-2xl font-bold text-[var(--codex-text)]">Site Settings</h1>
-      <p className="mb-8 text-sm text-[var(--codex-sub)]">
+      <h1 className="mb-1 text-2xl font-bold text-[var(--poli-text)]">Site Settings</h1>
+      <p className="mb-8 text-sm text-[var(--poli-sub)]">
         Manage your site name, SEO metadata, and branding
       </p>
       <SiteSettingsForm initialSettings={settings} />

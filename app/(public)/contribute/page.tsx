@@ -37,7 +37,7 @@ export default function ContributePage() {
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Contribute
         </h1>
-        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
           Poli is built on public data — help us make it more accurate and complete.
         </p>
 
@@ -46,18 +46,18 @@ export default function ContributePage() {
             <Link
               key={action.href}
               href={action.href}
-              className="group flex items-center gap-4 rounded-xl border border-[var(--codex-border)] p-5 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+              className="group flex items-center gap-4 rounded-xl border border-[var(--poli-border)] p-5 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[var(--codex-badge-bg)]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--codex-sub)]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[var(--poli-badge-bg)]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--poli-sub)]">
                   <path d={action.icon} />
                 </svg>
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-[15px] font-semibold text-[var(--codex-text)]">{action.title}</div>
-                <div className="mt-0.5 text-[12px] text-[var(--codex-faint)]">{action.description}</div>
+                <div className="text-[15px] font-semibold text-[var(--poli-text)]">{action.title}</div>
+                <div className="mt-0.5 text-[12px] text-[var(--poli-faint)]">{action.description}</div>
               </div>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--codex-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--poli-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                 <polyline points="9 18 15 12 9 6" />
               </svg>
             </Link>

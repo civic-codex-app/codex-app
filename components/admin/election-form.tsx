@@ -134,7 +134,7 @@ export function ElectionForm({ election }: Props) {
             defaultChecked={election?.is_active ?? true}
             className="h-4 w-4"
           />
-          <label htmlFor="election-is-active" className="text-sm text-[var(--codex-text)]">Active</label>
+          <label htmlFor="election-is-active" className="text-sm text-[var(--poli-text)]">Active</label>
         </div>
 
         <div className="flex items-center justify-between pt-4">

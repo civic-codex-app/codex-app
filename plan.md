@@ -1,7 +1,7 @@
-# Implementation Plan: Codex Phase 2 — Full Platform Expansion
+# Implementation Plan: Poli Phase 2 — Full Platform Expansion
 
 ## Goal
-Expand Codex from a basic directory into a comprehensive civic engagement platform with full admin CRUD, user polls/likes, account management, all 535+ Congress members + governors, and voter-useful data (issues, voting records, campaign finance).
+Expand Poli from a basic directory into a comprehensive civic engagement platform with full admin CRUD, user polls/likes, account management, all 535+ Congress members + governors, and voter-useful data (issues, voting records, campaign finance).
 
 ## Audit Findings to Fix
 - Admin routes unprotected (no role check)

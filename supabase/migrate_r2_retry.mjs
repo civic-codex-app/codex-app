@@ -44,7 +44,7 @@ async function downloadImage(url) {
   try {
     const res = await fetch(url, {
       headers: {
-        'User-Agent': 'CodexApp/1.0 (civic engagement; codexapp.org)',
+        'User-Agent': 'PoliApp/1.0 (civic engagement; getpoli.app)',
         Accept: 'image/*',
       },
     })

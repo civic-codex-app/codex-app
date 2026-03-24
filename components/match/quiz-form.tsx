@@ -288,8 +288,8 @@ export function QuizForm({ issues }: Props) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-[var(--codex-text)] border-t-transparent" />
-          <p className="text-[14px] text-[var(--codex-faint)]">Loading...</p>
+          <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-[var(--poli-text)] border-t-transparent" />
+          <p className="text-[14px] text-[var(--poli-faint)]">Loading...</p>
         </div>
       </div>
     )
@@ -337,20 +337,20 @@ export function QuizForm({ issues }: Props) {
 
       {/* Submitting overlay */}
       {isSubmitting && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center rounded-xl bg-[var(--codex-card)]/80 backdrop-blur-sm">
+        <div className="absolute inset-0 z-50 flex items-center justify-center rounded-xl bg-[var(--poli-card)]/80 backdrop-blur-sm">
           <div className="text-center">
-            <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-[var(--codex-text)] border-t-transparent" />
-            <p className="text-[14px] font-medium text-[var(--codex-sub)]">Finding your matches...</p>
+            <div className="mx-auto mb-3 h-8 w-8 animate-spin rounded-full border-2 border-[var(--poli-text)] border-t-transparent" />
+            <p className="text-[14px] font-medium text-[var(--poli-sub)]">Finding your matches...</p>
           </div>
         </div>
       )}
 
       {/* Progress */}
-      <div className="mb-2 flex items-center justify-between text-[12px] font-medium text-[var(--codex-sub)]">
+      <div className="mb-2 flex items-center justify-between text-[12px] font-medium text-[var(--poli-sub)]">
         <span className="uppercase tracking-[0.1em]">Question {currentStep + 1} of {total}</span>
         <span>{answeredCount} answered · skip any you're unsure about</span>
       </div>
-      <div className="mb-6 h-1 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+      <div className="mb-6 h-1 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
         <div
           className="h-full rounded-full transition-all duration-500 ease-out"
           style={{
@@ -362,15 +362,15 @@ export function QuizForm({ issues }: Props) {
 
       {/* Issue header */}
       <div className={`mb-6 text-center ${slideDir === 'left' ? 'slide-in-left' : slideDir === 'right' ? 'slide-in-right' : ''}`}>
-        <div className="mb-2 flex items-center justify-center gap-2 text-[var(--codex-sub)]">
+        <div className="mb-2 flex items-center justify-center gap-2 text-[var(--poli-sub)]">
           <IssueIcon icon={issue.icon} size={18} />
           <span className="text-[11px] font-medium uppercase tracking-[0.15em]">{issue.name}</span>
         </div>
-        <h2 className="text-[clamp(1.1rem,2.8vw,1.5rem)] font-semibold leading-snug text-[var(--codex-text)]">
+        <h2 className="text-[clamp(1.1rem,2.8vw,1.5rem)] font-semibold leading-snug text-[var(--poli-text)]">
           {content?.question ?? issue.name}
         </h2>
         {content?.whyItMatters && (
-          <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-[var(--codex-sub)]">
+          <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-[var(--poli-sub)]">
             {content.whyItMatters}
           </p>
         )}
@@ -391,7 +391,7 @@ export function QuizForm({ issues }: Props) {
               }`}
               style={{
                 backgroundColor: isSelected ? colors.bg : 'transparent',
-                borderColor: isSelected ? colors.border : 'var(--codex-border)',
+                borderColor: isSelected ? colors.border : 'var(--poli-border)',
                 cursor: 'pointer',
                 font: 'inherit',
               }}
@@ -404,10 +404,10 @@ export function QuizForm({ issues }: Props) {
                 />
 
                 <div className="flex-1">
-                  <div className="text-[14px] font-semibold" style={{ color: isSelected ? colors.text : 'var(--codex-text)' }}>
+                  <div className="text-[14px] font-semibold" style={{ color: isSelected ? colors.text : 'var(--poli-text)' }}>
                     {pos.label}
                   </div>
-                  <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">
+                  <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--poli-sub)]">
                     {pos.description}
                   </p>
                 </div>
@@ -440,11 +440,11 @@ export function QuizForm({ issues }: Props) {
                 onClick={() => goToStep(i)}
                 className={`rounded-full transition-all ${
                   isCurrent
-                    ? 'h-3.5 w-3.5 ring-2 ring-[var(--codex-text)] ring-offset-1 ring-offset-[var(--codex-card)]'
+                    ? 'h-3.5 w-3.5 ring-2 ring-[var(--poli-text)] ring-offset-1 ring-offset-[var(--poli-card)]'
                     : 'h-2.5 w-2.5 hover:scale-125'
                 }`}
                 style={{
-                  backgroundColor: dotColor ?? 'var(--codex-border)',
+                  backgroundColor: dotColor ?? 'var(--poli-border)',
                   border: 'none',
                   cursor: 'pointer',
                   padding: 0,
@@ -455,7 +455,7 @@ export function QuizForm({ issues }: Props) {
           })}
         </div>
 
-        <div className="mt-3 text-center text-[12px] text-[var(--codex-sub)]">
+        <div className="mt-3 text-center text-[12px] text-[var(--poli-sub)]">
           {answeredCount >= 3 ? (
             <p>
               Answered {answeredCount} of {issues.length} · <span className="font-semibold" style={{ color: '#3B82F6' }}>{forCount}</span> leaning blue,{' '}
@@ -470,14 +470,14 @@ export function QuizForm({ issues }: Props) {
         <button
           onClick={goBack}
           disabled={currentStep === 0}
-          className="text-[13px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)] disabled:opacity-30"
+          className="text-[13px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-sub)] disabled:opacity-30"
           style={{ background: 'none', border: 'none', cursor: currentStep === 0 ? 'default' : 'pointer' }}
         >
           &larr; Back
         </button>
         <button
           onClick={skip}
-          className="text-[13px] text-[var(--codex-faint)] underline decoration-[var(--codex-border)] underline-offset-2 transition-colors hover:text-[var(--codex-sub)]"
+          className="text-[13px] text-[var(--poli-faint)] underline decoration-[var(--poli-border)] underline-offset-2 transition-colors hover:text-[var(--poli-sub)]"
           style={{ background: 'none', border: 'none', cursor: 'pointer' }}
         >
           Skip
@@ -491,7 +491,7 @@ export function QuizForm({ issues }: Props) {
           <button
             onClick={submit}
             disabled={isSubmitting}
-            className="rounded-lg bg-[var(--codex-text)] px-8 py-3 text-[14px] font-semibold text-[var(--codex-card)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-[var(--poli-text)] px-8 py-3 text-[14px] font-semibold text-[var(--poli-card)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             See My Results
           </button>

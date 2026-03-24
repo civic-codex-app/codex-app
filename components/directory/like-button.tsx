@@ -87,10 +87,10 @@ export function LikeButton({ politicianId, initialCount = 0, className }: LikeBu
       onClick={handleToggle}
       disabled={loading}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+        'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
         liked
           ? 'border-red-500/30 bg-red-500/10 text-red-400'
-          : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:border-red-500/30 hover:text-red-400',
+          : 'border-[var(--poli-border)] text-[var(--poli-sub)] hover:border-red-500/30 hover:text-red-400',
         className
       )}
     >

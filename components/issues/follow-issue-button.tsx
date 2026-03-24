@@ -49,10 +49,10 @@ export function FollowIssueButton({ issueId, initialFollowing, className }: Foll
       onClick={handleToggle}
       disabled={loading}
       className={cn(
-        'rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+        'rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
         following
-          ? 'border-[var(--codex-input-focus)] bg-[var(--codex-badge-bg)] text-[var(--codex-text)]'
-          : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:border-[var(--codex-input-focus)] hover:text-[var(--codex-text)]',
+          ? 'border-[var(--poli-input-focus)] bg-[var(--poli-badge-bg)] text-[var(--poli-text)]'
+          : 'border-[var(--poli-border)] text-[var(--poli-sub)] hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]',
         loading && 'opacity-50',
         className
       )}

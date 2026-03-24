@@ -45,28 +45,28 @@ export function BackgroundComparison({ polA, polB }: BackgroundComparisonProps) 
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Background
       </h2>
-      <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">
+      <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
         {rows.map((row, i) => (
           <div
             key={row.label}
             className="flex flex-col gap-1 px-4 py-2.5 text-[13px] sm:grid sm:grid-cols-[140px_1fr_1fr] sm:items-center sm:gap-2"
             style={{
-              borderTop: i > 0 ? '1px solid var(--codex-border)' : undefined,
+              borderTop: i > 0 ? '1px solid var(--poli-border)' : undefined,
             }}
           >
-            <span className="text-[12px] font-medium text-[var(--codex-faint)]">{row.label}</span>
+            <span className="text-[12px] font-medium text-[var(--poli-faint)]">{row.label}</span>
             <div className="flex items-center justify-between gap-2 sm:contents">
               <span
-                className="truncate text-[var(--codex-text)]"
+                className="truncate text-[var(--poli-text)]"
                 style={row.colorA ? { color: row.colorA } : undefined}
               >
                 {row.a}
               </span>
               <span
-                className="truncate text-[var(--codex-text)] text-right sm:text-left"
+                className="truncate text-[var(--poli-text)] text-right sm:text-left"
                 style={row.colorB ? { color: row.colorB } : undefined}
               >
                 {row.b}

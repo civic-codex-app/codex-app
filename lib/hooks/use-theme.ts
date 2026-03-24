@@ -15,7 +15,7 @@ export const useThemeStore = create<ThemeStore>((set) => ({
     set((state) => {
       const next = state.mode === 'dark' ? 'light' : 'dark'
       if (typeof window !== 'undefined') {
-        localStorage.setItem('codex-theme', next)
+        localStorage.setItem('poli-theme', next)
       }
       return { mode: next }
     }),
@@ -27,7 +27,7 @@ export function useTheme() {
 
   useEffect(() => {
     // Check saved preference first, then fall back to system preference
-    const saved = localStorage.getItem('codex-theme') as 'dark' | 'light' | null
+    const saved = localStorage.getItem('poli-theme') as 'dark' | 'light' | null
     if (saved) {
       setMode(saved)
     } else {
@@ -38,7 +38,7 @@ export function useTheme() {
     // Listen for system preference changes (only if no manual override)
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const handler = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem('codex-theme')) {
+      if (!localStorage.getItem('poli-theme')) {
         setMode(e.matches ? 'dark' : 'light')
       }
     }

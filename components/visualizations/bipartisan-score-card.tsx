@@ -43,9 +43,9 @@ export function BipartisanScoreCard({
 
   return (
     <div className="w-full">
-      <h3 className="mb-1 text-lg font-semibold text-[var(--codex-text)]">{title}</h3>
+      <h3 className="mb-1 text-lg font-semibold text-[var(--poli-text)]">{title}</h3>
       {subtitle && (
-        <p className="mb-5 text-[13px] text-[var(--codex-faint)]">{subtitle}</p>
+        <p className="mb-5 text-[13px] text-[var(--poli-faint)]">{subtitle}</p>
       )}
       {!subtitle && <div className="mb-5" />}
 
@@ -59,19 +59,19 @@ export function BipartisanScoreCard({
             <Link
               key={p.slug}
               href={`/politicians/${p.slug}`}
-              className="group flex items-center gap-3 rounded-md px-3 py-2 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+              className="group flex items-center gap-3 rounded-md px-3 py-2 no-underline transition-colors hover:bg-[var(--poli-hover)]"
               onMouseEnter={() => setHoveredSlug(p.slug)}
               onMouseLeave={() => setHoveredSlug(null)}
               aria-label={`${p.name}, ${partyLabel(p.party)}, ${p.state} - bipartisan score ${p.bipartisanScore}%`}
             >
               {/* Rank */}
-              <span className="w-5 shrink-0 text-right text-[13px] text-[var(--codex-faint)]">
+              <span className="w-5 shrink-0 text-right text-[13px] text-[var(--poli-faint)]">
                 {i + 1}
               </span>
 
               {/* Avatar */}
               <div
-                className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[var(--codex-border)]"
+                className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[var(--poli-border)]"
                 style={{ borderColor: isHovered ? color : undefined }}
               >
                 <AvatarImage
@@ -85,18 +85,18 @@ export function BipartisanScoreCard({
 
               {/* Name + party pill */}
               <div className="min-w-0 shrink" style={{ width: 140 }}>
-                <div className="truncate text-[13px] text-[var(--codex-text)] transition-colors group-hover:text-[var(--codex-text)]">
+                <div className="truncate text-[13px] text-[var(--poli-text)] transition-colors group-hover:text-[var(--poli-text)]">
                   {p.name}
                 </div>
                 <div className="flex items-center gap-1.5">
                   <PartyIcon party={p.party} size={10} />
-                  <span className="text-[10px] text-[var(--codex-faint)]">{p.state}</span>
+                  <span className="text-[10px] text-[var(--poli-faint)]">{p.state}</span>
                 </div>
               </div>
 
               {/* Bar */}
               <div className="relative flex-1">
-                <div className="h-5 overflow-hidden rounded-sm bg-[var(--codex-border)]" style={{ opacity: 0.3 }}>
+                <div className="h-5 overflow-hidden rounded-sm bg-[var(--poli-border)]" style={{ opacity: 0.3 }}>
                   <div
                     className="h-full rounded-sm"
                     style={{
@@ -112,7 +112,7 @@ export function BipartisanScoreCard({
               {/* Score */}
               <span
                 className="w-12 shrink-0 text-right text-[14px] font-semibold transition-colors"
-                style={{ color: isHovered ? color : 'var(--codex-sub)' }}
+                style={{ color: isHovered ? color : 'var(--poli-sub)' }}
               >
                 {p.bipartisanScore}%
               </span>
@@ -122,7 +122,7 @@ export function BipartisanScoreCard({
       </div>
 
       {politicians.length === 0 && (
-        <div className="py-10 text-center text-[var(--codex-faint)]">
+        <div className="py-10 text-center text-[var(--poli-faint)]">
           <span className="text-sm">No data available</span>
         </div>
       )}

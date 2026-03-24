@@ -191,7 +191,7 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Back link */}
         <Link
           href="/states"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
         >
           &larr; All states
         </Link>
@@ -199,14 +199,14 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Hero */}
         <div className="mb-10">
           <div className="mb-2 flex items-center gap-3">
-            <span className="rounded-md bg-[var(--codex-badge-bg)] px-2.5 py-1 text-sm font-semibold text-[var(--codex-badge-text)]">
+            <span className="rounded-md bg-[var(--poli-badge-bg)] px-2.5 py-1 text-sm font-semibold text-[var(--poli-badge-text)]">
               {abbr}
             </span>
           </div>
           <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             {stateName}
           </h1>
-          <p className="text-[15px] text-[var(--codex-sub)]">
+          <p className="text-[15px] text-[var(--poli-sub)]">
             {politicians.length} elected official{politicians.length !== 1 ? 's' : ''} tracked
             {races.length > 0 && <> &middot; {races.length} upcoming race{races.length !== 1 ? 's' : ''}</>}
           </p>
@@ -215,7 +215,7 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Your Representatives */}
         {politicians.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Your Representatives
             </h2>
 
@@ -226,9 +226,9 @@ export default async function StateDetailPage({ params }: PageProps) {
 
               return (
                 <div key={chamber} className="mb-6">
-                  <h3 className="mb-3 text-[13px] font-semibold text-[var(--codex-text)]">
+                  <h3 className="mb-3 text-[13px] font-semibold text-[var(--poli-text)]">
                     {label}
-                    <span className="ml-2 text-[var(--codex-faint)]">{group.length}</span>
+                    <span className="ml-2 text-[var(--poli-faint)]">{group.length}</span>
                   </h3>
                   <StatePoliticianList politicians={group} />
                 </div>
@@ -240,20 +240,20 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Campaign Finance */}
         {finance.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Campaign Finance
             </h2>
 
             <div className="mb-6 flex gap-6">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">Total Raised</div>
-                <div className="text-[20px] font-bold text-[var(--codex-text)]">
+                <div className="text-[11px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">Total Raised</div>
+                <div className="text-[20px] font-bold text-[var(--poli-text)]">
                   {formatCurrency(totalRaised)}
                 </div>
               </div>
               <div>
-                <div className="text-[11px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">Total Spent</div>
-                <div className="text-[20px] font-bold text-[var(--codex-text)]">
+                <div className="text-[11px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">Total Spent</div>
+                <div className="text-[20px] font-bold text-[var(--poli-text)]">
                   {formatCurrency(totalSpent)}
                 </div>
               </div>
@@ -261,7 +261,7 @@ export default async function StateDetailPage({ params }: PageProps) {
 
             {topFundraisers.length > 0 && (
               <div className="space-y-3">
-                <div className="text-[11px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">Top Fundraisers</div>
+                <div className="text-[11px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">Top Fundraisers</div>
                 {topFundraisers.map((f) => {
                   const pol = f.politician!
                   const pct = maxRaised > 0 ? (f.total_raised / maxRaised) * 100 : 0
@@ -273,7 +273,7 @@ export default async function StateDetailPage({ params }: PageProps) {
                       className="flex items-center gap-3 no-underline"
                     >
                       <div
-                        className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-[var(--codex-card)]"
+                        className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
                         style={{ border: `2px solid ${color}44` }}
                       >
                         <AvatarImage
@@ -286,14 +286,14 @@ export default async function StateDetailPage({ params }: PageProps) {
                       </div>
                       <div className="min-w-0 flex-1">
                         <div className="mb-1 flex items-center justify-between">
-                          <span className="truncate text-[13px] font-medium text-[var(--codex-text)] transition-colors hover:text-[var(--codex-text)]">
+                          <span className="truncate text-[13px] font-medium text-[var(--poli-text)] transition-colors hover:text-[var(--poli-text)]">
                             {pol.name}
                           </span>
-                          <span className="flex-shrink-0 text-[12px] tabular-nums text-[var(--codex-sub)]">
+                          <span className="flex-shrink-0 text-[12px] tabular-nums text-[var(--poli-sub)]">
                             {formatCurrency(f.total_raised)}
                           </span>
                         </div>
-                        <div className="h-[4px] w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+                        <div className="h-[4px] w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
                           <div
                             className="h-full rounded-full transition-all"
                             style={{ width: `${pct}%`, background: color, opacity: 0.6 }}
@@ -311,7 +311,7 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Upcoming Races */}
         {races.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Upcoming Races
             </h2>
             <div className="space-y-2">
@@ -324,14 +324,14 @@ export default async function StateDetailPage({ params }: PageProps) {
                   <Link
                     key={race.id}
                     href={`/elections/${race.slug}`}
-                    className="flex items-center justify-between rounded-lg border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                    className="flex items-center justify-between rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
                   >
                     <div>
-                      <div className="text-[14px] font-medium text-[var(--codex-text)]">
+                      <div className="text-[14px] font-medium text-[var(--poli-text)]">
                         {race.name}
                       </div>
                       {candidates.length > 0 && (
-                        <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-[var(--codex-faint)]">
+                        <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-[var(--poli-faint)]">
                           {candidates.slice(0, 3).map((c) => (
                             <span key={c.id} className="flex items-center gap-1">
                               <span
@@ -342,16 +342,16 @@ export default async function StateDetailPage({ params }: PageProps) {
                             </span>
                           ))}
                           {candidates.length > 3 && (
-                            <span className="text-[var(--codex-faint)]">+{candidates.length - 3} more</span>
+                            <span className="text-[var(--poli-faint)]">+{candidates.length - 3} more</span>
                           )}
                         </div>
                       )}
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+                      <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">
                         {CHAMBER_LABELS[race.chamber as keyof typeof CHAMBER_LABELS] ?? race.chamber}
                       </span>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--codex-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--poli-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="9 18 15 12 9 6" />
                       </svg>
                     </div>
@@ -365,9 +365,9 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* All Officials grid */}
         {politicians.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               All Officials
-              <span className="ml-2 text-[var(--codex-faint)]">{politicians.length}</span>
+              <span className="ml-2 text-[var(--poli-faint)]">{politicians.length}</span>
             </h2>
             <StatePoliticianList politicians={politicians} size="compact" />
           </section>

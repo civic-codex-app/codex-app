@@ -71,7 +71,7 @@ for (let i = 0; i < all.length; i++) {
     try {
       const searchUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=3&format=json`;
       const searchResult = execSync(
-        `curl -s -H "User-Agent: CodexApp/1.0" "${searchUrl}"`,
+        `curl -s -H "User-Agent: PoliApp/1.0" "${searchUrl}"`,
         { timeout: 8000 }
       ).toString();
 
@@ -86,7 +86,7 @@ for (let i = 0; i < all.length; i++) {
         // Get the page summary to find the image
         const title = encodeURIComponent(result.title.replace(/ /g, '_'));
         const summaryResult = execSync(
-          `curl -s -H "User-Agent: CodexApp/1.0" "https://en.wikipedia.org/api/rest_v1/page/summary/${title}"`,
+          `curl -s -H "User-Agent: PoliApp/1.0" "https://en.wikipedia.org/api/rest_v1/page/summary/${title}"`,
           { timeout: 8000 }
         ).toString();
 
@@ -122,7 +122,7 @@ for (let i = 0; i < all.length; i++) {
 
   // Download, optimize to WebP, upload to R2
   try {
-    const imgData = execSync(`curl -sL -H "User-Agent: CodexApp/1.0" "${imageUrl}" --max-time 10`, {
+    const imgData = execSync(`curl -sL -H "User-Agent: PoliApp/1.0" "${imageUrl}" --max-time 10`, {
       maxBuffer: 20 * 1024 * 1024,
       timeout: 15000
     });

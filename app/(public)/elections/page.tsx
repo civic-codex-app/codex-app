@@ -31,7 +31,7 @@ export default async function ElectionsPage() {
       <>
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-          <div className="py-20 text-center text-[var(--codex-faint)]">
+          <div className="py-20 text-center text-[var(--poli-faint)]">
             <div className="mb-2 text-2xl font-bold">No active elections</div>
             <div className="text-sm">Check back soon for upcoming election coverage</div>
           </div>
@@ -104,14 +104,14 @@ export default async function ElectionsPage() {
           href="https://vote.org/register-to-vote/"
           target="_blank"
           rel="noopener noreferrer"
-          className="mb-8 flex items-center gap-4 rounded-xl bg-[var(--codex-badge-bg)] px-5 py-4 no-underline transition-all hover:opacity-80"
+          className="mb-8 flex items-center gap-4 rounded-xl bg-[var(--poli-badge-bg)] px-5 py-4 no-underline transition-all hover:opacity-80"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[var(--codex-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[var(--poli-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
           <div className="min-w-0 flex-1">
-            <div className="text-[14px] font-semibold text-[var(--codex-text)]">Are you registered to vote?</div>
-            <div className="text-[12px] text-[var(--codex-faint)]">It takes 2 minutes to check · vote.org</div>
+            <div className="text-[14px] font-semibold text-[var(--poli-text)]">Are you registered to vote?</div>
+            <div className="text-[12px] text-[var(--poli-faint)]">It takes 2 minutes to check · vote.org</div>
           </div>
-          <span className="shrink-0 text-[var(--codex-faint)]">&rarr;</span>
+          <span className="shrink-0 text-[var(--poli-faint)]">&rarr;</span>
         </a>
 
         {/* Hero */}
@@ -119,7 +119,7 @@ export default async function ElectionsPage() {
           <h1 className="mb-3 text-[clamp(28px,4vw,44px)] font-bold leading-[1.1]">
             2026 Elections
           </h1>
-          <p className="mb-4 max-w-lg text-[15px] leading-relaxed text-[var(--codex-sub)]">
+          <p className="mb-4 max-w-lg text-[15px] leading-relaxed text-[var(--poli-sub)]">
             Every race happening on November 3, 2026 — find your state to see what&apos;s on your ballot.
           </p>
           <ElectionCountdown electionDate={electionDate} />
@@ -127,21 +127,21 @@ export default async function ElectionsPage() {
 
         {/* Quick stats */}
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
-            <div className="text-2xl font-bold text-[var(--codex-text)]">{allRaces.filter(r => r.chamber === 'senate').length}</div>
-            <div className="text-[12px] text-[var(--codex-faint)]">Senate Races</div>
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--poli-text)]">{allRaces.filter(r => r.chamber === 'senate').length}</div>
+            <div className="text-[12px] text-[var(--poli-faint)]">Senate Races</div>
           </div>
-          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
-            <div className="text-2xl font-bold text-[var(--codex-text)]">435</div>
-            <div className="text-[12px] text-[var(--codex-faint)]">House Races</div>
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--poli-text)]">435</div>
+            <div className="text-[12px] text-[var(--poli-faint)]">House Races</div>
           </div>
-          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
-            <div className="text-2xl font-bold text-[var(--codex-text)]">{allRaces.filter(r => r.chamber === 'governor').length}</div>
-            <div className="text-[12px] text-[var(--codex-faint)]">Governor Races</div>
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--poli-text)]">{allRaces.filter(r => r.chamber === 'governor').length}</div>
+            <div className="text-[12px] text-[var(--poli-faint)]">Governor Races</div>
           </div>
-          <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
-            <div className="text-2xl font-bold text-[var(--codex-text)]">{stateElections.length}</div>
-            <div className="text-[12px] text-[var(--codex-faint)]">States Voting</div>
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+            <div className="text-2xl font-bold text-[var(--poli-text)]">{stateElections.length}</div>
+            <div className="text-[12px] text-[var(--poli-faint)]">States Voting</div>
           </div>
         </div>
 
@@ -166,7 +166,7 @@ export default async function ElectionsPage() {
         </div>
 
         {/* State grid */}
-        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
           Or Browse by State
         </h2>
         <div className="mb-12 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
@@ -186,17 +186,17 @@ export default async function ElectionsPage() {
               <Link
                 key={election.id}
                 href={`/elections/${election.slug}`}
-                className="group cursor-pointer rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all duration-200 hover:border-[var(--codex-text)] hover:shadow-md"
+                className="group cursor-pointer rounded-lg border border-[var(--poli-border)] p-3 no-underline transition-all duration-200 hover:border-[var(--poli-text)] hover:shadow-md"
               >
                 <div className="mb-1 flex items-center gap-2">
-                  <span className="text-[11px] font-bold text-[var(--codex-faint)]">{stateCode}</span>
-                  <span className="text-[14px] font-semibold text-[var(--codex-text)] group-hover:text-[var(--codex-text)]">
+                  <span className="text-[11px] font-bold text-[var(--poli-faint)]">{stateCode}</span>
+                  <span className="text-[14px] font-semibold text-[var(--poli-text)] group-hover:text-[var(--poli-text)]">
                     {stateName}
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {chips.map(chip => (
-                    <span key={chip} className="rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-xs font-medium text-[var(--codex-badge-text)]">
+                    <span key={chip} className="rounded bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-xs font-medium text-[var(--poli-badge-text)]">
                       {chip}
                     </span>
                   ))}

@@ -53,20 +53,20 @@ export function SharingToggle() {
 
   if (loading) {
     return (
-      <div className="rounded-md border border-[var(--codex-border)] p-6">
-        <div className="h-4 w-48 animate-pulse rounded bg-[var(--codex-border)]" />
+      <div className="rounded-md border border-[var(--poli-border)] p-6">
+        <div className="h-4 w-48 animate-pulse rounded bg-[var(--poli-border)]" />
       </div>
     )
   }
 
   return (
-    <div className="rounded-md border border-[var(--codex-border)] p-6">
+    <div className="rounded-md border border-[var(--poli-border)] p-6">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="text-[15px] font-semibold text-[var(--codex-text)]">
+          <h3 className="text-[15px] font-semibold text-[var(--poli-text)]">
             Community Profile
           </h3>
-          <p className="mt-0.5 text-[12px] text-[var(--codex-faint)]">
+          <p className="mt-0.5 text-[12px] text-[var(--poli-faint)]">
             Share your political stances anonymously
           </p>
         </div>
@@ -77,7 +77,7 @@ export function SharingToggle() {
           disabled={toggling}
           className="relative h-6 w-11 rounded-full transition-colors disabled:opacity-50"
           style={{
-            backgroundColor: enabled ? '#3b82f6' : 'var(--codex-border)',
+            backgroundColor: enabled ? '#3b82f6' : 'var(--poli-border)',
           }}
           aria-label={enabled ? 'Disable sharing' : 'Enable sharing'}
         >
@@ -91,7 +91,7 @@ export function SharingToggle() {
       {enabled && anonymousId && (
         <div className="space-y-3">
           {/* Anonymous identity */}
-          <div className="flex items-center gap-3 rounded-md bg-[var(--codex-hover)] px-4 py-3">
+          <div className="flex items-center gap-3 rounded-md bg-[var(--poli-hover)] px-4 py-3">
             <div
               className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full"
               style={{ background: '#fff' }}
@@ -100,10 +100,10 @@ export function SharingToggle() {
               <div className="absolute rounded-full" style={{ width: '45%', height: '45%', background: 'rgba(239,68,68,0.5)', filter: 'blur(5px)', bottom: '15%', right: '10%', animation: 'stance-blob-rotate 9s linear infinite reverse', transformOrigin: '40% 40%' }} />
             </div>
             <div>
-              <div className="text-[13px] font-medium text-[var(--codex-text)]">
+              <div className="text-[13px] font-medium text-[var(--poli-text)]">
                 Voter #{displayId}
               </div>
-              <div className="text-[11px] text-[var(--codex-faint)]">
+              <div className="text-[11px] text-[var(--poli-faint)]">
                 Your anonymous identity on the community page
               </div>
             </div>
@@ -112,7 +112,7 @@ export function SharingToggle() {
           {/* Copy compare link */}
           <button
             onClick={copyLink}
-            className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--codex-border)] px-4 py-2.5 text-[13px] font-medium text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-input-border)] hover:text-[var(--codex-text)]"
+            className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--poli-border)] px-4 py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-input-border)] hover:text-[var(--poli-text)]"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -121,7 +121,7 @@ export function SharingToggle() {
             {copied ? 'Copied!' : 'Copy compare link'}
           </button>
 
-          <p className="text-[11px] leading-[1.6] text-[var(--codex-faint)]">
+          <p className="text-[11px] leading-[1.6] text-[var(--poli-faint)]">
             Others can compare their stances with yours using this link.
             Your real name, email, and personal info are never shared.
           </p>
@@ -129,7 +129,7 @@ export function SharingToggle() {
       )}
 
       {!enabled && (
-        <p className="text-[12px] leading-[1.6] text-[var(--codex-faint)]">
+        <p className="text-[12px] leading-[1.6] text-[var(--poli-faint)]">
           When enabled, your quiz stances appear on the community page as an anonymous voter.
           No personal information is ever shared — only your state and issue positions.
         </p>

@@ -109,7 +109,7 @@ export function SiteSettingsForm({ initialSettings }: Props) {
               className={`${fieldClass} rounded-md`}
             />
           )}
-          <p className="mt-1 text-[11px] text-[var(--codex-faint)]">{field.description}</p>
+          <p className="mt-1 text-[11px] text-[var(--poli-faint)]">{field.description}</p>
         </div>
       ))}
 
@@ -130,7 +130,7 @@ export function SiteSettingsForm({ initialSettings }: Props) {
         <button
           type="submit"
           disabled={saving}
-          className="rounded-md bg-[var(--codex-text)] px-5 py-2.5 text-sm font-medium text-[var(--codex-bg)] transition-opacity disabled:opacity-50"
+          className="rounded-md bg-[var(--poli-text)] px-5 py-2.5 text-sm font-medium text-[var(--poli-bg)] transition-opacity disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save Settings'}
         </button>

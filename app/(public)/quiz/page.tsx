@@ -91,10 +91,10 @@ export default async function MatchPage() {
       <Header />
       <main className="mx-auto max-w-2xl px-6 pt-6 pb-20 md:px-10">
         <div className="mb-10 text-center">
-          <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight text-[var(--codex-text)]">
+          <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight text-[var(--poli-text)]">
             Who Represents You?
           </h1>
-          <p className="mt-3 text-[15px] leading-relaxed text-[var(--codex-sub)]">
+          <p className="mt-3 text-[15px] leading-relaxed text-[var(--poli-sub)]">
             Share your stance on key issues and we'll show you which politicians
             align most closely with your views.
           </p>

@@ -15,9 +15,9 @@ export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
   const color = partyColor(party)
 
   return (
-    <div className="rounded-md border border-[var(--codex-border)] p-4">
+    <div className="rounded-md border border-[var(--poli-border)] p-4">
       <div className="mb-3 flex items-center justify-between">
-        <span className="text-sm font-semibold text-[var(--codex-sub)]">
+        <span className="text-sm font-semibold text-[var(--poli-sub)]">
           Party Alignment
         </span>
         <span
@@ -30,7 +30,7 @@ export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
 
       {/* Gauge bar */}
       <div className="relative mb-2">
-        <div className="h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
+        <div className="h-2 overflow-hidden rounded-full bg-[var(--poli-border)]">
           <div
             className="h-full rounded-full transition-all duration-700 ease-out"
             style={{
@@ -45,7 +45,7 @@ export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
           {[25, 50, 75].map((tick) => (
             <div
               key={tick}
-              className="h-2 w-px bg-[var(--codex-bg)]"
+              className="h-2 w-px bg-[var(--poli-bg)]"
               style={{ opacity: 0.4 }}
             />
           ))}
@@ -56,7 +56,7 @@ export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
         <span className="text-2xl font-bold" style={{ color }}>
           {score}%
         </span>
-        <span className="text-[11px] text-[var(--codex-faint)]">
+        <span className="text-[11px] text-[var(--poli-faint)]">
           aligned with {partyLabel(party)} positions
         </span>
       </div>

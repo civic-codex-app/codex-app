@@ -210,11 +210,11 @@ export async function CompareSuggestions({
   if (suggestions.length === 0) return null
 
   return (
-    <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
+      <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
         Smart Compare
       </h2>
-      <p className="mb-4 text-[11px] text-[var(--codex-faint)]">
+      <p className="mb-4 text-[11px] text-[var(--poli-faint)]">
         See how stances compare side-by-side
       </p>
 
@@ -226,13 +226,13 @@ export async function CompareSuggestions({
             'ideological-opposite': { bg: '#F9731618', text: '#F97316' },
             'surprising-ally': { bg: '#3B82F618', text: '#3B82F6' },
           }
-          const rc = reasonColors[s.reason] ?? { bg: 'var(--codex-badge-bg)', text: 'var(--codex-faint)' }
+          const rc = reasonColors[s.reason] ?? { bg: 'var(--poli-badge-bg)', text: 'var(--poli-faint)' }
 
           return (
             <Link
               key={s.id}
               href={`/compare?a=${slug}&b=${s.slug}`}
-              className="flex items-center gap-3 rounded-lg border border-[var(--codex-border)] px-4 py-3 no-underline transition-all hover:border-[var(--codex-input-focus)] hover:bg-[var(--codex-hover)]"
+              className="flex items-center gap-3 rounded-lg border border-[var(--poli-border)] px-4 py-3 no-underline transition-all hover:border-[var(--poli-input-focus)] hover:bg-[var(--poli-hover)]"
             >
               {/* Avatar */}
               <div
@@ -255,11 +255,11 @@ export async function CompareSuggestions({
                     className="inline-block h-2 w-2 flex-shrink-0 rounded-full"
                     style={{ backgroundColor: color }}
                   />
-                  <span className="truncate text-[13px] font-medium text-[var(--codex-text)]">
+                  <span className="truncate text-[13px] font-medium text-[var(--poli-text)]">
                     {s.name}
                   </span>
                 </div>
-                <div className="mt-0.5 text-[11px] text-[var(--codex-faint)]">
+                <div className="mt-0.5 text-[11px] text-[var(--poli-faint)]">
                   {s.state}
                 </div>
               </div>
@@ -278,7 +278,7 @@ export async function CompareSuggestions({
                 height="14"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="var(--codex-faint)"
+                stroke="var(--poli-faint)"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"

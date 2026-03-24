@@ -16,7 +16,7 @@ export default function ContactPage() {
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Contact Us
         </h1>
-        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
           Have a question, feedback, or want to work with us? We&apos;d love to hear from you.
         </p>
 

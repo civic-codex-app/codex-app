@@ -52,7 +52,7 @@ export function MobileNav() {
       {/* Hamburger */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-9 w-9 items-center justify-center rounded-md border border-[var(--codex-border)] text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]"
+        className="flex h-9 w-9 items-center justify-center rounded-md border border-[var(--poli-border)] text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]"
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
       >
@@ -74,18 +74,18 @@ export function MobileNav() {
       {open && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-[var(--codex-overlay)]"
+            className="fixed inset-0 z-40 bg-[var(--poli-overlay)]"
             onClick={() => setOpen(false)}
           />
-          <nav className="fixed inset-x-0 top-0 z-50 bg-[var(--codex-bg)] px-6 pb-8 pt-6 shadow-xl">
+          <nav className="fixed inset-x-0 top-0 z-50 bg-[var(--poli-bg)] px-6 pb-8 pt-6 shadow-xl">
             <div className="mb-8 flex items-center justify-between">
               <Link href="/" className="flex items-center gap-1 no-underline" onClick={() => setOpen(false)}>
-                <DonkeyIcon size={18} color="var(--codex-text)" />
-                <ElephantIcon size={18} color="var(--codex-text)" className="scale-x-[-1]" />
+                <DonkeyIcon size={18} color="var(--poli-text)" />
+                <ElephantIcon size={18} color="var(--poli-text)" className="scale-x-[-1]" />
               </Link>
               <button
                 onClick={() => setOpen(false)}
-                className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--codex-sub)]"
+                className="flex h-9 w-9 items-center justify-center rounded-md text-[var(--poli-sub)]"
                 aria-label="Close menu"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -104,8 +104,8 @@ export function MobileNav() {
                     onClick={() => setOpen(false)}
                     className={`block rounded-md px-4 py-3 text-[15px] font-medium no-underline transition-colors ${
                       isActive
-                        ? 'bg-[var(--codex-hover)] text-[var(--codex-text)]'
-                        : 'text-[var(--codex-sub)] hover:text-[var(--codex-text)]'
+                        ? 'bg-[var(--poli-hover)] text-[var(--poli-text)]'
+                        : 'text-[var(--poli-sub)] hover:text-[var(--poli-text)]'
                     }`}
                   >
                     {link.label}

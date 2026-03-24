@@ -111,12 +111,12 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
   const lastName = politicianName.split(' ').pop()
 
   return (
-    <div className="rounded-xl border border-[var(--codex-border)] overflow-hidden">
+    <div className="rounded-xl border border-[var(--poli-border)] overflow-hidden">
       {/* Header with score */}
       <div className="flex items-center gap-4 p-4" style={{ backgroundColor: `${color}08` }}>
         <div className="relative flex-shrink-0">
           <svg width="52" height="52" viewBox="0 0 52 52">
-            <circle cx="26" cy="26" r="22" fill="none" stroke="var(--codex-border)" strokeWidth="3" />
+            <circle cx="26" cy="26" r="22" fill="none" stroke="var(--poli-border)" strokeWidth="3" />
             <circle
               cx="26" cy="26" r="22" fill="none"
               stroke={color} strokeWidth="3" strokeLinecap="round"
@@ -129,7 +129,7 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
           </span>
         </div>
         <div>
-          <div className="text-[14px] font-semibold text-[var(--codex-text)]">
+          <div className="text-[14px] font-semibold text-[var(--poli-text)]">
             You &amp; {lastName}
           </div>
           <div className="text-[12px]" style={{ color }}>
@@ -139,7 +139,7 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
       </div>
 
       {/* Issue breakdown */}
-      <div className="divide-y divide-[var(--codex-border)]">
+      <div className="divide-y divide-[var(--poli-border)]">
         {/* Agreements */}
         {agrees.length > 0 && (
           <div className="px-4 py-3">
@@ -151,7 +151,7 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
                 const userBadge = stanceDisplayBadge(issue.userStance)
                 return (
                   <div key={issue.slug} className="flex items-center justify-between text-[12px]">
-                    <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
+                    <span className="capitalize text-[var(--poli-sub)]">{issue.name}</span>
                     <div className="flex items-center gap-1.5">
                       <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={userBadge.style}>
                         {userBadge.label}
@@ -176,12 +176,12 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
                 const polBadge = stanceDisplayBadge(issue.polStance, politicianParty)
                 return (
                   <div key={issue.slug} className="flex items-center justify-between text-[12px]">
-                    <span className="capitalize text-[var(--codex-sub)]">{issue.name}</span>
+                    <span className="capitalize text-[var(--poli-sub)]">{issue.name}</span>
                     <div className="flex items-center gap-1">
                       <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={userBadge.style}>
                         You
                       </span>
-                      <span className="text-[var(--codex-faint)]">vs</span>
+                      <span className="text-[var(--poli-faint)]">vs</span>
                       <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={polBadge.style}>
                         {lastName}
                       </span>

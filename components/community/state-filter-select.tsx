@@ -13,7 +13,7 @@ export function StateFilterSelect({ current }: { current: string }) {
         const val = e.target.value
         router.push(val ? `/community?state=${val}` : '/community')
       }}
-      className="rounded-md border border-[var(--codex-border)] bg-transparent px-3 py-1.5 text-[12px] text-[var(--codex-sub)]"
+      className="rounded-md border border-[var(--poli-border)] bg-transparent px-3 py-1.5 text-[12px] text-[var(--poli-sub)]"
       aria-label="Filter by state"
     >
       <option value="">Filter by state...</option>

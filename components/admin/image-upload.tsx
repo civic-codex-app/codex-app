@@ -55,7 +55,7 @@ export function ImageUpload({ currentUrl, folder, onUpload, className }: ImageUp
     <div className={className}>
       <div className="flex items-center gap-4">
         {preview && (
-          <div className="h-16 w-16 overflow-hidden rounded-lg bg-[var(--codex-card)] border border-[var(--codex-border)]">
+          <div className="h-16 w-16 overflow-hidden rounded-lg bg-[var(--poli-card)] border border-[var(--poli-border)]">
             <Image
               src={preview}
               alt="Preview"
@@ -78,7 +78,7 @@ export function ImageUpload({ currentUrl, folder, onUpload, className }: ImageUp
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
-            className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-input-bg)] px-4 py-2 text-sm text-[var(--codex-text)] transition-colors hover:border-[var(--codex-input-border)] disabled:opacity-50"
+            className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-input-bg)] px-4 py-2 text-sm text-[var(--poli-text)] transition-colors hover:border-[var(--poli-input-border)] disabled:opacity-50"
           >
             {uploading ? 'Uploading...' : preview ? 'Change Image' : 'Upload Image'}
           </button>

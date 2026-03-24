@@ -64,7 +64,7 @@ for (let i = 0; i < all.length; i++) {
   for (const variant of variants) {
     try {
       const json = execSync(
-        `curl -s -H "User-Agent: CodexApp/1.0 (civic-engagement-platform)" "https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(variant)}"`,
+        `curl -s -H "User-Agent: PoliApp/1.0 (civic-engagement-platform)" "https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(variant)}"`,
         { timeout: 8000 }
       ).toString();
       const data = JSON.parse(json);
@@ -86,7 +86,7 @@ for (let i = 0; i < all.length; i++) {
 
   // Download and upload to R2
   try {
-    const imgData = execSync(`curl -sL -H "User-Agent: CodexApp/1.0" "${imageUrl}" --max-time 10`, {
+    const imgData = execSync(`curl -sL -H "User-Agent: PoliApp/1.0" "${imageUrl}" --max-time 10`, {
       maxBuffer: 20 * 1024 * 1024,
       timeout: 15000
     });

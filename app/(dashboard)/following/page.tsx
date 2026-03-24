@@ -24,7 +24,7 @@ export default async function FollowingPage() {
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">Following</h1>
-      <p className="mb-10 text-sm text-[var(--codex-sub)]">
+      <p className="mb-10 text-sm text-[var(--poli-sub)]">
         Politicians you&apos;re tracking
       </p>
 
@@ -35,13 +35,13 @@ export default async function FollowingPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-md border border-[var(--codex-border)] py-16 text-center">
-          <div className="mb-2 text-xl font-semibold text-[var(--codex-faint)]">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+          <div className="mb-2 text-xl font-semibold text-[var(--poli-faint)]">
             Not following anyone yet
           </div>
           <Link
             href="/"
-            className="mt-4 inline-block rounded-md bg-[var(--codex-badge-bg)] px-4 py-2 text-sm text-[var(--codex-text)] no-underline"
+            className="mt-4 inline-block rounded-md bg-[var(--poli-badge-bg)] px-4 py-2 text-sm text-[var(--poli-text)] no-underline"
           >
             Browse directory
           </Link>

@@ -6,8 +6,8 @@
  * so they persist across devices.
  */
 
-const STORAGE_KEY = 'codex_quiz_answers'
-const STEP_KEY = 'codex_quiz_step'
+const STORAGE_KEY = 'poli_quiz_answers'
+const STEP_KEY = 'poli_quiz_step'
 
 // ---------------------------------------------------------------------------
 // localStorage (fast, offline cache)
@@ -51,7 +51,7 @@ export function loadQuizStep(): number {
   }
 }
 
-const RESULTS_KEY = 'codex_quiz_results'
+const RESULTS_KEY = 'poli_quiz_results'
 
 export function saveQuizResults(results: any, stateResults: any, userId?: string) {
   try {

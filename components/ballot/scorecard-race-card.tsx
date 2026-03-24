@@ -29,24 +29,24 @@ export function ScorecardRaceCard({ race, candidateScores }: ScorecardRaceCardPr
   })
 
   return (
-    <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)]">
+    <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
       {/* Header */}
-      <div className="border-b border-[var(--codex-border)] px-5 py-3">
+      <div className="border-b border-[var(--poli-border)] px-5 py-3">
         <div className="mb-1 flex items-center gap-2">
-          <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
             {chamberLabel}
           </span>
           {race.district && (
-            <span className="text-[11px] text-[var(--codex-faint)]">
+            <span className="text-[11px] text-[var(--poli-faint)]">
               District {race.district}
             </span>
           )}
         </div>
-        <h3 className="text-base font-semibold text-[var(--codex-text)]">
+        <h3 className="text-base font-semibold text-[var(--poli-text)]">
           {race.name}
         </h3>
         {race.election_date && (
-          <p className="mt-0.5 text-[11px] text-[var(--codex-faint)]">
+          <p className="mt-0.5 text-[11px] text-[var(--poli-faint)]">
             {race.election_name} &middot;{' '}
             {new Date(race.election_date + 'T00:00:00').toLocaleDateString('en-US', {
               month: 'long',
@@ -59,7 +59,7 @@ export function ScorecardRaceCard({ race, candidateScores }: ScorecardRaceCardPr
 
       {/* Candidates */}
       {sortedCandidates.length > 0 ? (
-        <div className="divide-y divide-[var(--codex-border)]">
+        <div className="divide-y divide-[var(--poli-border)]">
           {sortedCandidates.map((candidate) => {
             const scoreData = candidateScores.get(candidate.id)
             return (
@@ -72,7 +72,7 @@ export function ScorecardRaceCard({ race, candidateScores }: ScorecardRaceCardPr
           })}
         </div>
       ) : (
-        <div className="px-5 py-6 text-center text-sm text-[var(--codex-faint)]">
+        <div className="px-5 py-6 text-center text-sm text-[var(--poli-faint)]">
           No candidates filed yet
         </div>
       )}
@@ -96,7 +96,7 @@ function ScorecardCandidateRow({
   return (
     <Link
       href={href}
-      className="block px-5 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+      className="block px-5 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
     >
       <div className="flex items-center gap-3">
         {/* Avatar */}
@@ -116,16 +116,16 @@ function ScorecardCandidateRow({
         {/* Info */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="truncate text-sm font-medium text-[var(--codex-text)]">
+            <span className="truncate text-sm font-medium text-[var(--poli-text)]">
               {candidate.name}
             </span>
             {candidate.is_incumbent && (
-              <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--codex-badge-text)]">
+              <span className="rounded-sm bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
                 Incumbent
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2 text-xs text-[var(--codex-sub)]">
+          <div className="flex items-center gap-2 text-xs text-[var(--poli-sub)]">
             <PartyIcon party={candidate.party} size={10} />
           </div>
         </div>
@@ -136,12 +136,12 @@ function ScorecardCandidateRow({
         {hasData ? (
           <div>
             <AlignmentBar score={scoreData.score} size="sm" />
-            <p className="mt-0.5 text-[10px] text-[var(--codex-faint)]">
+            <p className="mt-0.5 text-[10px] text-[var(--poli-faint)]">
               Based on {scoreData.matched} shared issue{scoreData.matched !== 1 ? 's' : ''}
             </p>
           </div>
         ) : (
-          <p className="text-xs text-[var(--codex-faint)]">No stance data</p>
+          <p className="text-xs text-[var(--poli-faint)]">No stance data</p>
         )}
       </div>
     </Link>

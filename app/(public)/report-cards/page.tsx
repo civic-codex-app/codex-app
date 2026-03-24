@@ -77,10 +77,10 @@ export default async function ReportCardsPage() {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
             </div>
-            <h1 className="mb-2 text-[clamp(24px,3vw,36px)] font-bold text-[var(--codex-text)]">
+            <h1 className="mb-2 text-[clamp(24px,3vw,36px)] font-bold text-[var(--poli-text)]">
               Civic Report Cards
             </h1>
-            <p className="mx-auto mb-6 max-w-[400px] text-[14px] leading-[1.7] text-[var(--codex-sub)]">
+            <p className="mx-auto mb-6 max-w-[400px] text-[14px] leading-[1.7] text-[var(--poli-sub)]">
               Unlock detailed scores on bipartisanship, transparency, engagement,
               and effectiveness for every politician.
             </p>
@@ -90,7 +90,7 @@ export default async function ReportCardsPage() {
             >
               Create Free Account
             </Link>
-            <p className="mt-3 text-[12px] text-[var(--codex-faint)]">
+            <p className="mt-3 text-[12px] text-[var(--poli-faint)]">
               Free forever. No credit card required.
             </p>
           </div>
@@ -128,10 +128,10 @@ export default async function ReportCardsPage() {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
-            <div className="mb-3 text-2xl font-bold text-[var(--codex-text)]">
+            <div className="mb-3 text-2xl font-bold text-[var(--poli-text)]">
               Something went wrong
             </div>
-            <p className="text-sm text-[var(--codex-sub)]">
+            <p className="text-sm text-[var(--poli-sub)]">
               We couldn&apos;t load report cards right now. Please try again later.
             </p>
           </div>
@@ -239,10 +239,10 @@ export default async function ReportCardsPage() {
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         {/* Page title */}
-        <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight text-[var(--codex-text)]">
+        <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight text-[var(--poli-text)]">
           Civic Profiles
         </h1>
-        <p className="mb-8 max-w-2xl text-sm leading-relaxed text-[var(--codex-sub)]">
+        <p className="mb-8 max-w-2xl text-sm leading-relaxed text-[var(--poli-sub)]">
           Every politician scored on civic activity: bipartisanship, engagement,
           transparency, and effectiveness. Higher scores mean more active public service.
         </p>

@@ -34,10 +34,10 @@ export function PollCard({ poll }: { poll: Poll }) {
   return (
     <Link
       href={`/polls/${poll.id}`}
-      className="group block rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-6 no-underline transition-all hover:border-[var(--codex-input-border)]"
+      className="group block rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-6 no-underline transition-all hover:border-[var(--poli-input-border)]"
     >
       <div className="mb-3 flex items-center gap-2">
-        <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+        <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
           {TYPE_LABELS[poll.poll_type] ?? poll.poll_type}
         </span>
         {poll.status === 'closed' && (
@@ -47,12 +47,12 @@ export function PollCard({ poll }: { poll: Poll }) {
         )}
       </div>
 
-      <h3 className="mb-2 text-xl font-semibold transition-colors group-hover:text-[var(--codex-text)]">
+      <h3 className="mb-2 text-xl font-semibold transition-colors group-hover:text-[var(--poli-text)]">
         {poll.title}
       </h3>
 
       {poll.description && (
-        <p className="mb-4 line-clamp-2 text-sm text-[var(--codex-sub)]">{poll.description}</p>
+        <p className="mb-4 line-clamp-2 text-sm text-[var(--poli-sub)]">{poll.description}</p>
       )}
 
       {/* Mini results preview */}
@@ -65,13 +65,13 @@ export function PollCard({ poll }: { poll: Poll }) {
             const pct = totalVotes > 0 ? (optionVotes / totalVotes) * 100 : 0
             return (
               <div key={option.id} className="flex items-center gap-2">
-                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--codex-badge-bg)]">
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--poli-badge-bg)]">
                   <div
-                    className="h-full rounded-full bg-[var(--codex-sub)] transition-all"
+                    className="h-full rounded-full bg-[var(--poli-sub)] transition-all"
                     style={{ width: `${pct}%` }}
                   />
                 </div>
-                <span className="w-20 truncate text-[11px] text-[var(--codex-faint)]">
+                <span className="w-20 truncate text-[11px] text-[var(--poli-faint)]">
                   {option.label}
                 </span>
               </div>
@@ -79,7 +79,7 @@ export function PollCard({ poll }: { poll: Poll }) {
           })}
       </div>
 
-      <div className="text-[11px] text-[var(--codex-faint)]">
+      <div className="text-[11px] text-[var(--poli-faint)]">
         {totalVotes} vote{totalVotes !== 1 ? 's' : ''}
         {poll.ends_at && (
           <>

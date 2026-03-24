@@ -81,7 +81,7 @@ export function FollowBillButton({ billId, className }: FollowBillButtonProps) {
       <button
         disabled
         className={cn(
-          'inline-flex items-center gap-1.5 rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-xs text-[var(--codex-faint)]',
+          'inline-flex items-center gap-1.5 rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-xs text-[var(--poli-faint)]',
           className
         )}
       >
@@ -95,10 +95,10 @@ export function FollowBillButton({ billId, className }: FollowBillButtonProps) {
     <button
       onClick={handleToggle}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+        'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
         following
-          ? 'border-[var(--codex-input-focus)] bg-[var(--codex-badge-bg)] text-[var(--codex-text)]'
-          : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:border-[var(--codex-input-focus)] hover:text-[var(--codex-text)]',
+          ? 'border-[var(--poli-input-focus)] bg-[var(--poli-badge-bg)] text-[var(--poli-text)]'
+          : 'border-[var(--poli-border)] text-[var(--poli-sub)] hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]',
         className
       )}
     >

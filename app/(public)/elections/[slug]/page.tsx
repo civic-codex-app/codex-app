@@ -151,22 +151,22 @@ export default async function RaceDetailPage({ params }: PageProps) {
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
           href="/elections"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
         >
           &larr; Back to elections
         </Link>
 
         {/* Badges */}
         <div className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
             {chamberLabel}
           </span>
-          <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
             {race.state}
             {race.district ? ` - District ${race.district}` : ''}
           </span>
           {electionDate && (
-            <span className="text-[11px] text-[var(--codex-faint)]">{electionDate}</span>
+            <span className="text-[11px] text-[var(--poli-faint)]">{electionDate}</span>
           )}
         </div>
 
@@ -175,7 +175,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
         </h1>
 
         {CHAMBER_EXPLAINERS[race.chamber] && (
-          <p className="mb-4 text-[12px] leading-[1.5] text-[var(--codex-faint)]">
+          <p className="mb-4 text-[12px] leading-[1.5] text-[var(--poli-faint)]">
             {CHAMBER_EXPLAINERS[race.chamber]}
           </p>
         )}
@@ -187,15 +187,15 @@ export default async function RaceDetailPage({ params }: PageProps) {
         )}
 
         {race.description && (
-          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
             {race.description}
           </p>
         )}
 
         {/* Party breakdown bar */}
         {candidateList.length > 1 && (
-          <div className="mb-8 rounded-md border border-[var(--codex-border)] p-4">
-            <div className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4">
+            <div className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">
               Party Breakdown
             </div>
             <div className="mb-2 flex h-3 overflow-hidden rounded-full">
@@ -252,9 +252,9 @@ export default async function RaceDetailPage({ params }: PageProps) {
 
         {/* Candidates */}
         <section className="mb-10">
-          <h2 className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          <h2 className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Candidates
-            <span className="text-[var(--codex-faint)]">{candidateList.length}</span>
+            <span className="text-[var(--poli-faint)]">{candidateList.length}</span>
           </h2>
 
           {candidateList.length > 0 ? (
@@ -277,14 +277,14 @@ export default async function RaceDetailPage({ params }: PageProps) {
                 return (
                   <div
                     key={candidate.id}
-                    className="overflow-hidden rounded-xl border border-[var(--codex-border)] transition-all duration-200 hover:shadow-sm"
+                    className="overflow-hidden rounded-xl border border-[var(--poli-border)] transition-all duration-200 hover:shadow-sm"
                     style={{ backgroundColor: `${color}06` }}
                   >
                     <div className="p-5">
                       <div className="flex items-start gap-4">
                         {/* Avatar */}
                         <div
-                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--codex-card)]"
+                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--poli-card)]"
                           style={{ border: `2px solid ${color}44` }}
                         >
                           <AvatarImage
@@ -302,21 +302,21 @@ export default async function RaceDetailPage({ params }: PageProps) {
                             {pol ? (
                               <Link
                                 href={`/politicians/${pol.slug}`}
-                                className="text-lg font-semibold transition-colors hover:text-[var(--codex-text)]"
+                                className="text-lg font-semibold transition-colors hover:text-[var(--poli-text)]"
                               >
                                 {candidate.name}
                               </Link>
                             ) : (
                               <Link
                                 href={`/candidates/${candidate.id}`}
-                                className="text-lg font-semibold transition-colors hover:text-[var(--codex-text)]"
+                                className="text-lg font-semibold transition-colors hover:text-[var(--poli-text)]"
                               >
                                 {candidate.name}
                               </Link>
                             )}
                             <PartyIcon party={candidate.party} size={14} />
                             {candidate.is_incumbent && (
-                              <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[9px] uppercase tracking-[0.06em] text-[var(--codex-badge-text)]">
+                              <span className="rounded-sm bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[9px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
                                 Incumbent
                               </span>
                             )}
@@ -328,13 +328,13 @@ export default async function RaceDetailPage({ params }: PageProps) {
                           </div>
 
                           {pol?.title && (
-                            <div className="mb-2 text-[12px] text-[var(--codex-faint)]">
+                            <div className="mb-2 text-[12px] text-[var(--poli-faint)]">
                               {pol.title} &middot; {pol.state}
                             </div>
                           )}
 
                           {(candidate.bio || pol?.bio) && (
-                            <p className="mb-3 line-clamp-2 text-[12px] leading-[1.6] text-[var(--codex-sub)]">
+                            <p className="mb-3 line-clamp-2 text-[12px] leading-[1.6] text-[var(--poli-sub)]">
                               {candidate.bio || pol?.bio}
                             </p>
                           )}
@@ -342,7 +342,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                           {/* Stance bar + alignment for linked politicians */}
                           {totalStances > 0 && (
                             <div className="mb-2 flex items-center gap-3">
-                              <div className="flex h-[5px] w-24 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                              <div className="flex h-[5px] w-24 overflow-hidden rounded-full bg-[var(--poli-border)]">
                                 {supports > 0 && (
                                   <div style={{ width: `${(supports / totalStances) * 100}%`, background: '#3B82F6', opacity: 0.7 }} />
                                 )}
@@ -353,12 +353,12 @@ export default async function RaceDetailPage({ params }: PageProps) {
                                   <div style={{ width: `${(opposes / totalStances) * 100}%`, background: '#EF4444', opacity: 0.7 }} />
                                 )}
                               </div>
-                              <span className="text-[10px] tabular-nums text-[var(--codex-faint)]">
+                              <span className="text-[10px] tabular-nums text-[var(--poli-faint)]">
                                 {totalStances} issues
                               </span>
                               {alignment >= 0 && meta && (
                                 <>
-                                  <span className="text-[var(--codex-border)]">&middot;</span>
+                                  <span className="text-[var(--poli-border)]">&middot;</span>
                                   <span
                                     className="rounded-sm px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em]"
                                     style={{ color: meta.color, background: meta.bgColor }}
@@ -374,14 +374,14 @@ export default async function RaceDetailPage({ params }: PageProps) {
                             {pol ? (
                               <Link
                                 href={`/politicians/${pol.slug}`}
-                                className="text-[11px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-text)]"
+                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
                               >
                                 View full profile &rarr;
                               </Link>
                             ) : (
                               <Link
                                 href={`/candidates/${candidate.id}`}
-                                className="text-[11px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-text)]"
+                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
                               >
                                 View profile &rarr;
                               </Link>
@@ -391,7 +391,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                                 href={candidate.website_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-[11px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-text)]"
+                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
                               >
                                 Campaign website &rarr;
                               </a>
@@ -399,7 +399,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
                             {pol && candidateList.length > 1 && (
                               <Link
                                 href={`/compare?a=${pol.slug}&b=${candidateList.find((c) => c.politician?.slug && c.politician.slug !== pol.slug)?.politician?.slug ?? ''}`}
-                                className="text-[11px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-text)]"
+                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
                               >
                                 Compare &rarr;
                               </Link>
@@ -413,7 +413,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
               })}
             </div>
           ) : (
-            <div className="py-12 text-center text-[var(--codex-faint)]">
+            <div className="py-12 text-center text-[var(--poli-faint)]">
               <div className="mb-2 text-lg font-semibold">No candidates announced yet</div>
               <div className="text-sm">Check back as the race develops</div>
             </div>
@@ -498,7 +498,7 @@ async function renderStateElection(
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
           href="/elections"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
         >
           &larr; All states
         </Link>
@@ -506,7 +506,7 @@ async function renderStateElection(
         <h1 className="mb-2 text-[clamp(26px,4vw,40px)] font-bold leading-[1.1]">
           {election.name}
         </h1>
-        <p className="mb-4 text-[14px] text-[var(--codex-sub)]">
+        <p className="mb-4 text-[14px] text-[var(--poli-sub)]">
           {electionDate} · {racesWithCandidates} race{racesWithCandidates !== 1 ? 's' : ''}
         </p>
 
@@ -523,7 +523,7 @@ async function renderStateElection(
 
             return (
               <section key={chamber} className="mb-10">
-                <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+                <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
                   {label} · {races.length} race{races.length !== 1 ? 's' : ''}
                 </h2>
                 <div className="space-y-2">
@@ -533,13 +533,13 @@ async function renderStateElection(
                       <Link
                         key={race.id}
                         href={`/elections/${race.slug}`}
-                        className="flex items-center justify-between rounded-lg border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                        className="flex items-center justify-between rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
                       >
                         <div>
-                          <div className="text-[14px] font-medium text-[var(--codex-text)]">
+                          <div className="text-[14px] font-medium text-[var(--poli-text)]">
                             {race.name}
                           </div>
-                          <div className="mt-1 flex items-center gap-2 text-[12px] text-[var(--codex-faint)]">
+                          <div className="mt-1 flex items-center gap-2 text-[12px] text-[var(--poli-faint)]">
                             {candidates.slice(0, 3).map((c: any) => (
                               <span key={c.id} className="flex items-center gap-1">
                                 <span
@@ -550,15 +550,15 @@ async function renderStateElection(
                               </span>
                             ))}
                             {candidates.length > 3 && (
-                              <span className="text-[var(--codex-faint)]">+{candidates.length - 3} more</span>
+                              <span className="text-[var(--poli-faint)]">+{candidates.length - 3} more</span>
                             )}
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="rounded bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] text-[var(--codex-faint)]">
+                          <span className="rounded bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] text-[var(--poli-faint)]">
                             {candidates.length} candidate{candidates.length !== 1 ? 's' : ''}
                           </span>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--codex-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--poli-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="9 18 15 12 9 6" />
                           </svg>
                         </div>
@@ -570,7 +570,7 @@ async function renderStateElection(
             )
           })
         ) : (
-          <div className="py-12 text-center text-[var(--codex-faint)]">
+          <div className="py-12 text-center text-[var(--poli-faint)]">
             <div className="mb-2 text-lg font-semibold">No upcoming races</div>
             <div className="text-sm">Candidate announcements for this election haven&apos;t been added yet</div>
           </div>

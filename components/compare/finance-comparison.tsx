@@ -29,10 +29,10 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
   if (!latestA && !latestB) {
     return (
       <div className="mb-8">
-        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
           Campaign Finance
         </h2>
-        <div className="rounded-md border border-[var(--codex-border)] px-6 py-8 text-center text-[13px] text-[var(--codex-faint)]">
+        <div className="rounded-md border border-[var(--poli-border)] px-6 py-8 text-center text-[13px] text-[var(--poli-faint)]">
           No campaign finance data on record
         </div>
       </div>
@@ -59,13 +59,13 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Campaign Finance
       </h2>
 
-      <div className="space-y-4 rounded-md border border-[var(--codex-border)] p-4 sm:p-5">
+      <div className="space-y-4 rounded-md border border-[var(--poli-border)] p-4 sm:p-5">
         {/* Cycle labels */}
-        <div className="flex items-center justify-between text-[11px] text-[var(--codex-faint)]">
+        <div className="flex items-center justify-between text-[11px] text-[var(--poli-faint)]">
           <div className="flex items-center gap-1.5">
             <span className="inline-block h-2 w-2 rounded-full" style={{ background: colorA }} />
             <span>{latestA ? `${polA.name.split(' ').pop()} (${latestA.cycle})` : '—'}</span>
@@ -83,30 +83,30 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
 
           return (
             <div key={m.label}>
-              <div className="mb-1.5 text-[12px] text-[var(--codex-sub)]">{m.label}</div>
+              <div className="mb-1.5 text-[12px] text-[var(--poli-sub)]">{m.label}</div>
 
               {/* Bar A */}
               <div className="mb-1 flex items-center gap-2">
-                <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
                   <div
                     className="h-full rounded-full transition-all"
                     style={{ width: `${pctA}%`, background: colorA }}
                   />
                 </div>
-                <span className="w-16 shrink-0 text-right text-[12px] tabular-nums text-[var(--codex-text)]">
+                <span className="w-16 shrink-0 text-right text-[12px] tabular-nums text-[var(--poli-text)]">
                   {m.keyA > 0 ? formatMoney(m.keyA) : '—'}
                 </span>
               </div>
 
               {/* Bar B */}
               <div className="flex items-center gap-2">
-                <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
                   <div
                     className="h-full rounded-full transition-all"
                     style={{ width: `${pctB}%`, background: colorB }}
                   />
                 </div>
-                <span className="w-16 shrink-0 text-right text-[12px] tabular-nums text-[var(--codex-text)]">
+                <span className="w-16 shrink-0 text-right text-[12px] tabular-nums text-[var(--poli-text)]">
                   {m.keyB > 0 ? formatMoney(m.keyB) : '—'}
                 </span>
               </div>

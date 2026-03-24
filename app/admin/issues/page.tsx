@@ -34,30 +34,30 @@ export default async function AdminIssuesPage() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="mb-1 text-3xl font-bold">Issues</h1>
-          <p className="text-sm text-[var(--codex-sub)]">{issues.length} issues</p>
+          <p className="text-sm text-[var(--poli-sub)]">{issues.length} issues</p>
         </div>
         <Link
           href="/admin/issues/new"
-          className="rounded-md bg-[var(--codex-text)] px-4 py-2 text-sm font-medium text-[var(--codex-bg)] no-underline hover:opacity-90"
+          className="rounded-md bg-[var(--poli-text)] px-4 py-2 text-sm font-medium text-[var(--poli-bg)] no-underline hover:opacity-90"
         >
           + Add Issue
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">
+      <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-[var(--codex-border)] bg-[var(--codex-card)]">
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+            <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Issue
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Category
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Stances
               </th>
-              <th className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Actions
               </th>
             </tr>
@@ -66,24 +66,24 @@ export default async function AdminIssuesPage() {
             {issues.map((issue: any) => (
               <tr
                 key={issue.id}
-                className="border-b border-[var(--codex-border)] transition-colors hover:bg-[var(--codex-hover)]"
+                className="border-b border-[var(--poli-border)] transition-colors hover:bg-[var(--poli-hover)]"
               >
                 <td className="px-4 py-3 text-sm font-medium">
                   {issue.icon && <span className="mr-2">{issue.icon}</span>}
                   {issue.name}
                 </td>
                 <td className="px-4 py-3">
-                  <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+                  <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
                     {CATEGORY_LABELS[issue.category] ?? issue.category}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">
+                <td className="px-4 py-3 text-sm text-[var(--poli-sub)]">
                   {(issue.politician_issues as any[])?.length ?? 0} politicians
                 </td>
                 <td className="px-4 py-3 text-right">
                   <Link
                     href={`/admin/issues/${issue.id}`}
-                    className="text-xs text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
+                    className="text-xs text-[var(--poli-sub)] hover:text-[var(--poli-text)]"
                   >
                     Edit
                   </Link>
@@ -92,7 +92,7 @@ export default async function AdminIssuesPage() {
             ))}
             {issues.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-sm text-[var(--codex-faint)]">
+                <td colSpan={4} className="px-4 py-8 text-center text-sm text-[var(--poli-faint)]">
                   No issues yet
                 </td>
               </tr>

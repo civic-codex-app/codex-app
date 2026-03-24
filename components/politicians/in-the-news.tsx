@@ -74,8 +74,8 @@ export function InTheNews({ articles, politicianName, party }: InTheNewsProps) {
           className={cn(
             'rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all',
             activeGroup === 'all'
-              ? 'bg-[var(--codex-text)] text-[var(--codex-bg)]'
-              : 'bg-[var(--codex-badge-bg)] text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]'
+              ? 'bg-[var(--poli-text)] text-[var(--poli-bg)]'
+              : 'bg-[var(--poli-badge-bg)] text-[var(--poli-sub)] hover:bg-[var(--poli-hover)]'
           )}
         >
           All ({articles.length})
@@ -91,8 +91,8 @@ export function InTheNews({ articles, politicianName, party }: InTheNewsProps) {
               className={cn(
                 'flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[12px] font-medium transition-all',
                 activeGroup === g
-                  ? 'text-[var(--codex-bg)]'
-                  : 'bg-[var(--codex-badge-bg)] text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]'
+                  ? 'text-[var(--poli-bg)]'
+                  : 'bg-[var(--poli-badge-bg)] text-[var(--poli-sub)] hover:bg-[var(--poli-hover)]'
               )}
               style={
                 activeGroup === g
@@ -128,7 +128,7 @@ export function InTheNews({ articles, politicianName, party }: InTheNewsProps) {
                     className="inline-block h-2 w-2 rounded-full"
                     style={{ backgroundColor: colors.dot }}
                   />
-                  <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+                  <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-sub)]">
                     {BIAS_GROUP_LABELS[g]}
                   </span>
                 </div>
@@ -147,7 +147,7 @@ export function InTheNews({ articles, politicianName, party }: InTheNewsProps) {
           {visibleArticles.length > 0 ? (
             visibleArticles.map((a, i) => <ArticleCard key={i} article={a} />)
           ) : (
-            <p className="py-8 text-center text-[13px] text-[var(--codex-faint)]">
+            <p className="py-8 text-center text-[13px] text-[var(--poli-faint)]">
               No articles from {BIAS_GROUP_LABELS[activeGroup as BiasGroup]} sources
             </p>
           )}
@@ -155,7 +155,7 @@ export function InTheNews({ articles, politicianName, party }: InTheNewsProps) {
       )}
 
       {/* Disclaimer */}
-      <p className="mt-5 text-[11px] leading-[1.5] text-[var(--codex-faint)]">
+      <p className="mt-5 text-[11px] leading-[1.5] text-[var(--poli-faint)]">
         Media bias ratings are approximate, based on AllSides methodology.
         Poli does not endorse any news source. Showing recent coverage only.
       </p>
@@ -175,21 +175,21 @@ function ArticleCard({ article }: { article: NewsArticle }) {
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all hover:border-[var(--codex-input-border)] hover:bg-[var(--codex-hover)]"
+      className="group block rounded-lg border border-[var(--poli-border)] p-3 no-underline transition-all hover:border-[var(--poli-input-border)] hover:bg-[var(--poli-hover)]"
     >
       <div className="mb-1.5 flex items-center gap-2">
         <span
           className="inline-block h-1.5 w-1.5 rounded-full"
           style={{ backgroundColor: colors.dot }}
         />
-        <span className="text-[11px] font-medium text-[var(--codex-sub)]">
+        <span className="text-[11px] font-medium text-[var(--poli-sub)]">
           {article.source || article.sourceDomain}
         </span>
-        <span className="ml-auto text-[10px] text-[var(--codex-faint)]">
+        <span className="ml-auto text-[10px] text-[var(--poli-faint)]">
           {timeAgo(article.publishedAt)}
         </span>
       </div>
-      <p className="line-clamp-2 text-[13px] font-medium leading-[1.4] text-[var(--codex-text)] group-hover:text-blue-400">
+      <p className="line-clamp-2 text-[13px] font-medium leading-[1.4] text-[var(--poli-text)] group-hover:text-blue-400">
         {article.title}
       </p>
     </a>

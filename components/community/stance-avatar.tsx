@@ -21,7 +21,7 @@ export function StanceAvatar({
   if (total === 0) {
     return (
       <div
-        className="shrink-0 rounded-full bg-[var(--codex-border)]"
+        className="shrink-0 rounded-full bg-[var(--poli-border)]"
         style={{ width: size, height: size }}
       />
     )
@@ -74,7 +74,7 @@ export function StanceAvatar({
 
   return (
     <div
-      className="relative shrink-0 overflow-hidden rounded-full border border-[var(--codex-border)]"
+      className="relative shrink-0 overflow-hidden rounded-full border border-[var(--poli-border)]"
       style={{ width: size, height: size, background: '#fff' }}
     >
       {supports > 0 && (

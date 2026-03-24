@@ -61,11 +61,11 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="mb-1 text-3xl font-bold">Politicians</h1>
-          <p className="text-sm text-[var(--codex-sub)]">{totalCount} entries</p>
+          <p className="text-sm text-[var(--poli-sub)]">{totalCount} entries</p>
         </div>
         <Link
           href="/admin/politicians/new"
-          className="rounded-md bg-[var(--codex-text)] px-4 py-2 text-sm font-medium text-[var(--codex-bg)] no-underline hover:opacity-90"
+          className="rounded-md bg-[var(--poli-text)] px-4 py-2 text-sm font-medium text-[var(--poli-bg)] no-underline hover:opacity-90"
         >
           + Add Politician
         </Link>
@@ -74,7 +74,7 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
       {/* Filters */}
       <form method="GET" action="/admin/politicians" className="mb-6 flex flex-wrap items-end gap-3">
         <div className="flex-1 min-w-[200px]">
-          <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+          <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
             Search
           </label>
           <input
@@ -82,17 +82,17 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
             type="text"
             defaultValue={query}
             placeholder="Search by name..."
-            className="w-full border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-2.5 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+            className="w-full border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-2.5 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+          <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
             Party
           </label>
           <select
             name="party"
             defaultValue={partyFilter}
-            className="border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-2.5 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+            className="border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-2.5 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
           >
             <option value="">All Parties</option>
             <option value="democrat">Democrat</option>
@@ -102,13 +102,13 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
           </select>
         </div>
         <div>
-          <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+          <label className="mb-1.5 block text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
             Chamber
           </label>
           <select
             name="chamber"
             defaultValue={chamberFilter}
-            className="border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-2.5 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+            className="border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-2.5 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
           >
             <option value="">All Chambers</option>
             <option value="senate">Senate</option>
@@ -126,14 +126,14 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
         </div>
         <button
           type="submit"
-          className="rounded-md bg-[var(--codex-text)] px-4 py-2.5 text-sm font-medium text-[var(--codex-bg)] hover:opacity-90"
+          className="rounded-md bg-[var(--poli-text)] px-4 py-2.5 text-sm font-medium text-[var(--poli-bg)] hover:opacity-90"
         >
           Filter
         </button>
         {(query || partyFilter || chamberFilter) && (
           <Link
             href="/admin/politicians"
-            className="px-3 py-2.5 text-sm text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
+            className="px-3 py-2.5 text-sm text-[var(--poli-sub)] hover:text-[var(--poli-text)]"
           >
             Clear
           </Link>
@@ -141,26 +141,26 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
       </form>
 
       {/* Table */}
-      <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">
+      <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-[var(--codex-border)] bg-[var(--codex-card)]">
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+            <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Name
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Party
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 State
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Chamber
               </th>
-              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Image
               </th>
-              <th className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+              <th className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-wider text-[var(--poli-sub)]">
                 Actions
               </th>
             </tr>
@@ -169,27 +169,27 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
             {politicians.map((pol) => (
               <tr
                 key={pol.id}
-                className="border-b border-[var(--codex-border)] transition-colors hover:bg-[var(--codex-hover)]"
+                className="border-b border-[var(--poli-border)] transition-colors hover:bg-[var(--poli-hover)]"
               >
                 <td className="px-4 py-3 text-sm font-medium">{pol.name}</td>
                 <td className="px-4 py-3 text-sm">
                   <PartyIcon party={pol.party} size={14} />
                 </td>
-                <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">{pol.state}</td>
-                <td className="px-4 py-3 text-sm text-[var(--codex-sub)]">
+                <td className="px-4 py-3 text-sm text-[var(--poli-sub)]">{pol.state}</td>
+                <td className="px-4 py-3 text-sm text-[var(--poli-sub)]">
                   {CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber}
                 </td>
                 <td className="px-4 py-3 text-sm">
                   {pol.image_url ? (
                     <span className="text-green-400">Yes</span>
                   ) : (
-                    <span className="text-[var(--codex-faint)]">No</span>
+                    <span className="text-[var(--poli-faint)]">No</span>
                   )}
                 </td>
                 <td className="px-4 py-3 text-right">
                   <Link
                     href={`/admin/politicians/${pol.id}`}
-                    className="text-xs text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
+                    className="text-xs text-[var(--poli-sub)] hover:text-[var(--poli-text)]"
                   >
                     Edit
                   </Link>
@@ -198,7 +198,7 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
             ))}
             {politicians.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-sm text-[var(--codex-faint)]">
+                <td colSpan={6} className="px-4 py-8 text-center text-sm text-[var(--poli-faint)]">
                   {query || partyFilter || chamberFilter ? 'No politicians match your filters' : 'No politicians yet'}
                 </td>
               </tr>
@@ -210,14 +210,14 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-sm text-[var(--codex-sub)]">
+          <p className="text-sm text-[var(--poli-sub)]">
             Showing {from + 1}–{Math.min(from + PAGE_SIZE, totalCount)} of {totalCount}
           </p>
           <div className="flex gap-2">
             {currentPage > 1 && (
               <Link
                 href={buildUrl({ page: String(currentPage - 1) })}
-                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
+                className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] no-underline hover:bg-[var(--poli-hover)]"
               >
                 Previous
               </Link>
@@ -227,14 +227,14 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
               .map((p, idx, arr) => (
                 <span key={p} className="flex items-center gap-2">
                   {idx > 0 && arr[idx - 1] !== p - 1 && (
-                    <span className="text-[var(--codex-faint)]">...</span>
+                    <span className="text-[var(--poli-faint)]">...</span>
                   )}
                   <Link
                     href={buildUrl({ page: String(p) })}
                     className={`rounded-md border px-3 py-1.5 text-sm no-underline ${
                       p === currentPage
-                        ? 'border-[var(--codex-text)] bg-[var(--codex-text)] text-[var(--codex-bg)]'
-                        : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]'
+                        ? 'border-[var(--poli-text)] bg-[var(--poli-text)] text-[var(--poli-bg)]'
+                        : 'border-[var(--poli-border)] text-[var(--poli-sub)] hover:bg-[var(--poli-hover)]'
                     }`}
                   >
                     {p}
@@ -244,7 +244,7 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
             {currentPage < totalPages && (
               <Link
                 href={buildUrl({ page: String(currentPage + 1) })}
-                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
+                className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] no-underline hover:bg-[var(--poli-hover)]"
               >
                 Next
               </Link>

@@ -62,7 +62,7 @@ export function DeleteAccount() {
         </button>
         <button
           onClick={() => setConfirming(false)}
-          className="rounded-md border border-[var(--codex-border)] px-4 py-2 text-sm text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
+          className="rounded-md border border-[var(--poli-border)] px-4 py-2 text-sm text-[var(--poli-sub)] hover:text-[var(--poli-text)]"
         >
           Cancel
         </button>

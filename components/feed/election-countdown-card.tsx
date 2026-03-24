@@ -54,10 +54,10 @@ export function ElectionCountdownCard({ race }: Props) {
         </div>
       </div>
 
-      <p className="mb-1 text-[15px] font-semibold leading-[1.3] text-[var(--codex-text)]">
+      <p className="mb-1 text-[15px] font-semibold leading-[1.3] text-[var(--poli-text)]">
         {race.name}
       </p>
-      <p className="mb-3 text-[12px] text-[var(--codex-faint)]">
+      <p className="mb-3 text-[12px] text-[var(--poli-faint)]">
         {race.state} &middot; {dateLabel}
       </p>
 
@@ -80,7 +80,7 @@ export function ElectionCountdownCard({ race }: Props) {
             </div>
           ))}
           {race.candidates.length > 6 && (
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--codex-border)] bg-[var(--codex-bg)] text-[10px] font-medium text-[var(--codex-faint)]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--poli-border)] bg-[var(--poli-bg)] text-[10px] font-medium text-[var(--poli-faint)]">
               +{race.candidates.length - 6}
             </div>
           )}

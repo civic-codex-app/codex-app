@@ -381,14 +381,14 @@ export default async function DashboardPage() {
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
-      <p className="mb-10 text-sm text-[var(--codex-sub)]">
+      <p className="mb-10 text-sm text-[var(--poli-sub)]">
         Your personalized civic engagement hub
       </p>
 
       {/* Engagement: Streak + Badges */}
       <section className="mb-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
             Your Civic Engagement
           </h2>
         </div>
@@ -401,13 +401,13 @@ export default async function DashboardPage() {
       {/* Your Representatives */}
       <section className="mb-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
             Your Representatives{stateName ? ` \u00b7 ${stateName}` : ''}
           </h2>
           {userState && (
             <Link
               href={`/directory?state=${userState}`}
-              className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+              className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
             >
               View all &rarr;
             </Link>
@@ -416,15 +416,15 @@ export default async function DashboardPage() {
 
         {userState ? (
           representatives.length > 0 ? (
-            <div className="divide-y divide-[var(--codex-border)] rounded-md border border-[var(--codex-border)]">
+            <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)]">
               {representatives.map((pol) => (
                 <Link
                   key={pol.id}
                   href={`/politicians/${pol.slug}`}
-                  className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                  className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
                 >
                   <div
-                    className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full border border-[var(--codex-border)]"
+                    className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full border border-[var(--poli-border)]"
                   >
                     <AvatarImage
                       src={pol.image_url}
@@ -436,7 +436,7 @@ export default async function DashboardPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="truncate text-sm font-medium text-[var(--codex-text)]">
+                      <span className="truncate text-sm font-medium text-[var(--poli-text)]">
                         {pol.name}
                       </span>
                       <span
@@ -444,31 +444,31 @@ export default async function DashboardPage() {
                         style={{ backgroundColor: partyColor(pol.party) }}
                       />
                     </div>
-                    <div className="text-xs text-[var(--codex-sub)]">
+                    <div className="text-xs text-[var(--poli-sub)]">
                       {pol.title ?? CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber}
                     </div>
                   </div>
-                  <span className="flex-shrink-0 rounded bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] text-[var(--codex-badge-text)]">
+                  <span className="flex-shrink-0 rounded bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] text-[var(--poli-badge-text)]">
                     {CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber}
                   </span>
                 </Link>
               ))}
             </div>
           ) : (
-            <div className="rounded-md border border-[var(--codex-border)] py-10 text-center">
-              <p className="text-sm text-[var(--codex-sub)]">
+            <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+              <p className="text-sm text-[var(--poli-sub)]">
                 No representatives found for {stateName}
               </p>
             </div>
           )
         ) : (
-          <div className="rounded-md border border-[var(--codex-border)] py-10 text-center">
-            <p className="mb-4 text-sm text-[var(--codex-sub)]">
+          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+            <p className="mb-4 text-sm text-[var(--poli-sub)]">
               Set your state in account settings to see your representatives
             </p>
             <Link
               href="/account"
-              className="rounded-md bg-[var(--codex-badge-bg)] px-4 py-2 text-sm text-[var(--codex-text)] no-underline hover:bg-[var(--codex-hover)]"
+              className="rounded-md bg-[var(--poli-badge-bg)] px-4 py-2 text-sm text-[var(--poli-text)] no-underline hover:bg-[var(--poli-hover)]"
             >
               Account settings
             </Link>
@@ -479,12 +479,12 @@ export default async function DashboardPage() {
       {/* Issue Priorities */}
       <section className="mb-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
             Your Issue Priorities
           </h2>
           <Link
             href="/ballot"
-            className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+            className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
           >
             Ballot preview &rarr;
           </Link>
@@ -499,7 +499,7 @@ export default async function DashboardPage() {
 
       {/* Quick Links */}
       <section className="mb-10">
-        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
           Quick Links
         </h2>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -508,15 +508,15 @@ export default async function DashboardPage() {
             <Link
               key={link.href}
               href={link.href}
-              className="group rounded-lg border border-[var(--codex-border)] p-4 no-underline transition-colors hover:border-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
+              className="group rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-colors hover:border-[var(--poli-sub)] hover:bg-[var(--poli-hover)]"
             >
-              <div className="mb-2 text-[var(--codex-sub)] transition-colors group-hover:text-[var(--codex-text)]">
+              <div className="mb-2 text-[var(--poli-sub)] transition-colors group-hover:text-[var(--poli-text)]">
                 {link.icon}
               </div>
-              <div className="text-sm font-medium text-[var(--codex-text)]">
+              <div className="text-sm font-medium text-[var(--poli-text)]">
                 {link.title}
               </div>
-              <div className="mt-0.5 text-xs leading-snug text-[var(--codex-sub)]">
+              <div className="mt-0.5 text-xs leading-snug text-[var(--poli-sub)]">
                 {link.description}
               </div>
             </Link>
@@ -527,10 +527,10 @@ export default async function DashboardPage() {
       {/* Recent Activity Feed */}
       {followedIds.length > 0 && (
         <section className="mb-10">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
             Recent Activity
           </h2>
-          <div className="rounded-md border border-[var(--codex-border)] px-4 py-3">
+          <div className="rounded-md border border-[var(--poli-border)] px-4 py-3">
             <RecentActivityFeed items={activityFeed} />
           </div>
         </section>
@@ -539,19 +539,19 @@ export default async function DashboardPage() {
       {/* Followed Bills */}
       <section className="mb-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
             Saved Bills ({followedBills.length})
           </h2>
           <Link
             href="/bills"
-            className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+            className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
           >
             Browse bills &rarr;
           </Link>
         </div>
 
         {followedBills.length > 0 ? (
-          <div className="divide-y divide-[var(--codex-border)] rounded-md border border-[var(--codex-border)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)]">
             {followedBills.map((bill) => {
               const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
                 signed_into_law: { label: 'Signed', color: '#22C55E', bg: '#22C55E18' },
@@ -567,11 +567,11 @@ export default async function DashboardPage() {
                 <Link
                   key={bill.id}
                   href={`/bills/${bill.id}`}
-                  className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                  className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--codex-badge-text)]">
+                      <span className="rounded-sm bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
                         {bill.number}
                       </span>
                       <span
@@ -581,12 +581,12 @@ export default async function DashboardPage() {
                         {sc.label}
                       </span>
                     </div>
-                    <div className="mt-1 truncate text-sm text-[var(--codex-text)]">
+                    <div className="mt-1 truncate text-sm text-[var(--poli-text)]">
                       {bill.title}
                     </div>
                   </div>
                   {bill.last_action_date && (
-                    <span className="flex-shrink-0 text-[11px] text-[var(--codex-faint)]">
+                    <span className="flex-shrink-0 text-[11px] text-[var(--poli-faint)]">
                       {new Date(bill.last_action_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </span>
                   )}
@@ -595,11 +595,11 @@ export default async function DashboardPage() {
             })}
           </div>
         ) : (
-          <div className="rounded-md border border-[var(--codex-border)] py-10 text-center">
-            <p className="mb-2 text-sm text-[var(--codex-sub)]">
+          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+            <p className="mb-2 text-sm text-[var(--poli-sub)]">
               No saved bills yet
             </p>
-            <p className="text-xs text-[var(--codex-faint)]">
+            <p className="text-xs text-[var(--poli-faint)]">
               Bookmark bills to track their progress here
             </p>
           </div>
@@ -609,7 +609,7 @@ export default async function DashboardPage() {
       {/* Upcoming Election with Key Dates */}
       {upcomingElection && (
         <section className="mb-10">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
             Upcoming Election
           </h2>
           <ElectionCountdownCard
@@ -625,33 +625,33 @@ export default async function DashboardPage() {
       {/* Followed Issues */}
       <section className="mb-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
             Followed Issues ({followedIssues.length})
           </h2>
           <Link
             href="/issues"
-            className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+            className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
           >
             Browse issues &rarr;
           </Link>
         </div>
 
         {followedIssues.length > 0 ? (
-          <div className="divide-y divide-[var(--codex-border)] rounded-md border border-[var(--codex-border)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)]">
             {followedIssues.map((issue) => (
               <Link
                 key={issue.id}
                 href={`/issues/${issue.slug}`}
-                className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
               >
-                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md bg-[var(--codex-badge-bg)] text-[var(--codex-sub)]">
+                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md bg-[var(--poli-badge-bg)] text-[var(--poli-sub)]">
                   <IssueIcon icon={issue.icon} size={18} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-medium text-[var(--codex-text)]">
+                  <div className="text-sm font-medium text-[var(--poli-text)]">
                     {issue.name}
                   </div>
-                  <div className="text-xs text-[var(--codex-sub)]">
+                  <div className="text-xs text-[var(--poli-sub)]">
                     {issue.category}
                   </div>
                 </div>
@@ -659,11 +659,11 @@ export default async function DashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-md border border-[var(--codex-border)] py-10 text-center">
-            <p className="mb-2 text-sm text-[var(--codex-sub)]">
+          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+            <p className="mb-2 text-sm text-[var(--poli-sub)]">
               No followed issues yet
             </p>
-            <p className="text-xs text-[var(--codex-faint)]">
+            <p className="text-xs text-[var(--poli-faint)]">
               Follow issues to track politician stances here
             </p>
           </div>
@@ -673,12 +673,12 @@ export default async function DashboardPage() {
       {/* Following */}
       <section>
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
             Following ({followedPoliticians.length})
           </h2>
           <Link
             href="/"
-            className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+            className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
           >
             Browse directory &rarr;
           </Link>
@@ -691,16 +691,16 @@ export default async function DashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-md border border-[var(--codex-border)] py-16 text-center">
-            <div className="mb-2 text-xl font-semibold text-[var(--codex-faint)]">
+          <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+            <div className="mb-2 text-xl font-semibold text-[var(--poli-faint)]">
               Not following anyone yet
             </div>
-            <p className="mb-6 text-sm text-[var(--codex-sub)]">
+            <p className="mb-6 text-sm text-[var(--poli-sub)]">
               Browse the directory and follow politicians to see them here
             </p>
             <Link
               href="/"
-              className="rounded-md bg-[var(--codex-badge-bg)] px-4 py-2 text-sm text-[var(--codex-text)] no-underline hover:bg-[var(--codex-hover)]"
+              className="rounded-md bg-[var(--poli-badge-bg)] px-4 py-2 text-sm text-[var(--poli-text)] no-underline hover:bg-[var(--poli-hover)]"
             >
               Browse directory
             </Link>

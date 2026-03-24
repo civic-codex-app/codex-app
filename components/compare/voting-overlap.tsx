@@ -65,10 +65,10 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
   if (shared.length === 0) {
     return (
       <div className="mb-8">
-        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
           Voting Record Overlap
         </h2>
-        <div className="rounded-md border border-[var(--codex-border)] px-6 py-8 text-center text-[13px] text-[var(--codex-faint)]">
+        <div className="rounded-md border border-[var(--poli-border)] px-6 py-8 text-center text-[13px] text-[var(--poli-faint)]">
           No shared voting records found
         </div>
       </div>
@@ -79,18 +79,18 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
 
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Voting Record Overlap
       </h2>
 
       {/* Agreement bar */}
       {total > 0 && (
-        <div className="mb-4 rounded-md border border-[var(--codex-border)] p-4">
+        <div className="mb-4 rounded-md border border-[var(--poli-border)] p-4">
           <div className="mb-2 flex items-center justify-between">
-            <span className="text-[12px] text-[var(--codex-sub)]">Voting Agreement</span>
+            <span className="text-[12px] text-[var(--poli-sub)]">Voting Agreement</span>
             <span className="text-lg font-semibold">{agreePct}%</span>
           </div>
-          <div className="mb-1.5 flex h-2.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
+          <div className="mb-1.5 flex h-2.5 overflow-hidden rounded-full bg-[var(--poli-border)]">
             <div
               className="rounded-l-full"
               style={{
@@ -117,7 +117,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
       <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
         <div className="min-w-[340px] space-y-1">
           {/* Header */}
-          <div className="hidden gap-2 px-4 pb-1 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_80px_80px]">
+          <div className="hidden gap-2 px-4 pb-1 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)] sm:grid sm:grid-cols-[1fr_80px_80px]">
             <span>Bill</span>
             <span className="text-center">{polA.name.split(' ').pop()}</span>
             <span className="text-center">{polB.name.split(' ').pop()}</span>
@@ -130,9 +130,9 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
             return (
               <div
                 key={i}
-                className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-md border border-[var(--codex-border)] px-4 py-2 sm:grid-cols-[1fr_80px_80px]"
+                className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-md border border-[var(--poli-border)] px-4 py-2 sm:grid-cols-[1fr_80px_80px]"
               >
-                <span className="truncate text-[13px] text-[var(--codex-text)]">
+                <span className="truncate text-[13px] text-[var(--poli-text)]">
                   {s.label}
                 </span>
                 <div className="flex justify-center">
@@ -158,7 +158,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
       </div>
 
       {shared.length > 10 && (
-        <p className="mt-2 text-center text-[11px] text-[var(--codex-faint)]">
+        <p className="mt-2 text-center text-[11px] text-[var(--poli-faint)]">
           Showing 10 of {shared.length} shared votes
         </p>
       )}

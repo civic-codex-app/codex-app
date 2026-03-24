@@ -39,7 +39,7 @@ function LoginForm() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-3xl font-bold">Sign in</h1>
-        <p className="text-sm text-[var(--codex-sub)]">Welcome back</p>
+        <p className="text-sm text-[var(--poli-sub)]">Welcome back</p>
       </div>
 
       {error && (
@@ -49,7 +49,7 @@ function LoginForm() {
       )}
 
       <div>
-        <label htmlFor="login-email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="login-email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--poli-sub)]">
           Email
         </label>
         <input
@@ -58,12 +58,12 @@ function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-3 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+          className="w-full border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
         />
       </div>
 
       <div>
-        <label htmlFor="login-password" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="login-password" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--poli-sub)]">
           Password
         </label>
         <input
@@ -72,7 +72,7 @@ function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="w-full border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-3 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+          className="w-full border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
         />
       </div>
 
@@ -82,9 +82,9 @@ function LoginForm() {
 
       {/* Divider */}
       <div className="flex items-center gap-3">
-        <div className="h-px flex-1 bg-[var(--codex-border)]" />
-        <span className="text-[11px] text-[var(--codex-faint)]">or</span>
-        <div className="h-px flex-1 bg-[var(--codex-border)]" />
+        <div className="h-px flex-1 bg-[var(--poli-border)]" />
+        <span className="text-[11px] text-[var(--poli-faint)]">or</span>
+        <div className="h-px flex-1 bg-[var(--poli-border)]" />
       </div>
 
       {/* Google OAuth */}
@@ -97,7 +97,7 @@ function LoginForm() {
             options: { redirectTo: `${window.location.origin}/auth/callback` },
           })
         }}
-        className="flex w-full items-center justify-center gap-3 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-4 py-3 text-sm text-[var(--codex-text)] transition-colors hover:bg-[var(--codex-hover)]"
+        className="flex w-full items-center justify-center gap-3 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-4 py-3 text-sm text-[var(--poli-text)] transition-colors hover:bg-[var(--poli-hover)]"
       >
         <svg width="18" height="18" viewBox="0 0 24 24">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -108,11 +108,11 @@ function LoginForm() {
         Continue with Google
       </button>
 
-      <div className="flex items-center justify-between text-xs text-[var(--codex-sub)]">
-        <Link href="/signup" className="hover:text-[var(--codex-text)]">
+      <div className="flex items-center justify-between text-xs text-[var(--poli-sub)]">
+        <Link href="/signup" className="hover:text-[var(--poli-text)]">
           Create account
         </Link>
-        <Link href="/forgot-password" className="hover:text-[var(--codex-text)]">
+        <Link href="/forgot-password" className="hover:text-[var(--poli-text)]">
           Forgot password?
         </Link>
       </div>

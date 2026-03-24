@@ -47,8 +47,8 @@ export default async function BillsPage({ searchParams }: PageProps) {
         <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
-            <div className="mb-3 text-2xl font-bold text-[var(--codex-text)]">Something went wrong</div>
-            <p className="text-sm text-[var(--codex-sub)]">
+            <div className="mb-3 text-2xl font-bold text-[var(--poli-text)]">Something went wrong</div>
+            <p className="text-sm text-[var(--poli-sub)]">
               We couldn&apos;t load bills right now. Please try again later.
             </p>
           </div>
@@ -96,37 +96,37 @@ export default async function BillsPage({ searchParams }: PageProps) {
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Bills & Legislation
           </h1>
-          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
+          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
             Track major bills through Congress and see how your representatives voted.
           </p>
-          <p className="mt-3 animate-fade-up text-[12px] leading-[1.6] text-[var(--codex-faint)]">
+          <p className="mt-3 animate-fade-up text-[12px] leading-[1.6] text-[var(--poli-faint)]">
             {BILL_PROCESS_EXPLAINER}
           </p>
         </div>
 
         {/* Stats */}
-        <div className="mb-8 flex flex-wrap gap-6 border-y border-[var(--codex-border)] py-4">
+        <div className="mb-8 flex flex-wrap gap-6 border-y border-[var(--poli-border)] py-4">
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold">{all.length}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
               Total Bills
             </span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold text-green-400">{signed}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
               Signed
             </span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold text-blue-400">{active}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
               Active
             </span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold text-red-400">{failed}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
               Failed / Vetoed
             </span>
           </div>
@@ -143,20 +143,20 @@ export default async function BillsPage({ searchParams }: PageProps) {
               <Link
                 key={bill.id}
                 href={`/bills/${bill.id}`}
-                className="group block cursor-pointer overflow-hidden rounded-md border border-[var(--codex-border)] no-underline transition-all duration-200 hover:border-[var(--codex-input-border)] hover:shadow-md"
+                className="group block cursor-pointer overflow-hidden rounded-md border border-[var(--poli-border)] no-underline transition-all duration-200 hover:border-[var(--poli-input-border)] hover:shadow-md"
               >
                 {/* Vote bar at top */}
                 {vc && vc.total > 0 && (
                   <div className="flex h-1">
                     <div style={{ width: `${(vc.yea / vc.total) * 100}%`, background: '#22C55E88' }} />
                     <div style={{ width: `${(vc.nay / vc.total) * 100}%`, background: '#EF444488' }} />
-                    <div style={{ width: `${((vc.total - vc.yea - vc.nay) / vc.total) * 100}%`, background: 'var(--codex-border)' }} />
+                    <div style={{ width: `${((vc.total - vc.yea - vc.nay) / vc.total) * 100}%`, background: 'var(--poli-border)' }} />
                   </div>
                 )}
 
                 <div className="p-5">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.06em] text-[var(--codex-badge-text)]">
+                    <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
                       {bill.number}
                     </span>
                     <span
@@ -167,35 +167,35 @@ export default async function BillsPage({ searchParams }: PageProps) {
                       {sc.label}
                     </span>
                     {bill.congress_session && (
-                      <span className="text-[11px] text-[var(--codex-faint)]">
+                      <span className="text-[11px] text-[var(--poli-faint)]">
                         {bill.congress_session} Congress
                       </span>
                     )}
                   </div>
 
-                  <h3 className="mb-1.5 text-lg font-semibold transition-colors group-hover:text-[var(--codex-text)]">
+                  <h3 className="mb-1.5 text-lg font-semibold transition-colors group-hover:text-[var(--poli-text)]">
                     {bill.title}
                   </h3>
 
                   {bill.summary && (
-                    <p className="mb-3 line-clamp-2 text-[13px] leading-[1.6] text-[var(--codex-sub)]">
+                    <p className="mb-3 line-clamp-2 text-[13px] leading-[1.6] text-[var(--poli-sub)]">
                       {bill.summary}
                     </p>
                   )}
 
-                  <div className="flex items-center gap-4 text-[11px] text-[var(--codex-faint)]">
+                  <div className="flex items-center gap-4 text-[11px] text-[var(--poli-faint)]">
                     {bill.introduced_date && (
                       <span>Introduced {new Date(bill.introduced_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     )}
                     {vc && vc.total > 0 && (
                       <>
-                        <span className="text-[var(--codex-border)]">&middot;</span>
+                        <span className="text-[var(--poli-border)]">&middot;</span>
                         <span>
                           <span className="text-green-400/70">{vc.yea} yea</span>
                           {' \u00B7 '}
                           <span className="text-red-400/70">{vc.nay} nay</span>
                           {yeaPct !== null && (
-                            <span className="ml-1 text-[var(--codex-faint)]">({yeaPct}%)</span>
+                            <span className="ml-1 text-[var(--poli-faint)]">({yeaPct}%)</span>
                           )}
                         </span>
                       </>
@@ -207,7 +207,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
           })}
 
           {billList.length === 0 && (
-            <div className="py-20 text-center text-[var(--codex-faint)]">
+            <div className="py-20 text-center text-[var(--poli-faint)]">
               <div className="mb-2 text-2xl font-bold">No bills found</div>
               <div className="text-sm">Check back for legislation updates</div>
             </div>

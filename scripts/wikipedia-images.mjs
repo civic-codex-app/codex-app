@@ -6,7 +6,7 @@ const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABA
 function wikiImageSearch(title) {
   return new Promise((resolve) => {
     const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=400&redirects=1`
-    https.get(url, { headers: { 'User-Agent': 'CodexApp/1.0 (civic engagement platform; contact@codexapp.org)' } }, (res) => {
+    https.get(url, { headers: { 'User-Agent': 'PoliApp/1.0 (civic engagement platform; contact@getpoli.app)' } }, (res) => {
       let data = ''
       res.on('data', c => data += c)
       res.on('end', () => {

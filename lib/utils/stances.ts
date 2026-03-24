@@ -39,7 +39,7 @@ export const STANCE_STYLES: Record<string, StanceStyle> = {
   leans_oppose:      { bg: 'bg-red-400/10',      text: 'text-red-300',     label: 'Leans Against',  color: '#F87171', shortLabel: 'Opposes' },
   opposes:           { bg: 'bg-red-500/10',      text: 'text-red-400',     label: 'Opposes',        color: '#EF4444', shortLabel: 'Opposes' },
   strongly_opposes:  { bg: 'bg-red-600/15',      text: 'text-red-400',     label: 'Strongly Opposes', color: '#DC2626', shortLabel: 'Opposes' },
-  unknown:           { bg: 'bg-[var(--codex-badge-bg)]', text: 'text-[var(--codex-faint)]', label: 'Unknown', color: '#6B7280', shortLabel: 'Unknown' },
+  unknown:           { bg: 'bg-[var(--poli-badge-bg)]', text: 'text-[var(--poli-faint)]', label: 'Unknown', color: '#6B7280', shortLabel: 'Unknown' },
 }
 
 /** Get style for any stance string (safe fallback to unknown) */

@@ -1,7 +1,7 @@
-# Codex App — Project Memory
+# Poli App — Project Memory
 
 ## What This Is
-Codex is a **civic engagement platform** that tracks U.S. politicians, their stances on issues, voting records, campaign finance, elections, and candidates. The goal is transparent, data-driven political information for voters.
+Poli is a **civic engagement platform** that tracks U.S. politicians, their stances on issues, voting records, campaign finance, elections, and candidates. The goal is transparent, data-driven political information for voters.
 
 **Live URL:** Deployed via Vercel (Next.js)
 **Supabase project:** `jzxgkvwbhdagqwvisxkt`
@@ -9,7 +9,7 @@ Codex is a **civic engagement platform** that tracks U.S. politicians, their sta
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router) + React 19 + TypeScript
 - **Database:** Supabase (PostgreSQL) with Row-Level Security
-- **Styling:** Tailwind CSS v4 — dark-first design, CSS variables (`--codex-*`)
+- **Styling:** Tailwind CSS v4 — dark-first design, CSS variables (`--poli-*`)
 - **Mobile:** Capacitor (iOS/Android shell wrapping the web app)
 - **Package manager:** pnpm
 - **Visualizations:** Pure SVG + CSS (no charting library)
@@ -32,9 +32,9 @@ Codex is a **civic engagement platform** that tracks U.S. politicians, their sta
 - For seed scripts (.mjs files), must `export $(grep -v '^#' .env.local | xargs)` before running with `node`
 
 ### Design System
-- Color tokens: `--codex-text`, `--codex-sub`, `--codex-faint`, `--codex-border`, `--codex-card`, `--codex-hover`, `--codex-badge-bg`, `--codex-badge-text`, `--codex-input-border`
+- Color tokens: `--poli-text`, `--poli-sub`, `--poli-faint`, `--poli-border`, `--poli-card`, `--poli-hover`, `--poli-badge-bg`, `--poli-badge-text`, `--poli-input-border`
 - Typography: `font-serif` for headings, `text-[clamp(...)]` for responsive sizing
-- Section headers: `text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]`
+- Section headers: `text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]`
 - Party colors via `partyColor()` from `lib/constants/parties.ts`
 
 ## Database Schema (Key Tables)

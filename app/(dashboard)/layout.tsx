@@ -104,14 +104,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const userInitial = (profile?.display_name ?? profile?.email ?? 'U').charAt(0).toUpperCase()
 
   return (
-    <div className="min-h-screen bg-[var(--codex-bg)] pb-16 sm:pb-0">
+    <div className="min-h-screen bg-[var(--poli-bg)] pb-16 sm:pb-0">
       {/* Desktop top nav — logo + avatar + sign out */}
       <nav
-        className="sticky z-40 border-b border-[var(--codex-border)] bg-[var(--codex-bg)]"
+        className="sticky z-40 border-b border-[var(--poli-border)] bg-[var(--poli-bg)]"
         style={{ top: 'env(safe-area-inset-top, 0px)' }}
       >
         <div
-          className="fixed left-0 right-0 top-0 -z-10 bg-[var(--codex-bg)]"
+          className="fixed left-0 right-0 top-0 -z-10 bg-[var(--poli-bg)]"
           style={{ height: 'env(safe-area-inset-top, 0px)' }}
         />
         <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3 md:px-10 md:py-4">
@@ -124,7 +124,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-3">
             {profile && (
               <Link href="/account" className="no-underline">
-                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--codex-border)] transition-colors hover:border-[var(--codex-text)]">
+                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)] transition-colors hover:border-[var(--poli-text)]">
                   {profile.avatar_url ? (
                     <Image
                       src={profile.avatar_url}
@@ -135,8 +135,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
-                      <span className="text-xs font-semibold text-[var(--codex-sub)]">{userInitial}</span>
+                    <div className="flex h-full w-full items-center justify-center bg-[var(--poli-badge-bg)]">
+                      <span className="text-xs font-semibold text-[var(--poli-sub)]">{userInitial}</span>
                     </div>
                   )}
                 </div>
@@ -146,7 +146,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <form action="/api/auth/signout" method="POST" className="hidden sm:block">
               <button
                 type="submit"
-                className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+                className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
                 style={{ background: 'none', border: 'none', cursor: 'pointer' }}
               >
                 Sign out
@@ -157,7 +157,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </nav>
 
       {/* Secondary nav — desktop only, pill-style tabs */}
-      <div className="hidden border-b border-[var(--codex-border)] bg-[var(--codex-bg)] sm:block">
+      <div className="hidden border-b border-[var(--poli-border)] bg-[var(--poli-bg)] sm:block">
         <div className="mx-auto flex max-w-[1200px] items-center gap-2 px-6 py-2 md:px-10">
           {SECONDARY_NAV.map((item) => {
             const isActive = pathname === item.href
@@ -168,8 +168,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 className={cn(
                   'rounded-full px-4 py-1.5 text-sm font-medium no-underline transition-colors',
                   isActive
-                    ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)]'
-                    : 'text-[var(--codex-sub)] hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]'
+                    ? 'bg-[var(--poli-badge-bg)] text-[var(--poli-text)]'
+                    : 'text-[var(--poli-sub)] hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]'
                 )}
                 aria-current={isActive ? 'page' : undefined}
               >
@@ -199,8 +199,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           className="fixed left-0 right-0 z-50 rounded-t-xl border-t sm:hidden"
           style={{
             bottom: 'calc(56px + var(--safe-bottom, 0px))',
-            backgroundColor: 'var(--codex-bg)',
-            borderColor: 'var(--codex-border)',
+            backgroundColor: 'var(--poli-bg)',
+            borderColor: 'var(--poli-border)',
             padding: '12px 16px',
             maxHeight: '60vh',
             overflowY: 'auto',
@@ -212,19 +212,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 key={link.href}
                 href={link.href}
                 onClick={closeMore}
-                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
               >
                 {link.label}
               </Link>
             ))}
 
             {/* Divider */}
-            <div className="my-1 border-t border-[var(--codex-border)]" />
+            <div className="my-1 border-t border-[var(--poli-border)]" />
 
             <form action="/api/auth/signout" method="POST">
               <button
                 type="submit"
-                className="block w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-red-500 transition-colors hover:bg-[var(--codex-hover)]"
+                className="block w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-red-500 transition-colors hover:bg-[var(--poli-hover)]"
                 style={{ background: 'none', border: 'none', cursor: 'pointer' }}
               >
                 Sign Out
@@ -237,8 +237,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <nav
         className="fixed bottom-0 left-0 right-0 z-40 sm:hidden"
         style={{
-          backgroundColor: 'var(--codex-bg)',
-          borderTop: '1px solid var(--codex-border)',
+          backgroundColor: 'var(--poli-bg)',
+          borderTop: '1px solid var(--poli-border)',
           paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         }}
         aria-label="Account navigation"
@@ -261,14 +261,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '2px',
-                  color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)',
+                  color: isActive ? 'var(--poli-text)' : 'var(--poli-faint)',
                 }}
               >
                 {tab.icon}
                 <span className="text-xs font-medium">{tab.label}</span>
                 {isActive && (
                   <span
-                    className="rounded-full bg-[var(--codex-text)]"
+                    className="rounded-full bg-[var(--poli-text)]"
                     style={{ width: '4px', height: '4px', marginTop: '-1px' }}
                   />
                 )}
@@ -291,7 +291,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               background: 'none',
               padding: 0,
               cursor: 'pointer',
-              color: moreOpen ? 'var(--codex-text)' : 'var(--codex-faint)',
+              color: moreOpen ? 'var(--poli-text)' : 'var(--poli-faint)',
               WebkitAppearance: 'none',
             }}
             aria-label="More navigation options"
@@ -314,7 +314,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <span className="text-xs font-medium">More</span>
             {moreOpen && (
               <span
-                className="rounded-full bg-[var(--codex-text)]"
+                className="rounded-full bg-[var(--poli-text)]"
                 style={{ width: '4px', height: '4px', marginTop: '-1px' }}
               />
             )}

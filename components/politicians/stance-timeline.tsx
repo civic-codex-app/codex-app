@@ -82,7 +82,7 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
             className="absolute left-[7px] top-[6px] w-px"
             style={{
               height: 'calc(100% - 12px)',
-              backgroundColor: 'var(--codex-border)',
+              backgroundColor: 'var(--poli-border)',
             }}
           />
         )}
@@ -97,7 +97,7 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
                 className="absolute -left-7 top-[3px] h-3 w-3 rounded-full border-2"
                 style={{
                   backgroundColor: badge.color,
-                  borderColor: node.isCurrent ? 'var(--codex-text)' : badge.color,
+                  borderColor: node.isCurrent ? 'var(--poli-text)' : badge.color,
                   boxShadow: node.isCurrent ? `0 0 0 2px ${badge.color}33` : undefined,
                 }}
               />
@@ -106,20 +106,20 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
               {node.isFlip && (
                 <div
                   className="absolute -left-[42px] top-[1px] flex h-[18px] w-[18px] items-center justify-center rounded-full text-[10px]"
-                  style={{ backgroundColor: 'var(--codex-hover)' }}
+                  style={{ backgroundColor: 'var(--poli-hover)' }}
                   title="Stance changed direction"
                 >
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                     <path
                       d="M2 7L5 3L8 7"
-                      stroke="var(--codex-text)"
+                      stroke="var(--poli-text)"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M2 3L5 7L8 3"
-                      stroke="var(--codex-text)"
+                      stroke="var(--poli-text)"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -134,11 +134,11 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
                 {/* Date / Current label */}
                 <div className="flex items-center gap-2">
                   {node.isCurrent ? (
-                    <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--codex-sub)]">
+                    <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--poli-sub)]">
                       Current
                     </span>
                   ) : (
-                    <span className="text-[11px] tabular-nums text-[var(--codex-faint)]">
+                    <span className="text-[11px] tabular-nums text-[var(--poli-faint)]">
                       {formatDate(node.date)}
                     </span>
                   )}
@@ -156,7 +156,7 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
 
                 {/* Source description */}
                 {node.source_description && (
-                  <div className="mt-0.5 text-[11px] leading-snug text-[var(--codex-faint)]">
+                  <div className="mt-0.5 text-[11px] leading-snug text-[var(--poli-faint)]">
                     {node.source_description}
                   </div>
                 )}
@@ -179,7 +179,7 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
       </div>
 
       {!hasHistory && (
-        <p className="mt-1 text-[11px] text-[var(--codex-faint)]">
+        <p className="mt-1 text-[11px] text-[var(--poli-faint)]">
           No stance changes on record
         </p>
       )}

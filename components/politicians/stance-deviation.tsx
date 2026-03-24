@@ -54,11 +54,11 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
   const label = partyLabel(party)
 
   return (
-    <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
+      <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
         Breaks from {label} Line
       </h2>
-      <p className="mb-4 text-[11px] text-[var(--codex-faint)]">
+      <p className="mb-4 text-[11px] text-[var(--poli-faint)]">
         Issues where this official takes a different direction than the typical {label} position
       </p>
       <div className="grid gap-2">
@@ -69,9 +69,9 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
           return (
             <div
               key={d.issues!.slug}
-              className="flex items-center justify-between rounded-md border border-[var(--codex-border)] px-4 py-2.5"
+              className="flex items-center justify-between rounded-md border border-[var(--poli-border)] px-4 py-2.5"
             >
-              <span className="text-[13px] text-[var(--codex-text)]">
+              <span className="text-[13px] text-[var(--poli-text)]">
                 {d.issues!.name}
               </span>
               <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
                 >
                   {expectedBadge.label}
                 </span>
-                <span className="text-[11px] text-[var(--codex-faint)]">→</span>
+                <span className="text-[11px] text-[var(--poli-faint)]">→</span>
                 <span
                   className="rounded-sm px-1.5 py-0.5 text-[11px] uppercase tracking-[0.06em] border"
                   style={actualBadge.style}

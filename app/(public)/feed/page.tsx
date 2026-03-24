@@ -228,7 +228,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
           <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             Feed
           </h1>
-          <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+          <p className="text-[15px] leading-[1.7] text-[var(--poli-sub)]">
             The latest in politics — news, votes, elections, and more.
           </p>
         </div>
@@ -264,7 +264,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
         {/* Activity feed — compact, max 6 per page */}
         {items.length > 0 && (
           <>
-            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               {page > 1 ? `Page ${page}` : 'Latest Activity'}
             </div>
 
@@ -286,7 +286,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
                 {page > 1 && (
                   <Link
                     href={buildPageUrl(page - 1)}
-                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
                   >
                     Previous
                   </Link>
@@ -294,7 +294,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
                 {hasMore && (
                   <Link
                     href={buildPageUrl(page + 1)}
-                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
                   >
                     Load More
                   </Link>
@@ -306,10 +306,10 @@ export default async function FeedPage({ searchParams }: PageProps) {
 
         {items.length === 0 && page > 1 && (
           <div className="py-20 text-center">
-            <div className="mb-2 text-lg font-medium text-[var(--codex-text)]">
+            <div className="mb-2 text-lg font-medium text-[var(--poli-text)]">
               No more activity
             </div>
-            <p className="text-sm text-[var(--codex-sub)]">
+            <p className="text-sm text-[var(--poli-sub)]">
               You&apos;ve reached the end.
             </p>
           </div>

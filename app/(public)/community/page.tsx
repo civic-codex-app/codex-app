@@ -71,7 +71,7 @@ export default async function CommunityPage({ searchParams }: PageProps) {
           <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             Community
           </h1>
-          <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+          <p className="text-[15px] leading-[1.7] text-[var(--poli-sub)]">
             See where anonymous voters stand on the issues. Compare your stances with theirs.
           </p>
         </div>
@@ -83,14 +83,14 @@ export default async function CommunityPage({ searchParams }: PageProps) {
             className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium no-underline transition-colors ${
               !stateFilter
                 ? 'bg-blue-500/10 text-blue-400'
-                : 'text-[var(--codex-sub)] hover:text-[var(--codex-text)]'
+                : 'text-[var(--poli-sub)] hover:text-[var(--poli-text)]'
             }`}
           >
             All States
           </Link>
           <StateFilterSelect current={stateFilter} />
           {count !== null && (
-            <span className="text-[12px] text-[var(--codex-faint)]">
+            <span className="text-[12px] text-[var(--poli-faint)]">
               {count} voter{count !== 1 ? 's' : ''} sharing
             </span>
           )}
@@ -107,10 +107,10 @@ export default async function CommunityPage({ searchParams }: PageProps) {
                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
               </svg>
             </div>
-            <h2 className="mb-2 text-lg font-semibold text-[var(--codex-text)]">
+            <h2 className="mb-2 text-lg font-semibold text-[var(--poli-text)]">
               No voters sharing yet
             </h2>
-            <p className="mx-auto max-w-[360px] text-[13px] text-[var(--codex-sub)]">
+            <p className="mx-auto max-w-[360px] text-[13px] text-[var(--poli-sub)]">
               Be the first! Take the quiz and enable sharing in your account settings
               to appear here anonymously.
             </p>
@@ -138,18 +138,18 @@ export default async function CommunityPage({ searchParams }: PageProps) {
                 {page > 1 && (
                   <Link
                     href={buildUrl(page - 1, stateFilter || undefined)}
-                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
                   >
                     Previous
                   </Link>
                 )}
-                <span className="text-[12px] text-[var(--codex-faint)]">
+                <span className="text-[12px] text-[var(--poli-faint)]">
                   Page {page} of {totalPages}
                 </span>
                 {page < totalPages && (
                   <Link
                     href={buildUrl(page + 1, stateFilter || undefined)}
-                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
                   >
                     Next
                   </Link>

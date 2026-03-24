@@ -76,14 +76,14 @@ export function ElectionsMap({ stateElections }: Props) {
 
   return (
     <div>
-      <p className="mb-2 text-center text-[12px] text-[var(--codex-faint)]">
+      <p className="mb-2 text-center text-[12px] text-[var(--poli-faint)]">
         Click a state to see its races
       </p>
       <USMap
         stateData={stateData}
         onStateClick={handleClick}
       />
-      <div className="mt-2 flex items-center justify-center gap-4 text-[11px] text-[var(--codex-faint)]">
+      <div className="mt-2 flex items-center justify-center gap-4 text-[11px] text-[var(--poli-faint)]">
         <div className="flex items-center gap-1.5">
           <span className="inline-block h-3 w-3 rounded-sm" style={{ backgroundColor: '#2563EB' }} />
           Leans Blue

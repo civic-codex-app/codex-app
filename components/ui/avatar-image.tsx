@@ -26,7 +26,7 @@ export function AvatarImage({ src, alt, size, fallbackColor, party, className }:
         ) : (
           <span
             className="font-medium opacity-30"
-            style={{ fontSize: Math.max(9, Math.round(size * 0.35)), color: fallbackColor ?? 'var(--codex-faint)' }}
+            style={{ fontSize: Math.max(9, Math.round(size * 0.35)), color: fallbackColor ?? 'var(--poli-faint)' }}
           >
             {alt.charAt(0)}
           </span>

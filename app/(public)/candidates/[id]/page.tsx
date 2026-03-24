@@ -29,7 +29,7 @@ const STANCE_COLORS: Record<string, { bg: string; text: string; label: string }>
   supports: { bg: 'bg-blue-500/10', text: 'text-blue-400', label: 'Favors' },
   opposes: { bg: 'bg-red-500/10', text: 'text-red-400', label: 'Opposes' },
   mixed: { bg: 'bg-purple-500/10', text: 'text-purple-400', label: 'Mixed' },
-  unknown: { bg: 'bg-[var(--codex-badge-bg)]', text: 'text-[var(--codex-faint)]', label: 'Unknown' },
+  unknown: { bg: 'bg-[var(--poli-badge-bg)]', text: 'text-[var(--poli-faint)]', label: 'Unknown' },
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -118,7 +118,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {race && (
           <Link
             href={`/elections/${race.slug}`}
-            className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+            className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
           >
             &larr; Back to {race.name}
           </Link>
@@ -128,7 +128,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         <div className="mb-8 flex items-start gap-5">
           {/* Avatar */}
           <div
-            className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-[var(--codex-card)] md:h-28 md:w-28"
+            className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-[var(--poli-card)] md:h-28 md:w-28"
             style={{ border: `3px solid ${color}44` }}
           >
             <AvatarImage
@@ -152,11 +152,11 @@ export default async function CandidateProfilePage({ params }: PageProps) {
                 {status.label}
               </span>
               {candidate.is_incumbent && (
-                <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+                <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
                   Incumbent
                 </span>
               )}
-              <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+              <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
                 Challenger
               </span>
             </div>
@@ -165,9 +165,9 @@ export default async function CandidateProfilePage({ params }: PageProps) {
 
         {/* Alignment + stance summary */}
         {totalStances > 0 && (
-          <div className="mb-8 rounded-md border border-[var(--codex-border)] p-4">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4">
             <div className="mb-3 flex items-center justify-between">
-              <span className="text-sm font-semibold text-[var(--codex-sub)]">
+              <span className="text-sm font-semibold text-[var(--poli-sub)]">
                 Party Alignment
               </span>
               {alignMeta && (
@@ -183,7 +183,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
             {/* Gauge bar */}
             {alignment >= 0 && (
               <div className="relative mb-2">
-                <div className="h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                <div className="h-2 overflow-hidden rounded-full bg-[var(--poli-border)]">
                   <div
                     className="h-full rounded-full transition-all duration-700 ease-out"
                     style={{
@@ -201,13 +201,13 @@ export default async function CandidateProfilePage({ params }: PageProps) {
                   {alignment}%
                 </span>
               )}
-              <span className="text-[11px] text-[var(--codex-faint)]">
+              <span className="text-[11px] text-[var(--poli-faint)]">
                 {supports} for · {mixed} mixed · {opposes} against
               </span>
             </div>
 
             {/* Mini stance bar */}
-            <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
+            <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-[var(--poli-border)]">
               {supports > 0 && (
                 <div style={{ width: `${(supports / totalStances) * 100}%`, background: '#3B82F6', opacity: 0.6 }} />
               )}
@@ -224,25 +224,25 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Race info */}
         {race && (
           <section className="mb-8">
-            <div className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
+            <div className="mb-2 text-sm font-semibold text-[var(--poli-sub)]">
               Race
             </div>
-            <div className="rounded-md border border-[var(--codex-border)] p-4">
+            <div className="rounded-md border border-[var(--poli-border)] p-4">
               <Link
                 href={`/elections/${race.slug}`}
-                className="text-lg font-semibold transition-colors hover:text-[var(--codex-text)]"
+                className="text-lg font-semibold transition-colors hover:text-[var(--poli-text)]"
               >
                 {race.name}
               </Link>
-              <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-[var(--codex-faint)]">
+              <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-[var(--poli-faint)]">
                 {race.state && (
-                  <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+                  <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
                     {race.state}
                     {race.district ? ` - District ${race.district}` : ''}
                   </span>
                 )}
                 {race.chamber && (
-                  <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+                  <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
                     {race.chamber}
                   </span>
                 )}
@@ -255,10 +255,10 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Bio */}
         {candidate.bio && (
           <section className="mb-8">
-            <div className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
+            <div className="mb-2 text-sm font-semibold text-[var(--poli-sub)]">
               About
             </div>
-            <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+            <p className="text-[15px] leading-[1.7] text-[var(--poli-sub)]">
               {candidate.bio}
             </p>
           </section>
@@ -267,7 +267,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Issues & Stances */}
         {candidateStances.length > 0 && (
           <section className="mb-8">
-            <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
               Issues & Stances
             </h2>
             <div className="space-y-3">
@@ -276,14 +276,14 @@ export default async function CandidateProfilePage({ params }: PageProps) {
                 return (
                   <div
                     key={s.id}
-                    className="rounded-md border border-[var(--codex-border)] px-4 py-3"
+                    className="rounded-md border border-[var(--poli-border)] px-4 py-3"
                   >
                     <div className="flex items-center justify-between">
                       <Link
                         href={`/issues/${s.issues?.slug}`}
-                        className="flex items-center gap-2 text-sm font-medium hover:text-[var(--codex-text)]"
+                        className="flex items-center gap-2 text-sm font-medium hover:text-[var(--poli-text)]"
                       >
-                        {s.issues?.icon && <IssueIcon icon={s.issues.icon} size={16} className="text-[var(--codex-sub)]" />}
+                        {s.issues?.icon && <IssueIcon icon={s.issues.icon} size={16} className="text-[var(--poli-sub)]" />}
                         {s.issues?.name}
                       </Link>
                       <span className={`rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em] ${sc.bg} ${sc.text}`}>
@@ -291,7 +291,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
                       </span>
                     </div>
                     {s.summary && (
-                      <p className="mt-1.5 text-[13px] leading-[1.6] text-[var(--codex-sub)]">{s.summary}</p>
+                      <p className="mt-1.5 text-[13px] leading-[1.6] text-[var(--poli-sub)]">{s.summary}</p>
                     )}
                   </div>
                 )
@@ -303,7 +303,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* In the News */}
         {newsArticles.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               In the News
             </h2>
             <InTheNews articles={newsArticles} politicianName={candidate.name} party={candidate.party} />
@@ -313,14 +313,14 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* Campaign website */}
         {candidate.website_url && (
           <section className="mb-10">
-            <div className="mb-2 text-sm font-semibold text-[var(--codex-sub)]">
+            <div className="mb-2 text-sm font-semibold text-[var(--poli-sub)]">
               Links
             </div>
             <a
               href={candidate.website_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between rounded-md border border-[var(--codex-border)] bg-[var(--codex-input-bg)] px-4 py-3 text-[13px] font-medium no-underline transition-all hover:bg-[var(--codex-hover)]"
+              className="flex items-center justify-between rounded-md border border-[var(--poli-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-[13px] font-medium no-underline transition-all hover:bg-[var(--poli-hover)]"
               style={{ color: color, borderColor: `${color}33` }}
             >
               <span>Campaign Website</span>

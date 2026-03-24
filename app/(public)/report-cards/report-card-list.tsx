@@ -79,8 +79,8 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
             onClick={() => handleChamber(t.key)}
             className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
               chamber === t.key
-                ? 'bg-[var(--codex-text)] text-[var(--codex-card)]'
-                : 'bg-[var(--codex-hover)] text-[var(--codex-sub)] hover:text-[var(--codex-text)]'
+                ? 'bg-[var(--poli-text)] text-[var(--poli-card)]'
+                : 'bg-[var(--poli-hover)] text-[var(--poli-sub)] hover:text-[var(--poli-text)]'
             }`}
           >
             {t.label}
@@ -94,14 +94,14 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
             onClick={() => handleParty(t.key)}
             className={`rounded-full px-3 py-1 text-[11px] font-medium transition-colors ${
               party === t.key
-                ? 'border border-[var(--codex-text)] text-[var(--codex-text)]'
-                : 'border border-[var(--codex-border)] text-[var(--codex-faint)] hover:text-[var(--codex-sub)]'
+                ? 'border border-[var(--poli-text)] text-[var(--poli-text)]'
+                : 'border border-[var(--poli-border)] text-[var(--poli-faint)] hover:text-[var(--poli-sub)]'
             }`}
           >
             {t.label}
           </button>
         ))}
-        <span className="ml-auto self-center text-[11px] text-[var(--codex-faint)]">
+        <span className="ml-auto self-center text-[11px] text-[var(--poli-faint)]">
           {filtered.length} result{filtered.length !== 1 ? 's' : ''}
         </span>
       </div>
@@ -118,9 +118,9 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
             <Link
               key={p.id}
               href={`/politicians/${p.slug}`}
-              className="flex items-center gap-3 rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] px-4 py-3 no-underline transition-colors hover:border-[var(--codex-text)]/10 md:gap-4"
+              className="flex items-center gap-3 rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] px-4 py-3 no-underline transition-colors hover:border-[var(--poli-text)]/10 md:gap-4"
             >
-              <span className="w-7 flex-shrink-0 text-right text-xs font-medium text-[var(--codex-faint)]">
+              <span className="w-7 flex-shrink-0 text-right text-xs font-medium text-[var(--poli-faint)]">
                 {rank}
               </span>
               <div
@@ -136,13 +136,13 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-medium text-[var(--codex-text)]">
+                <div className="truncate text-sm font-medium text-[var(--poli-text)]">
                   {p.name}
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-[var(--codex-faint)]">
+                <div className="flex items-center gap-1.5 text-xs text-[var(--poli-faint)]">
                   <PartyIcon party={p.party} size={10} />
                   <span>{p.state}</span>
-                  <span className="text-[var(--codex-border)]">|</span>
+                  <span className="text-[var(--poli-border)]">|</span>
                   <span className="capitalize">{p.chamber}</span>
                 </div>
               </div>
@@ -154,10 +154,10 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
                   if (value < 0) return null
                   return (
                     <div key={dim.key} className="flex w-14 flex-col items-center gap-0.5">
-                      <span className="text-[9px] uppercase tracking-wider text-[var(--codex-faint)]">
+                      <span className="text-[9px] uppercase tracking-wider text-[var(--poli-faint)]">
                         {dim.label}
                       </span>
-                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
                         <div
                           className="h-full rounded-full"
                           style={{ width: `${value}%`, backgroundColor: barColor(value) }}
@@ -176,7 +176,7 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
         })}
 
         {pageItems.length === 0 && (
-          <div className="py-12 text-center text-sm text-[var(--codex-faint)]">
+          <div className="py-12 text-center text-sm text-[var(--poli-faint)]">
             No politicians found for these filters.
           </div>
         )}
@@ -185,14 +185,14 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-6 flex items-center justify-between">
-          <span className="text-[11px] text-[var(--codex-faint)]">
+          <span className="text-[11px] text-[var(--poli-faint)]">
             Page {safePage} of {totalPages}
           </span>
           <div className="flex gap-2">
             {safePage > 1 && (
               <button
                 onClick={() => setPage(safePage - 1)}
-                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
+                className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] hover:bg-[var(--poli-hover)]"
               >
                 Previous
               </button>
@@ -200,7 +200,7 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
             {safePage < totalPages && (
               <button
                 onClick={() => setPage(safePage + 1)}
-                className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]"
+                className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] hover:bg-[var(--poli-hover)]"
               >
                 Next
               </button>

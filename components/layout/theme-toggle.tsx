@@ -8,7 +8,7 @@ export function ThemeToggle() {
   const { mode, toggle, setMode } = useThemeStore()
 
   useEffect(() => {
-    const saved = localStorage.getItem('codex-theme') as 'dark' | 'light' | null
+    const saved = localStorage.getItem('poli-theme') as 'dark' | 'light' | null
     if (saved) {
       setMode(saved)
     } else {
@@ -41,12 +41,12 @@ export function ThemeToggle() {
         alignItems: 'center',
         gap: '6px',
         borderRadius: '9999px',
-        border: '1px solid var(--codex-border)',
-        backgroundColor: 'var(--codex-badge-bg)',
+        border: '1px solid var(--poli-border)',
+        backgroundColor: 'var(--poli-badge-bg)',
         padding: '6px 14px',
         fontSize: '12px',
         fontWeight: 500,
-        color: 'var(--codex-sub)',
+        color: 'var(--poli-sub)',
         cursor: 'pointer',
         WebkitAppearance: 'none',
       }}

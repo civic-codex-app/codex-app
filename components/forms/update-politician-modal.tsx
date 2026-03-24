@@ -66,7 +66,7 @@ export function UpdatePoliticianButton({ politicianId, politicianName }: Props) 
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex h-9 items-center gap-1.5 rounded-full border border-[var(--codex-border)] px-3.5 text-[12px] font-medium text-[var(--codex-sub)] transition-all hover:border-[var(--codex-input-focus)] hover:text-[var(--codex-text)]"
+        className="flex h-9 items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-3.5 text-[12px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]"
       >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Suggest Update
@@ -74,21 +74,21 @@ export function UpdatePoliticianButton({ politicianId, politicianName }: Props) 
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={closeModal}>
-          <div role="dialog" aria-modal="true" aria-labelledby="update-politician-title" className="w-full max-w-md rounded-xl border border-[var(--codex-border)] bg-[var(--codex-bg)] p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+          <div role="dialog" aria-modal="true" aria-labelledby="update-politician-title" className="w-full max-w-md rounded-xl border border-[var(--poli-border)] bg-[var(--poli-bg)] p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
             {success ? (
               <div className="text-center">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-2 text-[var(--codex-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-                <div className="text-[14px] font-semibold text-[var(--codex-text)]">Update suggested</div>
-                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">We&apos;ll review and update if verified.</p>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-2 text-[var(--poli-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                <div className="text-[14px] font-semibold text-[var(--poli-text)]">Update suggested</div>
+                <p className="mt-1 text-[12px] text-[var(--poli-faint)]">We&apos;ll review and update if verified.</p>
               </div>
             ) : (
               <>
-                <h2 id="update-politician-title" className="mb-1 text-[16px] font-semibold text-[var(--codex-text)]">Suggest an Update</h2>
-                <p className="mb-4 text-[12px] text-[var(--codex-faint)]">for {politicianName}</p>
+                <h2 id="update-politician-title" className="mb-1 text-[16px] font-semibold text-[var(--poli-text)]">Suggest an Update</h2>
+                <p className="mb-4 text-[12px] text-[var(--poli-faint)]">for {politicianName}</p>
                 <form onSubmit={handleSubmit} className="space-y-3">
                   <div>
-                    <label className="mb-1 block text-[12px] font-medium text-[var(--codex-sub)]">What needs updating? <span className="text-red-400">*</span></label>
-                    <select name="field_to_update" required className="w-full rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none focus:border-[var(--codex-text)]">
+                    <label className="mb-1 block text-[12px] font-medium text-[var(--poli-sub)]">What needs updating? <span className="text-red-400">*</span></label>
+                    <select name="field_to_update" required className="w-full rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--poli-text)] outline-none focus:border-[var(--poli-text)]">
                       <option value="">Select...</option>
                       <option value="title">Title / Office</option>
                       <option value="party">Party</option>
@@ -102,21 +102,21 @@ export function UpdatePoliticianButton({ politicianId, politicianName }: Props) 
                     </select>
                   </div>
                   <div>
-                    <label className="mb-1 block text-[12px] font-medium text-[var(--codex-sub)]">Current value (if known)</label>
-                    <input name="current_value" maxLength={500} className="w-full rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none focus:border-[var(--codex-text)]" placeholder="What it says now" />
+                    <label className="mb-1 block text-[12px] font-medium text-[var(--poli-sub)]">Current value (if known)</label>
+                    <input name="current_value" maxLength={500} className="w-full rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--poli-text)] outline-none focus:border-[var(--poli-text)]" placeholder="What it says now" />
                   </div>
                   <div>
-                    <label className="mb-1 block text-[12px] font-medium text-[var(--codex-sub)]">Suggested value <span className="text-red-400">*</span></label>
-                    <input name="suggested_value" required maxLength={500} className="w-full rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none focus:border-[var(--codex-text)]" placeholder="What it should be" />
+                    <label className="mb-1 block text-[12px] font-medium text-[var(--poli-sub)]">Suggested value <span className="text-red-400">*</span></label>
+                    <input name="suggested_value" required maxLength={500} className="w-full rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--poli-text)] outline-none focus:border-[var(--poli-text)]" placeholder="What it should be" />
                   </div>
                   <div>
-                    <label className="mb-1 block text-[12px] font-medium text-[var(--codex-sub)]">Source URL</label>
-                    <input name="source_url" type="url" maxLength={500} className="w-full rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none focus:border-[var(--codex-text)]" placeholder="https://..." />
+                    <label className="mb-1 block text-[12px] font-medium text-[var(--poli-sub)]">Source URL</label>
+                    <input name="source_url" type="url" maxLength={500} className="w-full rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--poli-text)] outline-none focus:border-[var(--poli-text)]" placeholder="https://..." />
                   </div>
                   {error && <p className="text-[12px] text-red-400">{error}</p>}
                   <div className="flex gap-2 pt-1">
-                    <button type="button" onClick={() => setOpen(false)} className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)]">Cancel</button>
-                    <button type="submit" disabled={loading} className="rounded-lg bg-[var(--codex-text)] px-4 py-2 text-[13px] font-semibold text-[var(--codex-card)] transition-opacity hover:opacity-80 disabled:opacity-50">
+                    <button type="button" onClick={() => setOpen(false)} className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-[13px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)]">Cancel</button>
+                    <button type="submit" disabled={loading} className="rounded-lg bg-[var(--poli-text)] px-4 py-2 text-[13px] font-semibold text-[var(--poli-card)] transition-opacity hover:opacity-80 disabled:opacity-50">
                       {loading ? 'Sending...' : 'Submit'}
                     </button>
                   </div>

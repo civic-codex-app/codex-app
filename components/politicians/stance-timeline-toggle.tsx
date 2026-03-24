@@ -16,7 +16,7 @@ export function StanceTimelineToggle({ hasHistory, children }: StanceTimelineTog
     <div className="mt-2">
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="group flex items-center gap-1 text-[11px] text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+        className="group flex items-center gap-1 text-[11px] text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
       >
         <svg
           width="12"

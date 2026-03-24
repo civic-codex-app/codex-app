@@ -27,12 +27,12 @@ export function ElectionCountdownCard({
   userState,
 }: ElectionCountdownCardProps) {
   return (
-    <div className="rounded-md border border-[var(--codex-border)] p-5">
+    <div className="rounded-md border border-[var(--poli-border)] p-5">
       {/* Title */}
-      <h2 className="mb-1 text-xl font-bold text-[var(--codex-text)]">
+      <h2 className="mb-1 text-xl font-bold text-[var(--poli-text)]">
         {electionName}
       </h2>
-      <p className="mb-4 text-[12px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">
+      <p className="mb-4 text-[12px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">
         Countdown
       </p>
 
@@ -45,23 +45,23 @@ export function ElectionCountdownCard({
       {userState ? (
         keyDates.length > 0 ? (
           <div className="mb-4">
-            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Key Dates {userState ? `for ${userState}` : ''}
             </div>
             <KeyDatesTimeline dates={keyDates} electionDate={electionDate} />
           </div>
         ) : (
           <div className="mb-4">
-            <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Key Dates
             </div>
-            <p className="text-sm text-[var(--codex-faint)]">
+            <p className="text-sm text-[var(--poli-faint)]">
               No key dates available for {userState} yet.
             </p>
           </div>
         )
       ) : (
-        <div className="mb-4 rounded border border-[var(--codex-border)] bg-[var(--codex-hover)] px-3 py-2.5 text-[13px] text-[var(--codex-sub)]">
+        <div className="mb-4 rounded border border-[var(--poli-border)] bg-[var(--poli-hover)] px-3 py-2.5 text-[13px] text-[var(--poli-sub)]">
           Set your state to see key dates for your area
         </div>
       )}
@@ -72,7 +72,7 @@ export function ElectionCountdownCard({
           href="https://vote.org/register-to-vote/"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-[12px] text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+          className="inline-flex items-center gap-1.5 text-[12px] text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
         >
           Check voter registration &rarr;
         </a>

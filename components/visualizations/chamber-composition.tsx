@@ -135,12 +135,12 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
     <div className="w-full">
       {/* Header */}
       <div className="mb-3 flex items-baseline justify-between">
-        <h3 className="text-lg font-semibold text-[var(--codex-text)]">{chamber}</h3>
-        <span className="text-[28px] font-bold text-[var(--codex-text)]">{total}</span>
+        <h3 className="text-lg font-semibold text-[var(--poli-text)]">{chamber}</h3>
+        <span className="text-[28px] font-bold text-[var(--poli-text)]">{total}</span>
       </div>
 
       {/* SVG hemicycle */}
-      <div className="overflow-hidden rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-3">
+      <div className="overflow-hidden rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-3">
         <svg
           viewBox="0 0 400 220"
           className="w-full"
@@ -192,8 +192,8 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
               onClick={() => setActiveParty(isActive ? null : group.party)}
               className={`flex items-center gap-2 rounded-sm px-2.5 py-1.5 transition-all ${
                 isActive
-                  ? 'bg-[var(--codex-badge-bg)]'
-                  : 'hover:bg-[var(--codex-hover)]'
+                  ? 'bg-[var(--poli-badge-bg)]'
+                  : 'hover:bg-[var(--poli-hover)]'
               }`}
               aria-pressed={isActive}
               aria-label={`${partyLabel(group.party)}: ${group.count} seats`}
@@ -209,7 +209,7 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
 
       {/* Majority info */}
       {majority && (
-        <div className="mt-2 text-[11px] text-[var(--codex-faint)]">
+        <div className="mt-2 text-[11px] text-[var(--poli-faint)]">
           <span style={{ color: partyColor(majority.party) }}>
             {partyLabel(majority.party)}
           </span>

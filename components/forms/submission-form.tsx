@@ -63,13 +63,13 @@ export function SubmissionForm({ type, fields, submitLabel = 'Submit', successMe
 
   if (success) {
     return (
-      <div className="rounded-xl border border-[var(--codex-border)] p-8 text-center">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-3 text-[var(--codex-sub)]">
+      <div className="rounded-xl border border-[var(--poli-border)] p-8 text-center">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-3 text-[var(--poli-sub)]">
           <path d="M9 11l3 3L22 4" />
           <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
         </svg>
-        <div className="text-[15px] font-semibold text-[var(--codex-text)]">Submitted</div>
-        <p className="mt-1 text-[13px] text-[var(--codex-sub)]">{successMessage}</p>
+        <div className="text-[15px] font-semibold text-[var(--poli-text)]">Submitted</div>
+        <p className="mt-1 text-[13px] text-[var(--poli-sub)]">{successMessage}</p>
       </div>
     )
   }
@@ -83,7 +83,7 @@ export function SubmissionForm({ type, fields, submitLabel = 'Submit', successMe
 
       {fields.map((field) => (
         <div key={field.name}>
-          <label className="mb-1.5 block text-[12px] font-medium text-[var(--codex-sub)]">
+          <label className="mb-1.5 block text-[12px] font-medium text-[var(--poli-sub)]">
             {field.label}
             {field.required && <span className="text-red-400"> *</span>}
           </label>
@@ -94,13 +94,13 @@ export function SubmissionForm({ type, fields, submitLabel = 'Submit', successMe
               required={field.required}
               maxLength={field.maxLength ?? 5000}
               rows={4}
-              className="w-full resize-none rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-text)]"
+              className="w-full resize-none rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--poli-text)] outline-none transition-colors placeholder:text-[var(--poli-faint)] focus:border-[var(--poli-text)]"
             />
           ) : field.type === 'select' ? (
             <select
               name={field.name}
               required={field.required}
-              className="w-full rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none transition-colors focus:border-[var(--codex-text)]"
+              className="w-full rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--poli-text)] outline-none transition-colors focus:border-[var(--poli-text)]"
             >
               <option value="">Select...</option>
               {field.options?.map((opt) => (
@@ -114,7 +114,7 @@ export function SubmissionForm({ type, fields, submitLabel = 'Submit', successMe
               placeholder={field.placeholder}
               required={field.required}
               maxLength={field.maxLength ?? 500}
-              className="w-full rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-text)]"
+              className="w-full rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-2.5 text-[13px] text-[var(--poli-text)] outline-none transition-colors placeholder:text-[var(--poli-faint)] focus:border-[var(--poli-text)]"
             />
           )}
         </div>
@@ -127,7 +127,7 @@ export function SubmissionForm({ type, fields, submitLabel = 'Submit', successMe
       <button
         type="submit"
         disabled={loading}
-        className="rounded-lg bg-[var(--codex-text)] px-5 py-2.5 text-[13px] font-semibold text-[var(--codex-card)] transition-opacity hover:opacity-80 disabled:opacity-50"
+        className="rounded-lg bg-[var(--poli-text)] px-5 py-2.5 text-[13px] font-semibold text-[var(--poli-card)] transition-opacity hover:opacity-80 disabled:opacity-50"
       >
         {loading ? 'Submitting...' : submitLabel}
       </button>

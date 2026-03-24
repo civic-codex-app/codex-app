@@ -114,20 +114,20 @@ export default async function IssuesPage({ searchParams }: PageProps) {
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Political Issues
           </h1>
-          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
+          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
             Explore where politicians stand on the issues that matter most.
           </p>
         </div>
 
         {/* Stats */}
-        <div className="mb-6 flex flex-wrap gap-6 border-y border-[var(--codex-border)] py-4">
+        <div className="mb-6 flex flex-wrap gap-6 border-y border-[var(--poli-border)] py-4">
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold">{issues.length}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">Issues</span>
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">Issues</span>
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-bold">{totalStancesCount.toLocaleString()}</span>
-            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">Total Stances</span>
+            <span className="text-[12px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">Total Stances</span>
           </div>
         </div>
 
@@ -154,36 +154,36 @@ export default async function IssuesPage({ searchParams }: PageProps) {
               <Link
                 key={issue.id}
                 href={`/issues/${issue.slug}`}
-                className="touch-feedback group block cursor-pointer rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all duration-200 hover:border-[var(--codex-input-border)] hover:shadow-md"
+                className="touch-feedback group block cursor-pointer rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-5 no-underline transition-all duration-200 hover:border-[var(--poli-input-border)] hover:shadow-md"
               >
                 <div className="mb-2 flex items-center gap-2">
-                  <IssueIcon icon={issue.icon} size={18} className="text-[var(--codex-sub)]" />
-                  <h3 className="text-lg font-semibold transition-colors group-hover:text-[var(--codex-text)]">
+                  <IssueIcon icon={issue.icon} size={18} className="text-[var(--poli-sub)]" />
+                  <h3 className="text-lg font-semibold transition-colors group-hover:text-[var(--poli-text)]">
                     {issue.name}
                   </h3>
                 </div>
 
                 {ISSUE_SUBTITLES[issue.slug] && (
-                  <p className="mb-1.5 text-[12px] italic text-[var(--codex-faint)]">{ISSUE_SUBTITLES[issue.slug]}</p>
+                  <p className="mb-1.5 text-[12px] italic text-[var(--poli-faint)]">{ISSUE_SUBTITLES[issue.slug]}</p>
                 )}
 
                 {issue.description && (
-                  <p className="mb-3 line-clamp-2 text-[13px] text-[var(--codex-sub)]">{issue.description}</p>
+                  <p className="mb-3 line-clamp-2 text-[13px] text-[var(--poli-sub)]">{issue.description}</p>
                 )}
 
                 {/* Stance bar */}
                 {total > 0 && (
                   <div className="mb-3">
-                    <div className="flex h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="flex h-2 overflow-hidden rounded-full bg-[var(--poli-border)]">
                       {supports > 0 && <div style={{ width: `${(supports / total) * 100}%`, background: '#2563EB' }} />}
                       {mixed > 0 && <div style={{ width: `${(mixed / total) * 100}%`, background: '#8B5CF6' }} />}
                       {opposes > 0 && <div style={{ width: `${(opposes / total) * 100}%`, background: '#DC2626' }} />}
                     </div>
-                    <div className="mt-1.5 flex gap-3 text-[11px] text-[var(--codex-faint)]">
+                    <div className="mt-1.5 flex gap-3 text-[11px] text-[var(--poli-faint)]">
                       <span style={{ color: '#2563EB' }}>{Math.round((supports / total) * 100)}% Favor</span>
-                      <span className="text-[var(--codex-faint)]">&middot;</span>
+                      <span className="text-[var(--poli-faint)]">&middot;</span>
                       <span style={{ color: '#8B5CF6' }}>{Math.round((mixed / total) * 100)}% Mixed</span>
-                      <span className="text-[var(--codex-faint)]">&middot;</span>
+                      <span className="text-[var(--poli-faint)]">&middot;</span>
                       <span style={{ color: '#DC2626' }}>{Math.round((opposes / total) * 100)}% Oppose</span>
                     </div>
                   </div>
@@ -201,7 +201,7 @@ export default async function IssuesPage({ searchParams }: PageProps) {
                   </div>
                 )}
 
-                <div className="text-[10px] text-[var(--codex-faint)]">
+                <div className="text-[10px] text-[var(--poli-faint)]">
                   {(issueTotalCounts.get(issue.id) ?? total).toLocaleString()} officials with stances
                 </div>
               </Link>
@@ -224,11 +224,11 @@ function PartyBar({ party, supports, opposes, total }: { party: string; supports
   return (
     <div className="flex items-center gap-2">
       <span className="w-7 text-[10px] font-medium" style={{ color }}>{label}</span>
-      <div className="flex h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+      <div className="flex h-1 flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
         {supportPct > 0 && <div style={{ width: `${supportPct}%`, background: '#2563EB' }} />}
         {opposePct > 0 && <div style={{ width: `${opposePct}%`, background: '#DC2626', marginLeft: 'auto' }} />}
       </div>
-      <span className="w-14 text-right text-[10px] tabular-nums text-[var(--codex-faint)]">
+      <span className="w-14 text-right text-[10px] tabular-nums text-[var(--poli-faint)]">
         {supportPct > opposePct ? `${supportPct}% for` : `${opposePct}% against`}
       </span>
     </div>

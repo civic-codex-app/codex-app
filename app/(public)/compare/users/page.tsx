@@ -26,10 +26,10 @@ export default async function UserComparePage({ searchParams }: PageProps) {
         <Header />
         <main id="main-content" className="mx-auto max-w-[800px] px-6 pb-16 pt-6 md:px-10">
           <div className="py-20 text-center">
-            <h1 className="mb-2 text-2xl font-bold text-[var(--codex-text)]">
+            <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
               Compare Voters
             </h1>
-            <p className="mb-4 text-[14px] text-[var(--codex-sub)]">
+            <p className="mb-4 text-[14px] text-[var(--poli-sub)]">
               Pick a voter from the community page to compare with.
             </p>
             <Link
@@ -61,10 +61,10 @@ export default async function UserComparePage({ searchParams }: PageProps) {
         <Header />
         <main id="main-content" className="mx-auto max-w-[800px] px-6 pb-16 pt-6 md:px-10">
           <div className="py-20 text-center">
-            <h1 className="mb-2 text-2xl font-bold text-[var(--codex-text)]">
+            <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
               Voter not found
             </h1>
-            <p className="mb-4 text-[14px] text-[var(--codex-sub)]">
+            <p className="mb-4 text-[14px] text-[var(--poli-sub)]">
               This voter may have disabled sharing or the link may be invalid.
             </p>
             <Link
@@ -126,7 +126,7 @@ export default async function UserComparePage({ searchParams }: PageProps) {
         <div className="mb-6">
           <Link
             href="/community"
-            className="mb-4 inline-flex items-center gap-1.5 text-[12px] text-[var(--codex-faint)] no-underline transition-colors hover:text-[var(--codex-text)]"
+            className="mb-4 inline-flex items-center gap-1.5 text-[12px] text-[var(--poli-faint)] no-underline transition-colors hover:text-[var(--poli-text)]"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6" />
@@ -136,7 +136,7 @@ export default async function UserComparePage({ searchParams }: PageProps) {
           <h1 className="mb-2 text-[clamp(24px,3vw,36px)] font-bold leading-[1.1]">
             Voter Comparison
           </h1>
-          <p className="text-[14px] text-[var(--codex-sub)]">
+          <p className="text-[14px] text-[var(--poli-sub)]">
             See where you agree and disagree on the issues.
           </p>
         </div>

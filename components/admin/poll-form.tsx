@@ -216,7 +216,7 @@ export function PollForm({ poll }: Props) {
             <button
               type="button"
               onClick={addOption}
-              className="text-[11px] text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
+              className="text-[11px] text-[var(--poli-sub)] hover:text-[var(--poli-text)]"
             >
               + Add Option
             </button>
@@ -224,7 +224,7 @@ export function PollForm({ poll }: Props) {
           <div className="space-y-2">
             {options.map((opt, i) => (
               <div key={i} className="flex items-center gap-2">
-                <span className="w-6 text-center text-[11px] text-[var(--codex-faint)]">{i + 1}</span>
+                <span className="w-6 text-center text-[11px] text-[var(--poli-faint)]">{i + 1}</span>
                 <input
                   value={opt.label}
                   onChange={(e) => updateOption(i, e.target.value)}
@@ -237,7 +237,7 @@ export function PollForm({ poll }: Props) {
                     type="button"
                     onClick={() => removeOption(i)}
                     aria-label={`Remove option ${i + 1}`}
-                    className="px-2 text-sm text-[var(--codex-faint)] hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]"
+                    className="px-2 text-sm text-[var(--poli-faint)] hover:text-red-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]"
                   >
                     ×
                   </button>

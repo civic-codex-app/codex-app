@@ -184,7 +184,7 @@ export function ProfileTabs({
     <>
       {/* ── Tab Bar ── */}
       <div
-        className="sticky top-[47px] z-30 border-b border-[var(--codex-border)] bg-[var(--codex-bg)]"
+        className="sticky top-[47px] z-30 border-b border-[var(--poli-border)] bg-[var(--poli-bg)]"
         role="tablist"
         aria-label="Profile sections"
       >
@@ -199,8 +199,8 @@ export function ProfileTabs({
               className={cn(
                 'flex-1 whitespace-nowrap px-2 py-2 text-center text-[12px] font-medium transition-all',
                 activeTab === t
-                  ? 'border-b-2 border-[var(--codex-text)] text-[var(--codex-text)]'
-                  : 'text-[var(--codex-sub)]'
+                  ? 'border-b-2 border-[var(--poli-text)] text-[var(--poli-text)]'
+                  : 'text-[var(--poli-sub)]'
               )}
             >
               {TAB_LABELS[t]}
@@ -217,10 +217,10 @@ export function ProfileTabs({
               role="tab"
               aria-selected={activeTab === t}
               className={cn(
-                'whitespace-nowrap border-b-2 px-4 py-3 font-sans text-[13px] transition-all sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+                'whitespace-nowrap border-b-2 px-4 py-3 font-sans text-[13px] transition-all sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
                 activeTab === t
-                  ? 'border-[var(--codex-text)] font-semibold text-[var(--codex-text)]'
-                  : 'border-transparent font-normal text-[var(--codex-faint)] hover:text-[var(--codex-sub)]'
+                  ? 'border-[var(--poli-text)] font-semibold text-[var(--poli-text)]'
+                  : 'border-transparent font-normal text-[var(--poli-faint)] hover:text-[var(--poli-sub)]'
               )}
             >
               {TAB_LABELS[t]}
@@ -318,13 +318,13 @@ function OverviewTab({
 
       {/* Party Alignment Gauge */}
       {alignmentScore >= 0 && (
-        <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
+        <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
           <AlignmentGauge score={alignmentScore} party={pol.party} />
         </div>
       )}
 
       {/* Report Card — auth-gated */}
-      <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
+      <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
         {isAuthenticated ? (
           <PoliticianReportCard
             {...(reportCard as any)}
@@ -334,7 +334,7 @@ function OverviewTab({
             yearsInOffice={pol.since_year ? new Date().getFullYear() - pol.since_year : undefined}
           />
         ) : (
-          <div className="relative overflow-hidden rounded-lg border border-[var(--codex-border)]">
+          <div className="relative overflow-hidden rounded-lg border border-[var(--poli-border)]">
             <div className="pointer-events-none select-none" aria-hidden="true" style={{ filter: 'blur(6px)' }}>
               <PoliticianReportCard
                 {...(reportCard as any)}
@@ -347,7 +347,7 @@ function OverviewTab({
             <div
               className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
               style={{
-                background: `linear-gradient(180deg, transparent 0%, var(--codex-card) 40%, var(--codex-card) 100%)`,
+                background: `linear-gradient(180deg, transparent 0%, var(--poli-card) 40%, var(--poli-card) 100%)`,
               }}
             >
               <div
@@ -359,10 +359,10 @@ function OverviewTab({
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
               </div>
-              <h3 className="mb-1.5 text-[18px] font-bold text-[var(--codex-text)]">
+              <h3 className="mb-1.5 text-[18px] font-bold text-[var(--poli-text)]">
                 Civic Profile
               </h3>
-              <p className="mb-5 max-w-[320px] text-[13px] leading-[1.6] text-[var(--codex-sub)]">
+              <p className="mb-5 max-w-[320px] text-[13px] leading-[1.6] text-[var(--poli-sub)]">
                 Unlock detailed scores on bipartisanship, transparency, engagement, and effectiveness
               </p>
               <Link
@@ -371,7 +371,7 @@ function OverviewTab({
               >
                 Create Free Account
               </Link>
-              <p className="mt-3 text-[11px] text-[var(--codex-faint)]">
+              <p className="mt-3 text-[11px] text-[var(--poli-faint)]">
                 Free forever. No credit card required.
               </p>
             </div>
@@ -414,7 +414,7 @@ function StancesTab({
       {/* Committee Memberships */}
       {committees.length > 0 && (
         <div className="mb-8">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
             Committee Memberships
           </h2>
           <div className="space-y-2">
@@ -422,15 +422,15 @@ function StancesTab({
               const roleLabels: Record<string, { label: string; style: string }> = {
                 chair: { label: 'Chair', style: 'text-green-400 bg-green-500/10' },
                 ranking_member: { label: 'Ranking Member', style: 'text-blue-400 bg-blue-500/10' },
-                member: { label: 'Member', style: 'text-[var(--codex-faint)] bg-[var(--codex-badge-bg)]' },
+                member: { label: 'Member', style: 'text-[var(--poli-faint)] bg-[var(--poli-badge-bg)]' },
               }
               const r = roleLabels[cm.role] ?? roleLabels.member
               return (
                 <div
                   key={i}
-                  className="flex items-center justify-between rounded-md border border-[var(--codex-border)] px-4 py-2.5"
+                  className="flex items-center justify-between rounded-md border border-[var(--poli-border)] px-4 py-2.5"
                 >
-                  <span className="text-[13px] text-[var(--codex-text)]">
+                  <span className="text-[13px] text-[var(--poli-text)]">
                     {cm.committees?.name}
                   </span>
                   <span className={`rounded-sm px-2 py-0.5 text-[11px] uppercase tracking-[0.06em] ${r.style}`}>
@@ -478,7 +478,7 @@ function StancesTab({
           )}
         </div>
       ) : (
-        <p className="text-[13px] text-[var(--codex-faint)]">No stance data available yet.</p>
+        <p className="text-[13px] text-[var(--poli-faint)]">No stance data available yet.</p>
       )}
     </div>
   )
@@ -531,7 +531,7 @@ function StanceGroup({
           strokeLinecap="round"
           strokeLinejoin="round"
           className={cn(
-            'text-[var(--codex-faint)] transition-transform',
+            'text-[var(--poli-faint)] transition-transform',
             expanded ? 'rotate-90' : 'rotate-0'
           )}
         >
@@ -540,7 +540,7 @@ function StanceGroup({
         <span className="text-[13px] font-semibold" style={{ color: accentColor }}>
           {label}
         </span>
-        <span className="text-[12px] text-[var(--codex-faint)]">({count})</span>
+        <span className="text-[12px] text-[var(--poli-faint)]">({count})</span>
       </button>
 
       {expanded && (
@@ -561,7 +561,7 @@ function StanceGroup({
             return (
               <div
                 key={itemKey}
-                className="overflow-hidden rounded-xl border border-[var(--codex-border)] transition-all duration-200 hover:shadow-sm"
+                className="overflow-hidden rounded-xl border border-[var(--poli-border)] transition-all duration-200 hover:shadow-sm"
                 style={{ backgroundColor: `${badge.color}06` }}
               >
                 <button
@@ -571,17 +571,17 @@ function StanceGroup({
                     hasSummaryContent && 'cursor-pointer'
                   )}
                 >
-                  <span className="flex items-center gap-2.5 text-[14px] font-medium text-[var(--codex-text)]">
+                  <span className="flex items-center gap-2.5 text-[14px] font-medium text-[var(--poli-text)]">
                     {s.issues?.icon && (
                       <span className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: `${badge.color}10` }}>
-                        <IssueIcon icon={s.issues.icon} size={15} className="text-[var(--codex-sub)]" />
+                        <IssueIcon icon={s.issues.icon} size={15} className="text-[var(--poli-sub)]" />
                       </span>
                     )}
                     {s.issues?.name}
                   </span>
                   <div className="flex shrink-0 items-center gap-2">
                     {isEstimated && (
-                      <span className="rounded-full bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[9px] uppercase tracking-wider text-[var(--codex-faint)]">
+                      <span className="rounded-full bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[9px] uppercase tracking-wider text-[var(--poli-faint)]">
                         Est.
                       </span>
                     )}
@@ -599,7 +599,7 @@ function StanceGroup({
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         className={cn(
-                          'text-[var(--codex-faint)] transition-transform',
+                          'text-[var(--poli-faint)] transition-transform',
                           isOpen ? 'rotate-180' : 'rotate-0'
                         )}
                       >
@@ -610,17 +610,17 @@ function StanceGroup({
                 </button>
 
                 {isOpen && (
-                  <div className="border-t border-[var(--codex-border)] px-4 py-3">
+                  <div className="border-t border-[var(--poli-border)] px-4 py-3">
                     {hasRealSummary && (
-                      <p className="text-[13px] leading-[1.6] text-[var(--codex-sub)]">{s.summary}</p>
+                      <p className="text-[13px] leading-[1.6] text-[var(--poli-sub)]">{s.summary}</p>
                     )}
                     {isEstimated && !hasRealSummary && (
-                      <p className="text-[11px] italic text-[var(--codex-faint)]">
+                      <p className="text-[11px] italic text-[var(--poli-faint)]">
                         Estimated from party affiliation — not yet verified
                       </p>
                     )}
                     {!hasRealSummary && s.issues?.slug && getStanceContext(s.issues.slug, s.stance) && (
-                      <p className="mt-1 text-[11px] leading-[1.5] text-[var(--codex-faint)]">
+                      <p className="mt-1 text-[11px] leading-[1.5] text-[var(--poli-faint)]">
                         {getStanceContext(s.issues.slug, s.stance)}
                       </p>
                     )}
@@ -638,7 +638,7 @@ function StanceGroup({
                           href={s.source_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-[11px] text-[var(--codex-faint)] hover:text-[var(--codex-sub)]"
+                          className="inline-flex items-center gap-1 text-[11px] text-[var(--poli-faint)] hover:text-[var(--poli-sub)]"
                         >
                           Source
                           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>

@@ -39,7 +39,11 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
   const [stanceCounts, setStanceCounts] = useState<{ supports: number; opposes: number; neutral: number; total: number } | null>(null)
 
   useEffect(() => {
-    const answers = loadQuizAnswers(profile?.id)
+    // Try user-keyed answers first, then fall back to guest (unkeyed) answers
+    let answers = loadQuizAnswers(profile?.id)
+    if (Object.keys(answers).length === 0) {
+      answers = loadQuizAnswers()
+    }
     const entries = Object.values(answers)
     if (entries.length > 0) {
       let supports = 0, opposes = 0, neutral = 0
@@ -164,7 +168,7 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
         onCancel={handleCropCancel}
       />
     )}
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border border-[var(--codex-border)] p-6">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border border-[var(--poli-border)] p-6">
       {error && (
         <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm text-red-400" role="alert">{error}</div>
       )}
@@ -180,7 +184,7 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="group relative h-20 w-20 overflow-hidden rounded-full border-2 border-[var(--codex-border)] transition-colors hover:border-[var(--codex-text)] focus:outline-none focus:ring-2 focus:ring-[var(--codex-text)] focus:ring-offset-2 focus:ring-offset-[var(--codex-bg)] disabled:opacity-50"
+          className="group relative h-20 w-20 overflow-hidden rounded-full border-2 border-[var(--poli-border)] transition-colors hover:border-[var(--poli-text)] focus:outline-none focus:ring-2 focus:ring-[var(--poli-text)] focus:ring-offset-2 focus:ring-offset-[var(--poli-bg)] disabled:opacity-50"
           aria-label="Change profile photo"
         >
           {avatarUrl ? (
@@ -202,8 +206,8 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
               seed={profile?.id ?? ''}
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
-              <span className="text-2xl font-bold text-[var(--codex-sub)]">{userInitial}</span>
+            <div className="flex h-full w-full items-center justify-center bg-[var(--poli-badge-bg)]">
+              <span className="text-2xl font-bold text-[var(--poli-sub)]">{userInitial}</span>
             </div>
           )}
 
@@ -235,7 +239,7 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="text-xs text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] disabled:opacity-50"
+          className="text-xs text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)] disabled:opacity-50"
         >
           {uploading ? 'Uploading...' : 'Change Photo'}
         </button>
@@ -272,7 +276,7 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
           pattern="[0-9]{5}(-[0-9]{4})?"
           className={fieldClass}
         />
-        <p className="mt-1 text-[11px] text-[var(--codex-faint)]">
+        <p className="mt-1 text-[11px] text-[var(--poli-faint)]">
           Used to find your congressional district representative
         </p>
       </div>
@@ -288,9 +292,9 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
           name="notifications"
           id="notifications"
           defaultChecked={profile?.notifications_enabled ?? true}
-          className="h-4 w-4 rounded border-[var(--codex-border)] bg-[var(--codex-input-bg)]"
+          className="h-4 w-4 rounded border-[var(--poli-border)] bg-[var(--poli-input-bg)]"
         />
-        <label htmlFor="notifications" className="text-sm text-[var(--codex-sub)]">
+        <label htmlFor="notifications" className="text-sm text-[var(--poli-sub)]">
           Enable notifications
         </label>
       </div>
@@ -299,7 +303,7 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
         <Button type="submit" disabled={loading}>
           {loading ? 'Saving...' : 'Save Profile'}
         </Button>
-        <span className="text-[11px] uppercase tracking-wider text-[var(--codex-faint)]">
+        <span className="text-[11px] uppercase tracking-wider text-[var(--poli-faint)]">
           Role: {profile?.role ?? 'user'}
         </span>
       </div>

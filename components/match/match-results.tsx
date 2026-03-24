@@ -69,7 +69,7 @@ function IssueBreakdown({ issues, politicianParty }: { issues: IssueComparison[]
   const differ = issues.filter(i => i.distance >= 3)
 
   return (
-    <div className="mt-3 space-y-3 border-t border-[var(--codex-border)] pt-3">
+    <div className="mt-3 space-y-3 border-t border-[var(--poli-border)] pt-3">
       {agree.length > 0 && (
         <div>
           <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-emerald-400">
@@ -112,12 +112,12 @@ function IssueRow({ issue, politicianParty }: { issue: IssueComparison; politici
   const polBadge = stanceDisplayBadge(issue.polStance, politicianParty)
   return (
     <div className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[12px]">
-      <span className="min-w-0 flex-1 truncate text-[var(--codex-sub)]">{issueLabel(issue.slug)}</span>
+      <span className="min-w-0 flex-1 truncate text-[var(--poli-sub)]">{issueLabel(issue.slug)}</span>
       <div className="flex shrink-0 items-center gap-1.5">
         <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={userBadge.style}>
           You: {userBadge.label}
         </span>
-        <span className="text-[var(--codex-faint)]">vs</span>
+        <span className="text-[var(--poli-faint)]">vs</span>
         <span className="rounded px-1.5 py-0.5 text-[10px] font-medium border" style={polBadge.style}>
           {polBadge.label}
         </span>
@@ -177,12 +177,12 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
   if (results.length === 0) {
     return (
       <div className="text-center">
-        <p className="text-[var(--codex-sub)]">
+        <p className="text-[var(--poli-sub)]">
           No results found. Try answering more questions for better results.
         </p>
         <button
           onClick={onRetake}
-          className="mt-6 rounded-lg bg-[var(--codex-text)] px-6 py-2.5 text-[14px] font-semibold text-[var(--codex-card)] transition-opacity hover:opacity-90"
+          className="mt-6 rounded-lg bg-[var(--poli-text)] px-6 py-2.5 text-[14px] font-semibold text-[var(--poli-card)] transition-opacity hover:opacity-90"
         >
           Retake Quiz
         </button>
@@ -229,24 +229,24 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
       {/* State-specific results */}
       {stateResults.length > 0 && userState && (
         <div className="mb-10">
-          <h2 className="mb-2 text-center text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--codex-text)]">
+          <h2 className="mb-2 text-center text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--poli-text)]">
             Who Thinks Like You in {userState}
           </h2>
-          <p className="mb-5 text-center text-[13px] text-[var(--codex-sub)]">
+          <p className="mb-5 text-center text-[13px] text-[var(--poli-sub)]">
             These are officials who represent your state
           </p>
-          <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)]">
             {stateResults.map((r) => {
               const color = scoreColor(r.score)
               const pColor = partyColor(r.politician.party)
               return (
-                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]">
                   <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border" style={{ borderColor: pColor }}>
                     <AvatarImage src={r.politician.image_url} alt={r.politician.name} size={36} fallbackColor={pColor} party={r.politician.party} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
-                    <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
+                    <span className="text-[14px] font-medium text-[var(--poli-text)]">{r.politician.name}</span>
+                    <div className="flex items-center gap-1 text-[12px] text-[var(--poli-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
                       <span>·</span>
                       <span>{r.politician.chamber}</span>
@@ -260,10 +260,10 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
         </div>
       )}
 
-      <h2 className="mb-2 text-center text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-[var(--codex-text)]">
+      <h2 className="mb-2 text-center text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-[var(--poli-text)]">
         Across the Country
       </h2>
-      <p className="mb-4 text-center text-[14px] text-[var(--codex-sub)]">
+      <p className="mb-4 text-center text-[14px] text-[var(--poli-sub)]">
         Based on {results[0]?.matchedIssues ?? 0} issues you answered
       </p>
 
@@ -291,7 +291,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
           return (
             <div
               key={r.politician.slug}
-              className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5"
+              className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5"
             >
               <div className="flex items-center gap-4">
                 {/* Party badge */}
@@ -321,13 +321,13 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                 <div className="min-w-0 flex-1">
                   <Link
                     href={`/politicians/${r.politician.slug}`}
-                    className="text-[17px] font-semibold text-[var(--codex-text)] hover:underline"
+                    className="text-[17px] font-semibold text-[var(--poli-text)] hover:underline"
                   >
                     {r.politician.name}
                   </Link>
-                  <div className="mt-0.5 flex items-center gap-1.5 text-[13px] text-[var(--codex-sub)]">
+                  <div className="mt-0.5 flex items-center gap-1.5 text-[13px] text-[var(--poli-sub)]">
                     <PartyIcon party={r.politician.party} size={12} />
-                    <span className="text-[var(--codex-faint)]">·</span>
+                    <span className="text-[var(--poli-faint)]">·</span>
                     <span>{r.politician.state}</span>
                   </div>
                 </div>
@@ -350,7 +350,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
               </div>
 
               {/* Score bar */}
-              <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+              <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{ width: `${r.score}%`, backgroundColor: color }}
@@ -358,13 +358,13 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
               </div>
 
               {/* Meta row */}
-              <div className="mt-2.5 flex items-center justify-between text-[12px] text-[var(--codex-faint)]">
+              <div className="mt-2.5 flex items-center justify-between text-[12px] text-[var(--poli-faint)]">
                 <div className="flex items-center gap-3">
                   <span>{r.matchedIssues} issues compared</span>
                   {hasBreakdown && (
                     <button
                       onClick={() => toggleExpand(r.politician.slug)}
-                      className="font-medium text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+                      className="font-medium text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
                       style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                     >
                       {isExpanded ? 'Hide breakdown' : 'See issue breakdown'}
@@ -373,7 +373,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                 </div>
                 <Link
                   href={`/compare?a=${topSlug}&b=${r.politician.slug}`}
-                  className="text-[var(--codex-sub)] hover:text-[var(--codex-text)] hover:underline"
+                  className="text-[var(--poli-sub)] hover:text-[var(--poli-text)] hover:underline"
                 >
                   Compare
                 </Link>
@@ -385,30 +385,30 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
               )}
 
               {/* Social links + View Profile */}
-              <div className="mt-3 flex items-center gap-2 border-t border-[var(--codex-border)] pt-3">
+              <div className="mt-3 flex items-center gap-2 border-t border-[var(--poli-border)] pt-3">
                 {r.politician.twitter_url && (
-                  <a href={r.politician.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="X / Twitter">
+                  <a href={r.politician.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--poli-faint)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]" title="X / Twitter">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                   </a>
                 )}
                 {r.politician.facebook_url && (
-                  <a href={r.politician.facebook_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="Facebook">
+                  <a href={r.politician.facebook_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--poli-faint)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]" title="Facebook">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   </a>
                 )}
                 {r.politician.instagram_url && (
-                  <a href={r.politician.instagram_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="Instagram">
+                  <a href={r.politician.instagram_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--poli-faint)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]" title="Instagram">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                   </a>
                 )}
                 {r.politician.website_url && (
-                  <a href={r.politician.website_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]" title="Website">
+                  <a href={r.politician.website_url} target="_blank" rel="noopener noreferrer" className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--poli-faint)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]" title="Website">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                   </a>
                 )}
                 <Link
                   href={`/politicians/${r.politician.slug}`}
-                  className="ml-auto rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+                  className="ml-auto rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[12px] font-medium text-[var(--poli-sub)] no-underline transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]"
                 >
                   View Profile
                 </Link>
@@ -420,15 +420,15 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
 
       {/* Sign-up CTA — prominent placement after top 3 */}
       {!isLoggedIn && (
-        <div className="mb-10 overflow-hidden rounded-xl border border-[var(--codex-border)]" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06))' }}>
+        <div className="mb-10 overflow-hidden rounded-xl border border-[var(--poli-border)]" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06))' }}>
           <div className="px-6 py-8 text-center">
-            <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Don't lose your results
             </p>
-            <p className="mt-2 text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--codex-text)]">
+            <p className="mt-2 text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--poli-text)]">
               Create an account to save your matches
             </p>
-            <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-[var(--codex-sub)]">
+            <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-[var(--poli-sub)]">
               See which politicians represent your state, track issues you care about, and keep your results across devices.
             </p>
             <Link
@@ -442,7 +442,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
             <p className="mt-3">
               <Link
                 href="/login"
-                className="text-[13px] text-[var(--codex-sub)] underline decoration-[var(--codex-border)] underline-offset-2 hover:text-[var(--codex-text)]"
+                className="text-[13px] text-[var(--poli-sub)] underline decoration-[var(--poli-border)] underline-offset-2 hover:text-[var(--poli-text)]"
               >
                 Already have an account? Sign in
               </Link>
@@ -454,17 +454,17 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
       {/* Remaining results */}
       {rest.length > 0 && (
         <>
-          <h3 className="mb-3 text-sm font-semibold text-[var(--codex-sub)]">
+          <h3 className="mb-3 text-sm font-semibold text-[var(--poli-sub)]">
             More Results
           </h3>
-          <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)]">
             {rest.map((r, i) => {
               const color = scoreColor(r.score)
               const pColor = partyColor(r.politician.party)
               return (
-                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]">
                   {/* Rank */}
-                  <span className="w-5 shrink-0 text-center text-[13px] font-medium text-[var(--codex-faint)]">
+                  <span className="w-5 shrink-0 text-center text-[13px] font-medium text-[var(--poli-faint)]">
                     {i + 1}
                   </span>
 
@@ -484,10 +484,10 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
 
                   {/* Name + party */}
                   <div className="min-w-0 flex-1">
-                    <span className="text-[14px] font-medium text-[var(--codex-text)]">
+                    <span className="text-[14px] font-medium text-[var(--poli-text)]">
                       {r.politician.name}
                     </span>
-                    <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
+                    <div className="flex items-center gap-1 text-[12px] text-[var(--poli-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
                       <span>·</span>
                       <span>{r.politician.state}</span>
@@ -496,7 +496,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
 
                   {/* Score bar + number */}
                   <div className="flex w-24 shrink-0 items-center gap-2">
-                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
                       <div
                         className="h-full rounded-full"
                         style={{ width: `${r.score}%`, backgroundColor: color }}
@@ -520,31 +520,31 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
       {/* Across the Aisle — cross-party matches */}
       {acrossTheAisle.length > 0 && (
         <div className="mb-10">
-          <h3 className="mb-1 text-sm font-semibold text-[var(--codex-text)]">
+          <h3 className="mb-1 text-sm font-semibold text-[var(--poli-text)]">
             Across the Aisle
           </h3>
-          <p className="mb-3 text-[12px] text-[var(--codex-faint)]">
+          <p className="mb-3 text-[12px] text-[var(--poli-faint)]">
             Politicians from other parties who still share some of your views
           </p>
-          <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)]">
             {acrossTheAisle.map((r) => {
               const color = scoreColor(r.score)
               const pColor = partyColor(r.politician.party)
               return (
-                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]">
                   <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border" style={{ borderColor: pColor }}>
                     <AvatarImage src={r.politician.image_url} alt={r.politician.name} size={36} fallbackColor={pColor} party={r.politician.party} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
-                    <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
+                    <span className="text-[14px] font-medium text-[var(--poli-text)]">{r.politician.name}</span>
+                    <div className="flex items-center gap-1 text-[12px] text-[var(--poli-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
                       <span>·</span>
                       <span>{r.politician.state}</span>
                     </div>
                   </div>
                   <div className="flex w-24 shrink-0 items-center gap-2">
-                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
                       <div className="h-full rounded-full" style={{ width: `${r.score}%`, backgroundColor: color }} />
                     </div>
                     <span className="text-[13px] font-semibold tabular-nums" style={{ color }}>{r.score}%</span>
@@ -559,31 +559,31 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
       {/* Might Surprise You — lowest from your closest party */}
       {surprises.length > 0 && userParty && (
         <div className="mb-10">
-          <h3 className="mb-1 text-sm font-semibold text-[var(--codex-text)]">
+          <h3 className="mb-1 text-sm font-semibold text-[var(--poli-text)]">
             Might Surprise You
           </h3>
-          <p className="mb-3 text-[12px] text-[var(--codex-faint)]">
+          <p className="mb-3 text-[12px] text-[var(--poli-faint)]">
             {partyLabel(userParty)} politicians you align with the least
           </p>
-          <div className="divide-y divide-[var(--codex-border)] rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)]">
             {surprises.map((r) => {
               const color = scoreColor(r.score)
               const pColor = partyColor(r.politician.party)
               return (
-                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--codex-hover)]">
+                <Link key={r.politician.slug} href={`/politicians/${r.politician.slug}`} className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]">
                   <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border" style={{ borderColor: pColor }}>
                     <AvatarImage src={r.politician.image_url} alt={r.politician.name} size={36} fallbackColor={pColor} party={r.politician.party} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <span className="text-[14px] font-medium text-[var(--codex-text)]">{r.politician.name}</span>
-                    <div className="flex items-center gap-1 text-[12px] text-[var(--codex-faint)]">
+                    <span className="text-[14px] font-medium text-[var(--poli-text)]">{r.politician.name}</span>
+                    <div className="flex items-center gap-1 text-[12px] text-[var(--poli-faint)]">
                       <PartyIcon party={r.politician.party} size={10} />
                       <span>·</span>
                       <span>{r.politician.state}</span>
                     </div>
                   </div>
                   <div className="flex w-24 shrink-0 items-center gap-2">
-                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="h-1 flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
                       <div className="h-full rounded-full" style={{ width: `${r.score}%`, backgroundColor: color }} />
                     </div>
                     <span className="text-[13px] font-semibold tabular-nums" style={{ color }}>{r.score}%</span>
@@ -600,7 +600,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
         {onEditAnswers && (
           <button
             onClick={onEditAnswers}
-            className="rounded-lg border border-[var(--codex-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-sub)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+            className="rounded-lg border border-[var(--poli-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--poli-sub)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]"
           >
             Change Answers
           </button>
@@ -608,32 +608,32 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
         {onUpdateResults && (
           <button
             onClick={onUpdateResults}
-            className="rounded-lg border border-[var(--codex-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-sub)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+            className="rounded-lg border border-[var(--poli-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--poli-sub)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]"
           >
             Update Results
           </button>
         )}
         <button
           onClick={onRetake}
-          className="rounded-lg border border-[var(--codex-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-sub)]"
+          className="rounded-lg border border-[var(--poli-border)] px-5 py-2.5 text-[14px] font-medium text-[var(--poli-faint)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-sub)]"
         >
           Start Over
         </button>
       </div>
 
       {/* Community sharing prompt */}
-      <div className="mt-10 rounded-lg border border-[var(--codex-border)] p-5 text-center">
-        <div className="mb-2 text-[14px] font-semibold text-[var(--codex-text)]">
+      <div className="mt-10 rounded-lg border border-[var(--poli-border)] p-5 text-center">
+        <div className="mb-2 text-[14px] font-semibold text-[var(--poli-text)]">
           Want to compare with other voters?
         </div>
-        <p className="mx-auto mb-4 max-w-[400px] text-[12px] leading-[1.6] text-[var(--codex-sub)]">
+        <p className="mx-auto mb-4 max-w-[400px] text-[12px] leading-[1.6] text-[var(--poli-sub)]">
           Share your stances anonymously on the community page.
           Others can see where they agree and disagree with you — without knowing who you are.
         </p>
         <div className="flex items-center justify-center gap-3">
           <Link
             href="/community"
-            className="rounded-full border border-[var(--codex-border)] px-5 py-2 text-[13px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+            className="rounded-full border border-[var(--poli-border)] px-5 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
           >
             Browse Community
           </Link>

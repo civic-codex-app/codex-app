@@ -144,7 +144,7 @@ for (let i = 0; i < toProcess.length; i++) {
       let imgUrl = extracted.imageUrl;
       if (imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl;
 
-      const imgData = execSync(`curl -sL -H "User-Agent: CodexApp/1.0" "${imgUrl}" --max-time 10`, {
+      const imgData = execSync(`curl -sL -H "User-Agent: PoliApp/1.0" "${imgUrl}" --max-time 10`, {
         maxBuffer: 20 * 1024 * 1024, timeout: 15000
       });
 

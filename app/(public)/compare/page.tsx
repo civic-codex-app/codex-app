@@ -105,7 +105,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
             Compare Officials
           </h1>
-          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--codex-subtle)]">
+          <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
             See how two politicians stack up on the issues, campaign finance, voting records, and more.
           </p>
         </div>
@@ -135,7 +135,7 @@ export default async function ComparePage({ searchParams }: PageProps) {
         )}
 
         {(!polA || !polB) && (
-          <div className="py-20 text-center text-[var(--codex-faint)]">
+          <div className="py-20 text-center text-[var(--poli-faint)]">
             <div className="mb-2 text-2xl font-bold">Select two officials to compare</div>
             <div className="text-sm">Search by name above to find officials</div>
           </div>

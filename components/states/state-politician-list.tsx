@@ -58,14 +58,14 @@ export function StatePoliticianList({ politicians, pageSize = 6, size = 'default
 
       {/* Pagination controls */}
       <div className="mt-3 flex items-center justify-between">
-        <span className="text-[11px] tabular-nums text-[var(--codex-faint)]">
+        <span className="text-[11px] tabular-nums text-[var(--poli-faint)]">
           {start + 1}–{Math.min(start + pageSize, total)} of {total}
         </span>
         <div className="flex items-center gap-1.5">
           <button
             onClick={prev}
             disabled={page === 0}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--codex-border)] text-[var(--codex-sub)] transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)] disabled:opacity-30 disabled:pointer-events-none"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] disabled:opacity-30 disabled:pointer-events-none"
             aria-label="Previous page"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -75,7 +75,7 @@ export function StatePoliticianList({ politicians, pageSize = 6, size = 'default
           <button
             onClick={next}
             disabled={page >= totalPages - 1}
-            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--codex-border)] text-[var(--codex-sub)] transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)] disabled:opacity-30 disabled:pointer-events-none"
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] disabled:opacity-30 disabled:pointer-events-none"
             aria-label="Next page"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -106,7 +106,7 @@ function Grid({ politicians, size }: { politicians: Politician[]; size: 'default
             style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
           >
             <div
-              className={`${avatarW} flex-shrink-0 self-stretch overflow-hidden bg-[var(--codex-card)]`}
+              className={`${avatarW} flex-shrink-0 self-stretch overflow-hidden bg-[var(--poli-card)]`}
             >
               <AvatarImage
                 src={pol.image_url}
@@ -118,21 +118,21 @@ function Grid({ politicians, size }: { politicians: Politician[]; size: 'default
               />
             </div>
             <div className={`min-w-0 flex-1 ${isCompact ? 'px-3 py-2.5' : 'px-4 py-3'}`}>
-              <div className={`truncate ${nameSize} font-semibold text-[var(--codex-text)]`}>
+              <div className={`truncate ${nameSize} font-semibold text-[var(--poli-text)]`}>
                 {pol.name}
               </div>
               <div className="mt-0.5 flex items-center gap-1.5">
                 {pol.image_url && <PartyIcon party={pol.party} size={isCompact ? 10 : 12} />}
                 {isCompact ? (
-                  <span className="truncate text-[11px] text-[var(--codex-faint)]">
+                  <span className="truncate text-[11px] text-[var(--poli-faint)]">
                     {CHAMBER_LABELS[pol.chamber as keyof typeof CHAMBER_LABELS] ?? pol.chamber}
                   </span>
                 ) : (
-                  <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
+                  <span className="text-[12px] text-[var(--poli-sub)]">{pol.state}</span>
                 )}
               </div>
               {pol.title && (
-                <div className="mt-0.5 truncate text-[12px] text-[var(--codex-faint)]">
+                <div className="mt-0.5 truncate text-[12px] text-[var(--poli-faint)]">
                   {pol.title}
                 </div>
               )}

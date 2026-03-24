@@ -80,11 +80,11 @@ function StanceIcon() {
 export function RecentActivityFeed({ items }: { items: ActivityItem[] }) {
   if (items.length === 0) {
     return (
-      <div className="rounded-md border border-[var(--codex-border)] py-10 text-center">
-        <p className="mb-2 text-sm text-[var(--codex-sub)]">
+      <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+        <p className="mb-2 text-sm text-[var(--poli-sub)]">
           No recent activity
         </p>
-        <p className="text-xs text-[var(--codex-faint)]">
+        <p className="text-xs text-[var(--poli-faint)]">
           Follow politicians to see their votes and stance updates here
         </p>
       </div>
@@ -96,7 +96,7 @@ export function RecentActivityFeed({ items }: { items: ActivityItem[] }) {
       {/* Timeline line */}
       <div
         className="absolute left-[19px] top-0 bottom-0 w-px"
-        style={{ background: 'var(--codex-border)' }}
+        style={{ background: 'var(--poli-border)' }}
       />
 
       <div className="space-y-0">
@@ -106,7 +106,7 @@ export function RecentActivityFeed({ items }: { items: ActivityItem[] }) {
             <div className="relative z-10 flex-shrink-0">
               <div
                 className="h-[38px] w-[38px] overflow-hidden rounded-full border-2"
-                style={{ borderColor: partyColor(item.politician_party), background: 'var(--codex-card)' }}
+                style={{ borderColor: partyColor(item.politician_party), background: 'var(--poli-card)' }}
               >
                 <AvatarImage
                   src={item.politician_image_url}
@@ -128,7 +128,7 @@ export function RecentActivityFeed({ items }: { items: ActivityItem[] }) {
                     <StanceActivityContent item={item} />
                   )}
                 </div>
-                <span className="flex-shrink-0 pt-0.5 text-[11px] text-[var(--codex-faint)]">
+                <span className="flex-shrink-0 pt-0.5 text-[11px] text-[var(--poli-faint)]">
                   {relativeDate(item.date)}
                 </span>
               </div>
@@ -155,11 +155,11 @@ function VoteActivityContent({
 
   return (
     <div>
-      <div className="flex items-center gap-1.5 text-[11px] text-[var(--codex-faint)]">
+      <div className="flex items-center gap-1.5 text-[11px] text-[var(--poli-faint)]">
         <VoteIcon />
         <span>Voted</span>
       </div>
-      <div className="mt-0.5 text-[13px] leading-snug text-[var(--codex-text)]">
+      <div className="mt-0.5 text-[13px] leading-snug text-[var(--poli-text)]">
         <Link
           href={`/politicians/${item.politician_slug}`}
           className="font-medium no-underline hover:underline"
@@ -175,7 +175,7 @@ function VoteActivityContent({
           {item.vote}
         </span>
         {' on '}
-        <span className="text-[var(--codex-sub)]">
+        <span className="text-[var(--poli-sub)]">
           {item.bill_name}
           {item.bill_number ? ` (${item.bill_number})` : ''}
         </span>
@@ -193,11 +193,11 @@ function StanceActivityContent({
 
   return (
     <div>
-      <div className="flex items-center gap-1.5 text-[11px] text-[var(--codex-faint)]">
+      <div className="flex items-center gap-1.5 text-[11px] text-[var(--poli-faint)]">
         <StanceIcon />
         <span>Stance Update</span>
       </div>
-      <div className="mt-0.5 text-[13px] leading-snug text-[var(--codex-text)]">
+      <div className="mt-0.5 text-[13px] leading-snug text-[var(--poli-text)]">
         <Link
           href={`/politicians/${item.politician_slug}`}
           className="font-medium no-underline hover:underline"
@@ -215,7 +215,7 @@ function StanceActivityContent({
         {' '}
         <Link
           href={`/issues/${item.issue_slug}`}
-          className="text-[var(--codex-sub)] no-underline hover:underline"
+          className="text-[var(--poli-sub)] no-underline hover:underline"
         >
           {item.issue_name}
         </Link>

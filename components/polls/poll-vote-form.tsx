@@ -91,10 +91,10 @@ export function PollVoteForm({
             onClick={() => handleVote(option.id)}
             disabled={loading || hasVoted || !isActive}
             className={cn(
-              'relative w-full overflow-hidden rounded-md border px-5 py-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+              'relative w-full overflow-hidden rounded-md border px-5 py-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
               isSelected
-                ? 'border-[var(--codex-input-focus)] bg-[var(--codex-badge-bg)]'
-                : 'border-[var(--codex-border)] hover:border-[var(--codex-input-border)]',
+                ? 'border-[var(--poli-input-focus)] bg-[var(--poli-badge-bg)]'
+                : 'border-[var(--poli-border)] hover:border-[var(--poli-input-border)]',
               (hasVoted || !isActive) && 'cursor-default'
             )}
           >
@@ -104,8 +104,8 @@ export function PollVoteForm({
                 className={cn(
                   'absolute inset-y-0 left-0 transition-all duration-500',
                   isWinning
-                    ? 'bg-[var(--codex-text)] opacity-[0.06]'
-                    : 'bg-[var(--codex-text)] opacity-[0.03]'
+                    ? 'bg-[var(--poli-text)] opacity-[0.06]'
+                    : 'bg-[var(--poli-text)] opacity-[0.03]'
                 )}
                 style={{ width: `${option.pct}%` }}
               />
@@ -118,30 +118,30 @@ export function PollVoteForm({
                     className={cn(
                       'h-4 w-4 rounded-full border-2 transition-colors',
                       isSelected
-                        ? 'border-[var(--codex-text)] bg-[var(--codex-text)]'
-                        : 'border-[var(--codex-border)]'
+                        ? 'border-[var(--poli-text)] bg-[var(--poli-text)]'
+                        : 'border-[var(--poli-border)]'
                     )}
                   />
                 )}
                 <span
                   className={cn(
                     'text-sm font-medium',
-                    isSelected ? 'text-[var(--codex-text)]' : 'text-[var(--codex-sub)]'
+                    isSelected ? 'text-[var(--poli-text)]' : 'text-[var(--poli-sub)]'
                   )}
                 >
                   {option.label}
                 </span>
                 {isSelected && showResults && (
-                  <span className="text-[10px] text-[var(--codex-faint)]">Your vote</span>
+                  <span className="text-[10px] text-[var(--poli-faint)]">Your vote</span>
                 )}
               </div>
               {showResults && (
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-[var(--codex-faint)]">{option.votes}</span>
+                  <span className="text-xs text-[var(--poli-faint)]">{option.votes}</span>
                   <span
                     className={cn(
                       'text-sm font-semibold tabular-nums',
-                      isWinning ? 'text-[var(--codex-text)]' : 'text-[var(--codex-sub)]'
+                      isWinning ? 'text-[var(--poli-text)]' : 'text-[var(--poli-sub)]'
                     )}
                   >
                     {option.pct}%
@@ -154,7 +154,7 @@ export function PollVoteForm({
       })}
 
       {!isLoggedIn && isActive && (
-        <p className="mt-4 text-center text-xs text-[var(--codex-faint)]">
+        <p className="mt-4 text-center text-xs text-[var(--poli-faint)]">
           <a href={`/login?redirectTo=/polls/${pollId}`} className="underline">
             Sign in
           </a>{' '}

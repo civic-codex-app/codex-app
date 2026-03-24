@@ -56,7 +56,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
   useEffect(() => {
     // Read saved issues from localStorage
     try {
-      const saved = localStorage.getItem('codex_top_issues')
+      const saved = localStorage.getItem('poli_top_issues')
       if (saved) {
         const parsed = JSON.parse(saved)
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -118,16 +118,16 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
   // No saved issues
   if (!loading && topIssues.length === 0) {
     return (
-      <div className="rounded-md border border-[var(--codex-border)] py-8 text-center">
-        <p className="mb-2 text-sm text-[var(--codex-sub)]">
+      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center">
+        <p className="mb-2 text-sm text-[var(--poli-sub)]">
           No priority issues set
         </p>
-        <p className="mb-4 text-xs text-[var(--codex-faint)]">
+        <p className="mb-4 text-xs text-[var(--poli-faint)]">
           Complete onboarding to select your top issues
         </p>
         <Link
           href="/onboarding"
-          className="rounded-md bg-[var(--codex-badge-bg)] px-4 py-2 text-sm text-[var(--codex-text)] no-underline hover:bg-[var(--codex-hover)]"
+          className="rounded-md bg-[var(--poli-badge-bg)] px-4 py-2 text-sm text-[var(--poli-text)] no-underline hover:bg-[var(--poli-hover)]"
         >
           Set priorities
         </Link>
@@ -138,13 +138,13 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
   // No zip code
   if (!loading && !zip) {
     return (
-      <div className="rounded-md border border-[var(--codex-border)] py-8 text-center">
-        <p className="mb-2 text-sm text-[var(--codex-sub)]">
+      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center">
+        <p className="mb-2 text-sm text-[var(--poli-sub)]">
           Set your zip code to see how your reps stand on your issues
         </p>
         <Link
           href="/account"
-          className="rounded-md bg-[var(--codex-badge-bg)] px-4 py-2 text-sm text-[var(--codex-text)] no-underline hover:bg-[var(--codex-hover)]"
+          className="rounded-md bg-[var(--poli-badge-bg)] px-4 py-2 text-sm text-[var(--poli-text)] no-underline hover:bg-[var(--poli-hover)]"
         >
           Update profile
         </Link>
@@ -154,8 +154,8 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
 
   if (loading) {
     return (
-      <div className="rounded-md border border-[var(--codex-border)] py-8 text-center">
-        <p className="text-sm text-[var(--codex-faint)]">Loading issue priorities...</p>
+      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center">
+        <p className="text-sm text-[var(--poli-faint)]">Loading issue priorities...</p>
       </div>
     )
   }
@@ -186,17 +186,17 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
         return (
           <div
             key={slug}
-            className="rounded-md border border-[var(--codex-border)] px-4 py-3"
+            className="rounded-md border border-[var(--poli-border)] px-4 py-3"
           >
             {/* Issue header */}
             <div className="mb-2 flex items-center gap-2">
               <IssueIcon
                 icon={meta.icon}
-                className="h-4 w-4 text-[var(--codex-sub)]"
+                className="h-4 w-4 text-[var(--poli-sub)]"
               />
               <Link
                 href={`/issues/${slug}`}
-                className="text-sm font-medium text-[var(--codex-text)] no-underline hover:underline"
+                className="text-sm font-medium text-[var(--poli-text)] no-underline hover:underline"
               >
                 {meta.name}
               </Link>
@@ -215,7 +215,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
                     <Link
                       key={rep.id}
                       href={`/politicians/${rep.slug}`}
-                      className="flex items-center gap-1.5 rounded-full border border-[var(--codex-border)] py-1 pl-1 pr-2.5 no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                      className="flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] py-1 pl-1 pr-2.5 no-underline transition-colors hover:bg-[var(--poli-hover)]"
                       title={`${rep.name}: ${style?.label ?? 'No stance recorded'}`}
                     >
                       <div className="h-5 w-5 flex-shrink-0 overflow-hidden rounded-full">
@@ -235,7 +235,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
                           {badge.label}
                         </span>
                       ) : (
-                        <span className="text-[11px] text-[var(--codex-faint)]">
+                        <span className="text-[11px] text-[var(--poli-faint)]">
                           No stance
                         </span>
                       )}
@@ -244,7 +244,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
                 })}
               </div>
             ) : (
-              <p className="text-xs text-[var(--codex-faint)]">
+              <p className="text-xs text-[var(--poli-faint)]">
                 No representatives found for your area
               </p>
             )}
@@ -256,7 +256,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
       <div className="pt-1 text-center">
         <Link
           href="/onboarding"
-          className="text-xs text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+          className="text-xs text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
         >
           Edit priorities &rarr;
         </Link>

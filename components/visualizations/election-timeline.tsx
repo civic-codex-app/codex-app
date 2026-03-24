@@ -27,7 +27,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
 
   if (sorted.length === 0) {
     return (
-      <div className="py-10 text-center text-[var(--codex-faint)]">
+      <div className="py-10 text-center text-[var(--poli-faint)]">
         <span className="text-sm">No election history available</span>
       </div>
     )
@@ -58,7 +58,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                   className="absolute left-1/2 top-5 w-px -translate-x-1/2"
                   style={{
                     height: 'calc(100% - 4px)',
-                    background: `linear-gradient(to bottom, ${nodeColor}44, var(--codex-border))`,
+                    background: `linear-gradient(to bottom, ${nodeColor}44, var(--poli-border))`,
                   }}
                 />
               )}
@@ -68,7 +68,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                   className="absolute -top-1 left-1/2 w-px -translate-x-1/2"
                   style={{
                     height: 8,
-                    background: 'var(--codex-border)',
+                    background: 'var(--poli-border)',
                   }}
                 />
               )}
@@ -78,7 +78,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                 className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-200"
                 style={{
                   borderColor: nodeColor,
-                  background: isHovered ? `${nodeColor}22` : 'var(--codex-card)',
+                  background: isHovered ? `${nodeColor}22` : 'var(--poli-card)',
                   transform: isHovered ? 'scale(1.15)' : 'scale(1)',
                 }}
               >
@@ -97,7 +97,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
 
             {/* Content */}
             <div
-              className="flex-1 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-4 transition-all duration-200"
+              className="flex-1 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-4 transition-all duration-200"
               style={{
                 marginBottom: 16,
                 borderColor: isHovered ? `${nodeColor}33` : undefined,
@@ -105,7 +105,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
             >
               {/* Year + result badge */}
               <div className="mb-3 flex items-center gap-3">
-                <span className="text-xl font-semibold text-[var(--codex-text)]">
+                <span className="text-xl font-semibold text-[var(--poli-text)]">
                   {result.election_year}
                 </span>
                 <span
@@ -117,7 +117,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                 >
                   {result.result.toUpperCase()}
                 </span>
-                <span className="text-[11px] text-[var(--codex-faint)]">
+                <span className="text-[11px] text-[var(--poli-faint)]">
                   {result.chamber} | {result.state}
                 </span>
               </div>
@@ -127,12 +127,12 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                 {/* Candidate bar */}
                 <div>
                   <div className="mb-1 flex items-baseline justify-between">
-                    <span className="text-[11px] font-medium text-[var(--codex-sub)]">Candidate</span>
+                    <span className="text-[11px] font-medium text-[var(--poli-sub)]">Candidate</span>
                     <span className="text-[14px] font-semibold" style={{ color }}>
                       {result.vote_percentage}%
                     </span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-[var(--codex-border)]" style={{ opacity: 0.5 }}>
+                  <div className="h-2 overflow-hidden rounded-full bg-[var(--poli-border)]" style={{ opacity: 0.5 }}>
                     <div
                       className="h-full rounded-full transition-all duration-700 ease-out"
                       style={{
@@ -146,16 +146,16 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
                 {/* Opponent bar */}
                 <div>
                   <div className="mb-1 flex items-baseline justify-between">
-                    <span className="text-[11px] text-[var(--codex-faint)]">
+                    <span className="text-[11px] text-[var(--poli-faint)]">
                       {result.opponent_name || 'Opponent'}
                     </span>
-                    <span className="text-[13px] text-[var(--codex-faint)]">
+                    <span className="text-[13px] text-[var(--poli-faint)]">
                       {result.opponent_vote_percentage}%
                     </span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-[var(--codex-border)]" style={{ opacity: 0.5 }}>
+                  <div className="h-2 overflow-hidden rounded-full bg-[var(--poli-border)]" style={{ opacity: 0.5 }}>
                     <div
-                      className="h-full rounded-full bg-[var(--codex-faint)] transition-all duration-700 ease-out"
+                      className="h-full rounded-full bg-[var(--poli-faint)] transition-all duration-700 ease-out"
                       style={{
                         width: `${(result.opponent_vote_percentage / maxPct) * 100}%`,
                         opacity: 0.4,
@@ -167,7 +167,7 @@ export function ElectionTimeline({ results, party }: ElectionTimelineProps) {
 
               {/* Notes */}
               {result.notes && (
-                <p className="mt-2 text-[11px] italic text-[var(--codex-faint)]">
+                <p className="mt-2 text-[11px] italic text-[var(--poli-faint)]">
                   {result.notes}
                 </p>
               )}

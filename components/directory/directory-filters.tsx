@@ -92,7 +92,7 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
     >
       {/* Party filter */}
       <div>
-        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--codex-faint)]">
+        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-faint)]">
           Party
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -101,8 +101,8 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
             className="rounded-md px-3 py-1.5 text-[12px] font-medium transition-all"
             style={
               !currentParty
-                ? { background: 'var(--codex-badge-bg)', color: 'var(--codex-text)', border: '1px solid var(--codex-border)' }
-                : { background: 'transparent', color: 'var(--codex-faint)', border: '1px solid transparent' }
+                ? { background: 'var(--poli-badge-bg)', color: 'var(--poli-text)', border: '1px solid var(--poli-border)' }
+                : { background: 'transparent', color: 'var(--poli-faint)', border: '1px solid transparent' }
             }
           >
             All
@@ -118,8 +118,8 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
                 className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12px] font-medium transition-all"
                 style={
                   isActive
-                    ? { background: 'var(--codex-badge-bg)', color: 'var(--codex-text)', border: '1px solid var(--codex-border)' }
-                    : { background: 'transparent', color: 'var(--codex-faint)', border: '1px solid transparent' }
+                    ? { background: 'var(--poli-badge-bg)', color: 'var(--poli-text)', border: '1px solid var(--poli-border)' }
+                    : { background: 'transparent', color: 'var(--poli-faint)', border: '1px solid transparent' }
                 }
               >
                 <PartyIcon party={p.key} size={11} />
@@ -133,7 +133,7 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
 
       {/* Chamber filter */}
       <div>
-        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--codex-faint)]">
+        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-faint)]">
           Level
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -142,8 +142,8 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
             className="rounded-md px-3 py-1.5 text-[12px] font-medium transition-all"
             style={
               !currentChamber
-                ? { background: 'var(--codex-badge-bg)', color: 'var(--codex-text)', border: '1px solid var(--codex-border)' }
-                : { background: 'transparent', color: 'var(--codex-faint)', border: '1px solid transparent' }
+                ? { background: 'var(--poli-badge-bg)', color: 'var(--poli-text)', border: '1px solid var(--poli-border)' }
+                : { background: 'transparent', color: 'var(--poli-faint)', border: '1px solid transparent' }
             }
           >
             All
@@ -161,8 +161,8 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
                   className="rounded-md px-3 py-1.5 text-[12px] font-medium transition-all"
                   style={
                     isActive
-                      ? { background: 'var(--codex-badge-bg)', color: 'var(--codex-text)', border: '1px solid var(--codex-border)' }
-                      : { background: 'transparent', color: 'var(--codex-faint)', border: '1px solid transparent' }
+                      ? { background: 'var(--poli-badge-bg)', color: 'var(--poli-text)', border: '1px solid var(--poli-border)' }
+                      : { background: 'transparent', color: 'var(--poli-faint)', border: '1px solid transparent' }
                   }
                 >
                   {c.label}
@@ -176,13 +176,13 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
 
       {/* State filter */}
       <div>
-        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--codex-faint)]">
+        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-faint)]">
           State
         </div>
         <select
           value={currentState}
           onChange={(e) => setFilter('state', e.target.value)}
-          className="h-9 rounded-md border border-[var(--codex-border)] bg-transparent px-3 pr-8 text-[12px] text-[var(--codex-text)] outline-none transition-colors focus:border-[var(--codex-text)] appearance-none cursor-pointer"
+          className="h-9 rounded-md border border-[var(--poli-border)] bg-transparent px-3 pr-8 text-[12px] text-[var(--poli-text)] outline-none transition-colors focus:border-[var(--poli-text)] appearance-none cursor-pointer"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
             backgroundRepeat: 'no-repeat',
@@ -203,7 +203,7 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
         <div className="flex items-center gap-2">
           <button
             onClick={clearAll}
-            className="text-[11px] text-[var(--codex-faint)] underline underline-offset-2 transition-colors hover:text-[var(--codex-text)]"
+            className="text-[11px] text-[var(--poli-faint)] underline underline-offset-2 transition-colors hover:text-[var(--poli-text)]"
           >
             Clear all filters
           </button>

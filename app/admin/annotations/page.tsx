@@ -75,8 +75,8 @@ export default function AdminAnnotationsPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--codex-text)]">Community Annotations</h1>
-          <p className="mt-1 text-sm text-[var(--codex-sub)]">
+          <h1 className="text-2xl font-bold text-[var(--poli-text)]">Community Annotations</h1>
+          <p className="mt-1 text-sm text-[var(--poli-sub)]">
             Review user-submitted corrections, sources, and context
           </p>
         </div>
@@ -95,8 +95,8 @@ export default function AdminAnnotationsPage() {
             onClick={() => setFilter(f)}
             className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
               filter === f
-                ? 'bg-[var(--codex-text)] text-[var(--codex-card)]'
-                : 'border border-[var(--codex-border)] text-[var(--codex-sub)] hover:bg-[var(--codex-hover)]'
+                ? 'bg-[var(--poli-text)] text-[var(--poli-card)]'
+                : 'border border-[var(--poli-border)] text-[var(--poli-sub)] hover:bg-[var(--poli-hover)]'
             }`}
           >
             {f}
@@ -105,9 +105,9 @@ export default function AdminAnnotationsPage() {
       </div>
 
       {loading ? (
-        <div className="py-12 text-center text-sm text-[var(--codex-faint)]">Loading...</div>
+        <div className="py-12 text-center text-sm text-[var(--poli-faint)]">Loading...</div>
       ) : annotations.length === 0 ? (
-        <div className="py-12 text-center text-sm text-[var(--codex-faint)]">
+        <div className="py-12 text-center text-sm text-[var(--poli-faint)]">
           No {filter === 'all' ? '' : filter} annotations
         </div>
       ) : (
@@ -115,7 +115,7 @@ export default function AdminAnnotationsPage() {
           {annotations.map(a => (
             <div
               key={a.id}
-              className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-4"
+              className="rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-4"
             >
               <div className="mb-2 flex flex-wrap items-center gap-2">
                 {/* Type badge */}
@@ -136,21 +136,21 @@ export default function AdminAnnotationsPage() {
                 {a.politicians && (
                   <a
                     href={`/politicians/${a.politicians.slug}`}
-                    className="text-sm font-medium text-[var(--codex-text)] hover:underline"
+                    className="text-sm font-medium text-[var(--poli-text)] hover:underline"
                   >
                     {a.politicians.name}
                   </a>
                 )}
                 {/* Issue */}
                 {a.issues && (
-                  <span className="text-xs text-[var(--codex-faint)]">
+                  <span className="text-xs text-[var(--poli-faint)]">
                     on {a.issues.name}
                   </span>
                 )}
               </div>
 
               {/* Content */}
-              <p className="mb-2 text-sm text-[var(--codex-text)]">{a.content}</p>
+              <p className="mb-2 text-sm text-[var(--poli-text)]">{a.content}</p>
 
               {/* Source URL */}
               {a.source_url && (
@@ -166,7 +166,7 @@ export default function AdminAnnotationsPage() {
 
               {/* Meta + actions */}
               <div className="flex items-center justify-between">
-                <span className="text-xs text-[var(--codex-faint)]">
+                <span className="text-xs text-[var(--poli-faint)]">
                   by {a.profiles?.display_name || a.profiles?.email || 'Unknown'} &middot;{' '}
                   {new Date(a.created_at).toLocaleDateString()}
                 </span>

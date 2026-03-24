@@ -60,7 +60,7 @@ export function PollStatusToggle({ pollId, currentStatus }: Props) {
       <button
         onClick={toggle}
         disabled={loading}
-        className="text-[10px] text-[var(--codex-faint)] hover:text-[var(--codex-text)] disabled:opacity-50"
+        className="text-[10px] text-[var(--poli-faint)] hover:text-[var(--poli-text)] disabled:opacity-50"
       >
         {loading ? '...' : TOGGLE_LABELS[status] ?? ''}
       </button>

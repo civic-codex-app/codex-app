@@ -49,16 +49,16 @@ export function IssueDetailFilters() {
             role="radio"
             aria-checked={currentParty === p.key}
             className={cn(
-              'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+              'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
               currentParty === p.key
-                ? 'text-[var(--codex-text)]'
-                : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)]'
+                ? 'text-[var(--poli-text)]'
+                : 'text-[var(--poli-faint)] hover:text-[var(--poli-sub)]'
             )}
             style={
               currentParty === p.key && p.color
                 ? { background: `${p.color}18`, border: `1px solid ${p.color}33` }
                 : currentParty === p.key
-                  ? { background: 'var(--codex-badge-bg)', border: '1px solid var(--codex-border)' }
+                  ? { background: 'var(--poli-badge-bg)', border: '1px solid var(--poli-border)' }
                   : { background: 'transparent', border: '1px solid transparent' }
             }
           >
@@ -67,7 +67,7 @@ export function IssueDetailFilters() {
         ))}
       </div>
 
-      <div className="h-5 w-px bg-[var(--codex-border)]" />
+      <div className="h-5 w-px bg-[var(--poli-border)]" />
 
       {/* Chamber pills */}
       <div className="flex gap-1.5" role="radiogroup" aria-label="Filter by chamber">
@@ -78,10 +78,10 @@ export function IssueDetailFilters() {
             role="radio"
             aria-checked={currentChamber === c.key}
             className={cn(
-              'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+              'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
               currentChamber === c.key
-                ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)] border-[var(--codex-border)]'
-                : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)] border-transparent'
+                ? 'bg-[var(--poli-badge-bg)] text-[var(--poli-text)] border-[var(--poli-border)]'
+                : 'text-[var(--poli-faint)] hover:text-[var(--poli-sub)] border-transparent'
             )}
           >
             {c.label}

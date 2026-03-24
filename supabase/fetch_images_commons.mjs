@@ -46,7 +46,7 @@ for (let i = 0; i < all.length; i++) {
   try {
     const searchUrl = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(p.name)}&language=en&limit=3&format=json`;
     const searchResult = execSync(
-      `curl -s -H "User-Agent: CodexCivicApp/1.0" "${searchUrl}"`,
+      `curl -s -H "User-Agent: PoliCivicApp/1.0" "${searchUrl}"`,
       { timeout: 8000 }
     ).toString();
     const searchJson = JSON.parse(searchResult);
@@ -62,7 +62,7 @@ for (let i = 0; i < all.length; i++) {
       // Get entity details with P18 (image) claim
       const entityUrl = `https://www.wikidata.org/w/api.php?action=wbgetclaims&entity=${entity.id}&property=P18&format=json`;
       const claimsResult = execSync(
-        `curl -s -H "User-Agent: CodexCivicApp/1.0" "${entityUrl}"`,
+        `curl -s -H "User-Agent: PoliCivicApp/1.0" "${entityUrl}"`,
         { timeout: 8000 }
       ).toString();
       const claims = JSON.parse(claimsResult);
@@ -92,7 +92,7 @@ for (let i = 0; i < all.length; i++) {
 
   // Download, optimize, upload
   try {
-    const imgData = execSync(`curl -sL -H "User-Agent: CodexCivicApp/1.0" "${imageUrl}" --max-time 10`, {
+    const imgData = execSync(`curl -sL -H "User-Agent: PoliCivicApp/1.0" "${imageUrl}" --max-time 10`, {
       maxBuffer: 20 * 1024 * 1024, timeout: 15000
     });
 

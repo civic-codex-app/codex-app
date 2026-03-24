@@ -148,7 +148,7 @@ function PoliticianAutocomplete({
 
   return (
     <div className="relative flex-1">
-      <label className="mb-1.5 block text-[11px] uppercase tracking-[0.12em] text-[var(--codex-faint)]">
+      <label className="mb-1.5 block text-[11px] uppercase tracking-[0.12em] text-[var(--poli-faint)]">
         {label}
       </label>
       <div className="relative">
@@ -173,12 +173,12 @@ function PoliticianAutocomplete({
           autoCorrect="off"
           autoCapitalize="off"
           autoComplete="off"
-          className="w-full rounded-md border border-[var(--codex-border)] bg-[var(--codex-input-bg)] px-3 py-2.5 pr-9 text-[13px] text-[var(--codex-text)] outline-none transition-colors placeholder:text-[var(--codex-faint)] focus:border-[var(--codex-input-focus)]"
+          className="w-full rounded-md border border-[var(--poli-border)] bg-[var(--poli-input-bg)] px-3 py-2.5 pr-9 text-[13px] text-[var(--poli-text)] outline-none transition-colors placeholder:text-[var(--poli-faint)] focus:border-[var(--poli-input-focus)]"
         />
         {value && (
           <button
             onClick={handleClear}
-            className="absolute right-2 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-[var(--codex-faint)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-sub)]"
+            className="absolute right-2 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-[var(--poli-faint)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-sub)]"
             aria-label="Clear selection"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -193,7 +193,7 @@ function PoliticianAutocomplete({
         <div
           ref={dropdownRef}
           role="listbox"
-          className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[320px] overflow-y-auto rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] shadow-lg"
+          className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[320px] overflow-y-auto rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] shadow-lg"
         >
           {suggestions.map((s, i) => (
             <button
@@ -209,9 +209,9 @@ function PoliticianAutocomplete({
               onMouseEnter={() => setActiveIndex(i)}
               className={`flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors ${
                 i === activeIndex
-                  ? 'bg-[var(--codex-hover)]'
-                  : 'hover:bg-[var(--codex-hover)]'
-              } ${i < suggestions.length - 1 ? 'border-b border-[var(--codex-border)]' : ''}`}
+                  ? 'bg-[var(--poli-hover)]'
+                  : 'hover:bg-[var(--poli-hover)]'
+              } ${i < suggestions.length - 1 ? 'border-b border-[var(--poli-border)]' : ''}`}
             >
               {s.image_url ? (
                 <Image
@@ -228,7 +228,7 @@ function PoliticianAutocomplete({
                   style={{
                     backgroundColor: s.party
                       ? `${partyColor(s.party)}18`
-                      : 'var(--codex-hover)',
+                      : 'var(--poli-hover)',
                   }}
                 >
                   {s.party && <PartyIcon party={s.party} size={12} />}
@@ -236,10 +236,10 @@ function PoliticianAutocomplete({
               )}
 
               <div className="min-w-0 flex-1">
-                <div className="truncate text-[13px] font-medium text-[var(--codex-text)]">
+                <div className="truncate text-[13px] font-medium text-[var(--poli-text)]">
                   {s.name}
                 </div>
-                <div className="truncate text-[11px] text-[var(--codex-sub)]">
+                <div className="truncate text-[11px] text-[var(--poli-sub)]">
                   {[s.title, s.state, s.party].filter(Boolean).join(' \u00b7 ')}
                 </div>
               </div>
@@ -293,7 +293,7 @@ export function CompareSelector({ selectedA, selectedB, nameA, nameB }: CompareS
 
         <button
           onClick={swap}
-          className="flex h-9 w-9 flex-shrink-0 items-center justify-center self-center rounded-full border border-[var(--codex-border)] text-[var(--codex-faint)] transition-all hover:border-[var(--codex-input-focus)] hover:text-[var(--codex-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)] sm:mt-5"
+          className="flex h-9 w-9 flex-shrink-0 items-center justify-center self-center rounded-full border border-[var(--poli-border)] text-[var(--poli-faint)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)] sm:mt-5"
           title="Swap"
           aria-label="Swap officials A and B"
         >

@@ -155,7 +155,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
         <h1 className="mb-1 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Directory
         </h1>
-        <p className="mb-6 text-[14px] text-[var(--codex-sub)]">
+        <p className="mb-6 text-[14px] text-[var(--poli-sub)]">
           {totalCount.toLocaleString()} official{totalCount !== 1 ? 's' : ''}
         </p>
 
@@ -178,7 +178,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
                 className="group flex overflow-hidden rounded-xl no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
                 style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
               >
-                <div className="w-[68px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--codex-card)]">
+                <div className="w-[68px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--poli-card)]">
                   <AvatarImage
                     src={pol.image_url}
                     alt={pol.name}
@@ -189,14 +189,14 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
                   />
                 </div>
                 <div className="min-w-0 flex-1 px-4 py-3">
-                  <div className="truncate text-[15px] font-semibold text-[var(--codex-text)]">
+                  <div className="truncate text-[15px] font-semibold text-[var(--poli-text)]">
                     {pol.name}
                   </div>
                   <div className="mt-1 flex items-center gap-1.5">
                     {pol.image_url && <PartyIcon party={pol.party} size={12} />}
-                    <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
+                    <span className="text-[12px] text-[var(--poli-sub)]">{pol.state}</span>
                   </div>
-                  <div className="mt-1 truncate text-[12px] text-[var(--codex-faint)]">
+                  <div className="mt-1 truncate text-[12px] text-[var(--poli-faint)]">
                     {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)}
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           })}
 
           {politicians.length === 0 && (
-            <div className="py-16 text-center text-[var(--codex-faint)]">
+            <div className="py-16 text-center text-[var(--poli-faint)]">
               <div className="mb-2 text-xl font-semibold">No officials found</div>
               <div className="text-sm">Try adjusting your filters</div>
             </div>
@@ -215,14 +215,14 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="mb-10 flex items-center justify-between">
-            <span className="text-[11px] text-[var(--codex-faint)]">
+            <span className="text-[11px] text-[var(--poli-faint)]">
               Page {safePage} of {totalPages}
             </span>
             <div className="flex gap-2">
               {safePage > 1 && (
                 <Link
                   href={buildUrl({ page: String(safePage - 1) })}
-                  className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
+                  className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] no-underline hover:bg-[var(--poli-hover)]"
                 >
                   Previous
                 </Link>
@@ -230,7 +230,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
               {safePage < totalPages && (
                 <Link
                   href={buildUrl({ page: String(safePage + 1) })}
-                  className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-sm text-[var(--codex-sub)] no-underline hover:bg-[var(--codex-hover)]"
+                  className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] no-underline hover:bg-[var(--poli-hover)]"
                 >
                   Next
                 </Link>

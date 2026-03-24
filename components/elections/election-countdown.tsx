@@ -36,7 +36,7 @@ export function ElectionCountdown({ electionDate }: ElectionCountdownProps) {
   // Past election
   if (diff <= 0) {
     return (
-      <div className="flex items-center gap-2 text-[14px] font-medium text-[var(--codex-sub)]">
+      <div className="flex items-center gap-2 text-[14px] font-medium text-[var(--poli-sub)]">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
@@ -53,37 +53,37 @@ export function ElectionCountdown({ electionDate }: ElectionCountdownProps) {
   return (
     <div className="flex items-center gap-3">
       <div className="flex items-baseline gap-1.5">
-        <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{days}</span>
-        <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+        <span className="text-3xl font-bold tabular-nums text-[var(--poli-text)]">{days}</span>
+        <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
           {days === 1 ? 'day' : 'days'}
         </span>
       </div>
-      <span className="text-[var(--codex-border)]">&middot;</span>
+      <span className="text-[var(--poli-border)]">&middot;</span>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{hours}</span>
-        <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+        <span className="text-3xl font-bold tabular-nums text-[var(--poli-text)]">{hours}</span>
+        <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
           {hours === 1 ? 'hour' : 'hours'}
         </span>
       </div>
       {isUnder24h && (
         <>
-          <span className="text-[var(--codex-border)]">&middot;</span>
+          <span className="text-[var(--poli-border)]">&middot;</span>
           <div className="flex items-baseline gap-1.5">
-            <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{minutes}</span>
-            <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+            <span className="text-3xl font-bold tabular-nums text-[var(--poli-text)]">{minutes}</span>
+            <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
               {minutes === 1 ? 'min' : 'mins'}
             </span>
           </div>
-          <span className="text-[var(--codex-border)]">&middot;</span>
+          <span className="text-[var(--poli-border)]">&middot;</span>
           <div className="flex items-baseline gap-1.5">
-            <span className="text-3xl font-bold tabular-nums text-[var(--codex-text)]">{seconds}</span>
-            <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-sub)]">
+            <span className="text-3xl font-bold tabular-nums text-[var(--poli-text)]">{seconds}</span>
+            <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-sub)]">
               sec
             </span>
           </div>
         </>
       )}
-      <span className="ml-2 text-[12px] text-[var(--codex-faint)]">until Election Day</span>
+      <span className="ml-2 text-[12px] text-[var(--poli-faint)]">until Election Day</span>
     </div>
   )
 }

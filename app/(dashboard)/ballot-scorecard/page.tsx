@@ -42,14 +42,14 @@ export default async function BallotScorecardPage() {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
         <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
-        <p className="mb-8 text-sm text-[var(--codex-sub)]">
+        <p className="mb-8 text-sm text-[var(--poli-sub)]">
           See how each candidate aligns with your views
         </p>
 
-        <div className="rounded-md border border-[var(--codex-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
           <div className="mb-3">
             <svg
-              className="mx-auto h-10 w-10 text-[var(--codex-faint)]"
+              className="mx-auto h-10 w-10 text-[var(--poli-faint)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -61,15 +61,15 @@ export default async function BallotScorecardPage() {
               <path d="m9 12 2 2 4-4" />
             </svg>
           </div>
-          <p className="mb-2 text-sm font-medium text-[var(--codex-text)]">
+          <p className="mb-2 text-sm font-medium text-[var(--poli-text)]">
             Take the quiz first
           </p>
-          <p className="mb-6 text-sm text-[var(--codex-sub)]">
+          <p className="mb-6 text-sm text-[var(--poli-sub)]">
             Answer questions on key issues so we can match you with candidates.
           </p>
           <Link
             href="/quiz"
-            className="rounded-md bg-[var(--codex-badge-bg)] px-5 py-2.5 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+            className="rounded-md bg-[var(--poli-badge-bg)] px-5 py-2.5 text-sm font-medium text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
           >
             Start the Quiz
           </Link>
@@ -83,14 +83,14 @@ export default async function BallotScorecardPage() {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
         <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
-        <p className="mb-8 text-sm text-[var(--codex-sub)]">
+        <p className="mb-8 text-sm text-[var(--poli-sub)]">
           See how each candidate aligns with your views
         </p>
 
-        <div className="rounded-md border border-[var(--codex-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
           <div className="mb-3">
             <svg
-              className="mx-auto h-10 w-10 text-[var(--codex-faint)]"
+              className="mx-auto h-10 w-10 text-[var(--poli-faint)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -102,15 +102,15 @@ export default async function BallotScorecardPage() {
               <circle cx="12" cy="10" r="3" />
             </svg>
           </div>
-          <p className="mb-2 text-sm font-medium text-[var(--codex-text)]">
+          <p className="mb-2 text-sm font-medium text-[var(--poli-text)]">
             Location needed
           </p>
-          <p className="mb-6 text-sm text-[var(--codex-sub)]">
+          <p className="mb-6 text-sm text-[var(--poli-sub)]">
             Set your state and zip code so we can find your ballot races.
           </p>
           <Link
             href="/account"
-            className="rounded-md bg-[var(--codex-badge-bg)] px-5 py-2.5 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+            className="rounded-md bg-[var(--poli-badge-bg)] px-5 py-2.5 text-sm font-medium text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
           >
             Update Profile
           </Link>
@@ -264,23 +264,23 @@ export default async function BallotScorecardPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
       <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
-      <p className="mb-1 text-sm text-[var(--codex-sub)]">
+      <p className="mb-1 text-sm text-[var(--poli-sub)]">
         See how each candidate aligns with your views
       </p>
-      <p className="mb-8 text-xs text-[var(--codex-faint)]">
+      <p className="mb-8 text-xs text-[var(--poli-faint)]">
         Based on your quiz ({quizCount} issue{quizCount !== 1 ? 's' : ''}) and {stateName}
         {userZip ? ` (${userZip})` : ''} ballot.{' '}
-        <Link href="/quiz" className="underline hover:text-[var(--codex-text)]">Retake quiz</Link>
+        <Link href="/quiz" className="underline hover:text-[var(--poli-text)]">Retake quiz</Link>
         {' '}&middot;{' '}
-        <Link href="/account" className="underline hover:text-[var(--codex-text)]">Update location</Link>
+        <Link href="/account" className="underline hover:text-[var(--poli-text)]">Update location</Link>
       </p>
 
       {totalRacesWithCandidates === 0 ? (
-        <div className="rounded-md border border-[var(--codex-border)] py-16 text-center">
-          <p className="mb-2 text-sm font-medium text-[var(--codex-text)]">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+          <p className="mb-2 text-sm font-medium text-[var(--poli-text)]">
             No upcoming races found
           </p>
-          <p className="text-sm text-[var(--codex-sub)]">
+          <p className="text-sm text-[var(--poli-sub)]">
             There are no active elections with races in {stateName} right now.
           </p>
         </div>
@@ -292,9 +292,9 @@ export default async function BallotScorecardPage() {
 
             return (
               <section key={groupName}>
-                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
                   {groupName} Races
-                  <span className="ml-2 text-[var(--codex-faint)]">({groupRaces.length})</span>
+                  <span className="ml-2 text-[var(--poli-faint)]">({groupRaces.length})</span>
                 </h2>
 
                 <div className="space-y-3">

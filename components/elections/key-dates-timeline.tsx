@@ -49,7 +49,7 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
 
   if (allDates.length === 0) {
     return (
-      <div className="py-4 text-center text-sm text-[var(--codex-faint)]">
+      <div className="py-4 text-center text-sm text-[var(--poli-faint)]">
         Election Day: {formatDate(electionDate)}
       </div>
     )
@@ -63,7 +63,7 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
       {/* Vertical connecting line */}
       <div
         className="absolute left-[9px] top-2 bottom-2 w-px"
-        style={{ backgroundColor: 'var(--codex-border)' }}
+        style={{ backgroundColor: 'var(--poli-border)' }}
       />
 
       <div className="flex flex-col gap-5">
@@ -73,7 +73,7 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
           const isElectionDay = d.date_type === 'election_day'
 
           // Dot color
-          let dotColor = 'bg-[var(--codex-faint)]' // past/default
+          let dotColor = 'bg-[var(--poli-faint)]' // past/default
           let dotRing = ''
           if (isElectionDay && !isPast) {
             dotColor = 'bg-green-500'
@@ -81,7 +81,7 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
             dotColor = 'bg-amber-400'
             dotRing = 'ring-4 ring-amber-400/20'
           } else if (!isPast) {
-            dotColor = 'bg-[var(--codex-sub)]'
+            dotColor = 'bg-[var(--poli-sub)]'
           }
 
           const label =
@@ -102,7 +102,7 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
               <div className="min-w-0 flex-1">
                 <div
                   className={`text-[12px] font-medium tabular-nums ${
-                    isPast ? 'text-[var(--codex-faint)]' : 'text-[var(--codex-sub)]'
+                    isPast ? 'text-[var(--poli-faint)]' : 'text-[var(--poli-sub)]'
                   }`}
                 >
                   {formatDate(d.event_date)}
@@ -110,12 +110,12 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
                 <div
                   className={`text-[14px] font-semibold ${
                     isPast
-                      ? 'text-[var(--codex-faint)] line-through'
+                      ? 'text-[var(--poli-faint)] line-through'
                       : isElectionDay
                         ? 'text-green-400'
                         : isNextUpcoming
                           ? 'text-amber-300'
-                          : 'text-[var(--codex-text)]'
+                          : 'text-[var(--poli-text)]'
                   }`}
                 >
                   {label}
@@ -123,7 +123,7 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
                 {d.description && (
                   <div
                     className={`mt-0.5 text-[13px] leading-snug ${
-                      isPast ? 'text-[var(--codex-faint)]' : 'text-[var(--codex-sub)]'
+                      isPast ? 'text-[var(--poli-faint)]' : 'text-[var(--poli-sub)]'
                     }`}
                   >
                     {d.description}

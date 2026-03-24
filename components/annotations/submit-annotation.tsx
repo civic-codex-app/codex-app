@@ -83,9 +83,9 @@ export function SubmitAnnotation({ politicianId, issueId }: SubmitAnnotationProp
 
   if (!userId) {
     return (
-      <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-4">
-        <p className="text-sm text-[var(--codex-sub)]">
-          <a href="/login" className="underline text-[var(--codex-text)] hover:opacity-80">
+      <div className="rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-4">
+        <p className="text-sm text-[var(--poli-sub)]">
+          <a href="/login" className="underline text-[var(--poli-text)] hover:opacity-80">
             Sign in
           </a>{' '}
           to contribute corrections, sources, or context.
@@ -97,9 +97,9 @@ export function SubmitAnnotation({ politicianId, issueId }: SubmitAnnotationProp
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-4 space-y-3"
+      className="rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-4 space-y-3"
     >
-      <h3 className="text-sm font-semibold text-[var(--codex-sub)]">Contribute an Annotation</h3>
+      <h3 className="text-sm font-semibold text-[var(--poli-sub)]">Contribute an Annotation</h3>
 
       {/* Type selector */}
       <div className="flex gap-2">
@@ -110,8 +110,8 @@ export function SubmitAnnotation({ politicianId, issueId }: SubmitAnnotationProp
             onClick={() => setAnnotationType(t.value)}
             className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
               annotationType === t.value
-                ? 'border-[var(--codex-text)] bg-[var(--codex-badge-bg)] text-[var(--codex-text)]'
-                : 'border-[var(--codex-border)] text-[var(--codex-sub)] hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]'
+                ? 'border-[var(--poli-text)] bg-[var(--poli-badge-bg)] text-[var(--poli-text)]'
+                : 'border-[var(--poli-border)] text-[var(--poli-sub)] hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]'
             }`}
             title={t.description}
           >
@@ -133,9 +133,9 @@ export function SubmitAnnotation({ politicianId, issueId }: SubmitAnnotationProp
         }
         rows={3}
         maxLength={2000}
-        className="w-full rounded-md border border-[var(--codex-input-border)] bg-transparent px-3 py-2 text-sm text-[var(--codex-text)] placeholder:text-[var(--codex-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--codex-text)] resize-y"
+        className="w-full rounded-md border border-[var(--poli-input-border)] bg-transparent px-3 py-2 text-sm text-[var(--poli-text)] placeholder:text-[var(--poli-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--poli-text)] resize-y"
       />
-      <div className="text-right text-[11px] text-[var(--codex-faint)]">
+      <div className="text-right text-[11px] text-[var(--poli-faint)]">
         {content.length}/2000
       </div>
 
@@ -145,7 +145,7 @@ export function SubmitAnnotation({ politicianId, issueId }: SubmitAnnotationProp
         value={sourceUrl}
         onChange={(e) => setSourceUrl(e.target.value)}
         placeholder="Source URL (optional)"
-        className="w-full rounded-md border border-[var(--codex-input-border)] bg-transparent px-3 py-2 text-sm text-[var(--codex-text)] placeholder:text-[var(--codex-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--codex-text)]"
+        className="w-full rounded-md border border-[var(--poli-input-border)] bg-transparent px-3 py-2 text-sm text-[var(--poli-text)] placeholder:text-[var(--poli-faint)] focus:outline-none focus:ring-1 focus:ring-[var(--poli-text)]"
       />
 
       {error && <p className="text-xs text-red-500">{error}</p>}
@@ -159,7 +159,7 @@ export function SubmitAnnotation({ politicianId, issueId }: SubmitAnnotationProp
       <button
         type="submit"
         disabled={submitting || !content.trim()}
-        className="rounded-md bg-[var(--codex-text)] px-4 py-2 text-sm font-medium text-[var(--codex-card)] transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="rounded-md bg-[var(--poli-text)] px-4 py-2 text-sm font-medium text-[var(--poli-card)] transition-opacity hover:opacity-90 disabled:opacity-50"
       >
         {submitting ? 'Submitting...' : 'Submit'}
       </button>

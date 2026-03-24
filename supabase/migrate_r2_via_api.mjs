@@ -40,7 +40,7 @@ const delay = (ms) => new Promise((r) => setTimeout(r, ms))
 function curlDownload(url) {
   try {
     const buf = execSync(
-      `curl -s -L -A "CodexApp/1.0" -H "Accept: image/*" --max-time 30 --fail "${url}"`,
+      `curl -s -L -A "PoliApp/1.0" -H "Accept: image/*" --max-time 30 --fail "${url}"`,
       { maxBuffer: 20 * 1024 * 1024 }
     )
     return buf.length > 1000 ? buf : null // Skip tiny error pages
@@ -52,7 +52,7 @@ function curlDownload(url) {
 function curlStatus(url) {
   try {
     return execSync(
-      `curl -s -o /dev/null -w "%{http_code}" -A "CodexApp/1.0" --max-time 10 "${url}"`,
+      `curl -s -o /dev/null -w "%{http_code}" -A "PoliApp/1.0" --max-time 10 "${url}"`,
       { encoding: 'utf8' }
     ).trim()
   } catch {
@@ -71,7 +71,7 @@ async function getWikipediaOriginalImage(name) {
     try {
       const res = await fetch(
         `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(variant)}`,
-        { headers: { 'User-Agent': 'CodexApp/1.0 (civic engagement platform)' } }
+        { headers: { 'User-Agent': 'PoliApp/1.0 (civic engagement platform)' } }
       )
       if (!res.ok) continue
       const data = await res.json()

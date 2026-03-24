@@ -9,7 +9,7 @@ const R2 = new S3Client({
   },
 })
 
-const BUCKET = process.env.R2_BUCKET_NAME ?? 'codex-images'
+const BUCKET = process.env.R2_BUCKET_NAME ?? 'poli-images'
 const PUBLIC_URL = process.env.R2_PUBLIC_URL ?? ''
 
 export async function uploadImage(

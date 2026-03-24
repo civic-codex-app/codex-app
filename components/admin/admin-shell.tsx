@@ -30,15 +30,15 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-[var(--codex-bg)]">
+    <div className="flex min-h-screen bg-[var(--poli-bg)]">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 flex h-full w-56 flex-col border-r border-[var(--codex-border)] bg-[var(--codex-card)]">
-        <div className="flex items-center gap-3 border-b border-[var(--codex-border)] px-5 py-5">
+      <aside className="fixed left-0 top-0 flex h-full w-56 flex-col border-r border-[var(--poli-border)] bg-[var(--poli-card)]">
+        <div className="flex items-center gap-3 border-b border-[var(--poli-border)] px-5 py-5">
           <Link href="/" className="flex items-center gap-3 no-underline">
-            <div className="flex h-[26px] w-[26px] items-center justify-center border border-[var(--codex-text)] text-[13px] font-semibold text-[var(--codex-text)]">
+            <div className="flex h-[26px] w-[26px] items-center justify-center border border-[var(--poli-text)] text-[13px] font-semibold text-[var(--poli-text)]">
               C
             </div>
-            <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+            <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               Admin
             </span>
           </Link>
@@ -51,16 +51,16 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               className={cn(
                 'mb-0.5 block rounded-md px-3 py-2 text-[13px] no-underline transition-colors',
                 isActive(item.href)
-                  ? 'bg-[var(--codex-badge-bg)] font-medium text-[var(--codex-text)]'
-                  : 'text-[var(--codex-sub)] hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]'
+                  ? 'bg-[var(--poli-badge-bg)] font-medium text-[var(--poli-text)]'
+                  : 'text-[var(--poli-sub)] hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]'
               )}
             >
               {item.label}
             </Link>
           ))}
         </nav>
-        <div className="border-t border-[var(--codex-border)] px-5 py-4">
-          <Link href="/dashboard" className="text-[11px] text-[var(--codex-faint)] hover:text-[var(--codex-text)]">
+        <div className="border-t border-[var(--poli-border)] px-5 py-4">
+          <Link href="/dashboard" className="text-[11px] text-[var(--poli-faint)] hover:text-[var(--poli-text)]">
             &larr; Back to app
           </Link>
         </div>

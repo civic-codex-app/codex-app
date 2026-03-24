@@ -40,26 +40,26 @@ export function ElectionHistory({ results, party }: ElectionHistoryProps) {
   const color = partyColor(party)
 
   return (
-    <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Election History
       </h2>
       <div className="space-y-3">
         {results.map((r) => {
           const style = RESULT_STYLE[r.result] ?? RESULT_STYLE.won
-          const oppColor = r.opponent_party ? partyColor(r.opponent_party) : 'var(--codex-faint)'
+          const oppColor = r.opponent_party ? partyColor(r.opponent_party) : 'var(--poli-faint)'
 
           return (
-            <div key={r.id} className="rounded-md border border-[var(--codex-border)] px-4 py-3">
+            <div key={r.id} className="rounded-md border border-[var(--poli-border)] px-4 py-3">
               {/* Top row: year, race name, result */}
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[11px] tabular-nums font-medium text-[var(--codex-badge-text)]">
+                  <span className="rounded-sm bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[11px] tabular-nums font-medium text-[var(--poli-badge-text)]">
                     {r.election_year}
                   </span>
                   <span className="text-[13px] font-medium">{r.race_name}</span>
                   {r.is_special_election && (
-                    <span className="rounded-sm bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">
+                    <span className="rounded-sm bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">
                       Special
                     </span>
                   )}
@@ -76,7 +76,7 @@ export function ElectionHistory({ results, party }: ElectionHistoryProps) {
                     {r.vote_percentage}%
                   </span>
                   {r.total_votes != null && (
-                    <span className="text-[11px] tabular-nums text-[var(--codex-faint)]">
+                    <span className="text-[11px] tabular-nums text-[var(--poli-faint)]">
                       {formatVotes(r.total_votes)} votes
                     </span>
                   )}
@@ -85,7 +85,7 @@ export function ElectionHistory({ results, party }: ElectionHistoryProps) {
 
               {/* Opponent */}
               {r.opponent_name && (
-                <div className="mt-1 flex items-center gap-1.5 text-[12px] text-[var(--codex-faint)]">
+                <div className="mt-1 flex items-center gap-1.5 text-[12px] text-[var(--poli-faint)]">
                   <span>vs.</span>
                   <span style={{ color: oppColor }}>{r.opponent_name}</span>
                   {r.opponent_party && (
@@ -99,7 +99,7 @@ export function ElectionHistory({ results, party }: ElectionHistoryProps) {
 
               {/* Notes */}
               {r.notes && (
-                <div className="mt-1 text-[11px] italic text-[var(--codex-faint)]">
+                <div className="mt-1 text-[11px] italic text-[var(--poli-faint)]">
                   {r.notes}
                 </div>
               )}

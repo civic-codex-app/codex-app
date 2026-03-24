@@ -247,7 +247,7 @@ function Detail({pol,onClose}){
   </div>;
 }
 
-export default function Codex(){
+export default function Poli(){
   const[mode,setMode]=useState("dark");
   const toggle=()=>setMode(m=>m==="dark"?"light":"dark");
   const t=T[mode];
@@ -304,7 +304,7 @@ export default function Codex(){
               fontFamily:"'Instrument Serif',Georgia,serif",fontSize:15,color:t.logoC,
               transition:"border-color 0.4s,color 0.4s"}}>C</div>
             <span style={{fontSize:12,letterSpacing:"0.18em",textTransform:"uppercase",
-              color:t.sub,fontWeight:500}}>Codex</span>
+              color:t.sub,fontWeight:500}}>Poli</span>
             <span style={{fontSize:10,padding:"2px 8px",borderRadius:3,
               background:t.badge,color:t.badgeT,letterSpacing:"0.06em",marginLeft:4}}>BETA</span>
           </div>
@@ -400,7 +400,7 @@ export default function Codex(){
             <ElephantIcon size={12} color={t.fIcon}/>
             <GreenDiamond size={12} color={t.fIcon}/>
             <span style={{fontSize:11,color:t.ghost,letterSpacing:"0.08em",textTransform:"uppercase"}}>
-              Codex Political Directory</span>
+              Poli Political Directory</span>
           </div>
           <span style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:13,
             fontStyle:"italic",color:t.ghost}}>Built for civic transparency</span>

@@ -39,8 +39,8 @@ export default async function EditPollPage({ params }: PageProps) {
 
       {/* Vote Summary */}
       {totalVotes > 0 && (
-        <div className="mb-8 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-          <div className="mb-3 text-sm font-semibold text-[var(--codex-sub)]">
+        <div className="mb-8 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+          <div className="mb-3 text-sm font-semibold text-[var(--poli-sub)]">
             Vote Results ({totalVotes} total votes)
           </div>
           <div className="space-y-3">
@@ -53,11 +53,11 @@ export default async function EditPollPage({ params }: PageProps) {
                   <div key={opt.id}>
                     <div className="mb-1 flex items-center justify-between text-sm">
                       <span>{opt.label}</span>
-                      <span className="text-[var(--codex-sub)]">{count} votes ({pct}%)</span>
+                      <span className="text-[var(--poli-sub)]">{count} votes ({pct}%)</span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
                       <div
-                        className="h-full rounded-full bg-[var(--codex-text)]"
+                        className="h-full rounded-full bg-[var(--poli-text)]"
                         style={{ width: `${pct}%`, opacity: 0.6 }}
                       />
                     </div>

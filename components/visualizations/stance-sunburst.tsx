@@ -75,7 +75,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
         className="flex items-center justify-center"
         style={{ width: size, height: size }}
       >
-        <span className="text-[11px] text-[var(--codex-faint)]">No data</span>
+        <span className="text-[11px] text-[var(--poli-faint)]">No data</span>
       </div>
     )
   }
@@ -100,7 +100,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
   return (
     <div className="inline-flex flex-col items-center gap-2">
       {/* Subtitle */}
-      <p className="text-[12px] text-[var(--codex-faint)]">
+      <p className="text-[12px] text-[var(--poli-faint)]">
         How this politician leans across all issues
       </p>
 
@@ -117,7 +117,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
             cy={cy}
             r={midR}
             fill="none"
-            stroke="var(--codex-border)"
+            stroke="var(--poli-border)"
             strokeWidth={strokeWidth}
             opacity={0.3}
           />
@@ -154,7 +154,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
             y={cy - 4}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="var(--codex-text)"
+            fill="var(--poli-text)"
             fontSize={size * 0.18}
             fontFamily="var(--font-sans, sans-serif)"
             fontWeight="400"
@@ -166,7 +166,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
             y={cy + size * 0.1}
             textAnchor="middle"
             dominantBaseline="middle"
-            fill="var(--codex-faint)"
+            fill="var(--poli-faint)"
             fontSize={size * 0.08}
             style={{ letterSpacing: '0.08em' }}
           >
@@ -177,7 +177,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
         {/* Hover tooltip */}
         {hoveredSegment && (
           <div
-            className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-2.5 py-1.5 shadow-lg"
+            className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-2.5 py-1.5 shadow-lg"
             role="tooltip"
           >
             <div className="flex items-center gap-1.5 whitespace-nowrap">
@@ -185,11 +185,11 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
                 className="h-2 w-2 rounded-full"
                 style={{ background: SEGMENTS.find((s) => s.key === hoveredSegment)?.color }}
               />
-              <span className="text-[11px] text-[var(--codex-text)]">
+              <span className="text-[11px] text-[var(--poli-text)]">
                 {SEGMENTS.find((s) => s.key === hoveredSegment)?.label}:{' '}
                 {collapsedRecord[hoveredSegment] ?? 0}
               </span>
-              <span className="text-[10px] text-[var(--codex-faint)]">
+              <span className="text-[10px] text-[var(--poli-faint)]">
                 ({Math.round(((collapsedRecord[hoveredSegment] ?? 0) / total) * 100)}%)
               </span>
             </div>
@@ -204,7 +204,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
           return (
             <div key={seg.key} className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full" style={{ background: seg.color }} />
-              <span className="text-[11px] text-[var(--codex-faint)]">
+              <span className="text-[11px] text-[var(--poli-faint)]">
                 {seg.label} ({val})
               </span>
             </div>

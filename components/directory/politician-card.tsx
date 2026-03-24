@@ -35,13 +35,13 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
   return (
     <Link
       href={`/politicians/${politician.slug}`}
-      className="touch-feedback group grid grid-cols-[48px_1fr_auto] items-center gap-3 border-b border-[var(--codex-border)] px-3 py-[14px] no-underline transition-all duration-300 sm:grid-cols-[56px_1fr_auto] sm:gap-4 sm:py-[18px] hover:bg-[var(--codex-hover)]"
+      className="touch-feedback group grid grid-cols-[48px_1fr_auto] items-center gap-3 border-b border-[var(--poli-border)] px-3 py-[14px] no-underline transition-all duration-300 sm:grid-cols-[56px_1fr_auto] sm:gap-4 sm:py-[18px] hover:bg-[var(--poli-hover)]"
     >
       {/* Avatar */}
       <div className="relative">
         <div
-          className="h-12 w-12 overflow-hidden rounded-lg bg-[var(--codex-card)] transition-colors sm:h-14 sm:w-14"
-          style={{ border: `2px solid var(--codex-border)` }}
+          className="h-12 w-12 overflow-hidden rounded-lg bg-[var(--poli-card)] transition-colors sm:h-14 sm:w-14"
+          style={{ border: `2px solid var(--poli-border)` }}
         >
           {politician.image_url ? (
             <Image
@@ -60,7 +60,7 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
           )}
         </div>
         {politician.image_url && (
-          <div className="absolute -bottom-0.5 -right-0.5 flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 border-[var(--codex-bg)] bg-[var(--codex-bg)] sm:h-[22px] sm:w-[22px]">
+          <div className="absolute -bottom-0.5 -right-0.5 flex h-[20px] w-[20px] items-center justify-center rounded-full border-2 border-[var(--poli-bg)] bg-[var(--poli-bg)] sm:h-[22px] sm:w-[22px]">
             <PartyIcon party={politician.party} size={11} />
           </div>
         )}
@@ -68,13 +68,13 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
 
       {/* Info */}
       <div className="min-w-0">
-        <div className="truncate text-[17px] font-semibold leading-tight text-[var(--codex-text)] transition-colors duration-200 group-hover:text-[var(--codex-sub)] sm:text-[19px]">
+        <div className="truncate text-[17px] font-semibold leading-tight text-[var(--poli-text)] transition-colors duration-200 group-hover:text-[var(--poli-sub)] sm:text-[19px]">
           {politician.name}
         </div>
-        <div className="mb-1 flex items-center gap-2 truncate text-[12px] text-[var(--codex-sub)] sm:mb-1.5 sm:text-[13px]">
+        <div className="mb-1 flex items-center gap-2 truncate text-[12px] text-[var(--poli-sub)] sm:mb-1.5 sm:text-[13px]">
           <span className="truncate">{politician.title} &middot; {politician.state}</span>
           {isAppointed && (
-            <span className="hidden shrink-0 rounded bg-[var(--codex-badge-bg)] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[var(--codex-faint)] sm:inline">
+            <span className="hidden shrink-0 rounded bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[var(--poli-faint)] sm:inline">
               Appointed
             </span>
           )}
@@ -84,7 +84,7 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
         {total > 0 && (
           <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Mini stance bar */}
-            <div className="flex h-[5px] w-16 overflow-hidden rounded-full bg-[var(--codex-border)] sm:h-[6px] sm:w-24">
+            <div className="flex h-[5px] w-16 overflow-hidden rounded-full bg-[var(--poli-border)] sm:h-[6px] sm:w-24">
               {stances!.supports > 0 && (
                 <div
                   style={{
@@ -113,15 +113,15 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
                 />
               )}
             </div>
-            <span className="hidden text-[11px] tabular-nums text-[var(--codex-faint)] sm:inline">
+            <span className="hidden text-[11px] tabular-nums text-[var(--poli-faint)] sm:inline">
               {total} issues
             </span>
             {alignment !== undefined && alignment >= 0 && (
               <>
-                <span className="hidden text-[var(--codex-faint)] sm:inline">·</span>
+                <span className="hidden text-[var(--poli-faint)] sm:inline">·</span>
                 <span
                   className="hidden text-[11px] tabular-nums sm:inline"
-                  style={{ color: alignment >= 80 ? color : 'var(--codex-faint)' }}
+                  style={{ color: alignment >= 80 ? color : 'var(--poli-faint)' }}
                 >
                   {alignment}% aligned
                 </span>
@@ -133,10 +133,10 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
 
       {/* Chamber + Arrow */}
       <div className="flex items-center gap-2 sm:gap-3">
-        <span className="hidden text-[12px] tracking-[0.05em] text-[var(--codex-faint)] sm:inline">
+        <span className="hidden text-[12px] tracking-[0.05em] text-[var(--poli-faint)] sm:inline">
           {CHAMBER_LABELS[politician.chamber as ChamberKey] ?? politician.chamber}
         </span>
-        <span className="text-lg text-[var(--codex-faint)] transition-all duration-200 group-hover:text-[var(--codex-sub)] sm:group-hover:translate-x-[3px]">
+        <span className="text-lg text-[var(--poli-faint)] transition-all duration-200 group-hover:text-[var(--poli-sub)] sm:group-hover:translate-x-[3px]">
           →
         </span>
       </div>

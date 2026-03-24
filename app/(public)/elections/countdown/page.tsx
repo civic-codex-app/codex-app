@@ -80,7 +80,7 @@ export default async function ElectionCountdownPage() {
         {/* Back link */}
         <Link
           href="/elections"
-          className="mb-6 inline-flex items-center gap-1 text-[13px] text-[var(--codex-sub)] hover:text-[var(--codex-text)]"
+          className="mb-6 inline-flex items-center gap-1 text-[13px] text-[var(--poli-sub)] hover:text-[var(--poli-text)]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -98,22 +98,22 @@ export default async function ElectionCountdownPage() {
         </Link>
 
         {/* Title */}
-        <h1 className="mb-2 text-3xl font-bold text-[var(--codex-text)]">
+        <h1 className="mb-2 text-3xl font-bold text-[var(--poli-text)]">
           Election Countdown
         </h1>
-        <p className="mb-8 text-sm text-[var(--codex-sub)]">
+        <p className="mb-8 text-sm text-[var(--poli-sub)]">
           {electionName} — track deadlines and key dates for your state.
         </p>
 
         {/* Countdown timer card */}
-        <div className="mb-10 rounded-md border border-[var(--codex-border)] p-6 text-center">
-          <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-faint)]">
+        <div className="mb-10 rounded-md border border-[var(--poli-border)] p-6 text-center">
+          <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-faint)]">
             Time remaining
           </div>
           <div className="flex justify-center">
             <ElectionCountdown electionDate={electionDate} />
           </div>
-          <div className="mt-3 text-[13px] text-[var(--codex-sub)]">
+          <div className="mt-3 text-[13px] text-[var(--poli-sub)]">
             {new Date(electionDate + 'T00:00:00').toLocaleDateString('en-US', {
               weekday: 'long',
               month: 'long',
@@ -139,7 +139,7 @@ export default async function ElectionCountdownPage() {
 
         {/* State date picker with timeline */}
         <div className="mb-10">
-          <h2 className="mb-4 text-xl font-bold text-[var(--codex-text)]">
+          <h2 className="mb-4 text-xl font-bold text-[var(--poli-text)]">
             Key Dates by State
           </h2>
           <StateDatePicker
@@ -150,8 +150,8 @@ export default async function ElectionCountdownPage() {
         </div>
 
         {/* Link to full elections */}
-        <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-hover)] p-4 text-center">
-          <p className="mb-2 text-sm text-[var(--codex-sub)]">
+        <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-hover)] p-4 text-center">
+          <p className="mb-2 text-sm text-[var(--poli-sub)]">
             Want to see all the races on the ballot?
           </p>
           <Link

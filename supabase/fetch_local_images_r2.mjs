@@ -47,7 +47,7 @@ for (let i = 0; i < all.length; i++) {
   for (const variant of variants) {
     try {
       const json = execSync(
-        `curl -s -H "User-Agent: CodexApp/1.0" "https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(variant)}"`,
+        `curl -s -H "User-Agent: PoliApp/1.0" "https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(variant)}"`,
         { timeout: 10000 }
       ).toString();
       const data = JSON.parse(json);
@@ -70,7 +70,7 @@ for (let i = 0; i < all.length; i++) {
   
   // Download image
   try {
-    const imgData = execSync(`curl -sL -H "User-Agent: CodexApp/1.0" "${imageUrl}" --max-time 15`, { 
+    const imgData = execSync(`curl -sL -H "User-Agent: PoliApp/1.0" "${imageUrl}" --max-time 15`, { 
       maxBuffer: 20 * 1024 * 1024,
       timeout: 20000 
     });

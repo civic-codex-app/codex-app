@@ -15,10 +15,10 @@ function ElectionColumn({ elections, name }: { elections: any[]; name: string })
   if (elections.length === 0) {
     return (
       <div>
-        <div className="mb-2 text-[12px] font-medium text-[var(--codex-text)]">
+        <div className="mb-2 text-[12px] font-medium text-[var(--poli-text)]">
           {name}
         </div>
-        <div className="rounded-md border border-[var(--codex-border)] px-4 py-6 text-center text-[12px] text-[var(--codex-faint)]">
+        <div className="rounded-md border border-[var(--poli-border)] px-4 py-6 text-center text-[12px] text-[var(--poli-faint)]">
           No election history on record
         </div>
       </div>
@@ -42,7 +42,7 @@ function ElectionColumn({ elections, name }: { elections: any[]; name: string })
 
   return (
     <div>
-      <div className="mb-2 text-[12px] font-medium text-[var(--codex-text)]">
+      <div className="mb-2 text-[12px] font-medium text-[var(--poli-text)]">
         {name}
       </div>
 
@@ -50,13 +50,13 @@ function ElectionColumn({ elections, name }: { elections: any[]; name: string })
       <div className="mb-3 flex items-center gap-3 text-[12px]">
         <span>
           <span className="text-green-400">{wins}W</span>
-          <span className="text-[var(--codex-faint)]"> - </span>
+          <span className="text-[var(--poli-faint)]"> - </span>
           <span className="text-red-400">{losses}L</span>
         </span>
         {avgPct !== null && (
           <>
-            <span className="text-[var(--codex-faint)]">|</span>
-            <span className="text-[var(--codex-sub)]">Avg {avgPct}%</span>
+            <span className="text-[var(--poli-faint)]">|</span>
+            <span className="text-[var(--poli-sub)]">Avg {avgPct}%</span>
           </>
         )}
       </div>
@@ -69,9 +69,9 @@ function ElectionColumn({ elections, name }: { elections: any[]; name: string })
           return (
             <div
               key={i}
-              className="flex items-center gap-2 rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[12px]"
+              className="flex items-center gap-2 rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[12px]"
             >
-              <span className="w-10 tabular-nums text-[var(--codex-sub)]">
+              <span className="w-10 tabular-nums text-[var(--poli-sub)]">
                 {e.election_year ?? '—'}
               </span>
               <span
@@ -81,7 +81,7 @@ function ElectionColumn({ elections, name }: { elections: any[]; name: string })
                 {e.result ?? '—'}
               </span>
               {e.vote_percentage != null && (
-                <span className="ml-auto tabular-nums text-[var(--codex-text)]">
+                <span className="ml-auto tabular-nums text-[var(--poli-text)]">
                   {e.vote_percentage}%
                 </span>
               )}
@@ -101,7 +101,7 @@ export function ElectionComparison({
 }: ElectionComparisonProps) {
   return (
     <div className="mb-8">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Election History
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">

@@ -53,7 +53,7 @@ export function FinanceHighlightCard({ records, label = 'Top Fundraisers' }: Pro
               href={`/politicians/${r.politician.slug}`}
               className="group flex items-center gap-3 no-underline"
             >
-              <span className="w-4 text-center text-[12px] font-bold text-[var(--codex-faint)]">
+              <span className="w-4 text-center text-[12px] font-bold text-[var(--poli-faint)]">
                 {i + 1}
               </span>
               <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
@@ -68,11 +68,11 @@ export function FinanceHighlightCard({ records, label = 'Top Fundraisers' }: Pro
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <PartyIcon party={r.politician.party} size={10} />
-                  <span className="truncate text-[13px] font-medium text-[var(--codex-text)] group-hover:text-blue-400">
+                  <span className="truncate text-[13px] font-medium text-[var(--poli-text)] group-hover:text-blue-400">
                     {r.politician.name}
                   </span>
                 </div>
-                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-[var(--codex-bg)]">
+                <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-[var(--poli-bg)]">
                   <div
                     className="h-full rounded-full transition-all"
                     style={{ width: `${pct}%`, backgroundColor: color }}

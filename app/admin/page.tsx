@@ -90,7 +90,7 @@ export default async function AdminOverviewPage() {
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">Admin Overview</h1>
-      <p className="mb-6 text-sm text-[var(--codex-sub)]">Manage your political directory data</p>
+      <p className="mb-6 text-sm text-[var(--poli-sub)]">Manage your political directory data</p>
 
       {/* Notifications */}
       {((newUserCount ?? 0) > 0 || (inboxNewCount ?? 0) > 0) && (
@@ -101,7 +101,7 @@ export default async function AdminOverviewPage() {
               className="flex items-center gap-2 rounded-lg border border-blue-500/20 bg-blue-500/5 px-4 py-3 text-sm no-underline transition-all hover:border-blue-500/40"
             >
               <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-blue-500 px-1.5 text-[11px] font-bold text-white">{newUserCount}</span>
-              <span className="text-[var(--codex-text)]">new user{(newUserCount ?? 0) !== 1 ? 's' : ''} registered today</span>
+              <span className="text-[var(--poli-text)]">new user{(newUserCount ?? 0) !== 1 ? 's' : ''} registered today</span>
             </Link>
           )}
           {(inboxNewCount ?? 0) > 0 && (
@@ -110,7 +110,7 @@ export default async function AdminOverviewPage() {
               className="flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-sm no-underline transition-all hover:border-amber-500/40"
             >
               <span className="flex h-6 min-w-[24px] items-center justify-center rounded-full bg-amber-500 px-1.5 text-[11px] font-bold text-white">{inboxNewCount}</span>
-              <span className="text-[var(--codex-text)]">unread submission{(inboxNewCount ?? 0) !== 1 ? 's' : ''}</span>
+              <span className="text-[var(--poli-text)]">unread submission{(inboxNewCount ?? 0) !== 1 ? 's' : ''}</span>
             </Link>
           )}
         </div>
@@ -122,19 +122,19 @@ export default async function AdminOverviewPage() {
           <Link
             key={s.label}
             href={s.href}
-            className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-colors hover:border-[var(--codex-text)]/20"
+            className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5 no-underline transition-colors hover:border-[var(--poli-text)]/20"
           >
-            <div className="mb-2 text-[11px] uppercase tracking-[0.1em] text-[var(--codex-sub)]">
+            <div className="mb-2 text-[11px] uppercase tracking-[0.1em] text-[var(--poli-sub)]">
               {s.label}
             </div>
-            <div className="text-3xl font-bold text-[var(--codex-text)]">{s.value}</div>
+            <div className="text-3xl font-bold text-[var(--poli-text)]">{s.value}</div>
           </Link>
         ))}
       </div>
 
       {/* Quick Actions */}
       <div className="mt-10">
-        <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
           Quick Actions
         </h2>
         <div className="flex flex-wrap gap-3">
@@ -142,7 +142,7 @@ export default async function AdminOverviewPage() {
             <Link
               key={action.href}
               href={action.href}
-              className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-4 py-2 text-sm text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+              className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-4 py-2 text-sm text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
             >
               + {action.label}
             </Link>
@@ -154,31 +154,31 @@ export default async function AdminOverviewPage() {
         {/* Recent Politicians */}
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
               Recently Added Officials
             </h2>
             <Link
               href="/admin/politicians"
-              className="text-[11px] text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+              className="text-[11px] text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
             >
               View all
             </Link>
           </div>
-          <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">
+          <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
             {(recentPoliticians ?? []).map((pol: any) => (
               <Link
                 key={pol.id}
                 href={`/admin/politicians/${pol.id}`}
-                className="flex items-center justify-between border-b border-[var(--codex-border)] px-4 py-3 text-sm no-underline transition-colors last:border-b-0 hover:bg-[var(--codex-hover)]"
+                className="flex items-center justify-between border-b border-[var(--poli-border)] px-4 py-3 text-sm no-underline transition-colors last:border-b-0 hover:bg-[var(--poli-hover)]"
               >
-                <span className="font-medium text-[var(--codex-text)]">{pol.name}</span>
-                <span className="text-[11px] text-[var(--codex-faint)]">
+                <span className="font-medium text-[var(--poli-text)]">{pol.name}</span>
+                <span className="text-[11px] text-[var(--poli-faint)]">
                   {pol.state} &middot; {pol.chamber}
                 </span>
               </Link>
             ))}
             {(recentPoliticians ?? []).length === 0 && (
-              <div className="px-4 py-6 text-center text-sm text-[var(--codex-faint)]">
+              <div className="px-4 py-6 text-center text-sm text-[var(--poli-faint)]">
                 No politicians yet
               </div>
             )}
@@ -188,31 +188,31 @@ export default async function AdminOverviewPage() {
         {/* Active Polls */}
         <div>
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
               Active Polls
             </h2>
             <Link
               href="/admin/polls"
-              className="text-[11px] text-[var(--codex-faint)] hover:text-[var(--codex-text)]"
+              className="text-[11px] text-[var(--poli-faint)] hover:text-[var(--poli-text)]"
             >
               View all
             </Link>
           </div>
-          <div className="overflow-hidden rounded-md border border-[var(--codex-border)]">
+          <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
             {(activePolls ?? []).map((poll: any) => (
               <Link
                 key={poll.id}
                 href={`/admin/polls/${poll.id}`}
-                className="flex items-center justify-between border-b border-[var(--codex-border)] px-4 py-3 text-sm no-underline transition-colors last:border-b-0 hover:bg-[var(--codex-hover)]"
+                className="flex items-center justify-between border-b border-[var(--poli-border)] px-4 py-3 text-sm no-underline transition-colors last:border-b-0 hover:bg-[var(--poli-hover)]"
               >
-                <span className="font-medium text-[var(--codex-text)]">{poll.title}</span>
-                <span className="text-[11px] text-[var(--codex-faint)]">
+                <span className="font-medium text-[var(--poli-text)]">{poll.title}</span>
+                <span className="text-[11px] text-[var(--poli-faint)]">
                   {(poll.poll_votes as any[])?.length ?? 0} votes
                 </span>
               </Link>
             ))}
             {(activePolls ?? []).length === 0 && (
-              <div className="px-4 py-6 text-center text-sm text-[var(--codex-faint)]">
+              <div className="px-4 py-6 text-center text-sm text-[var(--poli-faint)]">
                 No active polls
               </div>
             )}

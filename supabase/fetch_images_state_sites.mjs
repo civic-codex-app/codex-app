@@ -23,7 +23,7 @@ const R2 = new S3Client({
 const PUBLIC_URL = vars.R2_PUBLIC_URL;
 const BUCKET = vars.R2_BUCKET_NAME;
 
-const UA = 'CodexApp/1.0 (civic-engagement-platform)';
+const UA = 'PoliApp/1.0 (civic-engagement-platform)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // ---------------------------------------------------------------------------

@@ -35,10 +35,10 @@ export default function ForgotPasswordPage() {
     return (
       <div className="text-center">
         <h1 className="mb-4 text-3xl font-bold">Check your email</h1>
-        <p className="mb-8 text-sm text-[var(--codex-sub)]">
+        <p className="mb-8 text-sm text-[var(--poli-sub)]">
           We sent a password reset link to {email}
         </p>
-        <Link href="/login" className="text-sm text-[var(--codex-sub)] hover:text-[var(--codex-text)]">
+        <Link href="/login" className="text-sm text-[var(--poli-sub)] hover:text-[var(--poli-text)]">
           ← Back to sign in
         </Link>
       </div>
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="mb-8 text-center">
         <h1 className="mb-2 text-3xl font-bold">Reset password</h1>
-        <p className="text-sm text-[var(--codex-sub)]">
+        <p className="text-sm text-[var(--poli-sub)]">
           Enter your email to receive a reset link
         </p>
       </div>
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
       )}
 
       <div>
-        <label htmlFor="forgot-email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="forgot-email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--poli-sub)]">
           Email
         </label>
         <input
@@ -70,7 +70,7 @@ export default function ForgotPasswordPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full border border-[var(--codex-input-border)] bg-[var(--codex-input-bg)] px-4 py-3 text-sm text-[var(--codex-text)] outline-none focus:border-[var(--codex-input-focus)]"
+          className="w-full border border-[var(--poli-input-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-sm text-[var(--poli-text)] outline-none focus:border-[var(--poli-input-focus)]"
         />
       </div>
 
@@ -78,8 +78,8 @@ export default function ForgotPasswordPage() {
         {loading ? 'Sending...' : 'Send reset link'}
       </Button>
 
-      <div className="text-center text-xs text-[var(--codex-sub)]">
-        <Link href="/login" className="hover:text-[var(--codex-text)]">
+      <div className="text-center text-xs text-[var(--poli-sub)]">
+        <Link href="/login" className="hover:text-[var(--poli-text)]">
           ← Back to sign in
         </Link>
       </div>

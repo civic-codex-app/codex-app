@@ -133,17 +133,17 @@ export function Header() {
 
   return (
     <header
-      className="sticky z-40 border-b border-[var(--codex-border)] bg-[var(--codex-bg)]"
+      className="sticky z-40 border-b border-[var(--poli-border)] bg-[var(--poli-bg)]"
       style={{ top: 'env(safe-area-inset-top, 0px)' }}
     >
       {/* Fixed background behind iOS status bar */}
       <div
-        className="fixed left-0 right-0 top-0 -z-10 bg-[var(--codex-bg)]"
+        className="fixed left-0 right-0 top-0 -z-10 bg-[var(--poli-bg)]"
         style={{ height: 'env(safe-area-inset-top, 0px)' }}
       />
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded-md focus:bg-[var(--codex-card)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--codex-text)] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--codex-input-focus)]"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:rounded-md focus:bg-[var(--poli-card)] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[var(--poli-text)] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[var(--poli-input-focus)]"
       >
         Skip to main content
       </a>
@@ -167,8 +167,8 @@ export function Header() {
                     <button
                       type="button"
                       onClick={() => toggleDropdown(item.label)}
-                      className={`flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium no-underline transition-colors hover:text-[var(--codex-text)] ${
-                        active ? 'text-[var(--codex-text)] underline underline-offset-4 decoration-[var(--codex-text)]' : 'text-[var(--codex-sub)]'
+                      className={`flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium no-underline transition-colors hover:text-[var(--poli-text)] ${
+                        active ? 'text-[var(--poli-text)] underline underline-offset-4 decoration-[var(--poli-text)]' : 'text-[var(--poli-sub)]'
                       }`}
                       style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                       aria-expanded={isOpen}
@@ -192,8 +192,8 @@ export function Header() {
                   ) : (
                     <Link
                       href={item.href}
-                      className={`rounded-md px-3 py-1.5 text-sm font-medium no-underline transition-colors hover:text-[var(--codex-text)] ${
-                        active ? 'text-[var(--codex-text)] underline underline-offset-4 decoration-[var(--codex-text)]' : 'text-[var(--codex-sub)]'
+                      className={`rounded-md px-3 py-1.5 text-sm font-medium no-underline transition-colors hover:text-[var(--poli-text)] ${
+                        active ? 'text-[var(--poli-text)] underline underline-offset-4 decoration-[var(--poli-text)]' : 'text-[var(--poli-sub)]'
                       }`}
                       aria-current={active ? 'page' : undefined}
                     >
@@ -203,13 +203,13 @@ export function Header() {
 
                   {/* Dropdown */}
                   {hasDropdown && isOpen && (
-                    <div className="absolute left-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] py-1 shadow-lg">
+                    <div className="absolute left-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1 shadow-lg">
                       {item.dropdown!.map((dropItem) => (
                         <Link
                           key={dropItem.href}
                           href={dropItem.href}
-                          className={`block px-4 py-2 text-sm no-underline transition-colors hover:bg-[var(--codex-hover)] ${
-                            pathname === dropItem.href ? 'font-medium text-[var(--codex-text)]' : 'text-[var(--codex-sub)]'
+                          className={`block px-4 py-2 text-sm no-underline transition-colors hover:bg-[var(--poli-hover)] ${
+                            pathname === dropItem.href ? 'font-medium text-[var(--poli-text)]' : 'text-[var(--poli-sub)]'
                           }`}
                         >
                           {dropItem.label}
@@ -228,7 +228,7 @@ export function Header() {
           {/* Search icon link */}
           <Link
             href="/"
-            className="hidden text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)] sm:block"
+            className="hidden text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)] sm:block"
             aria-label="Search"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -249,7 +249,7 @@ export function Header() {
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
-                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--codex-border)] transition-colors hover:border-[var(--codex-text)]">
+                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)] transition-colors hover:border-[var(--poli-text)]">
                   {profile?.avatar_url ? (
                     <Image
                       src={profile.avatar_url}
@@ -260,8 +260,8 @@ export function Header() {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-[var(--codex-badge-bg)]">
-                      <span className="text-xs font-semibold text-[var(--codex-sub)]">{userInitial}</span>
+                    <div className="flex h-full w-full items-center justify-center bg-[var(--poli-badge-bg)]">
+                      <span className="text-xs font-semibold text-[var(--poli-sub)]">{userInitial}</span>
                     </div>
                   )}
                 </div>
@@ -269,23 +269,23 @@ export function Header() {
 
               {/* User dropdown */}
               {userMenuOpen && (
-                <div className="absolute right-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] py-1 shadow-lg">
+                <div className="absolute right-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1 shadow-lg">
                   {USER_MENU_ITEMS.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`block px-4 py-2 text-sm no-underline transition-colors hover:bg-[var(--codex-hover)] ${
-                        pathname === item.href ? 'font-medium text-[var(--codex-text)]' : 'text-[var(--codex-sub)]'
+                      className={`block px-4 py-2 text-sm no-underline transition-colors hover:bg-[var(--poli-hover)] ${
+                        pathname === item.href ? 'font-medium text-[var(--poli-text)]' : 'text-[var(--poli-sub)]'
                       }`}
                     >
                       {item.label}
                     </Link>
                   ))}
-                  <div className="border-t border-[var(--codex-border)] my-1" />
+                  <div className="border-t border-[var(--poli-border)] my-1" />
                   <button
                     type="button"
                     onClick={handleSignOut}
-                    className="block w-full px-4 py-2 text-left text-sm text-red-500 transition-colors hover:bg-[var(--codex-hover)]"
+                    className="block w-full px-4 py-2 text-left text-sm text-red-500 transition-colors hover:bg-[var(--poli-hover)]"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                   >
                     Sign Out
@@ -296,7 +296,7 @@ export function Header() {
           ) : (
             <Link
               href="/login"
-              className="hidden text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:text-[var(--codex-text)] sm:inline"
+              className="hidden text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:text-[var(--poli-text)] sm:inline"
             >
               Sign In
             </Link>

@@ -111,16 +111,16 @@ export function CompareView({
 
       {/* Agreement meter */}
       {total > 0 && (
-        <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
+        <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-semibold text-[var(--codex-sub)]">
+            <span className="text-sm font-semibold text-[var(--poli-sub)]">
               Issue Agreement
             </span>
             <span className="text-xl font-semibold">
               {agreePct}%
             </span>
           </div>
-          <div className="mb-2 flex h-3 overflow-hidden rounded-full bg-[var(--codex-border)]">
+          <div className="mb-2 flex h-3 overflow-hidden rounded-full bg-[var(--poli-border)]">
             <div
               className="rounded-l-full transition-all"
               style={{
@@ -154,9 +154,9 @@ export function CompareView({
 
       {/* No comparable stances */}
       {comparableIssues.length === 0 && (
-        <div className="mb-8 rounded-md border border-[var(--codex-border)] px-6 py-10 text-center">
-          <div className="mb-2 text-lg font-semibold text-[var(--codex-faint)]">No stance data to compare</div>
-          <p className="text-[13px] text-[var(--codex-faint)]">
+        <div className="mb-8 rounded-md border border-[var(--poli-border)] px-6 py-10 text-center">
+          <div className="mb-2 text-lg font-semibold text-[var(--poli-faint)]">No stance data to compare</div>
+          <p className="text-[13px] text-[var(--poli-faint)]">
             Neither official has verified stances on record yet.
           </p>
         </div>
@@ -177,14 +177,14 @@ export function CompareView({
       {/* Shared committees */}
       {sharedCommittees.length > 0 && (
         <div className="mb-8">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
             Shared Committees
           </h2>
           <div className="grid gap-2">
             {sharedCommittees.map((cm: any, i: number) => (
               <div
                 key={i}
-                className="rounded-md border border-[var(--codex-border)] px-4 py-2.5 text-[13px] text-[var(--codex-text)]"
+                className="rounded-md border border-[var(--poli-border)] px-4 py-2.5 text-[13px] text-[var(--poli-text)]"
               >
                 {cm.committees?.name}
               </div>
@@ -215,7 +215,7 @@ function ProfileCard({
   const total = supports + opposes + mixed
 
   return (
-    <div className="rounded-md border border-[var(--codex-border)] p-4 sm:p-5">
+    <div className="rounded-md border border-[var(--poli-border)] p-4 sm:p-5">
       <div className="mb-4 h-1 w-full rounded-full" style={{ background: `${color}44` }}>
         <div
           className="h-full rounded-full"
@@ -225,7 +225,7 @@ function ProfileCard({
 
       <div className="mb-3 flex items-center gap-3">
         <div
-          className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)] sm:h-14 sm:w-14"
+          className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--poli-card)] sm:h-14 sm:w-14"
           style={{ border: `2px solid ${color}66` }}
         >
           <AvatarImage
@@ -244,11 +244,11 @@ function ProfileCard({
           >
             {pol.name}
           </Link>
-          <div className="flex flex-wrap items-center gap-1 text-[11px] text-[var(--codex-sub)] sm:gap-1.5">
+          <div className="flex flex-wrap items-center gap-1 text-[11px] text-[var(--poli-sub)] sm:gap-1.5">
             <PartyIcon party={pol.party} size={10} />
-            <span className="text-[var(--codex-faint)]">·</span>
+            <span className="text-[var(--poli-faint)]">·</span>
             <span>{pol.state}</span>
-            <span className="hidden text-[var(--codex-faint)] sm:inline">·</span>
+            <span className="hidden text-[var(--poli-faint)] sm:inline">·</span>
             <span className="hidden sm:inline">{CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber}</span>
           </div>
         </div>
@@ -256,7 +256,7 @@ function ProfileCard({
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <div>
-          <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+          <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">
             Alignment
           </div>
           {alignment >= 0 ? (
@@ -264,29 +264,29 @@ function ProfileCard({
               {alignment}%
             </div>
           ) : (
-            <div className="text-lg font-semibold text-[var(--codex-faint)]">—</div>
+            <div className="text-lg font-semibold text-[var(--poli-faint)]">—</div>
           )}
         </div>
 
         <div>
-          <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+          <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">
             Stances
           </div>
           {total > 0 ? (
             <div className="flex items-center gap-1">
               <span className="text-[12px] tabular-nums text-blue-400">{supports}</span>
-              <span className="text-[11px] text-[var(--codex-faint)]">/</span>
+              <span className="text-[11px] text-[var(--poli-faint)]">/</span>
               <span className="text-[12px] tabular-nums text-purple-400">{mixed}</span>
-              <span className="text-[11px] text-[var(--codex-faint)]">/</span>
+              <span className="text-[11px] text-[var(--poli-faint)]">/</span>
               <span className="text-[12px] tabular-nums text-red-400">{opposes}</span>
             </div>
           ) : (
-            <div className="text-lg font-semibold text-[var(--codex-faint)]">—</div>
+            <div className="text-lg font-semibold text-[var(--poli-faint)]">—</div>
           )}
         </div>
 
         <div className="hidden sm:block">
-          <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+          <div className="mb-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">
             Type
           </div>
           {meta ? (
@@ -297,13 +297,13 @@ function ProfileCard({
               {meta.label}
             </span>
           ) : (
-            <div className="text-[var(--codex-faint)]">—</div>
+            <div className="text-[var(--poli-faint)]">—</div>
           )}
         </div>
       </div>
 
       {total > 0 && (
-        <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
+        <div className="mt-3 flex h-1.5 overflow-hidden rounded-full bg-[var(--poli-border)]">
           {supports > 0 && (
             <div style={{ width: `${(supports / total) * 100}%`, background: '#3B82F6', opacity: 0.6 }} />
           )}

@@ -39,16 +39,16 @@ export function PartyFilter() {
           role="radio"
           aria-checked={current === p.key}
           className={cn(
-            'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+            'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
             current === p.key
-              ? 'text-[var(--codex-text)]'
-              : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)]'
+              ? 'text-[var(--poli-text)]'
+              : 'text-[var(--poli-faint)] hover:text-[var(--poli-sub)]'
           )}
           style={
             current === p.key && p.color
               ? { background: `${p.color}18`, border: `1px solid ${p.color}33` }
               : current === p.key
-                ? { background: 'var(--codex-badge-bg)', border: '1px solid var(--codex-border)' }
+                ? { background: 'var(--poli-badge-bg)', border: '1px solid var(--poli-border)' }
                 : { background: 'transparent', border: '1px solid transparent' }
           }
         >

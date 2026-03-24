@@ -19,7 +19,7 @@ export function StreakWidget({ initialStreak, longestStreak }: StreakWidgetProps
     if (hasLoggedRef.current) return
     hasLoggedRef.current = true
 
-    const sessionKey = 'codex-engagement-logged'
+    const sessionKey = 'poli-engagement-logged'
     if (sessionStorage.getItem(sessionKey)) return
     sessionStorage.setItem(sessionKey, '1')
 
@@ -67,22 +67,22 @@ export function StreakWidget({ initialStreak, longestStreak }: StreakWidgetProps
   }, [streak])
 
   return (
-    <div className="rounded-lg border border-[var(--codex-border)] p-5 transition-all hover:border-[var(--codex-text)] hover:shadow-md">
+    <div className="rounded-lg border border-[var(--poli-border)] p-5 transition-all hover:border-[var(--poli-text)] hover:shadow-md">
       <div className="flex items-center gap-3">
         <div
           className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
           style={{
             background: streak > 0
               ? 'linear-gradient(135deg, rgba(251,146,60,0.15), rgba(239,68,68,0.15))'
-              : 'var(--codex-hover)',
+              : 'var(--poli-hover)',
           }}
         >
-          <FlameIcon size={24} className={streak > 0 ? 'text-orange-400' : 'text-[var(--codex-faint)]'} />
+          <FlameIcon size={24} className={streak > 0 ? 'text-orange-400' : 'text-[var(--poli-faint)]'} />
         </div>
         <div>
           <div className="flex items-baseline gap-1.5">
             <span
-              className="text-3xl font-bold tabular-nums text-[var(--codex-text)]"
+              className="text-3xl font-bold tabular-nums text-[var(--poli-text)]"
               style={{
                 transition: 'transform 0.2s ease',
                 display: 'inline-block',
@@ -90,11 +90,11 @@ export function StreakWidget({ initialStreak, longestStreak }: StreakWidgetProps
             >
               {displayNumber}
             </span>
-            <span className="text-[13px] font-medium text-[var(--codex-sub)]">
+            <span className="text-[13px] font-medium text-[var(--poli-sub)]">
               day streak
             </span>
           </div>
-          <p className="mt-0.5 text-[12px] text-[var(--codex-faint)]">
+          <p className="mt-0.5 text-[12px] text-[var(--poli-faint)]">
             {best > 0 ? `Best: ${best} days` : 'Start your streak today'}
           </p>
         </div>
@@ -112,11 +112,11 @@ export function StreakWidget({ initialStreak, longestStreak }: StreakWidgetProps
                     background:
                       streak >= milestone
                         ? 'linear-gradient(90deg, #F97316, #EF4444)'
-                        : 'var(--codex-border)',
+                        : 'var(--poli-border)',
                     opacity: streak >= milestone ? 1 : 0.4,
                   }}
                 />
-                <p className="mt-1 text-center text-[10px] text-[var(--codex-faint)]">
+                <p className="mt-1 text-center text-[10px] text-[var(--poli-faint)]">
                   {milestone}d
                 </p>
               </div>

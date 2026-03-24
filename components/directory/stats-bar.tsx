@@ -29,10 +29,10 @@ export function StatsBar({ politicians }: StatsBarProps) {
   ]
 
   return (
-    <div className="mb-12 grid animate-fade-up grid-cols-2 gap-px bg-[var(--codex-border)] md:grid-cols-4">
+    <div className="mb-12 grid animate-fade-up grid-cols-2 gap-px bg-[var(--poli-border)] md:grid-cols-4">
       {stats.map((s) => (
-        <div key={s.label} className="bg-[var(--codex-card)] p-5 transition-colors">
-          <div className="mb-2.5 flex items-center gap-2 text-[12px] uppercase tracking-[0.1em] text-[var(--codex-sub)]">
+        <div key={s.label} className="bg-[var(--poli-card)] p-5 transition-colors">
+          <div className="mb-2.5 flex items-center gap-2 text-[12px] uppercase tracking-[0.1em] text-[var(--poli-sub)]">
             {s.icon}
             {s.label}
           </div>

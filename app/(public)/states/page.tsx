@@ -67,7 +67,7 @@ export default async function StatesIndexPage() {
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           States
         </h1>
-        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
           Browse elected officials, campaign finance, and upcoming races by state.
         </p>
 
@@ -87,7 +87,7 @@ export default async function StatesIndexPage() {
               <Link
                 key={abbr}
                 href={`/states/${abbr.toLowerCase()}`}
-                className="group flex flex-col gap-2.5 rounded-lg border border-[var(--codex-border)] p-3 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                className="group flex flex-col gap-2.5 rounded-lg border border-[var(--poli-border)] p-3 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
               >
                 <div className="flex items-center gap-2.5">
                   <Image
@@ -99,10 +99,10 @@ export default async function StatesIndexPage() {
                     unoptimized
                   />
                   <div className="min-w-0">
-                    <div className="truncate text-[14px] font-medium text-[var(--codex-text)]">
+                    <div className="truncate text-[14px] font-medium text-[var(--poli-text)]">
                       {name}
                     </div>
-                    <div className="text-[11px] text-[var(--codex-faint)]">
+                    <div className="text-[11px] text-[var(--poli-faint)]">
                       {federal} federal{local > 0 && <> · {local} local</>}
                       {races > 0 && <> · {races} race{races !== 1 ? 's' : ''}</>}
                     </div>

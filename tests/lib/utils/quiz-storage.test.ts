@@ -40,7 +40,7 @@ describe('quiz answers (localStorage)', () => {
   })
 
   it('handles JSON parse errors gracefully', () => {
-    store['codex_quiz_answers'] = '{invalid json'
+    store['poli_quiz_answers'] = '{invalid json'
     expect(loadQuizAnswers()).toEqual({})
   })
 })
@@ -72,7 +72,7 @@ describe('quiz results (localStorage)', () => {
   })
 
   it('returns null for expired results (>24h)', () => {
-    store['codex_quiz_results'] = JSON.stringify({
+    store['poli_quiz_results'] = JSON.stringify({
       results: [],
       stateResults: [],
       savedAt: Date.now() - 25 * 60 * 60 * 1000, // 25 hours ago
@@ -81,7 +81,7 @@ describe('quiz results (localStorage)', () => {
   })
 
   it('returns results within 24h window', () => {
-    store['codex_quiz_results'] = JSON.stringify({
+    store['poli_quiz_results'] = JSON.stringify({
       results: [{ name: 'test' }],
       stateResults: [],
       savedAt: Date.now() - 23 * 60 * 60 * 1000, // 23 hours ago

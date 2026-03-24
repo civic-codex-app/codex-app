@@ -34,10 +34,10 @@ export function IssueCategoryFilter({ categories, labels }: IssueCategoryFilterP
         role="radio"
         aria-checked={!current}
         className={cn(
-          'shrink-0 whitespace-nowrap rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+          'shrink-0 whitespace-nowrap rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
           !current
-            ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)] border-[var(--codex-border)]'
-            : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)] border-transparent'
+            ? 'bg-[var(--poli-badge-bg)] text-[var(--poli-text)] border-[var(--poli-border)]'
+            : 'text-[var(--poli-faint)] hover:text-[var(--poli-sub)] border-transparent'
         )}
       >
         All
@@ -49,10 +49,10 @@ export function IssueCategoryFilter({ categories, labels }: IssueCategoryFilterP
           role="radio"
           aria-checked={current === cat}
           className={cn(
-            'shrink-0 whitespace-nowrap rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+            'shrink-0 whitespace-nowrap rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
             current === cat
-              ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)] border-[var(--codex-border)]'
-              : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)] border-transparent'
+              ? 'bg-[var(--poli-badge-bg)] text-[var(--poli-text)] border-[var(--poli-border)]'
+              : 'text-[var(--poli-faint)] hover:text-[var(--poli-sub)] border-transparent'
           )}
         >
           {labels[cat] ?? cat}

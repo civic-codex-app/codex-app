@@ -8,33 +8,33 @@ export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } 
   const { mode, toggle } = useThemeStore()
 
   return (
-    <footer className="mt-10 border-t border-[var(--codex-border)] py-10 max-sm:hidden">
+    <footer className="mt-10 border-t border-[var(--poli-border)] py-10 max-sm:hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <DonkeyIcon size={12} color="var(--codex-faint)" />
-          <ElephantIcon size={12} color="var(--codex-faint)" />
-          <GreenDiamond size={12} color="var(--codex-faint)" />
+          <DonkeyIcon size={12} color="var(--poli-faint)" />
+          <ElephantIcon size={12} color="var(--poli-faint)" />
+          <GreenDiamond size={12} color="var(--poli-faint)" />
         </div>
         <div className="flex items-center gap-4">
           {!hideDisclaimer && (
             <>
-              <Link href="/data-sources" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+              <Link href="/data-sources" className="text-[12px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-sub)]">
                 Data Sources
               </Link>
-              <Link href="/contact" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+              <Link href="/contact" className="text-[12px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-sub)]">
                 Contact
               </Link>
-              <Link href="/privacy" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+              <Link href="/privacy" className="text-[12px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-sub)]">
                 Privacy
               </Link>
-              <Link href="/terms" className="text-[12px] text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]">
+              <Link href="/terms" className="text-[12px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-sub)]">
                 Terms
               </Link>
             </>
           )}
           <button
             onClick={toggle}
-            className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--codex-faint)] transition-colors hover:text-[var(--codex-sub)]"
+            className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-sub)]"
             aria-label={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}
             title={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}
           >
@@ -59,10 +59,10 @@ export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } 
         </div>
       </div>
       {!hideDisclaimer && (
-        <p className="mt-4 text-[11px] leading-relaxed text-[var(--codex-faint)]">
+        <p className="mt-4 text-[11px] leading-relaxed text-[var(--poli-faint)]">
           Poli is currently in beta. We are an independent civic education platform, not affiliated with any political party, campaign, or government agency.
           All data is compiled from public sources and may contain errors.{' '}
-          <Link href="/data-sources" className="underline hover:text-[var(--codex-sub)]">
+          <Link href="/data-sources" className="underline hover:text-[var(--poli-sub)]">
             View our full data sources and disclaimer.
           </Link>
         </p>

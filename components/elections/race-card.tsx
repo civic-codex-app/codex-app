@@ -51,20 +51,20 @@ export function RaceCard({ race }: RaceCardProps) {
   return (
     <Link
       href={`/elections/${race.slug}`}
-      className="group block rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      className="group block rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5 no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
     >
 
       <div className="mb-2 flex items-center gap-2">
-        <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+        <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
           {chamberLabel}
         </span>
-        <span className="text-[11px] font-medium text-[var(--codex-faint)]">
+        <span className="text-[11px] font-medium text-[var(--poli-faint)]">
           {race.state}
           {race.district ? ` - District ${race.district}` : ''}
         </span>
       </div>
 
-      <h3 className="mb-3 text-lg font-semibold transition-colors group-hover:text-[var(--codex-text)]">
+      <h3 className="mb-3 text-lg font-semibold transition-colors group-hover:text-[var(--poli-text)]">
         {race.name}
       </h3>
 
@@ -75,7 +75,7 @@ export function RaceCard({ race }: RaceCardProps) {
             {candidates.slice(0, 5).map((c) => (
               <div
                 key={c.id}
-                className="h-7 w-7 overflow-hidden rounded-lg bg-[var(--codex-bg)]"
+                className="h-7 w-7 overflow-hidden rounded-lg bg-[var(--poli-bg)]"
                 style={{ border: `2px solid ${partyColor(c.party)}44` }}
                 title={`${c.name} (${partyLabel(c.party)})`}
               >
@@ -98,8 +98,8 @@ export function RaceCard({ race }: RaceCardProps) {
               </div>
             ))}
             {candidates.length > 5 && (
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--codex-badge-bg)] text-[9px] text-[var(--codex-faint)]"
-                style={{ border: '2px solid var(--codex-border)' }}
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--poli-badge-bg)] text-[9px] text-[var(--poli-faint)]"
+                style={{ border: '2px solid var(--poli-border)' }}
               >
                 +{candidates.length - 5}
               </div>
@@ -115,21 +115,21 @@ export function RaceCard({ race }: RaceCardProps) {
       )}
 
       {race.description && (
-        <p className="mb-3 line-clamp-2 text-[12px] leading-[1.6] text-[var(--codex-sub)]">
+        <p className="mb-3 line-clamp-2 text-[12px] leading-[1.6] text-[var(--poli-sub)]">
           {race.description}
         </p>
       )}
 
       <div className="flex items-center justify-between">
-        <div className="text-[11px] text-[var(--codex-faint)]">
+        <div className="text-[11px] text-[var(--poli-faint)]">
           {challengers.length > 0
             ? `${challengers.length} challenger${challengers.length !== 1 ? 's' : ''}`
             : 'No challengers yet'}
         </div>
         {incumbent && (
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] text-[var(--codex-faint)]">Incumbent:</span>
-            <span className="text-[11px] font-medium text-[var(--codex-sub)]">{incumbent.name}</span>
+            <span className="text-[11px] text-[var(--poli-faint)]">Incumbent:</span>
+            <span className="text-[11px] font-medium text-[var(--poli-sub)]">{incumbent.name}</span>
           </div>
         )}
       </div>

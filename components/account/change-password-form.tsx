@@ -43,7 +43,7 @@ export function ChangePasswordForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border border-[var(--codex-border)] p-6">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-md border border-[var(--poli-border)] p-6">
       {error && (
         <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm text-red-400" role="alert">{error}</div>
       )}

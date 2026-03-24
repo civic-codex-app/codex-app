@@ -40,10 +40,10 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
 
   const getFill = (code: string) => {
     const data = stateData[code]
-    if (!data) return 'var(--codex-hover)'
+    if (!data) return 'var(--poli-hover)'
     if (data.color) return data.color
     if (colorScale) return colorScale(data.value)
-    return 'var(--codex-hover)'
+    return 'var(--poli-hover)'
   }
 
   return (
@@ -67,7 +67,7 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
               <path
                 d={d}
                 fill={getFill(code)}
-                stroke="var(--codex-border)"
+                stroke="var(--poli-border)"
                 strokeWidth={isHovered ? 1.2 : 0.5}
                 opacity={hovered && !isHovered ? 0.6 : 1}
                 className="cursor-pointer transition-opacity duration-150"
@@ -92,17 +92,17 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
       {/* Tooltip — follows mouse on desktop, fixed bar on mobile */}
       {hovered && tooltipPos && (
         <div
-          className="pointer-events-none absolute z-10 hidden rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-3 py-1.5 shadow-lg sm:block"
+          className="pointer-events-none absolute z-10 hidden rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-3 py-1.5 shadow-lg sm:block"
           style={{
             left: tooltipPos.x + 12,
             top: tooltipPos.y - 30,
           }}
         >
-          <div className="text-[12px] font-medium text-[var(--codex-text)]">
+          <div className="text-[12px] font-medium text-[var(--poli-text)]">
             {STATE_NAMES[hovered] ?? hovered}
           </div>
           {stateData[hovered]?.label && (
-            <div className="text-[11px] text-[var(--codex-sub)]">
+            <div className="text-[11px] text-[var(--poli-sub)]">
               {stateData[hovered].label}
             </div>
           )}
@@ -111,22 +111,22 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
 
       {/* Mobile info bar — tap a state to see details */}
       {hovered && (
-        <div className="mt-2 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] px-3 py-2 text-center sm:hidden">
-          <span className="text-[13px] font-medium text-[var(--codex-text)]">{STATE_NAMES[hovered] ?? hovered}</span>
+        <div className="mt-2 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-3 py-2 text-center sm:hidden">
+          <span className="text-[13px] font-medium text-[var(--poli-text)]">{STATE_NAMES[hovered] ?? hovered}</span>
           {stateData[hovered]?.label && (
-            <span className="ml-2 text-[12px] text-[var(--codex-sub)]">{stateData[hovered].label}</span>
+            <span className="ml-2 text-[12px] text-[var(--poli-sub)]">{stateData[hovered].label}</span>
           )}
         </div>
       )}
       {!hovered && (
-        <p className="mt-2 text-center text-[11px] text-[var(--codex-faint)] sm:hidden">
+        <p className="mt-2 text-center text-[11px] text-[var(--poli-faint)] sm:hidden">
           Tap a state to see details
         </p>
       )}
 
       {/* Legend */}
       {legend && legend.length > 0 && (
-        <div className="mt-3 flex flex-wrap items-center justify-center gap-4 text-[11px] text-[var(--codex-sub)]">
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-4 text-[11px] text-[var(--poli-sub)]">
           {legend.map((item) => (
             <div key={item.label} className="flex items-center gap-1.5">
               <span

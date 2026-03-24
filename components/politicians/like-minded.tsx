@@ -22,8 +22,8 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
   if (politicians.length === 0) return null
 
   return (
-    <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
+      <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Like-Minded Officials
       </h2>
       <div className="grid gap-2">
@@ -33,11 +33,11 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
             <Link
               key={p.id}
               href={`/politicians/${p.slug}`}
-              className="group flex items-center gap-3 rounded-md border border-[var(--codex-border)] px-4 py-2.5 no-underline transition-all hover:border-[var(--codex-input-border)]"
+              className="group flex items-center gap-3 rounded-md border border-[var(--poli-border)] px-4 py-2.5 no-underline transition-all hover:border-[var(--poli-input-border)]"
             >
               {/* Avatar */}
               <div
-                className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]"
+                className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--poli-card)]"
                 style={{ border: `1.5px solid ${color}44` }}
               >
                 <AvatarImage
@@ -52,12 +52,12 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
               {/* Info */}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <span className="truncate text-[13px] font-medium transition-colors group-hover:text-[var(--codex-text)]">
+                  <span className="truncate text-[13px] font-medium transition-colors group-hover:text-[var(--poli-text)]">
                     {p.name}
                   </span>
                   <PartyIcon party={p.party} size={10} />
                 </div>
-                <div className="text-[11px] text-[var(--codex-faint)]">
+                <div className="text-[11px] text-[var(--poli-faint)]">
                   {p.state} · {p.chamber === 'senate' ? 'Senate' : p.chamber === 'house' ? 'House' : p.chamber === 'governor' ? 'Governor' : p.chamber}
                 </div>
               </div>
@@ -69,7 +69,7 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
                 }`}>
                   {p.overlap}% match
                 </span>
-                <div className="h-1 w-16 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                <div className="h-1 w-16 overflow-hidden rounded-full bg-[var(--poli-border)]">
                   <div
                     className={`h-full rounded-full ${
                       p.overlap > 70 ? 'bg-emerald-500' : p.overlap >= 50 ? 'bg-amber-500' : 'bg-red-500'

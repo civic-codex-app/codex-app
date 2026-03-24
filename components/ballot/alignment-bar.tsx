@@ -21,7 +21,7 @@ export function AlignmentBar({ score, size = 'md' }: AlignmentBarProps) {
         className="flex-1 overflow-hidden rounded-full"
         style={{
           height,
-          backgroundColor: 'var(--codex-border)',
+          backgroundColor: 'var(--poli-border)',
         }}
       >
         <div

@@ -141,18 +141,18 @@ export function IssueMapView({
     <div>
       {/* Page header */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 text-[var(--codex-sub)] text-sm mb-1">
+        <div className="flex items-center gap-2 text-[var(--poli-sub)] text-sm mb-1">
           <MapPin size={14} />
-          <Link href="/issues" className="hover:text-[var(--codex-text)] transition-colors">
+          <Link href="/issues" className="hover:text-[var(--poli-text)] transition-colors">
             Issues
           </Link>
           <span>/</span>
           <span>Map</span>
         </div>
-        <h1 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--codex-text)]">
+        <h1 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--poli-text)]">
           Issue Explorer Map
         </h1>
-        <p className="mt-1 text-[var(--codex-sub)] text-sm max-w-2xl">
+        <p className="mt-1 text-[var(--poli-sub)] text-sm max-w-2xl">
           See how politicians across each state stand on key issues.
           Select an issue and click a state to explore individual stances.
         </p>
@@ -162,13 +162,13 @@ export function IssueMapView({
       <div className="relative mb-6 max-w-sm">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex w-full items-center gap-2 rounded-lg border border-[var(--codex-input-border)] bg-[var(--codex-card)] px-3 py-2.5 text-left text-sm text-[var(--codex-text)] transition-colors hover:border-[var(--codex-sub)]"
+          className="flex w-full items-center gap-2 rounded-lg border border-[var(--poli-input-border)] bg-[var(--poli-card)] px-3 py-2.5 text-left text-sm text-[var(--poli-text)] transition-colors hover:border-[var(--poli-sub)]"
         >
           {currentIssue && (
             <IssueIcon
               icon={currentIssue.icon}
               size={16}
-              className="shrink-0 text-[var(--codex-sub)]"
+              className="shrink-0 text-[var(--poli-sub)]"
             />
           )}
           <span className="flex-1 truncate">
@@ -176,12 +176,12 @@ export function IssueMapView({
           </span>
           <ChevronDown
             size={14}
-            className={`shrink-0 text-[var(--codex-sub)] transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
+            className={`shrink-0 text-[var(--poli-sub)] transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
           />
         </button>
 
         {dropdownOpen && (
-          <div className="absolute top-full left-0 z-40 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] py-1 shadow-lg">
+          <div className="absolute top-full left-0 z-40 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1 shadow-lg">
             {issues.map((issue) => (
               <button
                 key={issue.slug}
@@ -190,10 +190,10 @@ export function IssueMapView({
                   setSelectedState(null)
                   setDropdownOpen(false)
                 }}
-                className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-[var(--codex-hover)] ${
+                className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-[var(--poli-hover)] ${
                   issue.slug === selectedIssue
-                    ? 'text-[var(--codex-text)] font-medium'
-                    : 'text-[var(--codex-sub)]'
+                    ? 'text-[var(--poli-text)] font-medium'
+                    : 'text-[var(--poli-sub)]'
                 }`}
               >
                 <IssueIcon
@@ -209,7 +209,7 @@ export function IssueMapView({
       </div>
 
       {/* Map */}
-      <div className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-4 sm:p-6">
+      <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-4 sm:p-6">
         <USMap
           stateData={stateData}
           onStateClick={handleStateClick}
@@ -222,31 +222,31 @@ export function IssueMapView({
         const content = QUIZ_CONTENT[selectedIssue]
         if (!content) return null
         return (
-          <div className="mt-4 rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-4 sm:p-5">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          <div className="mt-4 rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-4 sm:p-5">
+            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
               What do the colors mean?
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="flex gap-3 rounded-lg border border-[var(--codex-border)] p-3">
+              <div className="flex gap-3 rounded-lg border border-[var(--poli-border)] p-3">
                 <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#2E5984' }} />
                 <div>
-                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Dark states (supports)</p>
-                  <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--codex-sub)]">
+                  <p className="text-[13px] font-medium text-[var(--poli-text)]">Dark states (supports)</p>
+                  <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--poli-sub)]">
                     {content.supportsMeans}
                   </p>
                 </div>
               </div>
-              <div className="flex gap-3 rounded-lg border border-[var(--codex-border)] p-3">
+              <div className="flex gap-3 rounded-lg border border-[var(--poli-border)] p-3">
                 <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#B8734A' }} />
                 <div>
-                  <p className="text-[13px] font-medium text-[var(--codex-text)]">Warm states (opposes)</p>
-                  <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--codex-sub)]">
+                  <p className="text-[13px] font-medium text-[var(--poli-text)]">Warm states (opposes)</p>
+                  <p className="mt-0.5 text-[12px] leading-relaxed text-[var(--poli-sub)]">
                     {content.opposesMeans}
                   </p>
                 </div>
               </div>
             </div>
-            <p className="mt-3 text-[11px] leading-relaxed text-[var(--codex-faint)]">
+            <p className="mt-3 text-[11px] leading-relaxed text-[var(--poli-faint)]">
               Colors show the average stance of elected officials in each state, not the views of residents. Gray states have no data yet.
             </p>
           </div>
@@ -255,13 +255,13 @@ export function IssueMapView({
 
       {/* State detail panel */}
       {selectedState && (
-        <div className="mt-6 rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-4 sm:p-6">
+        <div className="mt-6 rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-semibold font-semibold text-[var(--codex-text)]">
+              <h2 className="text-lg font-semibold font-semibold text-[var(--poli-text)]">
                 {STATE_NAMES[selectedState] ?? selectedState}
               </h2>
-              <p className="text-xs text-[var(--codex-sub)]">
+              <p className="text-xs text-[var(--poli-sub)]">
                 {currentIssue?.name} &mdash;{' '}
                 {statePoliticians.length} politician
                 {statePoliticians.length !== 1 ? 's' : ''}
@@ -269,7 +269,7 @@ export function IssueMapView({
             </div>
             <button
               onClick={() => setSelectedState(null)}
-              className="rounded-md p-1 text-[var(--codex-sub)] transition-colors hover:bg-[var(--codex-hover)] hover:text-[var(--codex-text)]"
+              className="rounded-md p-1 text-[var(--poli-sub)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-text)]"
               aria-label="Close panel"
             >
               <X size={18} />
@@ -277,7 +277,7 @@ export function IssueMapView({
           </div>
 
           {statePoliticians.length === 0 ? (
-            <p className="text-sm text-[var(--codex-faint)]">
+            <p className="text-sm text-[var(--poli-faint)]">
               No stance data available for this state on this issue.
             </p>
           ) : (
@@ -288,7 +288,7 @@ export function IssueMapView({
                   <Link
                     key={pol.slug}
                     href={`/politicians/${pol.slug}`}
-                    className="flex items-center gap-3 rounded-lg border border-[var(--codex-border)] px-3 py-2.5 transition-colors hover:bg-[var(--codex-hover)]"
+                    className="flex items-center gap-3 rounded-lg border border-[var(--poli-border)] px-3 py-2.5 transition-colors hover:bg-[var(--poli-hover)]"
                   >
                     {/* Avatar */}
                     {pol.image_url ? (
@@ -301,7 +301,7 @@ export function IssueMapView({
                         unoptimized
                       />
                     ) : (
-                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--codex-hover)] text-xs font-medium text-[var(--codex-sub)]">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--poli-hover)] text-xs font-medium text-[var(--poli-sub)]">
                         {pol.name
                           .split(' ')
                           .map((w) => w[0])
@@ -312,10 +312,10 @@ export function IssueMapView({
 
                     {/* Name + party */}
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-[var(--codex-text)] truncate">
+                      <div className="text-sm font-medium text-[var(--poli-text)] truncate">
                         {pol.name}
                       </div>
-                      <div className="text-xs text-[var(--codex-sub)]">
+                      <div className="text-xs text-[var(--poli-sub)]">
                         <PartyIcon party={pol.party} size={10} />
                       </div>
                     </div>

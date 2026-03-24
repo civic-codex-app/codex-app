@@ -29,12 +29,12 @@ export function PollCard({ poll }: Props) {
         <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-purple-400">
           Community Poll
         </span>
-        <span className="ml-auto text-[11px] text-[var(--codex-faint)]">
+        <span className="ml-auto text-[11px] text-[var(--poli-faint)]">
           {poll.total_votes.toLocaleString()} votes
         </span>
       </div>
 
-      <p className="mb-4 text-[15px] font-semibold leading-[1.3] text-[var(--codex-text)]">
+      <p className="mb-4 text-[15px] font-semibold leading-[1.3] text-[var(--poli-text)]">
         {poll.question}
       </p>
 
@@ -42,13 +42,13 @@ export function PollCard({ poll }: Props) {
         {poll.options.slice(0, 4).map((opt) => {
           const pct = poll.total_votes > 0 ? Math.round((opt.vote_count / poll.total_votes) * 100) : 0
           return (
-            <div key={opt.id} className="relative overflow-hidden rounded-lg bg-[var(--codex-bg)] px-3 py-2">
+            <div key={opt.id} className="relative overflow-hidden rounded-lg bg-[var(--poli-bg)] px-3 py-2">
               <div
                 className="absolute inset-y-0 left-0 rounded-lg bg-purple-500/10"
                 style={{ width: `${pct}%` }}
               />
               <div className="relative flex items-center justify-between">
-                <span className="text-[13px] text-[var(--codex-text)]">{opt.text}</span>
+                <span className="text-[13px] text-[var(--poli-text)]">{opt.text}</span>
                 <span className="text-[12px] font-medium text-purple-400">{pct}%</span>
               </div>
             </div>

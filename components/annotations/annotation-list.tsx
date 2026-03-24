@@ -63,7 +63,7 @@ export function AnnotationList({ politicianId }: AnnotationListProps) {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-[var(--codex-sub)]">Community Annotations</h3>
+      <h3 className="text-sm font-semibold text-[var(--poli-sub)]">Community Annotations</h3>
 
       <div className="space-y-2">
         {annotations.map((a) => {
@@ -73,7 +73,7 @@ export function AnnotationList({ politicianId }: AnnotationListProps) {
           return (
             <div
               key={a.id}
-              className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-3 space-y-1.5"
+              className="rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-3 space-y-1.5"
             >
               {/* Header: badge + user + date */}
               <div className="flex items-center gap-2 flex-wrap">
@@ -83,17 +83,17 @@ export function AnnotationList({ politicianId }: AnnotationListProps) {
                   {badge.label}
                 </span>
                 {a.issues && (
-                  <span className="text-[11px] text-[var(--codex-faint)]">
+                  <span className="text-[11px] text-[var(--poli-faint)]">
                     on {a.issues.name}
                   </span>
                 )}
-                <span className="ml-auto text-[11px] text-[var(--codex-faint)]">
+                <span className="ml-auto text-[11px] text-[var(--poli-faint)]">
                   {displayName} &middot; {formatDate(a.created_at)}
                 </span>
               </div>
 
               {/* Content */}
-              <p className="text-sm text-[var(--codex-text)] leading-relaxed">{a.content}</p>
+              <p className="text-sm text-[var(--poli-text)] leading-relaxed">{a.content}</p>
 
               {/* Source link */}
               {a.source_url && (
@@ -101,7 +101,7 @@ export function AnnotationList({ politicianId }: AnnotationListProps) {
                   href={a.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-[var(--codex-sub)] hover:text-[var(--codex-text)] underline underline-offset-2"
+                  className="inline-flex items-center gap-1 text-xs text-[var(--poli-sub)] hover:text-[var(--poli-text)] underline underline-offset-2"
                 >
                   <SourceIcon />
                   View source

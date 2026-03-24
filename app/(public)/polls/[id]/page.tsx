@@ -79,14 +79,14 @@ export default async function PollDetailPage({ params }: PageProps) {
       <div className="mx-auto max-w-[800px] px-6 md:px-10">
         <Link
           href="/polls"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] no-underline transition-colors hover:text-[var(--codex-text)]"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] no-underline transition-colors hover:text-[var(--poli-text)]"
         >
           &larr; Back to polls
         </Link>
 
         {/* Type & status badges */}
         <div className="mb-4 flex items-center gap-2">
-          <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
             {TYPE_LABELS[poll.poll_type] ?? poll.poll_type}
           </span>
           {effectivelyActive ? (
@@ -98,7 +98,7 @@ export default async function PollDetailPage({ params }: PageProps) {
               Closed
             </span>
           )}
-          <span className="text-[11px] text-[var(--codex-faint)]">
+          <span className="text-[11px] text-[var(--poli-faint)]">
             {totalVotes} vote{totalVotes !== 1 ? 's' : ''}
           </span>
         </div>
@@ -109,13 +109,13 @@ export default async function PollDetailPage({ params }: PageProps) {
         </h1>
 
         {poll.description && (
-          <p className="mb-8 text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+          <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
             {poll.description}
           </p>
         )}
 
         {/* Voting form / results */}
-        <div className="rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-6">
+        <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-6">
           <PollVoteClient
             pollId={poll.id}
             options={options}
@@ -128,7 +128,7 @@ export default async function PollDetailPage({ params }: PageProps) {
 
         {/* End date */}
         {endDate && (
-          <div className="mt-6 text-xs text-[var(--codex-faint)]">
+          <div className="mt-6 text-xs text-[var(--poli-faint)]">
             {effectivelyActive ? 'Ends' : 'Ended'}{' '}
             {endDate.toLocaleDateString('en-US', {
               weekday: 'long',

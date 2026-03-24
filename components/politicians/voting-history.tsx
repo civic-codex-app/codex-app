@@ -26,26 +26,26 @@ export function VotingHistory({ votes }: VotingHistoryProps) {
   const other = votes.length - yea - nay
 
   return (
-    <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
+      <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
         Voting Record
       </h2>
-      <p className="mb-4 text-[11px] text-[var(--codex-faint)]">
+      <p className="mb-4 text-[11px] text-[var(--poli-faint)]">
         How this official voted on recent legislation
       </p>
 
       {/* Summary bar */}
-      <div className="mb-4 rounded-md border border-[var(--codex-border)] p-3">
+      <div className="mb-4 rounded-md border border-[var(--poli-border)] p-3">
         <div className="mb-2 flex h-2 overflow-hidden rounded-full">
           {yea > 0 && <div style={{ width: `${(yea / votes.length) * 100}%`, background: '#22C55E99' }} />}
           {nay > 0 && <div style={{ width: `${(nay / votes.length) * 100}%`, background: '#EF444499' }} />}
-          {other > 0 && <div style={{ width: `${(other / votes.length) * 100}%`, background: 'var(--codex-border)' }} />}
+          {other > 0 && <div style={{ width: `${(other / votes.length) * 100}%`, background: 'var(--poli-border)' }} />}
         </div>
         <div className="flex gap-4 text-[11px]">
           <span className="text-green-400/70">{yea} yea</span>
           <span className="text-red-400/70">{nay} nay</span>
-          {other > 0 && <span className="text-[var(--codex-faint)]">{other} other</span>}
-          <span className="ml-auto text-[var(--codex-faint)]">{votes.length} votes</span>
+          {other > 0 && <span className="text-[var(--poli-faint)]">{other} other</span>}
+          <span className="ml-auto text-[var(--poli-faint)]">{votes.length} votes</span>
         </div>
       </div>
 
@@ -54,12 +54,12 @@ export function VotingHistory({ votes }: VotingHistoryProps) {
         {votes.slice(0, 10).map((v) => {
           const vc = VOTE_CONFIG[v.vote] ?? VOTE_CONFIG.not_voting
           const inner = (
-            <div className="flex items-center justify-between rounded-md border border-[var(--codex-border)] px-4 py-2.5">
+            <div className="flex items-center justify-between rounded-md border border-[var(--poli-border)] px-4 py-2.5">
               <div className="min-w-0 flex-1">
-                <div className="truncate text-[13px] text-[var(--codex-text)]">
+                <div className="truncate text-[13px] text-[var(--poli-text)]">
                   {v.bill_name ?? v.bill_number ?? 'Unknown Bill'}
                 </div>
-                <div className="flex items-center gap-2 text-[11px] text-[var(--codex-faint)]">
+                <div className="flex items-center gap-2 text-[11px] text-[var(--poli-faint)]">
                   {v.bill_number && <span>{v.bill_number}</span>}
                   {v.vote_date && (
                     <span>
@@ -90,7 +90,7 @@ export function VotingHistory({ votes }: VotingHistoryProps) {
       </div>
 
       {votes.length > 10 && (
-        <div className="mt-3 text-center text-[11px] text-[var(--codex-faint)]">
+        <div className="mt-3 text-center text-[11px] text-[var(--poli-faint)]">
           Showing 10 of {votes.length} votes
         </div>
       )}

@@ -67,10 +67,10 @@ export function ElectionFilters({ chamberCounts = {} }: ElectionFiltersProps) {
               role="radio"
               aria-checked={currentChamber === c.key}
               className={cn(
-                'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+                'rounded-sm px-3 py-1.5 text-[11px] font-medium tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
                 currentChamber === c.key
-                  ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)] border border-[var(--codex-border)]'
-                  : 'text-[var(--codex-faint)] hover:text-[var(--codex-sub)] border border-transparent'
+                  ? 'bg-[var(--poli-badge-bg)] text-[var(--poli-text)] border border-[var(--poli-border)]'
+                  : 'text-[var(--poli-faint)] hover:text-[var(--poli-sub)] border border-transparent'
               )}
             >
               {c.label}
@@ -78,8 +78,8 @@ export function ElectionFilters({ chamberCounts = {} }: ElectionFiltersProps) {
                 <span className={cn(
                   'ml-1.5 tabular-nums',
                   currentChamber === c.key
-                    ? 'text-[var(--codex-sub)]'
-                    : 'text-[var(--codex-faint)]'
+                    ? 'text-[var(--poli-sub)]'
+                    : 'text-[var(--poli-faint)]'
                 )}>
                   ({count})
                 </span>
@@ -89,7 +89,7 @@ export function ElectionFilters({ chamberCounts = {} }: ElectionFiltersProps) {
         })}
       </div>
 
-      <div className="hidden h-5 w-px bg-[var(--codex-border)] sm:block" />
+      <div className="hidden h-5 w-px bg-[var(--poli-border)] sm:block" />
 
       {/* State dropdown */}
       <label htmlFor="election-state-filter" className="sr-only">Filter by state</label>
@@ -97,7 +97,7 @@ export function ElectionFilters({ chamberCounts = {} }: ElectionFiltersProps) {
         id="election-state-filter"
         value={currentState}
         onChange={(e) => updateParam('state', e.target.value)}
-        className="h-9 rounded-sm border border-[var(--codex-border)] bg-[var(--codex-input-bg)] px-3 pr-7 text-[12px] text-[var(--codex-text)] outline-none transition-colors focus:border-[var(--codex-input-focus)] focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)] appearance-none cursor-pointer"
+        className="h-9 rounded-sm border border-[var(--poli-border)] bg-[var(--poli-input-bg)] px-3 pr-7 text-[12px] text-[var(--poli-text)] outline-none transition-colors focus:border-[var(--poli-input-focus)] focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)] appearance-none cursor-pointer"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 8px center' }}
       >
         <option value="">All States</option>

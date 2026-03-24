@@ -29,7 +29,7 @@ export function ChamberTabs({ chamberCounts }: ChamberTabsProps) {
   }
 
   return (
-    <div className="mb-6 -mx-6 animate-fade-up px-6 sm:mx-0 sm:mb-9 sm:border-b sm:border-[var(--codex-border)] sm:px-0" role="tablist" aria-label="Filter by chamber">
+    <div className="mb-6 -mx-6 animate-fade-up px-6 sm:mx-0 sm:mb-9 sm:border-b sm:border-[var(--poli-border)] sm:px-0" role="tablist" aria-label="Filter by chamber">
       {/* Mobile: pill scroller */}
       <div className="scroll-x-momentum flex gap-2 pb-2 sm:hidden snap-x snap-mandatory">
         {CHAMBERS.map((c) => (
@@ -41,8 +41,8 @@ export function ChamberTabs({ chamberCounts }: ChamberTabsProps) {
             className={cn(
               'touch-feedback flex-shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-medium transition-all',
               current === c
-                ? 'bg-[var(--codex-text)] text-[var(--codex-bg)]'
-                : 'bg-[var(--codex-badge-bg)] text-[var(--codex-sub)]'
+                ? 'bg-[var(--poli-text)] text-[var(--poli-bg)]'
+                : 'bg-[var(--poli-badge-bg)] text-[var(--poli-sub)]'
             )}
           >
             {CHAMBER_LABELS[c]}
@@ -64,15 +64,15 @@ export function ChamberTabs({ chamberCounts }: ChamberTabsProps) {
             role="tab"
             aria-selected={current === c}
             className={cn(
-              'whitespace-nowrap border-b-2 px-4 py-3 font-sans text-[13px] transition-all sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--codex-input-focus)]',
+              'whitespace-nowrap border-b-2 px-4 py-3 font-sans text-[13px] transition-all sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
               current === c
-                ? 'border-[var(--codex-text)] font-semibold text-[var(--codex-text)]'
-                : 'border-transparent font-normal text-[var(--codex-faint)] hover:text-[var(--codex-sub)]'
+                ? 'border-[var(--poli-text)] font-semibold text-[var(--poli-text)]'
+                : 'border-transparent font-normal text-[var(--poli-faint)] hover:text-[var(--poli-sub)]'
             )}
           >
             {CHAMBER_LABELS[c]}
             {chamberCounts && c !== 'all' && chamberCounts[c] ? (
-              <span className="ml-1.5 text-[11px] text-[var(--codex-faint)]">
+              <span className="ml-1.5 text-[11px] text-[var(--poli-faint)]">
                 {chamberCounts[c]}
               </span>
             ) : null}

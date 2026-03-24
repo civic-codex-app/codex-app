@@ -47,9 +47,9 @@ export function FeedFilters() {
               onClick={() => updateFilter('party', opt.value)}
               className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors"
               style={{
-                borderColor: isActive ? 'var(--codex-text)' : 'var(--codex-border)',
-                backgroundColor: isActive ? 'var(--codex-hover)' : 'transparent',
-                color: isActive ? 'var(--codex-text)' : 'var(--codex-sub)',
+                borderColor: isActive ? 'var(--poli-text)' : 'var(--poli-border)',
+                backgroundColor: isActive ? 'var(--poli-hover)' : 'transparent',
+                color: isActive ? 'var(--poli-text)' : 'var(--poli-sub)',
                 cursor: 'pointer',
               }}
             >
@@ -64,7 +64,7 @@ export function FeedFilters() {
       <select
         value={currentState}
         onChange={(e) => updateFilter('state', e.target.value)}
-        className="rounded-lg border border-[var(--codex-border)] bg-transparent px-3 py-1.5 text-xs text-[var(--codex-text)] outline-none transition-colors focus:border-[var(--codex-input-focus)]"
+        className="rounded-lg border border-[var(--poli-border)] bg-transparent px-3 py-1.5 text-xs text-[var(--poli-text)] outline-none transition-colors focus:border-[var(--poli-input-focus)]"
         style={{ cursor: 'pointer' }}
       >
         <option value="">All States</option>

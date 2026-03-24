@@ -162,7 +162,7 @@ export function CandidateForm({ race_id, election_id, candidate, politicians }: 
             defaultChecked={candidate?.is_incumbent ?? false}
             className="h-4 w-4"
           />
-          <label htmlFor="candidate-is-incumbent" className="text-sm text-[var(--codex-text)]">Incumbent</label>
+          <label htmlFor="candidate-is-incumbent" className="text-sm text-[var(--poli-text)]">Incumbent</label>
         </div>
 
         <div className="grid grid-cols-2 gap-4">

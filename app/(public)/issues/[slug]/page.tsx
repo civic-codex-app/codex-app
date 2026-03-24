@@ -314,23 +314,23 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
           href="/issues"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
         >
           &larr; Back to issues
         </Link>
 
         <div className="mb-4 flex items-center gap-2">
-          <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
             {CATEGORY_LABELS[issue.category] ?? issue.category}
           </span>
-          <span className="text-[11px] text-[var(--codex-faint)]">
+          <span className="text-[11px] text-[var(--poli-faint)]">
             {totalAll} politician{totalAll !== 1 ? 's' : ''}
           </span>
         </div>
 
         <div className="mb-3 flex items-start justify-between gap-3">
           <h1 className="text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
-            {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--codex-sub)]" />}
+            {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--poli-sub)]" />}
             {issue.name}
           </h1>
           {isAuthenticated && (
@@ -339,26 +339,26 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         </div>
 
         {issue.description && (
-          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">{issue.description}</p>
+          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--poli-sub)]">{issue.description}</p>
         )}
 
         {/* What this means — educational explainer */}
         {ISSUE_EXPLAINERS[slug] && (
-          <div className="mb-6 rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-4">
-            <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--codex-faint)]">
+          <div className="mb-6 rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-4">
+            <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--poli-faint)]">
               What This Means
             </div>
-            <p className="mb-3 text-[13px] leading-[1.6] text-[var(--codex-sub)]">
+            <p className="mb-3 text-[13px] leading-[1.6] text-[var(--poli-sub)]">
               {ISSUE_EXPLAINERS[slug].description}
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               <div className="rounded-md bg-blue-500/5 px-3 py-2">
                 <span className="text-[11px] font-medium text-blue-400">Progressive</span>
-                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].progressiveView}</p>
+                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--poli-sub)]">{ISSUE_EXPLAINERS[slug].progressiveView}</p>
               </div>
               <div className="rounded-md bg-red-500/5 px-3 py-2">
                 <span className="text-[11px] font-medium text-red-400">Conservative</span>
-                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--codex-sub)]">{ISSUE_EXPLAINERS[slug].conservativeView}</p>
+                <p className="mt-0.5 text-[12px] leading-[1.5] text-[var(--poli-sub)]">{ISSUE_EXPLAINERS[slug].conservativeView}</p>
               </div>
             </div>
           </div>
@@ -367,29 +367,29 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         {/* Summary stats */}
         {totalAll > 0 && (
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
               <div className="text-2xl font-bold" style={{ color: '#2563EB' }}>{supportsAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Favors</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Favors</div>
             </div>
-            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
               <div className="text-2xl font-bold" style={{ color: '#DC2626' }}>{opposesAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Opposes</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Opposes</div>
             </div>
-            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
               <div className="text-2xl font-bold" style={{ color: '#8B5CF6' }}>{mixedAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Mixed / Neutral</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Mixed / Neutral</div>
             </div>
-            <div className="rounded-md border border-[var(--codex-border)] p-3 text-center">
-              <div className="text-2xl font-bold text-[var(--codex-text)]">{totalAll}</div>
-              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">Total</div>
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+              <div className="text-2xl font-bold text-[var(--poli-text)]">{totalAll}</div>
+              <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Total</div>
             </div>
           </div>
         )}
 
         {/* Party breakdown */}
         {Object.keys(partyStats).length > 0 && (
-          <div className="mb-8 rounded-md border border-[var(--codex-border)] p-4">
-            <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--codex-faint)]">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4">
+            <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--poli-faint)]">
               Party Breakdown
             </div>
             <div className="space-y-3">
@@ -408,11 +408,11 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                         <span className="flex items-center gap-1 text-[12px] font-medium" style={{ color }}>
                           <PartyIcon party={party} size={12} />
                         </span>
-                        <span className="text-[11px] tabular-nums text-[var(--codex-faint)]">
+                        <span className="text-[11px] tabular-nums text-[var(--poli-faint)]">
                           {stats.total} official{stats.total !== 1 ? 's' : ''}
                         </span>
                       </div>
-                      <div className="mb-1 flex h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                      <div className="mb-1 flex h-2 overflow-hidden rounded-full bg-[var(--poli-border)]">
                         {supportPct > 0 && (
                           <div style={{ width: `${supportPct}%`, backgroundColor: '#2563EB' }} />
                         )}
@@ -423,7 +423,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
                           <div style={{ width: `${opposePct}%`, backgroundColor: '#DC2626' }} />
                         )}
                       </div>
-                      <div className="flex gap-4 text-[10px] text-[var(--codex-faint)]">
+                      <div className="flex gap-4 text-[10px] text-[var(--poli-faint)]">
                         <span style={{ color: '#2563EB' }}>{supportPct}% favors</span>
                         <span style={{ color: '#8B5CF6' }}>{mixedPct}% mixed</span>
                         <span style={{ color: '#DC2626' }}>{opposePct}% opposes</span>
@@ -436,10 +436,10 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         )}
 
         {/* Section header for notable stances */}
-        <div className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
           Where Officials Stand
         </div>
-        <p className="mb-6 text-[11px] text-[var(--codex-faint)]">
+        <p className="mb-6 text-[11px] text-[var(--poli-faint)]">
           Officials grouped by where they land on this issue.
         </p>
 
@@ -461,7 +461,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         })}
 
         {totalAll === 0 && (
-          <div className="py-16 text-center text-[var(--codex-faint)]">
+          <div className="py-16 text-center text-[var(--poli-faint)]">
             <div className="mb-2 text-xl font-semibold">No stances recorded yet</div>
             <div className="text-sm">Check back as we track more politician positions</div>
           </div>
@@ -469,13 +469,13 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
         {/* Browse all link */}
         {totalAll > 0 && (
-          <div className="mb-10 rounded-md border border-[var(--codex-border)] bg-[var(--codex-card)] p-5 text-center">
-            <p className="mb-3 text-[13px] text-[var(--codex-sub)]">
+          <div className="mb-10 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5 text-center">
+            <p className="mb-3 text-[13px] text-[var(--poli-sub)]">
               Want to see every politician&apos;s stance on {issue.name}?
             </p>
             <Link
               href={`/politicians?issue=${slug}`}
-              className="inline-flex items-center gap-2 rounded-md border border-[var(--codex-border)] px-5 py-2.5 text-[13px] font-medium text-[var(--codex-text)] no-underline transition-all hover:border-[var(--codex-input-border)] hover:bg-[var(--codex-hover)]"
+              className="inline-flex items-center gap-2 rounded-md border border-[var(--poli-border)] px-5 py-2.5 text-[13px] font-medium text-[var(--poli-text)] no-underline transition-all hover:border-[var(--poli-input-border)] hover:bg-[var(--poli-hover)]"
             >
               Browse all {totalAll} politicians &rarr;
             </Link>

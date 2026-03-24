@@ -148,14 +148,14 @@ export default async function BillDetailPage({ params }: PageProps) {
       <div className="mx-auto max-w-[900px] px-6 md:px-10">
         <Link
           href="/bills"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]"
+          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
         >
           &larr; Back to bills
         </Link>
 
         {/* Badges */}
         <div className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2.5 py-0.5 text-[11px] uppercase tracking-[0.06em] text-[var(--codex-badge-text)]">
+          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2.5 py-0.5 text-[11px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
             {bill.number}
           </span>
           <span
@@ -166,7 +166,7 @@ export default async function BillDetailPage({ params }: PageProps) {
             {sc.label}
           </span>
           {bill.congress_session && (
-            <span className="text-[11px] text-[var(--codex-faint)]">
+            <span className="text-[11px] text-[var(--poli-faint)]">
               {bill.congress_session} Congress
             </span>
           )}
@@ -178,17 +178,17 @@ export default async function BillDetailPage({ params }: PageProps) {
         </h1>
 
         {BILL_STATUS_EXPLAINERS[bill.status] && (
-          <p className="mb-3 text-[12px] leading-[1.5] text-[var(--codex-faint)]">
+          <p className="mb-3 text-[12px] leading-[1.5] text-[var(--poli-faint)]">
             {BILL_STATUS_EXPLAINERS[bill.status]}
           </p>
         )}
 
         {bill.summary && (
-          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--codex-sub)]">{bill.summary}</p>
+          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--poli-sub)]">{bill.summary}</p>
         )}
 
         {/* Dates */}
-        <div className="mb-8 flex flex-wrap gap-6 text-[13px] text-[var(--codex-faint)]">
+        <div className="mb-8 flex flex-wrap gap-6 text-[13px] text-[var(--poli-faint)]">
           {bill.introduced_date && (
             <span>Introduced: {formatDate(bill.introduced_date)}</span>
           )}
@@ -199,8 +199,8 @@ export default async function BillDetailPage({ params }: PageProps) {
 
         {/* Vote summary */}
         {total > 0 && (
-          <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
-            <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5">
+            <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
               Vote Tally
             </h2>
 
@@ -221,7 +221,7 @@ export default async function BillDetailPage({ params }: PageProps) {
               {(abstain + notVoting) > 0 && (
                 <div
                   className="transition-all"
-                  style={{ width: `${((abstain + notVoting) / total) * 100}%`, background: 'var(--codex-border)' }}
+                  style={{ width: `${((abstain + notVoting) / total) * 100}%`, background: 'var(--poli-border)' }}
                 />
               )}
             </div>
@@ -235,24 +235,24 @@ export default async function BillDetailPage({ params }: PageProps) {
             <div className="mb-5 grid grid-cols-4 gap-4">
               <div title={VOTE_EXPLAINERS.yea}>
                 <div className="text-2xl font-bold text-green-400">{yea}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Yea</div>
+                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Yea</div>
               </div>
               <div title={VOTE_EXPLAINERS.nay}>
                 <div className="text-2xl font-bold text-red-400">{nay}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Nay</div>
+                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Nay</div>
               </div>
               <div title={VOTE_EXPLAINERS.abstain}>
                 <div className="text-2xl font-bold text-yellow-400">{abstain}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Abstain</div>
+                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Abstain</div>
               </div>
               <div title={VOTE_EXPLAINERS.not_voting}>
-                <div className="text-2xl font-bold text-[var(--codex-faint)]">{notVoting}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--codex-faint)]">Not Voting</div>
+                <div className="text-2xl font-bold text-[var(--poli-faint)]">{notVoting}</div>
+                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Not Voting</div>
               </div>
             </div>
 
             {/* Party breakdown bars */}
-            <h3 className="mb-3 text-sm font-semibold text-[var(--codex-sub)]">
+            <h3 className="mb-3 text-sm font-semibold text-[var(--poli-sub)]">
               By Party
             </h3>
             <div className="space-y-2.5">
@@ -265,7 +265,7 @@ export default async function BillDetailPage({ params }: PageProps) {
                     <div className="flex w-28 items-center gap-1.5">
                       <PartyIcon party={party} size={12} />
                     </div>
-                    <div className="flex h-2.5 flex-1 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="flex h-2.5 flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
                       {counts.yea > 0 && (
                         <div style={{ width: `${(counts.yea / partyTotal) * 100}%`, background: '#22C55E99' }} />
                       )}
@@ -273,9 +273,9 @@ export default async function BillDetailPage({ params }: PageProps) {
                         <div style={{ width: `${(counts.nay / partyTotal) * 100}%`, background: '#EF444499' }} />
                       )}
                     </div>
-                    <span className="w-20 text-right text-[11px] tabular-nums text-[var(--codex-faint)]">
+                    <span className="w-20 text-right text-[11px] tabular-nums text-[var(--poli-faint)]">
                       {counts.yea}Y / {counts.nay}N
-                      <span className="ml-1 text-[var(--codex-faint)] opacity-50">({partyYeaPct}%)</span>
+                      <span className="ml-1 text-[var(--poli-faint)] opacity-50">({partyYeaPct}%)</span>
                     </span>
                   </div>
                 )
@@ -287,7 +287,7 @@ export default async function BillDetailPage({ params }: PageProps) {
         {/* Individual votes grouped by vote type */}
         {total > 0 && (
           <section className="mb-10">
-            <h2 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
+            <h2 className="mb-5 text-sm font-semibold text-[var(--poli-sub)]">
               Individual Votes
             </h2>
             {voteGroups.map((voteType) => {
@@ -297,13 +297,13 @@ export default async function BillDetailPage({ params }: PageProps) {
 
               return (
                 <div key={voteType} className="mb-6">
-                  <h3 className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+                  <h3 className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
                     <span
                       className="h-2.5 w-2.5 rounded-full"
                       style={{ background: vc.color }}
                     />
                     {vc.label}
-                    <span className="text-[var(--codex-faint)]">{groupVotes.length}</span>
+                    <span className="text-[var(--poli-faint)]">{groupVotes.length}</span>
                   </h3>
                   <div className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3">
                     {groupVotes.map((v: any) => {
@@ -313,10 +313,10 @@ export default async function BillDetailPage({ params }: PageProps) {
                         <Link
                           key={v.id}
                           href={`/politicians/${pol.slug}`}
-                          className="flex items-center gap-2.5 rounded-md border border-[var(--codex-border)] px-3 py-2 no-underline transition-all hover:border-[var(--codex-input-border)]"
+                          className="flex items-center gap-2.5 rounded-md border border-[var(--poli-border)] px-3 py-2 no-underline transition-all hover:border-[var(--poli-input-border)]"
                         >
                           <div
-                            className="h-7 w-7 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--codex-card)]"
+                            className="h-7 w-7 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--poli-card)]"
                             style={{ border: `1.5px solid ${partyColor(pol.party)}44` }}
                           >
                             <AvatarImage
@@ -329,7 +329,7 @@ export default async function BillDetailPage({ params }: PageProps) {
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="truncate text-[13px] font-medium">{pol.name}</div>
-                            <div className="flex items-center gap-1 text-[11px] text-[var(--codex-faint)]">
+                            <div className="flex items-center gap-1 text-[11px] text-[var(--poli-faint)]">
                               <PartyIcon party={pol.party} size={8} />
                               <span>{pol.state}</span>
                             </div>
@@ -345,7 +345,7 @@ export default async function BillDetailPage({ params }: PageProps) {
         )}
 
         {total === 0 && (
-          <div className="mb-10 py-12 text-center text-[var(--codex-faint)]">
+          <div className="mb-10 py-12 text-center text-[var(--poli-faint)]">
             <div className="mb-2 text-lg font-semibold">No recorded votes yet</div>
             <div className="text-sm">Voting records will appear as the bill progresses</div>
           </div>

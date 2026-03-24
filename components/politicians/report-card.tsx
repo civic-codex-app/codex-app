@@ -98,8 +98,8 @@ export function PoliticianReportCard({
   const progress = (score / 100) * circumference
 
   return (
-    <div className="rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-      <h3 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+      <h3 className="mb-5 text-sm font-semibold text-[var(--poli-sub)]">
         Civic Profile
       </h3>
 
@@ -111,7 +111,7 @@ export function PoliticianReportCard({
             <circle
               cx="45" cy="45" r={radius}
               fill="none"
-              stroke="var(--codex-border)"
+              stroke="var(--poli-border)"
               strokeWidth="5"
             />
             {/* Progress ring */}
@@ -141,7 +141,7 @@ export function PoliticianReportCard({
           >
             {label}
           </div>
-          <div className="text-[12px] text-[var(--codex-faint)]">
+          <div className="text-[12px] text-[var(--poli-faint)]">
             Civic Activity Score
           </div>
         </div>
@@ -151,27 +151,27 @@ export function PoliticianReportCard({
       {(stanceCount != null || voteCount != null || committeeCount != null || yearsInOffice != null) && (
         <div className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {stanceCount != null && stanceCount > 0 && (
-            <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="text-lg font-semibold text-[var(--codex-text)]">{stanceCount}</div>
-              <div className="text-[10px] text-[var(--codex-faint)]">Issues</div>
+            <div className="rounded-md bg-[var(--poli-hover)] px-3 py-2 text-center">
+              <div className="text-lg font-semibold text-[var(--poli-text)]">{stanceCount}</div>
+              <div className="text-[10px] text-[var(--poli-faint)]">Issues</div>
             </div>
           )}
           {voteCount != null && voteCount > 0 && (
-            <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="text-lg font-semibold text-[var(--codex-text)]">{voteCount}</div>
-              <div className="text-[10px] text-[var(--codex-faint)]">Votes Cast</div>
+            <div className="rounded-md bg-[var(--poli-hover)] px-3 py-2 text-center">
+              <div className="text-lg font-semibold text-[var(--poli-text)]">{voteCount}</div>
+              <div className="text-[10px] text-[var(--poli-faint)]">Votes Cast</div>
             </div>
           )}
           {committeeCount != null && committeeCount > 0 && (
-            <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="text-lg font-semibold text-[var(--codex-text)]">{committeeCount}</div>
-              <div className="text-[10px] text-[var(--codex-faint)]">Committees</div>
+            <div className="rounded-md bg-[var(--poli-hover)] px-3 py-2 text-center">
+              <div className="text-lg font-semibold text-[var(--poli-text)]">{committeeCount}</div>
+              <div className="text-[10px] text-[var(--poli-faint)]">Committees</div>
             </div>
           )}
           {yearsInOffice != null && yearsInOffice > 0 && (
-            <div className="rounded-md bg-[var(--codex-hover)] px-3 py-2 text-center">
-              <div className="text-lg font-semibold text-[var(--codex-text)]">{yearsInOffice}</div>
-              <div className="text-[10px] text-[var(--codex-faint)]">Years</div>
+            <div className="rounded-md bg-[var(--poli-hover)] px-3 py-2 text-center">
+              <div className="text-lg font-semibold text-[var(--poli-text)]">{yearsInOffice}</div>
+              <div className="text-[10px] text-[var(--poli-faint)]">Years</div>
             </div>
           )}
         </div>
@@ -186,23 +186,23 @@ export function PoliticianReportCard({
           const dimColor = tierColor(value)
 
           return (
-            <div key={dim.key} className="rounded-md border border-[var(--codex-border)] px-4 py-3">
+            <div key={dim.key} className="rounded-md border border-[var(--poli-border)] px-4 py-3">
               <div className="mb-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <DimIcon name={dim.key} />
-                  <span className="text-[13px] font-medium text-[var(--codex-text)]">{dim.label}</span>
+                  <span className="text-[13px] font-medium text-[var(--poli-text)]">{dim.label}</span>
                 </div>
                 <span className="text-[15px] font-semibold font-semibold" style={{ color: dimColor }}>
                   {value}
                 </span>
               </div>
-              <div className="mb-1.5 h-1.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
+              <div className="mb-1.5 h-1.5 overflow-hidden rounded-full bg-[var(--poli-border)]">
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{ width: `${value}%`, backgroundColor: dimColor }}
                 />
               </div>
-              <p className="text-[11px] text-[var(--codex-faint)]">{insight}</p>
+              <p className="text-[11px] text-[var(--poli-faint)]">{insight}</p>
             </div>
           )
         })}

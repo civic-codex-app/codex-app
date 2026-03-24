@@ -101,7 +101,7 @@ export default async function HomePage() {
           <h1 className="mb-5 animate-fade-up text-[clamp(36px,5vw,60px)] font-bold leading-[1.08]">
             Track Every Politician in America
           </h1>
-          <p className="max-w-[520px] animate-fade-up text-[15.5px] leading-[1.7] text-[var(--codex-subtle)]">
+          <p className="max-w-[520px] animate-fade-up text-[15.5px] leading-[1.7] text-[var(--poli-subtle)]">
             Search {total.toLocaleString()} officials. Compare stances. See who represents you.
           </p>
         </div>
@@ -120,14 +120,14 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/dashboard"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--codex-border)] px-4 py-2 text-[13px] font-medium text-[var(--codex-sub)] no-underline transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                 Dashboard
               </Link>
               <Link
                 href="/ballot"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--codex-border)] px-4 py-2 text-[13px] font-medium text-[var(--codex-sub)] no-underline transition-all hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
                 My Ballot
@@ -137,7 +137,7 @@ export default async function HomePage() {
             {/* Your Representatives */}
             {userRepresentatives.length > 0 && (
               <div>
-                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
                   Your Representatives
                 </h2>
                 <StatePoliticianList politicians={userRepresentatives} size="compact" />
@@ -151,21 +151,21 @@ export default async function HomePage() {
                 className="flex items-center justify-between rounded-xl border border-blue-500/20 bg-blue-500/5 p-4 no-underline transition-all hover:border-blue-500/40"
               >
                 <div>
-                  <div className="text-[14px] font-semibold text-[var(--codex-text)]">Your Top Matches</div>
-                  <div className="text-[12px] text-[var(--codex-sub)]">See which officials align with your views</div>
+                  <div className="text-[14px] font-semibold text-[var(--poli-text)]">Your Top Matches</div>
+                  <div className="text-[12px] text-[var(--poli-sub)]">See which officials align with your views</div>
                 </div>
                 <svg className="shrink-0 text-blue-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </Link>
             ) : (
               <Link
                 href="/quiz"
-                className="flex items-center justify-between rounded-xl border border-[var(--codex-border)] bg-[var(--codex-hover)] p-4 no-underline transition-all hover:border-[var(--codex-text)]"
+                className="flex items-center justify-between rounded-xl border border-[var(--poli-border)] bg-[var(--poli-hover)] p-4 no-underline transition-all hover:border-[var(--poli-text)]"
               >
                 <div>
-                  <div className="text-[14px] font-semibold text-[var(--codex-text)]">Take the Quiz</div>
-                  <div className="text-[12px] text-[var(--codex-sub)]">Find out which officials match your views</div>
+                  <div className="text-[14px] font-semibold text-[var(--poli-text)]">Take the Quiz</div>
+                  <div className="text-[12px] text-[var(--poli-sub)]">Find out which officials match your views</div>
                 </div>
-                <svg className="shrink-0 text-[var(--codex-faint)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                <svg className="shrink-0 text-[var(--poli-faint)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </Link>
             )}
           </div>
@@ -178,66 +178,66 @@ export default async function HomePage() {
               <PartyIcon party="democrat" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('democrat') }}>{dem.toLocaleString()}</span>
             </div>
-            <div className="mt-1 text-[12px] font-medium text-[var(--codex-sub)]">Democrats</div>
+            <div className="mt-1 text-[12px] font-medium text-[var(--poli-sub)]">Democrats</div>
           </div>
           <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('republican')}12` }}>
             <div className="flex items-center justify-center gap-2">
               <PartyIcon party="republican" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('republican') }}>{gop.toLocaleString()}</span>
             </div>
-            <div className="mt-1 text-[12px] font-medium text-[var(--codex-sub)]">Republicans</div>
+            <div className="mt-1 text-[12px] font-medium text-[var(--poli-sub)]">Republicans</div>
           </div>
           <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('independent')}12` }}>
             <div className="flex items-center justify-center gap-2">
               <PartyIcon party="independent" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('independent') }}>{ind.toLocaleString()}</span>
             </div>
-            <div className="mt-1 text-[12px] font-medium text-[var(--codex-sub)]">Independents</div>
+            <div className="mt-1 text-[12px] font-medium text-[var(--poli-sub)]">Independents</div>
           </div>
         </div>
 
         {/* Quick Actions — above the fold */}
         <div className="mb-12">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Link href="/quiz" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
+            <Link href="/quiz" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--poli-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-blue-500/15 text-blue-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
                 </div>
-                <div className="text-[15px] font-bold text-[var(--codex-text)]">Who Represents You?</div>
-                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Discover officials who align with your views</p>
+                <div className="text-[15px] font-bold text-[var(--poli-text)]">Who Represents You?</div>
+                <p className="mt-1 text-[12px] text-[var(--poli-faint)]">Discover officials who align with your views</p>
               </div>
-              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              <svg className="ml-auto shrink-0 text-[var(--poli-faint)] transition-colors group-hover:text-[var(--poli-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/compare" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
+            <Link href="/compare" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--poli-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-purple-500/15 text-purple-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                 </div>
-                <div className="text-[15px] font-bold text-[var(--codex-text)]">Compare Officials</div>
-                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Side-by-side on issues, finance, and votes</p>
+                <div className="text-[15px] font-bold text-[var(--poli-text)]">Compare Officials</div>
+                <p className="mt-1 text-[12px] text-[var(--poli-faint)]">Side-by-side on issues, finance, and votes</p>
               </div>
-              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              <svg className="ml-auto shrink-0 text-[var(--poli-faint)] transition-colors group-hover:text-[var(--poli-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/issues" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
+            <Link href="/issues" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--poli-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                 </div>
-                <div className="text-[15px] font-bold text-[var(--codex-text)]">Explore Issues</div>
-                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">See where every politician stands on key topics</p>
+                <div className="text-[15px] font-bold text-[var(--poli-text)]">Explore Issues</div>
+                <p className="mt-1 text-[12px] text-[var(--poli-faint)]">See where every politician stands on key topics</p>
               </div>
-              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              <svg className="ml-auto shrink-0 text-[var(--poli-faint)] transition-colors group-hover:text-[var(--poli-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
-            <Link href="/elections" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--codex-border)]">
+            <Link href="/elections" className="group flex items-center gap-4 rounded-lg border border-transparent p-5 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-[var(--poli-border)]">
               <div className="min-w-0 flex-1">
                 <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-amber-500/15 text-amber-400">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                 </div>
-                <div className="text-[15px] font-bold text-[var(--codex-text)]">Track Elections</div>
-                <p className="mt-1 text-[12px] text-[var(--codex-faint)]">Follow races and candidates across the country</p>
+                <div className="text-[15px] font-bold text-[var(--poli-text)]">Track Elections</div>
+                <p className="mt-1 text-[12px] text-[var(--poli-faint)]">Follow races and candidates across the country</p>
               </div>
-              <svg className="ml-auto shrink-0 text-[var(--codex-faint)] transition-colors group-hover:text-[var(--codex-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              <svg className="ml-auto shrink-0 text-[var(--poli-faint)] transition-colors group-hover:text-[var(--poli-text)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </Link>
           </div>
         </div>
@@ -247,7 +247,7 @@ export default async function HomePage() {
 
         {/* Featured Officials */}
         <div className="mb-12">
-          <h2 className="mb-5 text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="mb-5 text-sm font-semibold text-[var(--poli-sub)]">
             Featured Officials
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -260,7 +260,7 @@ export default async function HomePage() {
                   className="group flex overflow-hidden rounded-xl no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
                   style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
                 >
-                  <div className="w-[80px] flex-shrink-0 overflow-hidden bg-[var(--codex-card)]">
+                  <div className="w-[80px] flex-shrink-0 overflow-hidden bg-[var(--poli-card)]">
                     <AvatarImage
                       src={pol.image_url}
                       alt={pol.name}
@@ -271,14 +271,14 @@ export default async function HomePage() {
                     />
                   </div>
                   <div className="min-w-0 flex-1 px-4 py-3">
-                    <div className="truncate text-lg font-semibold text-[var(--codex-text)]">
+                    <div className="truncate text-lg font-semibold text-[var(--poli-text)]">
                       {pol.name}
                     </div>
                     <div className="mt-1 flex items-center gap-1.5">
                       <PartyIcon party={pol.party} size={12} />
-                      <span className="text-[12px] text-[var(--codex-sub)]">{pol.state}</span>
+                      <span className="text-[12px] text-[var(--poli-sub)]">{pol.state}</span>
                     </div>
-                    <div className="mt-1 text-sm text-[var(--codex-faint)]">
+                    <div className="mt-1 text-sm text-[var(--poli-faint)]">
                       {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)}
                       </div>
                     </div>
@@ -292,10 +292,10 @@ export default async function HomePage() {
 
         {/* Mobile disclaimer — footer is hidden on mobile */}
         <div className="mt-8 pb-24 sm:hidden">
-          <p className="text-[11px] leading-relaxed text-[var(--codex-faint)]">
+          <p className="text-[11px] leading-relaxed text-[var(--poli-faint)]">
             Poli is currently in beta. We are an independent civic education platform, not affiliated with any political party, campaign, or government agency.
             All data is compiled from public sources and may contain errors.{' '}
-            <a href="/data-sources" className="underline hover:text-[var(--codex-sub)]">
+            <a href="/data-sources" className="underline hover:text-[var(--poli-sub)]">
               Data sources & disclaimer.
             </a>
           </p>

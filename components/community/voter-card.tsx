@@ -63,7 +63,7 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
       ? 'Leans Left'
       : 'Leans Right'
   const leanColor = Math.abs(demAlign - repAlign) < 5
-    ? 'var(--codex-faint)'
+    ? 'var(--poli-faint)'
     : demAlign > repAlign
       ? '#60a5fa'
       : '#f87171'
@@ -85,15 +85,15 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
   }
 
   return (
-    <div className="rounded-lg border border-[var(--codex-border)] p-4 transition-all hover:border-[var(--codex-input-border)] hover:bg-[var(--codex-hover)]">
+    <div className="rounded-lg border border-[var(--poli-border)] p-4 transition-all hover:border-[var(--poli-input-border)] hover:bg-[var(--poli-hover)]">
       {/* Header */}
       <div className="mb-3 flex items-center gap-3">
         <StanceAvatar supports={counts.supports} opposes={counts.opposes} neutral={counts.neutral + counts.mixed + counts.unknown} total={total} size={40} seed={anonymousId} />
         <div className="min-w-0 flex-1">
-          <div className="text-[14px] font-medium text-[var(--codex-text)]">
+          <div className="text-[14px] font-medium text-[var(--poli-text)]">
             Voter #{displayId}
           </div>
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-[var(--codex-faint)]">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-[var(--poli-faint)]">
             {stateName && <span>{stateName}</span>}
             <span>{total} issues answered</span>
             <span style={{ color: leanColor }}>{leanLabel}</span>
@@ -130,7 +130,7 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
               />
             )}
           </div>
-          <div className="mt-1.5 flex gap-3 text-[10px] text-[var(--codex-faint)]">
+          <div className="mt-1.5 flex gap-3 text-[10px] text-[var(--poli-faint)]">
             {counts.supports > 0 && (
               <span className="flex items-center gap-1">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
@@ -169,7 +169,7 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
       {/* Match % + Compare button */}
       {matchPct !== null && (
         <div className="mb-2 flex items-center justify-between text-[11px]">
-          <span className="text-[var(--codex-faint)]">Match with you</span>
+          <span className="text-[var(--poli-faint)]">Match with you</span>
           <span
             className="font-semibold"
             style={{
@@ -182,7 +182,7 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
       )}
       <Link
         href={`/compare/users?them=${anonymousId}`}
-        className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--codex-border)] px-3 py-2 text-[12px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-blue-500/50 hover:text-blue-400"
+        className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-blue-500/50 hover:text-blue-400"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <line x1="18" y1="20" x2="18" y2="10" />

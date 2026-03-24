@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        codex: {
+        poli: {
           bg: '#050505',
           card: '#0A0A0A',
           'bg-light': '#FAFAF8',

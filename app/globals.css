@@ -30,23 +30,23 @@
     --ring: 0 0% 50%;
     --radius: 0.5rem;
 
-    /* Codex brand tokens */
-    --codex-bg: #FFFFFF;
-    --codex-surface: #F9FAFB;
-    --codex-card: #FFFFFF;
-    --codex-border: #E5E7EB;
-    --codex-hover: #F3F4F6;
-    --codex-text: #111827;
-    --codex-sub: #6B7280;
-    --codex-faint: #9CA3AF;
-    --codex-subtle: #6B7280;
-    --codex-input-bg: #FFFFFF;
-    --codex-input-border: #D1D5DB;
-    --codex-input-focus: #2563EB;
-    --codex-overlay: rgba(0, 0, 0, 0.25);
-    --codex-badge-bg: #F3F4F6;
-    --codex-badge-text: #6B7280;
-    --codex-grid-opacity: 0.04;
+    /* Poli brand tokens */
+    --poli-bg: #FFFFFF;
+    --poli-surface: #F9FAFB;
+    --poli-card: #FFFFFF;
+    --poli-border: #E5E7EB;
+    --poli-hover: #F3F4F6;
+    --poli-text: #111827;
+    --poli-sub: #6B7280;
+    --poli-faint: #9CA3AF;
+    --poli-subtle: #6B7280;
+    --poli-input-bg: #FFFFFF;
+    --poli-input-border: #D1D5DB;
+    --poli-input-focus: #2563EB;
+    --poli-overlay: rgba(0, 0, 0, 0.25);
+    --poli-badge-bg: #F3F4F6;
+    --poli-badge-text: #6B7280;
+    --poli-grid-opacity: 0.04;
 
     /* Party colors */
     --party-dem: #2563EB;
@@ -72,7 +72,7 @@
   }
 
   body {
-    @apply bg-[var(--codex-bg)] text-[var(--codex-text)] antialiased;
+    @apply bg-[var(--poli-bg)] text-[var(--poli-text)] antialiased;
     font-family: var(--font-sans);
     padding-top: var(--safe-top);
     padding-left: var(--safe-left);
@@ -106,22 +106,22 @@
   --input: 0 0% 12%;
   --ring: 0 0% 45%;
 
-  --codex-bg: #0F172A;
-  --codex-surface: #1E293B;
-  --codex-card: #1E293B;
-  --codex-border: #334155;
-  --codex-hover: #334155;
-  --codex-text: #F1F5F9;
-  --codex-sub: #94A3B8;
-  --codex-faint: #64748B;
-  --codex-subtle: #94A3B8;
-  --codex-input-bg: #1E293B;
-  --codex-input-border: #475569;
-  --codex-input-focus: #3B82F6;
-  --codex-overlay: rgba(0, 0, 0, 0.7);
-  --codex-badge-bg: #334155;
-  --codex-badge-text: #94A3B8;
-  --codex-grid-opacity: 0.025;
+  --poli-bg: #0F172A;
+  --poli-surface: #1E293B;
+  --poli-card: #1E293B;
+  --poli-border: #334155;
+  --poli-hover: #334155;
+  --poli-text: #F1F5F9;
+  --poli-sub: #94A3B8;
+  --poli-faint: #64748B;
+  --poli-subtle: #94A3B8;
+  --poli-input-bg: #1E293B;
+  --poli-input-border: #475569;
+  --poli-input-focus: #3B82F6;
+  --poli-overlay: rgba(0, 0, 0, 0.7);
+  --poli-badge-bg: #334155;
+  --poli-badge-text: #94A3B8;
+  --poli-grid-opacity: 0.025;
 }
 
 :root.dark ::selection {
@@ -130,7 +130,7 @@
 
 /* Focus styles for keyboard navigation */
 :focus-visible {
-  outline: 2px solid var(--codex-input-focus);
+  outline: 2px solid var(--poli-input-focus);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -168,7 +168,7 @@ html {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--codex-border);
+  background: var(--poli-border);
   border-radius: 2px;
 }
 
@@ -176,17 +176,17 @@ html {
 @media print {
   /* Force light theme for print */
   :root, :root.dark {
-    --codex-bg: #ffffff;
-    --codex-surface: #f9fafb;
-    --codex-card: #ffffff;
-    --codex-border: #d1d5db;
-    --codex-hover: #f3f4f6;
-    --codex-text: #111827;
-    --codex-sub: #4b5563;
-    --codex-faint: #6b7280;
-    --codex-badge-bg: #f3f4f6;
-    --codex-badge-text: #4b5563;
-    --codex-input-bg: #ffffff;
+    --poli-bg: #ffffff;
+    --poli-surface: #f9fafb;
+    --poli-card: #ffffff;
+    --poli-border: #d1d5db;
+    --poli-hover: #f3f4f6;
+    --poli-text: #111827;
+    --poli-sub: #4b5563;
+    --poli-faint: #6b7280;
+    --poli-badge-bg: #f3f4f6;
+    --poli-badge-text: #4b5563;
+    --poli-input-bg: #ffffff;
   }
 
   body {

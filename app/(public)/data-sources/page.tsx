@@ -195,10 +195,10 @@ export default function DataSourcesPage() {
     <>
       <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <h1 className="mb-2 text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--codex-text)]">
+        <h1 className="mb-2 text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--poli-text)]">
           Data Sources & Disclaimer
         </h1>
-        <p className="mb-10 max-w-2xl text-[14px] leading-relaxed text-[var(--codex-sub)]">
+        <p className="mb-10 max-w-2xl text-[14px] leading-relaxed text-[var(--poli-sub)]">
           Poli is committed to transparency — not just about politicians, but about where our
           information comes from. Below is a complete list of the public data sources we use to
           compile the information on this platform.
@@ -208,17 +208,17 @@ export default function DataSourcesPage() {
         <div className="space-y-10">
           {SOURCES.map((section) => (
             <div key={section.category}>
-              <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+              <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
                 {section.category}
               </h2>
               <div className="space-y-3">
                 {section.items.map((item) => (
                   <div
                     key={item.name}
-                    className="rounded-lg border border-[var(--codex-border)] p-4"
+                    className="rounded-lg border border-[var(--poli-border)] p-4"
                   >
                     <div className="flex items-center gap-2">
-                      <h3 className="text-[14px] font-semibold text-[var(--codex-text)]">
+                      <h3 className="text-[14px] font-semibold text-[var(--poli-text)]">
                         {item.name}
                       </h3>
                       {item.url && (
@@ -232,7 +232,7 @@ export default function DataSourcesPage() {
                         </a>
                       )}
                     </div>
-                    <p className="mt-1 text-[13px] leading-relaxed text-[var(--codex-sub)]">
+                    <p className="mt-1 text-[13px] leading-relaxed text-[var(--poli-sub)]">
                       {item.description}
                     </p>
                   </div>
@@ -243,13 +243,13 @@ export default function DataSourcesPage() {
         </div>
 
         {/* Legal Disclaimer */}
-        <div className="mt-14 rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-6">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="mt-14 rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-6">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Legal Disclaimer
           </h2>
-          <div className="space-y-4 text-[13px] leading-relaxed text-[var(--codex-sub)]">
+          <div className="space-y-4 text-[13px] leading-relaxed text-[var(--poli-sub)]">
             <p>
-              <strong className="text-[var(--codex-text)]">Accuracy.</strong>{' '}Poli strives
+              <strong className="text-[var(--poli-text)]">Accuracy.</strong>{' '}Poli strives
               for accuracy but makes no warranties or guarantees regarding the completeness,
               reliability, or currentness of any information presented on this platform. Political
               positions, voting records, and other data may change at any time. Information marked
@@ -257,32 +257,32 @@ export default function DataSourcesPage() {
               individually verified.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">Not Legal or Political Advice.</strong>{' '}
+              <strong className="text-[var(--poli-text)]">Not Legal or Political Advice.</strong>{' '}
               The information on Poli is provided for educational and informational purposes only.
               It does not constitute legal, political, or professional advice. Users should
               independently verify any information before relying on it for voting decisions or
               other purposes.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">Independence.</strong>{' '}Poli is an
+              <strong className="text-[var(--poli-text)]">Independence.</strong>{' '}Poli is an
               independent civic education platform. We are not affiliated with, endorsed by, or
               funded by any political party, political action committee (PAC), campaign, government
               agency, or elected official. We do not endorse any candidate or political position.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">Public Data.</strong>{' '}All information
+              <strong className="text-[var(--poli-text)]">Public Data.</strong>{' '}All information
               presented on this platform is compiled from publicly available sources as listed
               above. We respect all applicable intellectual property rights and use data in
               accordance with fair use principles and applicable terms of service.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">User Contributions.</strong>{' '}Community
+              <strong className="text-[var(--poli-text)]">User Contributions.</strong>{' '}Community
               annotations and corrections submitted by users reflect the views of their authors,
               not the views of Poli. User-submitted content is reviewed before publication but
               Poli does not guarantee its accuracy.
             </p>
             <p>
-              <strong className="text-[var(--codex-text)]">Contact.</strong>{' '}If you believe any
+              <strong className="text-[var(--poli-text)]">Contact.</strong>{' '}If you believe any
               information on Poli is inaccurate or if you are an elected official and would like
               to update your information, please contact us. We are committed to correcting errors
               promptly.
@@ -290,7 +290,7 @@ export default function DataSourcesPage() {
           </div>
         </div>
 
-        <p className="mt-8 text-center text-[12px] text-[var(--codex-faint)]">
+        <p className="mt-8 text-center text-[12px] text-[var(--poli-faint)]">
           Last updated: March 2026
         </p>
 

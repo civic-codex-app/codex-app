@@ -31,11 +31,11 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
   const maxRaised = Math.max(...records.map((r) => r.total_raised ?? 0), 1)
 
   return (
-    <div className="mt-8 border-t border-[var(--codex-border)] pt-6">
-      <h2 className="mb-1 text-sm font-semibold text-[var(--codex-sub)]">
+    <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
+      <h2 className="mb-1 text-sm font-semibold text-[var(--poli-sub)]">
         Campaign Finance
       </h2>
-      <p className="mb-4 text-[11px] text-[var(--codex-faint)]">
+      <p className="mb-4 text-[11px] text-[var(--poli-faint)]">
         Fundraising and spending data by election cycle
       </p>
 
@@ -48,14 +48,14 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
           return (
             <div
               key={r.id}
-              className="rounded-md border border-[var(--codex-border)] p-4"
+              className="rounded-md border border-[var(--poli-border)] p-4"
             >
               <div className="mb-3 flex items-center justify-between">
-                <span className="rounded-sm bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-badge-text)]">
+                <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
                   {r.cycle} Cycle
                 </span>
                 {r.source && (
-                  <span className="text-[11px] text-[var(--codex-faint)]">
+                  <span className="text-[11px] text-[var(--poli-faint)]">
                     Source: {r.source}
                   </span>
                 )}
@@ -64,14 +64,14 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
               {/* Raised bar */}
               <div className="mb-3">
                 <div className="mb-1 flex items-baseline justify-between">
-                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">
                     Total Raised
                   </span>
                   <span className="text-lg font-semibold" style={{ color }}>
                     {formatMoney(r.total_raised)}
                   </span>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                <div className="h-2 overflow-hidden rounded-full bg-[var(--poli-border)]">
                   <div
                     className="h-full rounded-full transition-all"
                     style={{
@@ -85,15 +85,15 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
               {/* Spent bar (nested inside raised) */}
               <div className="mb-3">
                 <div className="mb-1 flex items-baseline justify-between">
-                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">
                     Total Spent
                   </span>
-                  <span className="text-[13px] text-[var(--codex-sub)]">
+                  <span className="text-[13px] text-[var(--poli-sub)]">
                     {formatMoney(r.total_spent)}
-                    <span className="ml-1 text-[11px] text-[var(--codex-faint)]">({spentPct}%)</span>
+                    <span className="ml-1 text-[11px] text-[var(--poli-faint)]">({spentPct}%)</span>
                   </span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-[var(--codex-border)]">
+                <div className="h-1.5 overflow-hidden rounded-full bg-[var(--poli-border)]">
                   <div
                     className="h-full rounded-full"
                     style={{
@@ -106,11 +106,11 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
 
               {/* Cash on hand */}
               {r.cash_on_hand !== null && (
-                <div className="flex items-baseline justify-between border-t border-[var(--codex-border)] pt-2">
-                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)]">
+                <div className="flex items-baseline justify-between border-t border-[var(--poli-border)] pt-2">
+                  <span className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">
                     Cash on Hand
                   </span>
-                  <span className="text-base font-semibold text-[var(--codex-text)]">
+                  <span className="text-base font-semibold text-[var(--poli-text)]">
                     {formatMoney(r.cash_on_hand)}
                   </span>
                 </div>

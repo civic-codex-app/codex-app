@@ -92,7 +92,7 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
   if (!loaded) {
     return (
       <div className="py-20 text-center">
-        <div className="h-4 w-48 mx-auto animate-pulse rounded bg-[var(--codex-border)]" />
+        <div className="h-4 w-48 mx-auto animate-pulse rounded bg-[var(--poli-border)]" />
       </div>
     )
   }
@@ -108,10 +108,10 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
         </div>
-        <h2 className="mb-2 text-xl font-bold text-[var(--codex-text)]">
+        <h2 className="mb-2 text-xl font-bold text-[var(--poli-text)]">
           Take the quiz first
         </h2>
-        <p className="mx-auto mb-5 max-w-[360px] text-[13px] text-[var(--codex-sub)]">
+        <p className="mx-auto mb-5 max-w-[360px] text-[13px] text-[var(--poli-sub)]">
           Answer a few questions about your political views, then come back to see
           how you compare with Voter #{displayIdThem}.
         </p>
@@ -145,16 +145,16 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
 
       {/* Agreement meter */}
       {total > 0 && (
-        <div className="mb-8 rounded-md border border-[var(--codex-border)] p-5">
+        <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-semibold text-[var(--codex-sub)]">
+            <span className="text-sm font-semibold text-[var(--poli-sub)]">
               Issue Agreement
             </span>
             <span className="text-xl font-semibold">
               {agreePct}%
             </span>
           </div>
-          <div className="mb-2 flex h-3 overflow-hidden rounded-full bg-[var(--codex-border)]">
+          <div className="mb-2 flex h-3 overflow-hidden rounded-full bg-[var(--poli-border)]">
             <div
               className="rounded-l-full transition-all"
               style={{
@@ -180,12 +180,12 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
       {/* Issue-by-issue comparison */}
       {comparableIssues.length > 0 && (
         <div>
-          <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+          <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
             Issue Positions
           </h2>
           <div className="space-y-1">
             {/* Header */}
-            <div className="hidden gap-2 px-4 pb-2 text-[11px] uppercase tracking-[0.08em] text-[var(--codex-faint)] sm:grid sm:grid-cols-[1fr_140px_140px]">
+            <div className="hidden gap-2 px-4 pb-2 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)] sm:grid sm:grid-cols-[1fr_140px_140px]">
               <span>Issue</span>
               <span className="text-center">{meProp ? `#${displayIdMe}` : 'You'}</span>
               <span className="text-center">#{displayIdThem}</span>
@@ -207,7 +207,7 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
                   {/* Issue name */}
                   <div className="flex items-center gap-2.5">
                     <IssueIcon icon={issue.icon} size={16} />
-                    <span className="text-[13px] font-medium text-[var(--codex-text)]">
+                    <span className="text-[13px] font-medium text-[var(--poli-text)]">
                       {issue.name}
                     </span>
                     {match && (
@@ -235,7 +235,7 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
 
       {/* Issues only one has answered */}
       {Array.from(allSlugs).filter((s) => !myStances[s] || !theirStances[s]).length > 0 && (
-        <p className="mt-6 text-center text-[11px] text-[var(--codex-faint)]">
+        <p className="mt-6 text-center text-[11px] text-[var(--poli-faint)]">
           {Array.from(allSlugs).filter((s) => !myStances[s] || !theirStances[s]).length} issues
           were only answered by one voter and are not shown above.
         </p>
@@ -261,12 +261,12 @@ function ProfileHeader({
   const neutral = total - supports - opposes
 
   return (
-    <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
+    <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
       <div className="mx-auto mb-2 flex justify-center">
         <StanceAvatar supports={supports} opposes={opposes} neutral={neutral} total={total} size={48} seed={seed} />
       </div>
-      <div className="mb-1 text-[14px] font-semibold text-[var(--codex-text)]">{label}</div>
-      <div className="text-[11px] text-[var(--codex-faint)]">
+      <div className="mb-1 text-[14px] font-semibold text-[var(--poli-text)]">{label}</div>
+      <div className="text-[11px] text-[var(--poli-faint)]">
         {total} issues | {supports} support | {opposes} oppose
       </div>
     </div>

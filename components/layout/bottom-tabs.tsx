@@ -114,8 +114,8 @@ export function BottomTabs() {
           className="fixed left-0 right-0 z-50 rounded-t-xl border-t sm:hidden"
           style={{
             bottom: 'calc(56px + var(--safe-bottom, 0px))',
-            backgroundColor: 'var(--codex-bg)',
-            borderColor: 'var(--codex-border)',
+            backgroundColor: 'var(--poli-bg)',
+            borderColor: 'var(--poli-border)',
             padding: '12px 16px',
             maxHeight: '60vh',
             overflowY: 'auto',
@@ -128,14 +128,14 @@ export function BottomTabs() {
                 key={link.href}
                 href={link.href}
                 onClick={closeMore}
-                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
               >
                 {link.label}
               </Link>
             ))}
 
             {/* Divider */}
-            <div className="my-1 border-t border-[var(--codex-border)]" />
+            <div className="my-1 border-t border-[var(--poli-border)]" />
 
             {/* Auth-dependent links */}
             {isLoggedIn ? (
@@ -145,7 +145,7 @@ export function BottomTabs() {
                     key={link.href}
                     href={link.href}
                     onClick={closeMore}
-                    className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                    className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
                   >
                     {link.label}
                   </Link>
@@ -153,7 +153,7 @@ export function BottomTabs() {
                 <form action="/api/auth/signout" method="POST">
                   <button
                     type="submit"
-                    className="block w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-red-500 transition-colors hover:bg-[var(--codex-hover)]"
+                    className="block w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-red-500 transition-colors hover:bg-[var(--poli-hover)]"
                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                   >
                     Sign Out
@@ -164,7 +164,7 @@ export function BottomTabs() {
               <Link
                 href="/login"
                 onClick={closeMore}
-                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--codex-text)] no-underline transition-colors hover:bg-[var(--codex-hover)]"
+                className="block rounded-lg px-4 py-3 text-sm font-medium text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
               >
                 Sign In
               </Link>
@@ -177,8 +177,8 @@ export function BottomTabs() {
       <nav
         className="fixed bottom-0 left-0 right-0 z-40 sm:hidden"
         style={{
-          backgroundColor: 'var(--codex-bg)',
-          borderTop: '1px solid var(--codex-border)',
+          backgroundColor: 'var(--poli-bg)',
+          borderTop: '1px solid var(--poli-border)',
           paddingBottom: 'var(--safe-bottom, 0px)',
         }}
         aria-label="Mobile navigation"
@@ -203,7 +203,7 @@ export function BottomTabs() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '2px',
-                  color: isActive ? 'var(--codex-text)' : 'var(--codex-faint)',
+                  color: isActive ? 'var(--poli-text)' : 'var(--poli-faint)',
                 }}
               >
                 {tab.icon}
@@ -211,7 +211,7 @@ export function BottomTabs() {
                 {/* Active dot indicator */}
                 {isActive && (
                   <span
-                    className="rounded-full bg-[var(--codex-text)]"
+                    className="rounded-full bg-[var(--poli-text)]"
                     style={{ width: '4px', height: '4px', marginTop: '-1px' }}
                   />
                 )}
@@ -234,7 +234,7 @@ export function BottomTabs() {
               background: 'none',
               padding: 0,
               cursor: 'pointer',
-              color: moreOpen ? 'var(--codex-text)' : 'var(--codex-faint)',
+              color: moreOpen ? 'var(--poli-text)' : 'var(--poli-faint)',
               WebkitAppearance: 'none',
             }}
             aria-label="More navigation options"
@@ -257,7 +257,7 @@ export function BottomTabs() {
             <span className="text-xs font-medium">More</span>
             {moreOpen && (
               <span
-                className="rounded-full bg-[var(--codex-text)]"
+                className="rounded-full bg-[var(--poli-text)]"
                 style={{ width: '4px', height: '4px', marginTop: '-1px' }}
               />
             )}

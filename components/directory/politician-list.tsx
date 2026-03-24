@@ -22,14 +22,14 @@ interface PoliticianListProps {
 
 function SkeletonCard() {
   return (
-    <div className="grid grid-cols-[48px_1fr_auto] items-center gap-3 border-b border-[var(--codex-border)] px-3 py-[14px] sm:grid-cols-[56px_1fr_auto] sm:gap-4 sm:py-[18px]">
-      <div className="h-12 w-12 animate-pulse rounded-full bg-[var(--codex-border)] sm:h-14 sm:w-14" />
+    <div className="grid grid-cols-[48px_1fr_auto] items-center gap-3 border-b border-[var(--poli-border)] px-3 py-[14px] sm:grid-cols-[56px_1fr_auto] sm:gap-4 sm:py-[18px]">
+      <div className="h-12 w-12 animate-pulse rounded-full bg-[var(--poli-border)] sm:h-14 sm:w-14" />
       <div className="space-y-2">
-        <div className="h-4 w-32 animate-pulse rounded bg-[var(--codex-border)]" />
-        <div className="h-3 w-48 animate-pulse rounded bg-[var(--codex-border)]" />
-        <div className="h-1.5 w-16 animate-pulse rounded-full bg-[var(--codex-border)]" />
+        <div className="h-4 w-32 animate-pulse rounded bg-[var(--poli-border)]" />
+        <div className="h-3 w-48 animate-pulse rounded bg-[var(--poli-border)]" />
+        <div className="h-1.5 w-16 animate-pulse rounded-full bg-[var(--poli-border)]" />
       </div>
-      <div className="h-4 w-4 animate-pulse rounded bg-[var(--codex-border)]" />
+      <div className="h-4 w-4 animate-pulse rounded bg-[var(--poli-border)]" />
     </div>
   )
 }
@@ -136,7 +136,7 @@ export function PoliticianList({
       })}
 
       {politicians.length === 0 && (
-        <div className="py-20 text-center text-[var(--codex-faint)]">
+        <div className="py-20 text-center text-[var(--poli-faint)]">
           <div className="mb-2 text-2xl font-bold">No results</div>
           <div className="text-sm">Try adjusting your filters or search query</div>
         </div>
@@ -152,29 +152,29 @@ export function PoliticianList({
       )}
       {isMobile && hasMore && !loading && <div ref={sentinelRef} className="h-1" />}
       {isMobile && !hasMore && politicians.length > 0 && (
-        <div className="py-8 text-center text-[12px] text-[var(--codex-faint)]">
+        <div className="py-8 text-center text-[12px] text-[var(--poli-faint)]">
           Showing all {totalCount.toLocaleString()} officials
         </div>
       )}
 
       {/* Desktop: pagination */}
       {!isMobile && totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 border-t border-[var(--codex-border)] py-8">
+        <div className="flex items-center justify-center gap-2 border-t border-[var(--poli-border)] py-8">
           {currentPage > 1 && (
             <Link
               href={pageUrl(currentPage - 1)}
-              className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+              className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[13px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
             >
               &larr; Prev
             </Link>
           )}
-          <span className="px-3 text-[13px] tabular-nums text-[var(--codex-faint)]">
+          <span className="px-3 text-[13px] tabular-nums text-[var(--poli-faint)]">
             Page {currentPage} of {totalPages}
           </span>
           {currentPage < totalPages && (
             <Link
               href={pageUrl(currentPage + 1)}
-              className="rounded-md border border-[var(--codex-border)] px-3 py-1.5 text-[13px] text-[var(--codex-sub)] transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+              className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[13px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
             >
               Next &rarr;
             </Link>

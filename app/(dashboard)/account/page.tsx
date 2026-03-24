@@ -22,40 +22,40 @@ export default async function AccountPage() {
   return (
     <div className="max-w-2xl">
       <h1 className="mb-2 text-3xl font-bold">Account</h1>
-      <p className="mb-10 text-sm text-[var(--codex-sub)]">
+      <p className="mb-10 text-sm text-[var(--poli-sub)]">
         Manage your profile and settings
       </p>
 
       <div className="mb-10">
-        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
           Profile
         </h2>
         <AccountForm profile={profile} />
       </div>
 
       <div className="mb-10">
-        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
           Community
         </h2>
         <SharingToggle />
       </div>
 
       <div className="mb-10">
-        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
           Notification Preferences
         </h2>
         <NotificationPreferences profileId={user!.id} />
       </div>
 
       <div className="mb-10">
-        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
           Change Password
         </h2>
         <ChangePasswordForm />
       </div>
 
       <div>
-        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
           Danger Zone
         </h2>
         <DeleteAccount />

@@ -14,13 +14,13 @@ export default function SuggestPoliticianPage() {
     <>
       <Header />
       <div className="mx-auto max-w-[600px] px-6 pt-6 pb-16 md:px-10">
-        <Link href="/contribute" className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--codex-sub)] transition-colors hover:text-[var(--codex-text)]">
+        <Link href="/contribute" className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]">
           &larr; Contribute
         </Link>
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Suggest a Politician
         </h1>
-        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+        <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
           Know an elected official we&apos;re missing? Tell us who to add.
         </p>
 

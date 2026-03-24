@@ -92,31 +92,31 @@ export function NotificationPreferences({ profileId }: { profileId: string }) {
 
   if (loading) {
     return (
-      <div className="rounded-md border border-[var(--codex-border)] px-6 py-6">
-        <p className="text-sm text-[var(--codex-faint)]">Loading preferences...</p>
+      <div className="rounded-md border border-[var(--poli-border)] px-6 py-6">
+        <p className="text-sm text-[var(--poli-faint)]">Loading preferences...</p>
       </div>
     )
   }
 
   return (
-    <div className="rounded-md border border-[var(--codex-border)]">
+    <div className="rounded-md border border-[var(--poli-border)]">
       {error && (
         <div className="border-b border-red-500/20 bg-red-500/5 px-4 py-2 text-sm text-red-400">
           {error}
         </div>
       )}
 
-      <div className="divide-y divide-[var(--codex-border)]">
+      <div className="divide-y divide-[var(--poli-border)]">
         {PREF_OPTIONS.map((opt) => (
           <div
             key={opt.key}
             className="flex items-center justify-between px-5 py-4"
           >
             <div className="min-w-0 flex-1 pr-4">
-              <div className="text-sm font-medium text-[var(--codex-text)]">
+              <div className="text-sm font-medium text-[var(--poli-text)]">
                 {opt.label}
               </div>
-              <div className="mt-0.5 text-xs text-[var(--codex-sub)]">
+              <div className="mt-0.5 text-xs text-[var(--poli-sub)]">
                 {opt.description}
               </div>
             </div>
@@ -129,11 +129,11 @@ export function NotificationPreferences({ profileId }: { profileId: string }) {
               aria-label={`${opt.label} ${prefs[opt.key] ? 'enabled' : 'disabled'}`}
               disabled={saving}
               onClick={() => handleToggle(opt.key)}
-              className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--codex-text)] focus:ring-offset-2 focus:ring-offset-[var(--codex-bg)] disabled:opacity-50"
+              className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[var(--poli-text)] focus:ring-offset-2 focus:ring-offset-[var(--poli-bg)] disabled:opacity-50"
               style={{
                 backgroundColor: prefs[opt.key]
                   ? '#10B981'
-                  : 'var(--codex-border)',
+                  : 'var(--poli-border)',
               }}
             >
               <span
@@ -150,8 +150,8 @@ export function NotificationPreferences({ profileId }: { profileId: string }) {
       </div>
 
       {/* Status footer */}
-      <div className="border-t border-[var(--codex-border)] px-5 py-3">
-        <p className="text-[11px] text-[var(--codex-faint)]">
+      <div className="border-t border-[var(--poli-border)] px-5 py-3">
+        <p className="text-[11px] text-[var(--poli-faint)]">
           {saved
             ? 'Preferences saved'
             : 'Notification delivery coming soon. Your preferences will be ready when it launches.'}

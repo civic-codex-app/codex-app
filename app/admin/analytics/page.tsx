@@ -149,7 +149,7 @@ function Sparkline({ data, color = '#3B82F6' }: { data: number[]; color?: string
 
 /** Bar chart for quiz funnel */
 function FunnelBar({ stages }: { stages: QuizStage[] }) {
-  if (stages.length === 0) return <p className="text-[13px] text-[var(--codex-faint)]">No quiz data yet</p>
+  if (stages.length === 0) return <p className="text-[13px] text-[var(--poli-faint)]">No quiz data yet</p>
   const max = Math.max(...stages.map(s => s.user_count), 1)
 
   const labels: Record<string, string> = {
@@ -166,10 +166,10 @@ function FunnelBar({ stages }: { stages: QuizStage[] }) {
         return (
           <div key={s.stage}>
             <div className="mb-1 flex items-center justify-between text-[12px]">
-              <span className="text-[var(--codex-sub)]">{labels[s.stage] ?? s.stage}</span>
-              <span className="font-medium text-[var(--codex-text)]">{s.user_count}</span>
+              <span className="text-[var(--poli-sub)]">{labels[s.stage] ?? s.stage}</span>
+              <span className="font-medium text-[var(--poli-text)]">{s.user_count}</span>
             </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+            <div className="h-2 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
               <div
                 className="h-full rounded-full transition-all duration-500"
                 style={{
@@ -220,7 +220,7 @@ export default function AdminAnalyticsPage() {
   if (loading && !data) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--codex-text)] border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--poli-text)] border-t-transparent" />
       </div>
     )
   }
@@ -229,7 +229,7 @@ export default function AdminAnalyticsPage() {
     return (
       <div className="py-20 text-center">
         <p className="text-[14px] text-red-400">{error}</p>
-        <button onClick={() => fetchData(days)} className="mt-4 text-[13px] text-[var(--codex-sub)] underline">
+        <button onClick={() => fetchData(days)} className="mt-4 text-[13px] text-[var(--poli-sub)] underline">
           Retry
         </button>
       </div>
@@ -245,20 +245,20 @@ export default function AdminAnalyticsPage() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--codex-text)]">Analytics</h1>
-          <p className="mt-1 text-sm text-[var(--codex-sub)]">
+          <h1 className="text-3xl font-bold text-[var(--poli-text)]">Analytics</h1>
+          <p className="mt-1 text-sm text-[var(--poli-sub)]">
             User activity and engagement tracking
           </p>
         </div>
-        <div className="flex items-center gap-1 rounded-lg border border-[var(--codex-border)] bg-[var(--codex-card)] p-1">
+        <div className="flex items-center gap-1 rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-1">
           {PERIODS.map((p) => (
             <button
               key={p.days}
               onClick={() => setDays(p.days)}
               className={`rounded-md px-3 py-1.5 text-[12px] font-medium transition-colors ${
                 days === p.days
-                  ? 'bg-[var(--codex-badge-bg)] text-[var(--codex-text)]'
-                  : 'text-[var(--codex-sub)] hover:text-[var(--codex-text)]'
+                  ? 'bg-[var(--poli-badge-bg)] text-[var(--poli-text)]'
+                  : 'text-[var(--poli-sub)] hover:text-[var(--poli-text)]'
               }`}
               style={{ border: 'none', cursor: 'pointer' }}
             >
@@ -278,9 +278,9 @@ export default function AdminAnalyticsPage() {
         ].map((card) => (
           <div
             key={card.label}
-            className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5"
+            className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5"
           >
-            <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--codex-sub)]">
+            <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.1em] text-[var(--poli-sub)]">
               {card.label}
             </div>
             <div className="text-3xl font-bold" style={{ color: card.color }}>
@@ -292,8 +292,8 @@ export default function AdminAnalyticsPage() {
 
       {/* Daily Activity Chart */}
       {dailyUsers.length > 0 && (
-        <div className="mb-8 rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="mb-8 rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Daily Activity
           </h2>
           <DailyChart data={dailyUsers} />
@@ -303,8 +303,8 @@ export default function AdminAnalyticsPage() {
       {/* Two-column grid */}
       <div className="mb-8 grid gap-6 lg:grid-cols-2">
         {/* Top Events */}
-        <div className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Top Events
           </h2>
           <div className="space-y-2">
@@ -315,12 +315,12 @@ export default function AdminAnalyticsPage() {
                 <div key={e.event_name} className="flex items-center gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between text-[13px]">
-                      <span className="truncate text-[var(--codex-text)]">{formatEventName(e.event_name)}</span>
-                      <span className="ml-2 shrink-0 font-medium tabular-nums text-[var(--codex-sub)]">
+                      <span className="truncate text-[var(--poli-text)]">{formatEventName(e.event_name)}</span>
+                      <span className="ml-2 shrink-0 font-medium tabular-nums text-[var(--poli-sub)]">
                         {formatNumber(e.event_count)}
                       </span>
                     </div>
-                    <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
                       <div
                         className="h-full rounded-full bg-[#3B82F6]"
                         style={{ width: `${pct}%` }}
@@ -331,72 +331,72 @@ export default function AdminAnalyticsPage() {
               )
             })}
             {topEvents.length === 0 && (
-              <p className="text-[13px] text-[var(--codex-faint)]">No events recorded yet</p>
+              <p className="text-[13px] text-[var(--poli-faint)]">No events recorded yet</p>
             )}
           </div>
         </div>
 
         {/* Quiz Funnel */}
-        <div className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Quiz Funnel
           </h2>
           <FunnelBar stages={quizFunnel} />
 
-          <h2 className="mb-3 mt-8 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          <h2 className="mb-3 mt-8 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Top Politicians Viewed
           </h2>
           <div className="space-y-1.5">
             {topPoliticians.slice(0, 8).map((p, i) => (
               <div key={p.slug} className="flex items-center gap-2 text-[13px]">
-                <span className="w-4 shrink-0 text-right text-[var(--codex-faint)]">{i + 1}</span>
+                <span className="w-4 shrink-0 text-right text-[var(--poli-faint)]">{i + 1}</span>
                 <span
                   className="h-2 w-2 shrink-0 rounded-full"
                   style={{ backgroundColor: partyDot(p.party) }}
                 />
-                <span className="min-w-0 flex-1 truncate text-[var(--codex-text)]">
+                <span className="min-w-0 flex-1 truncate text-[var(--poli-text)]">
                   {p.slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                 </span>
-                <span className="shrink-0 tabular-nums text-[var(--codex-sub)]">
+                <span className="shrink-0 tabular-nums text-[var(--poli-sub)]">
                   {formatNumber(p.view_count)}
                 </span>
               </div>
             ))}
             {topPoliticians.length === 0 && (
-              <p className="text-[13px] text-[var(--codex-faint)]">No politician views yet</p>
+              <p className="text-[13px] text-[var(--poli-faint)]">No politician views yet</p>
             )}
           </div>
         </div>
 
         {/* Top Pages */}
-        <div className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Top Pages
           </h2>
           <div className="space-y-1.5">
             {topPages.slice(0, 12).map((p, i) => (
               <div key={p.page_path} className="flex items-center gap-2 text-[13px]">
-                <span className="w-4 shrink-0 text-right text-[var(--codex-faint)]">{i + 1}</span>
-                <span className="min-w-0 flex-1 truncate font-mono text-[12px] text-[var(--codex-text)]">
+                <span className="w-4 shrink-0 text-right text-[var(--poli-faint)]">{i + 1}</span>
+                <span className="min-w-0 flex-1 truncate font-mono text-[12px] text-[var(--poli-text)]">
                   {p.page_path}
                 </span>
-                <span className="shrink-0 tabular-nums text-[var(--codex-sub)]">
+                <span className="shrink-0 tabular-nums text-[var(--poli-sub)]">
                   {formatNumber(p.view_count)}
                 </span>
-                <span className="shrink-0 text-[11px] text-[var(--codex-faint)]">
+                <span className="shrink-0 text-[11px] text-[var(--poli-faint)]">
                   ({p.unique_users} unique)
                 </span>
               </div>
             ))}
             {topPages.length === 0 && (
-              <p className="text-[13px] text-[var(--codex-faint)]">No page views yet</p>
+              <p className="text-[13px] text-[var(--poli-faint)]">No page views yet</p>
             )}
           </div>
         </div>
 
         {/* Top Cities */}
-        <div className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+        <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Visitor Locations
           </h2>
           <div className="space-y-1.5">
@@ -405,13 +405,13 @@ export default function AdminAnalyticsPage() {
               const pct = (c.count / maxCount) * 100
               return (
                 <div key={c.city} className="flex items-center gap-2 text-[13px]">
-                  <span className="w-4 shrink-0 text-right text-[var(--codex-faint)]">{i + 1}</span>
+                  <span className="w-4 shrink-0 text-right text-[var(--poli-faint)]">{i + 1}</span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between">
-                      <span className="truncate text-[var(--codex-text)]">{c.city}</span>
-                      <span className="ml-2 shrink-0 tabular-nums text-[var(--codex-sub)]">{c.count}</span>
+                      <span className="truncate text-[var(--poli-text)]">{c.city}</span>
+                      <span className="ml-2 shrink-0 tabular-nums text-[var(--poli-sub)]">{c.count}</span>
                     </div>
-                    <div className="mt-0.5 h-1 w-full overflow-hidden rounded-full bg-[var(--codex-border)]">
+                    <div className="mt-0.5 h-1 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
                       <div
                         className="h-full rounded-full bg-[#22C55E]"
                         style={{ width: `${pct}%` }}
@@ -422,18 +422,18 @@ export default function AdminAnalyticsPage() {
               )
             })}
             {topCities.length === 0 && (
-              <p className="text-[13px] text-[var(--codex-faint)]">No location data yet (available on deployed app)</p>
+              <p className="text-[13px] text-[var(--poli-faint)]">No location data yet (available on deployed app)</p>
             )}
           </div>
         </div>
 
         {/* Live Feed / Searches Toggle */}
-        <div className="rounded-xl border border-[var(--codex-border)] bg-[var(--codex-card)] p-5">
+        <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
           <div className="mb-4 flex items-center gap-4">
             <button
               onClick={() => setLiveTab('activity')}
               className={`text-[12px] font-medium uppercase tracking-[0.15em] transition-colors ${
-                liveTab === 'activity' ? 'text-[var(--codex-text)]' : 'text-[var(--codex-faint)]'
+                liveTab === 'activity' ? 'text-[var(--poli-text)]' : 'text-[var(--poli-faint)]'
               }`}
               style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}
             >
@@ -442,7 +442,7 @@ export default function AdminAnalyticsPage() {
             <button
               onClick={() => setLiveTab('searches')}
               className={`text-[12px] font-medium uppercase tracking-[0.15em] transition-colors ${
-                liveTab === 'searches' ? 'text-[var(--codex-text)]' : 'text-[var(--codex-faint)]'
+                liveTab === 'searches' ? 'text-[var(--poli-text)]' : 'text-[var(--poli-faint)]'
               }`}
               style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}
             >
@@ -453,59 +453,59 @@ export default function AdminAnalyticsPage() {
           {liveTab === 'activity' ? (
             <div className="max-h-[400px] space-y-1 overflow-y-auto">
               {recentActivity.slice(0, 30).map((e) => (
-                <div key={e.id} className="flex items-start gap-2 rounded-md px-2 py-1.5 text-[12px] hover:bg-[var(--codex-hover)]">
+                <div key={e.id} className="flex items-start gap-2 rounded-md px-2 py-1.5 text-[12px] hover:bg-[var(--poli-hover)]">
                   <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#3B82F6]" />
                   <div className="min-w-0 flex-1">
-                    <span className="font-medium text-[var(--codex-text)]">
+                    <span className="font-medium text-[var(--poli-text)]">
                       {formatEventName(e.event_name)}
                     </span>
                     {e.page_path && (
-                      <span className="ml-1.5 font-mono text-[11px] text-[var(--codex-faint)]">
+                      <span className="ml-1.5 font-mono text-[11px] text-[var(--poli-faint)]">
                         {e.page_path}
                       </span>
                     )}
                     {e.event_data && Object.keys(e.event_data).length > 0 && (
-                      <div className="mt-0.5 text-[11px] text-[var(--codex-faint)]">
+                      <div className="mt-0.5 text-[11px] text-[var(--poli-faint)]">
                         {Object.entries(e.event_data)
                           .filter(([k]) => !k.startsWith('_')) // hide internal geo fields from detail view
                           .slice(0, 3)
                           .map(([k, v]) => (
                           <span key={k} className="mr-2">
-                            {k}: <span className="text-[var(--codex-sub)]">{String(v)}</span>
+                            {k}: <span className="text-[var(--poli-sub)]">{String(v)}</span>
                           </span>
                         ))}
                         {/* Show city inline if available */}
                         {typeof e.event_data._city === 'string' && (
                           <span className="mr-2">
-                            from <span className="text-[var(--codex-sub)]">{e.event_data._city}{typeof e.event_data._region === 'string' ? `, ${e.event_data._region}` : ''}</span>
+                            from <span className="text-[var(--poli-sub)]">{e.event_data._city}{typeof e.event_data._region === 'string' ? `, ${e.event_data._region}` : ''}</span>
                           </span>
                         )}
                       </div>
                     )}
                   </div>
-                  <span className="shrink-0 text-[11px] text-[var(--codex-faint)]">
+                  <span className="shrink-0 text-[11px] text-[var(--poli-faint)]">
                     {timeAgo(e.created_at)}
                   </span>
                 </div>
               ))}
               {recentActivity.length === 0 && (
-                <p className="py-4 text-center text-[13px] text-[var(--codex-faint)]">No activity yet</p>
+                <p className="py-4 text-center text-[13px] text-[var(--poli-faint)]">No activity yet</p>
               )}
             </div>
           ) : (
             <div className="space-y-2">
               {topSearches.slice(0, 15).map((s, i) => (
                 <div key={s.query} className="flex items-center gap-2 text-[13px]">
-                  <span className="w-4 shrink-0 text-right text-[var(--codex-faint)]">{i + 1}</span>
-                  <span className="min-w-0 flex-1 truncate text-[var(--codex-text)]">&ldquo;{s.query}&rdquo;</span>
-                  <span className="shrink-0 tabular-nums text-[var(--codex-sub)]">{s.search_count}x</span>
-                  <span className="shrink-0 text-[11px] text-[var(--codex-faint)]">
+                  <span className="w-4 shrink-0 text-right text-[var(--poli-faint)]">{i + 1}</span>
+                  <span className="min-w-0 flex-1 truncate text-[var(--poli-text)]">&ldquo;{s.query}&rdquo;</span>
+                  <span className="shrink-0 tabular-nums text-[var(--poli-sub)]">{s.search_count}x</span>
+                  <span className="shrink-0 text-[11px] text-[var(--poli-faint)]">
                     avg {s.avg_results ?? 0} results
                   </span>
                 </div>
               ))}
               {topSearches.length === 0 && (
-                <p className="py-4 text-center text-[13px] text-[var(--codex-faint)]">No searches yet</p>
+                <p className="py-4 text-center text-[13px] text-[var(--poli-faint)]">No searches yet</p>
               )}
             </div>
           )}
@@ -542,12 +542,12 @@ function DailyChart({ data }: { data: DailyUser[] }) {
             <line
               x1={padding.left} y1={y}
               x2={w - padding.right} y2={y}
-              stroke="var(--codex-border)" strokeWidth="0.5"
+              stroke="var(--poli-border)" strokeWidth="0.5"
             />
             <text
               x={padding.left - 6} y={y + 3}
               textAnchor="end"
-              fontSize="9" fill="var(--codex-faint)"
+              fontSize="9" fill="var(--poli-faint)"
             >
               {formatNumber(val)}
             </text>
@@ -584,7 +584,7 @@ function DailyChart({ data }: { data: DailyUser[] }) {
                 x={x + barWidth / 2}
                 y={h - 4}
                 textAnchor="middle"
-                fontSize="8" fill="var(--codex-faint)"
+                fontSize="8" fill="var(--poli-faint)"
               >
                 {new Date(d.day).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </text>
@@ -595,9 +595,9 @@ function DailyChart({ data }: { data: DailyUser[] }) {
 
       {/* Legend */}
       <rect x={w - 140} y={4} width={8} height={8} rx={1} fill="#3B82F6" />
-      <text x={w - 128} y={12} fontSize="9" fill="var(--codex-sub)">Logged-in</text>
+      <text x={w - 128} y={12} fontSize="9" fill="var(--poli-sub)">Logged-in</text>
       <rect x={w - 70} y={4} width={8} height={8} rx={1} fill="#3B82F6" opacity={0.25} />
-      <text x={w - 58} y={12} fontSize="9" fill="var(--codex-sub)">Anonymous</text>
+      <text x={w - 58} y={12} fontSize="9" fill="var(--poli-sub)">Anonymous</text>
     </svg>
   )
 }

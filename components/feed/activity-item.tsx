@@ -63,7 +63,7 @@ export function ActivityItem({ type, politician, date, details, isFollowed }: Ac
       {/* Avatar */}
       <Link
         href={`/politicians/${politician.slug}`}
-        className="w-[52px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--codex-card)]"
+        className="w-[52px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--poli-card)]"
       >
         <AvatarImage
           src={politician.image_url}
@@ -82,18 +82,18 @@ export function ActivityItem({ type, politician, date, details, isFollowed }: Ac
             {politician.image_url && <PartyIcon party={politician.party} size={12} />}
             <Link
               href={`/politicians/${politician.slug}`}
-              className="font-semibold text-[var(--codex-text)] no-underline hover:underline"
+              className="font-semibold text-[var(--poli-text)] no-underline hover:underline"
             >
               {politician.name}
             </Link>
           </div>
-          <span className="flex-shrink-0 text-[11px] text-[var(--codex-faint)]">
+          <span className="flex-shrink-0 text-[11px] text-[var(--poli-faint)]">
             {relativeTime(date)}
           </span>
         </div>
 
         {/* Action description */}
-        <div className="mt-1 text-sm text-[var(--codex-sub)]">
+        <div className="mt-1 text-sm text-[var(--poli-sub)]">
           {type === 'vote' && details.kind === 'vote' && (
             <span>
               voted{' '}
@@ -105,7 +105,7 @@ export function ActivityItem({ type, politician, date, details, isFollowed }: Ac
                       ? '#22C55E'
                       : details.vote === 'nay'
                         ? '#EF4444'
-                        : 'var(--codex-sub)',
+                        : 'var(--poli-sub)',
                 }}
               >
                 {details.vote === 'yea'
@@ -120,17 +120,17 @@ export function ActivityItem({ type, politician, date, details, isFollowed }: Ac
               {details.billId ? (
                 <Link
                   href={`/bills/${details.billId}`}
-                  className="text-[var(--codex-text)] no-underline hover:underline"
+                  className="text-[var(--poli-text)] no-underline hover:underline"
                 >
                   {details.billNumber ?? details.billName ?? 'a bill'}
                 </Link>
               ) : (
-                <span className="text-[var(--codex-text)]">
+                <span className="text-[var(--poli-text)]">
                   {details.billNumber ?? details.billName ?? 'a bill'}
                 </span>
               )}
               {details.billNumber && details.billName && (
-                <span className="text-[var(--codex-faint)]"> — {details.billName}</span>
+                <span className="text-[var(--poli-faint)]"> — {details.billName}</span>
               )}
             </span>
           )}
@@ -146,7 +146,7 @@ export function ActivityItem({ type, politician, date, details, isFollowed }: Ac
                   )}
                   <Link
                     href={`/issues/${details.issueSlug}`}
-                    className="text-[var(--codex-text)] no-underline hover:underline"
+                    className="text-[var(--poli-text)] no-underline hover:underline"
                   >
                     {details.issueName}
                   </Link>

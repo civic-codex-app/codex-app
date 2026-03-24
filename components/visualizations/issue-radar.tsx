@@ -87,7 +87,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
       {/* Legend */}
       <div className="mb-4 flex flex-wrap items-center justify-center gap-6">
         <button
-          className="flex items-center gap-2 rounded-sm px-2 py-1 transition-colors hover:bg-[var(--codex-hover)]"
+          className="flex items-center gap-2 rounded-sm px-2 py-1 transition-colors hover:bg-[var(--poli-hover)]"
           onMouseEnter={() => setHoveredPolitician(1)}
           onMouseLeave={() => setHoveredPolitician(null)}
           aria-label={`Highlight ${politician1.name}`}
@@ -98,7 +98,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
           </span>
         </button>
         <button
-          className="flex items-center gap-2 rounded-sm px-2 py-1 transition-colors hover:bg-[var(--codex-hover)]"
+          className="flex items-center gap-2 rounded-sm px-2 py-1 transition-colors hover:bg-[var(--poli-hover)]"
           onMouseEnter={() => setHoveredPolitician(2)}
           onMouseLeave={() => setHoveredPolitician(null)}
           aria-label={`Highlight ${politician2.name}`}
@@ -134,7 +134,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                 key={ring}
                 points={points}
                 fill="none"
-                stroke="var(--codex-border)"
+                stroke="var(--poli-border)"
                 strokeWidth={ring === MAX_VALUE ? 1 : 0.5}
                 opacity={0.6}
               />
@@ -152,7 +152,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                 y1={cy}
                 x2={pt.x}
                 y2={pt.y}
-                stroke="var(--codex-border)"
+                stroke="var(--poli-border)"
                 strokeWidth={isHovered ? 1.5 : 0.5}
                 opacity={isHovered ? 1 : 0.4}
               />
@@ -195,7 +195,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                 cy={pt.y}
                 r={hoveredPolitician === 2 ? 2 : 3.5}
                 fill={color1}
-                stroke="var(--codex-card)"
+                stroke="var(--poli-card)"
                 strokeWidth={1}
                 opacity={hoveredPolitician === 2 ? 0.3 : 1}
                 className="transition-all duration-300"
@@ -215,7 +215,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                 cy={pt.y}
                 r={hoveredPolitician === 1 ? 2 : 3.5}
                 fill={color2}
-                stroke="var(--codex-card)"
+                stroke="var(--poli-card)"
                 strokeWidth={1}
                 opacity={hoveredPolitician === 1 ? 0.3 : 1}
                 className="transition-all duration-300"
@@ -248,7 +248,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                     cx={pt.x}
                     cy={pt.y - 10}
                     r={4}
-                    fill={isHovered ? 'var(--codex-text)' : 'var(--codex-sub)'}
+                    fill={isHovered ? 'var(--poli-text)' : 'var(--poli-sub)'}
                     opacity={0.5}
                     className="pointer-events-none transition-all duration-150"
                   />
@@ -263,7 +263,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                     <div
                       className="flex h-full w-full items-center transition-colors duration-150"
                       style={{
-                        color: isHovered ? 'var(--codex-text)' : 'var(--codex-sub)',
+                        color: isHovered ? 'var(--poli-text)' : 'var(--poli-sub)',
                         justifyContent: textAnchor === 'end' ? 'flex-end' : textAnchor === 'start' ? 'flex-start' : 'center',
                       }}
                     >
@@ -275,7 +275,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                   x={pt.x}
                   y={pt.y + 8}
                   textAnchor={textAnchor}
-                  fill={isHovered ? 'var(--codex-text)' : 'var(--codex-faint)'}
+                  fill={isHovered ? 'var(--poli-text)' : 'var(--poli-faint)'}
                   fontSize={9}
                   fontFamily="var(--font-sans)"
                   style={{ letterSpacing: '0.02em' }}
@@ -293,8 +293,8 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                       width={130}
                       height={32}
                       rx={4}
-                      fill="var(--codex-card)"
-                      stroke="var(--codex-border)"
+                      fill="var(--poli-card)"
+                      stroke="var(--poli-border)"
                     />
                     <text x={pt.x} y={pt.y + 27} textAnchor="middle" fontSize={9} fill={color1}>
                       {politician1.name.split(' ').pop()}: {stanceDisplayBadge(politician1.stances[issue.slug] ?? 'unknown', politician1.party).label}
@@ -317,7 +317,7 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                 key={ring}
                 x={cx + 4}
                 y={cy - r + 3}
-                fill="var(--codex-faint)"
+                fill="var(--poli-faint)"
                 fontSize={8}
                 opacity={0.5}
               >
