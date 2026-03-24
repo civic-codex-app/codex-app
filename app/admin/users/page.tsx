@@ -1,17 +1,36 @@
 import Image from 'next/image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { DemoUserActions } from '@/components/admin/demo-user-actions'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminUsersPage() {
   const supabase = createServiceRoleClient()
 
-  // Fetch all profiles
+  // Fetch real users (non-demo), sorted newest first
   const { data: profiles } = await supabase
     .from('profiles')
-    .select('id, display_name, email, role, avatar_url, state, zip_code, created_at')
+    .select('id, display_name, email, role, avatar_url, state, zip_code, is_demo, created_at')
+    .eq('is_demo', false)
     .order('created_at', { ascending: false })
     .limit(200)
+
+  // Count demo users
+  const { count: demoCount } = await supabase
+    .from('profiles')
+    .select('*', { count: 'exact', head: true })
+    .eq('is_demo', true)
+
+  // Count demo users by state for breakdown
+  const { data: demoByState } = await supabase
+    .from('profiles')
+    .select('state')
+    .eq('is_demo', true)
+
+  const stateCounts: Record<string, number> = {}
+  for (const d of demoByState ?? []) {
+    if (d.state) stateCounts[d.state] = (stateCounts[d.state] || 0) + 1
+  }
 
   const users = profiles ?? []
 
@@ -22,6 +41,31 @@ export default async function AdminUsersPage() {
         <p className="mt-1 text-sm text-[var(--poli-sub)]">
           {users.length} registered users
         </p>
+      </div>
+
+      {/* Demo Users Section */}
+      <div className="mb-8 rounded-lg border border-[var(--poli-border)] p-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+              Demo Community Members
+            </h2>
+            <p className="mt-1 text-[24px] font-bold text-[var(--poli-text)]">
+              {demoCount ?? 0}
+            </p>
+            {Object.keys(stateCounts).length > 0 && (
+              <p className="mt-1 text-[12px] text-[var(--poli-faint)]">
+                Across {Object.keys(stateCounts).length} states
+                {' · '}
+                {Object.values(stateCounts).every(c => c === Object.values(stateCounts)[0])
+                  ? `${Object.values(stateCounts)[0]} per state`
+                  : `${Math.min(...Object.values(stateCounts))}–${Math.max(...Object.values(stateCounts))} per state`
+                }
+              </p>
+            )}
+          </div>
+          <DemoUserActions count={demoCount ?? 0} />
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-[var(--poli-border)]">
