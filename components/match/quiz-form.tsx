@@ -135,9 +135,6 @@ export function QuizForm({ issues }: Props) {
           if (!hasServer && hasGuest) {
             syncQuizToServer(merged)
           }
-          if (Object.keys(merged).length > 0 && Object.keys(local).length > Object.keys(serverAnswers ?? {}).length) {
-            syncQuizToServer(merged)
-          }
         }
       } catch {
         // Not logged in or network error — localStorage answers already loaded above

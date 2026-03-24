@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { partyColor } from '@/lib/constants/parties'
 import { STANCE_NUMERIC, MAX_STANCE_VALUE, stanceStyle, stanceDisplayBadge } from '@/lib/utils/stances'
 import { IssueIcon } from '@/components/icons/issue-icon'
@@ -30,6 +30,14 @@ const RINGS = [2, 4, 6]  // Show 3 concentric rings at key levels
 export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps) {
   const [activeAxis, setActiveAxis] = useState<string | null>(null)
   const [hoveredPolitician, setHoveredPolitician] = useState<1 | 2 | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   const size = 550
   const cx = size / 2
@@ -235,23 +243,34 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
                 onMouseLeave={() => setActiveAxis(null)}
                 className="cursor-pointer"
               >
-                <foreignObject
-                  x={textAnchor === 'end' ? pt.x - 20 : textAnchor === 'start' ? pt.x : pt.x - 10}
-                  y={pt.y - 20}
-                  width={20}
-                  height={20}
-                  className="pointer-events-none"
-                >
-                  <div
-                    className="flex h-full w-full items-center transition-colors duration-150"
-                    style={{
-                      color: isHovered ? 'var(--codex-text)' : 'var(--codex-sub)',
-                      justifyContent: textAnchor === 'end' ? 'flex-end' : textAnchor === 'start' ? 'flex-start' : 'center',
-                    }}
+                {isMobile ? (
+                  <circle
+                    cx={pt.x}
+                    cy={pt.y - 10}
+                    r={4}
+                    fill={isHovered ? 'var(--codex-text)' : 'var(--codex-sub)'}
+                    opacity={0.5}
+                    className="pointer-events-none transition-all duration-150"
+                  />
+                ) : (
+                  <foreignObject
+                    x={textAnchor === 'end' ? pt.x - 20 : textAnchor === 'start' ? pt.x : pt.x - 10}
+                    y={pt.y - 20}
+                    width={20}
+                    height={20}
+                    className="pointer-events-none"
                   >
-                    <IssueIcon icon={issue.icon} size={14} />
-                  </div>
-                </foreignObject>
+                    <div
+                      className="flex h-full w-full items-center transition-colors duration-150"
+                      style={{
+                        color: isHovered ? 'var(--codex-text)' : 'var(--codex-sub)',
+                        justifyContent: textAnchor === 'end' ? 'flex-end' : textAnchor === 'start' ? 'flex-start' : 'center',
+                      }}
+                    >
+                      <IssueIcon icon={issue.icon} size={14} />
+                    </div>
+                  </foreignObject>
+                )}
                 <text
                   x={pt.x}
                   y={pt.y + 8}

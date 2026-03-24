@@ -25,6 +25,14 @@ interface Dot {
 export function ChamberComposition({ seats, chamber, total }: ChamberCompositionProps) {
   const [animatedCount, setAnimatedCount] = useState(0)
   const [activeParty, setActiveParty] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   // Sort seats by count descending for consistent layout
   const sortedSeats = useMemo(() => [...seats].sort((a, b) => b.count - a.count), [seats])
@@ -143,8 +151,19 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
             const show = i < animatedCount
             const isActive = activeParty === null || activeParty === dot.party
             const iconSize = dots.length > 200 ? 6 : dots.length > 100 ? 7 : 8
+            const r = dots.length > 200 ? 2.5 : dots.length > 100 ? 3 : 3.5
 
-            return (
+            return isMobile ? (
+              <circle
+                key={i}
+                cx={dot.x}
+                cy={dot.y}
+                r={r}
+                fill={partyColor(dot.party)}
+                opacity={show ? (isActive ? 0.85 : 0.12) : 0}
+                className="transition-opacity duration-200"
+              />
+            ) : (
               <foreignObject
                 key={i}
                 x={dot.x - iconSize / 2}
