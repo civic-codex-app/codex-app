@@ -1,0 +1,742 @@
+[
+  {
+    "name": "Mike Rounds",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed South Dakota's near-total abortion ban as governor and continues to support strict limits."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Voted against the Respect for Marriage Act and opposes federal LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports strict federal drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposed federal voting rights legislation citing states' rights over elections."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Backed the 2017 Tax Cuts and Jobs Act and favors lower corporate and individual rates."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and generally sides with business interests over union expansion."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports law enforcement surveillance tools with limited privacy reforms."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports free trade principles but backed some Trump-era tariffs on China."
+      }
+    }
+  },
+  {
+    "name": "John Thune",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Long record of opposing abortion rights and supporting federal restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Voted against the Respect for Marriage Act and opposes the Equality Act."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports maintaining federal drug scheduling."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Led Republican opposition to federal voting rights bills as party leader."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Key architect of the 2017 tax cuts and a leading voice for fiscal conservatism."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes expanding union organizing rights and the PRO Act."
+      },
+      "privacy-and-surveillance": {
+        "stance": "mixed",
+        "summary": "Pushed for telecom privacy regulations as Commerce Committee chair but supports surveillance programs."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Historically a strong free trader representing agricultural export interests in South Dakota."
+      }
+    }
+  },
+  {
+    "name": "Marsha Blackburn",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "One of the Senate's most vocal anti-abortion members with a career-long record of opposition."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Voted against the Respect for Marriage Act and actively opposes transgender rights protections."
+      },
+      "drug-policy": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes marijuana legalization and advocates aggressive drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Vocally opposes all federal voting rights legislation as federal overreach."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Champions deep tax cuts and aggressive federal spending reductions."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "From right-to-work Tennessee, strongly opposes union expansion and the PRO Act."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Sponsored the BROWSER Act for internet privacy but supports broad law enforcement surveillance."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Supports tariffs on China and favors protectionist trade policies over free trade."
+      }
+    }
+  },
+  {
+    "name": "Bill Hagerty",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly pro-life, supports Tennessee's strict abortion restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Voted against the Respect for Marriage Act and opposes federal LGBTQ mandates."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports traditional drug enforcement approaches."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting legislation and supports state-level voter ID requirements."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports tax cuts and reducing government spending as a former business executive."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes union expansion legislation and supports right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports law enforcement surveillance capabilities with minimal reform interest."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "As former ambassador to Japan supports strategic tariffs and tough trade enforcement."
+      }
+    }
+  },
+  {
+    "name": "Ted Cruz",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Longstanding opponent of abortion rights who championed the Dobbs decision."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Voted against the Respect for Marriage Act and opposes all federal LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and advocates strict federal drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Led opposition to federal voting rights bills and challenged 2020 election certification."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Proposed replacing the income tax with a flat tax and advocates dramatic spending cuts."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes union expansion and has fought against the PRO Act."
+      },
+      "privacy-and-surveillance": {
+        "stance": "mixed",
+        "summary": "Voted to end bulk NSA data collection but supports surveillance of foreign targets."
+      },
+      "trade-and-tariffs": {
+        "stance": "mixed",
+        "summary": "Shifted from free trade advocacy to supporting Trump-era tariffs on strategic competitors."
+      }
+    }
+  },
+  {
+    "name": "John Cornyn",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Consistently pro-life voting record throughout his Senate career."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Voted against the Respect for Marriage Act though less vocal than some colleagues."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes recreational marijuana but supported some bipartisan criminal justice reforms."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposed federal voting rights legislation while supporting Texas voter ID laws."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Senior Finance Committee member who helped craft the 2017 tax cuts."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and supports Texas right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports FISA reauthorization and broad law enforcement surveillance tools."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Generally favors free trade given Texas border economy but supports targeted tariffs."
+      }
+    }
+  },
+  {
+    "name": "John Curtis",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "opposes",
+        "summary": "Pro-life but takes a somewhat less hardline position than many Republican colleagues."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Voted against the Equality Act but has been less combative on LGBTQ issues than many in his party."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization but supports states' rights on the issue."
+      },
+      "voting-rights": {
+        "stance": "leans_oppose",
+        "summary": "Opposes broad federal voting mandates while supporting some election security measures."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports tax cuts and reduced spending with a pragmatic, business-oriented approach."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and supports Utah's right-to-work framework."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "As a former tech-sector mayor, shows more interest in digital privacy protections."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Favors free trade and international engagement reflecting Utah's export economy."
+      }
+    }
+  },
+  {
+    "name": "Mike Lee",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly pro-life and supported federal abortion restrictions and the Dobbs reversal."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Voted against the Respect for Marriage Act and opposes federal LGBTQ mandates."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Personally opposes legalization but his libertarian streak supports states deciding for themselves."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes federal voting mandates as unconstitutional overreach."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Champions deep tax cuts and has proposed eliminating many federal programs entirely."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes federal labor mandates and union expansion on libertarian constitutional grounds."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "One of the strongest Republican voices for civil liberties and limiting government surveillance."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "A consistent free trader who has pushed back against tariffs as a hidden tax on consumers."
+      }
+    }
+  },
+  {
+    "name": "Mark Warner",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "supports",
+        "summary": "Supports abortion access and voted to codify Roe v. Wade protections."
+      },
+      "lgbtq-rights": {
+        "stance": "supports",
+        "summary": "Voted for the Respect for Marriage Act and supports LGBTQ workplace protections."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports marijuana decriminalization and banking reform for cannabis businesses."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Voted for federal voting rights legislation while seeking bipartisan compromise."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_oppose",
+        "summary": "Supports targeted tax increases on the wealthy while emphasizing deficit reduction."
+      },
+      "labor-and-unions": {
+        "stance": "leans_support",
+        "summary": "Supports workers' rights but focuses more on tech-sector gig economy protections."
+      },
+      "privacy-and-surveillance": {
+        "stance": "mixed",
+        "summary": "Champions tech regulation and data privacy but supports intelligence community surveillance as Intel Committee chair."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Generally pro-trade but supports tough measures against Chinese technology companies."
+      }
+    }
+  },
+  {
+    "name": "Tim Kaine",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "supports",
+        "summary": "Personally opposes abortion but consistently votes to protect reproductive rights."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strong advocate who voted for the Respect for Marriage Act and the Equality Act."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports marijuana decriminalization and expungement of prior cannabis convictions."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Co-sponsored the John Lewis Voting Rights Act and advocates expanding ballot access."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_oppose",
+        "summary": "Supports raising taxes on the wealthy and corporations to fund public investment."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports the PRO Act and expanding workers' collective bargaining rights."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Advocates for war powers reform and has pushed for limits on executive surveillance authority."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade agreements and international engagement through the Foreign Relations Committee."
+      }
+    }
+  },
+  {
+    "name": "Bernie Sanders",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Champions unrestricted abortion access and has called for codifying reproductive rights nationwide."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Decades-long record supporting LGBTQ equality dating back to opposing DOMA in the 1990s."
+      },
+      "drug-policy": {
+        "stance": "strongly_supports",
+        "summary": "Introduced legislation to legalize marijuana federally and end the war on drugs."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Advocates automatic voter registration, public campaign financing, and ending voter suppression."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_opposes",
+        "summary": "Proposes major tax increases on billionaires and corporations to fund expanded social programs."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "The Senate's strongest union advocate who regularly joins picket lines and champions the PRO Act."
+      },
+      "privacy-and-surveillance": {
+        "stance": "strongly_supports",
+        "summary": "Voted against the Patriot Act and consistently opposes mass government surveillance programs."
+      },
+      "trade-and-tariffs": {
+        "stance": "opposes",
+        "summary": "Opposed NAFTA, TPP, and most free trade deals as harmful to American workers."
+      }
+    }
+  },
+  {
+    "name": "Peter Welch",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports abortion access and co-sponsored legislation to codify Roe protections."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Represents Vermont, the first state with civil unions, and strongly supports LGBTQ equality."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana legalization and criminal justice reform for drug offenses."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive federal voting rights protections and expanding ballot access."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "Supports raising taxes on corporations and the wealthy to fund social investment."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong labor ally who supports the PRO Act and workers' organizing rights."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Advocates for stronger consumer data privacy protections and surveillance reform."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of large free trade deals and prioritizes labor and environmental trade standards."
+      }
+    }
+  },
+  {
+    "name": "Maria Cantwell",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly pro-choice and voted to codify Roe v. Wade protections."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Voted for the Respect for Marriage Act and supports comprehensive LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports marijuana banking reform and decriminalization in line with Washington state policy."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports federal voting rights legislation and Washington's vote-by-mail model."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_oppose",
+        "summary": "Supports targeted tax increases while championing R&D tax credits for the tech sector."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports the PRO Act and workers' rights in Washington's strong labor tradition."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Champions federal data privacy legislation as Commerce Committee chair."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade to benefit Washington's major exporters like Boeing and tech companies."
+      }
+    }
+  },
+  {
+    "name": "Patty Murray",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "One of the Senate's leading voices on reproductive rights throughout her career."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Long record supporting LGBTQ rights including the Respect for Marriage Act."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports marijuana decriminalization and cannabis banking reforms."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Voted for federal voting rights legislation and supports expanding access to the ballot."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "As former Budget Committee chair, supports tax increases on the wealthy to fund social programs."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong labor ally as Appropriations chair who consistently supports union priorities."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports consumer privacy protections and health data privacy legislation."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Generally supports trade deals that benefit Washington state exports with labor protections."
+      }
+    }
+  },
+  {
+    "name": "Ron Johnson",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly pro-life and supports leaving abortion bans to the states post-Dobbs."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Voted against the Respect for Marriage Act and opposes federal LGBTQ mandates."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and emphasizes border drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Raised objections to 2020 election certification and opposes federal voting mandates."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "As a businessman-turned-senator, champions deep tax cuts and slashing government spending."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes union expansion and the PRO Act as harmful to businesses."
+      },
+      "privacy-and-surveillance": {
+        "stance": "mixed",
+        "summary": "Skeptical of government overreach but supports strong law enforcement surveillance tools."
+      },
+      "trade-and-tariffs": {
+        "stance": "mixed",
+        "summary": "Manufacturing background gives him protectionist leanings but supports some free trade."
+      }
+    }
+  },
+  {
+    "name": "Tammy Baldwin",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly pro-choice and a leading voice for codifying reproductive rights."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "The first openly gay senator, a lifelong champion of LGBTQ equality and the Equality Act."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana legalization and criminal justice reform for drug offenses."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive federal voting rights protections and expanding ballot access."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "Supports closing corporate tax loopholes and raising taxes on the wealthy."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong union ally from Wisconsin's labor tradition who champions the PRO Act and Buy American policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports consumer data privacy protections and limits on government surveillance."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of free trade deals and champions Buy American provisions to protect manufacturing."
+      }
+    }
+  },
+  {
+    "name": "Shelley Moore Capito",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "opposes",
+        "summary": "Pro-life but supports exceptions for rape, incest, and life of the mother."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Voted for the Respect for Marriage Act but opposes broader federal LGBTQ mandates."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes marijuana legalization but prioritizes combating the opioid crisis in West Virginia."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting mandates while supporting state-administered election processes."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports tax cuts and fiscal conservatism while securing infrastructure funding for West Virginia."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes union expansion but is more moderate than many Republicans on labor."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports law enforcement tools with limited interest in expanding privacy protections."
+      },
+      "trade-and-tariffs": {
+        "stance": "mixed",
+        "summary": "Supports tariffs to protect West Virginia coal and manufacturing but favors some trade deals."
+      }
+    }
+  },
+  {
+    "name": "Jim Justice",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed West Virginia's near-total abortion ban as governor."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Signed a transgender athlete ban as governor and opposes federal LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Supports strict drug enforcement reflecting West Virginia's opioid crisis experience."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting mandates and supports state control of election administration."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports tax cuts as a businessman though increased state spending as governor."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Generally sides with business interests but represents a historically union-heavy state."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports law enforcement surveillance tools as a freshman senator without strong privacy advocacy."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Supports protectionist tariffs to shield West Virginia coal and manufacturing."
+      }
+    }
+  },
+  {
+    "name": "Cynthia Lummis",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly pro-life and supports Wyoming's strict abortion trigger law."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes the Equality Act and voted against the Respect for Marriage Act."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports traditional drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes all federal voting mandates and challenged 2020 election certification."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Champions deep tax cuts and is among the most fiscally conservative senators."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes union expansion from a right-to-work state perspective."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Advocates for financial privacy especially in cryptocurrency and digital asset regulation."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Generally supports free trade and opposes excessive tariffs on agricultural exports."
+      }
+    }
+  },
+  {
+    "name": "John Barrasso",
+    "stances": {
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly pro-life and a leading Republican voice against abortion access."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Voted against the Respect for Marriage Act and opposes federal LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports strict federal drug policy."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes federal voting rights legislation as a member of Republican leadership."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "As Republican Conference chair, champions major tax cuts and spending reductions."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes union expansion and labor regulation from deeply conservative Wyoming."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports broad law enforcement and national security surveillance capabilities."
+      },
+      "trade-and-tariffs": {
+        "stance": "mixed",
+        "summary": "Supports energy exports and free trade but backs tariffs targeting strategic competitors."
+      }
+    }
+  }
+]

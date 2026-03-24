@@ -1,0 +1,2327 @@
+[
+  {
+    "name": "Mikie Sherrill",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Prioritizes workforce development and clean energy job creation in New Jersey."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Championed expanding healthcare access and lowering prescription drug costs as a congresswoman."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Favors comprehensive immigration reform with a pathway to citizenship while maintaining border security."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for increased public school funding and student debt relief programs."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Navy veteran who supports strong defense spending with accountability and oversight."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Committed to New Jersey's aggressive offshore wind and clean energy goals."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Supports policing reform measures while maintaining public safety funding."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Favors strong alliances and diplomacy-first approach grounded in her military background."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports responsible AI regulation and tech sector growth in New Jersey."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Firm defender of Social Security and Medicare against any cuts."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Backs universal background checks and assault weapons restrictions."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes Gateway Tunnel project and NJ Transit improvements."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports expanding affordable housing and addressing cost-of-living pressures in NJ."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Favors transitioning to clean energy while managing costs for consumers."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly defends abortion access and reproductive healthcare rights."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports full LGBTQ equality including anti-discrimination protections."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana legalization and treatment-focused approaches to addiction."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for expanded voter access and election security measures."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports targeted tax relief for middle class while investing in public services."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong supporter of organized labor and worker protections."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy protections while balancing national security needs."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Favors fair trade agreements that protect American workers and NJ industries."
+      }
+    }
+  },
+  {
+    "name": "Michelle Lujan Grisham",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Invested heavily in diversifying New Mexico's economy beyond oil and gas dependence."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Expanded Medicaid and created a state-funded early childhood care program."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Withdrew National Guard troops from the border and opposes border wall construction."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Signed landmark legislation making college tuition-free for all New Mexico residents."
+      },
+      "national-defense-and-military": {
+        "stance": "leans_support",
+        "summary": "Supports New Mexico's defense installations including Los Alamos and Sandia labs."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Signed the Energy Transition Act targeting 100% carbon-free electricity by 2045."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Issued executive order on police reform and signed civil rights legislation."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "leans_support",
+        "summary": "Supports diplomatic engagement particularly regarding U.S.-Mexico border relations."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Invested in tech sector growth and broadband expansion across rural New Mexico."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Former Health and Human Services Secretary who strongly defends entitlement programs."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Issued controversial public health emergency order temporarily banning open carry in Albuquerque."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in road improvements and broadband infrastructure for rural communities."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Signed affordable housing initiatives and homelessness prevention measures."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "mixed",
+        "summary": "Balances clean energy transition goals with New Mexico's reliance on oil and gas revenue."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed law codifying abortion rights and making NM a safe haven post-Dobbs."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed legislation banning conversion therapy and expanding LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Signed cannabis legalization and supports treatment-based approaches to drug addiction."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed same-day voter registration and expanded early voting access."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Increased state spending significantly on education and social programs funded by oil revenue."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Signed legislation strengthening collective bargaining rights for public employees."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy measures and consumer protection regulations."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade relationships benefiting New Mexico's agriculture and energy exports."
+      }
+    }
+  },
+  {
+    "name": "Joe Lombardo",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on attracting business to Nevada through tax incentives and reduced regulation."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports healthcare access improvements but opposes government-run healthcare expansion."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Former sheriff who prioritizes border security and opposes sanctuary policies."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Advocates for school choice, charter schools, and Opportunity Scholarships."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports strong national defense and Nevada's military installations."
+      },
+      "climate-and-environment": {
+        "stance": "leans_oppose",
+        "summary": "Prioritizes economic growth over aggressive climate regulation."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Former Las Vegas Metro police chief who emphasizes law enforcement and public safety."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Generally defers to federal leadership on foreign policy matters."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports tech industry growth in Nevada with minimal regulatory burden."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Opposes cuts to Social Security and Medicare for current beneficiaries."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "opposes",
+        "summary": "Vetoed multiple gun control bills including expanded background checks."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports infrastructure development to accommodate Nevada's rapid growth."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_support",
+        "summary": "Signed bipartisan housing measures to address Las Vegas affordability crisis."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_oppose",
+        "summary": "Favors an all-of-the-above energy approach and opposes rapid fossil fuel phaseouts."
+      },
+      "reproductive-rights": {
+        "stance": "leans_support",
+        "summary": "Says he would not sign an abortion ban and respects Nevada's existing protections."
+      },
+      "lgbtq-rights": {
+        "stance": "neutral",
+        "summary": "Has not actively pursued LGBTQ legislation in either direction."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Former law enforcement background; supports existing marijuana legalization but opposes further decriminalization."
+      },
+      "voting-rights": {
+        "stance": "leans_oppose",
+        "summary": "Vetoed automatic voter registration and other voting expansion bills."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "Opposes tax increases and vetoed commerce tax expansion."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Vetoed pro-union legislation including prevailing wage expansion."
+      },
+      "privacy-and-surveillance": {
+        "stance": "neutral",
+        "summary": "Balances privacy concerns with law enforcement surveillance needs."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports free trade policies that benefit Nevada's tourism and mining industries."
+      }
+    }
+  },
+  {
+    "name": "Kathy Hochul",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Invested billions in economic development including semiconductor manufacturing in upstate NY."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Expanded Medicaid coverage and invested in healthcare workforce development."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Provided services for asylum seekers in NYC but called for federal immigration reform."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Increased education funding and expanded free college programs through SUNY/CUNY."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports New York's military installations and veterans' services."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Signed aggressive climate legislation committing NY to 70% renewable electricity by 2030."
+      },
+      "criminal-justice-reform": {
+        "stance": "mixed",
+        "summary": "Modified bail reform laws to give judges more discretion after public safety concerns."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Maintains New York's role as a global diplomatic hub and trade center."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Signed AI transparency legislation and invested in tech corridor development."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Firmly opposes any cuts to Social Security or Medicare."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Signed sweeping gun control laws after the Buffalo mass shooting."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Oversaw MTA capital plan and championed congestion pricing for Manhattan."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Proposed major housing plan though flagship housing compact faced legislative setbacks."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Banned new natural gas hookups in buildings and promoted offshore wind development."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed legislation strengthening abortion protections and provider shield laws post-Dobbs."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed legislation banning conversion therapy for minors and expanding LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana legalization rollout and expanded addiction treatment programs."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed early voting expansion and John R. Lewis Voting Rights Act of New York."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Maintained taxes on high earners while providing middle-class tax relief."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Signed minimum wage increases and strengthened worker protection laws."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Signed data privacy legislation though expanded surveillance post-subway attacks."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Promotes New York as a global trade hub and supports fair trade agreements."
+      }
+    }
+  },
+  {
+    "name": "Mike DeWine",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Attracted Intel semiconductor plant and invested in Ohio's manufacturing renaissance."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Maintained Medicaid expansion and invested in mental health services."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports stricter border enforcement while taking moderate approach to legal immigration."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Invested in early childhood education and career-technical training programs."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strong defense supporter who championed Wright-Patterson Air Force Base expansion."
+      },
+      "climate-and-environment": {
+        "stance": "leans_support",
+        "summary": "Signed H2Ohio water quality initiative but supports balanced energy approach."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Signed bipartisan criminal justice reforms focusing on rehabilitation and reentry."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Longtime internationalist who supports strong alliances from his Senate tenure."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Attracted tech investment to Ohio while supporting modest regulatory frameworks."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports preserving Social Security and Medicare without benefit cuts."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "leans_support",
+        "summary": "Signed STRONG Ohio Act with background check requirements after the 2019 Dayton mass shooting."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in broadband expansion and road infrastructure across rural Ohio."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_support",
+        "summary": "Signed affordable housing tax credit programs for Ohio communities."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_oppose",
+        "summary": "Supports Ohio's natural gas industry and an all-of-the-above energy strategy."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed the heartbeat bill banning abortion after six weeks with no rape or incest exceptions."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Signed ban on transgender athletes in girls' sports and opposes gender-affirming care for minors."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Focused heavily on opioid crisis treatment and prevention while opposing recreational marijuana."
+      },
+      "voting-rights": {
+        "stance": "leans_oppose",
+        "summary": "Signed voter ID requirements and supported restrictions on ballot drop boxes."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_oppose",
+        "summary": "Signed income tax cuts while maintaining fiscally conservative spending approach."
+      },
+      "labor-and-unions": {
+        "stance": "neutral",
+        "summary": "Takes moderate position working with both business and labor communities."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Supports data privacy measures while backing law enforcement surveillance tools."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports trade policies protecting Ohio's manufacturing and agricultural sectors."
+      }
+    }
+  },
+  {
+    "name": "Kevin Stitt",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Business-first governor focused on making Oklahoma a top-10 business state."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Attempted to privatize Medicaid through managed care despite voter-approved expansion."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Deployed Oklahoma National Guard to the Texas border and signed anti-illegal immigration laws."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Champions school choice and signed universal school voucher legislation."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports Oklahoma's military bases and opposed military vaccine mandates."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes federal climate regulations and supports Oklahoma's oil and gas industry."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Resumed executions and takes a tough-on-crime stance despite some commutation support."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Focuses on state-level governance with limited foreign policy engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Favors minimal tech regulation to attract business to Oklahoma."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Supports restructuring entitlement programs to reduce government spending."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_opposes",
+        "summary": "Signed constitutional carry law eliminating permit requirements for concealed weapons."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in road and bridge improvements across Oklahoma."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Relies on free market solutions rather than government housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_opposes",
+        "summary": "Aggressively promotes Oklahoma's oil and gas industry and opposes federal energy regulations."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed one of the nation's strictest abortion bans with no exceptions for rape or incest."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed bills banning transgender healthcare for minors and trans athletes in women's sports."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes marijuana legalization and vetoed medical marijuana regulation bills."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Signed strict voter ID laws and opposes mail-in voting expansion."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_opposes",
+        "summary": "Signed income tax cuts and pursues aggressive reduction of state spending."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Supports right-to-work laws and opposes expansion of union power."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports law enforcement tools with limited focus on privacy regulation."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Supports free trade benefiting Oklahoma's energy and agriculture exports."
+      }
+    }
+  },
+  {
+    "name": "Tina Kotek",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on equitable economic recovery and workforce development programs."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Championed universal healthcare coverage and expanded Oregon Health Plan access."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports immigrant-friendly policies and sanctuary protections in Oregon."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Increased education funding and supports free community college programs."
+      },
+      "national-defense-and-military": {
+        "stance": "leans_support",
+        "summary": "Supports Oregon's military installations while prioritizing domestic spending."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Signed executive order on climate action and supports aggressive emissions reduction."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Supports reform measures while addressing public safety concerns from rising crime."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "leans_support",
+        "summary": "Generally supports diplomatic engagement and multilateral cooperation."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports tech regulation including data privacy and AI oversight measures."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports protecting and expanding social safety net programs."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Supports Oregon's voter-approved strict gun control measures including permit-to-purchase."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Prioritized transportation investments and climate-resilient infrastructure."
+      },
+      "housing-and-affordability": {
+        "stance": "strongly_supports",
+        "summary": "Made homelessness her top priority, declaring a state of emergency and investing $1B+ in housing."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports rapid transition to renewable energy and opposes new fossil fuel infrastructure."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed legislation making Oregon a safe haven for reproductive healthcare access."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "First openly lesbian governor; signed LGBTQ protection legislation."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supported Measure 110 drug decriminalization though later signed modifications amid public concerns."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports Oregon's automatic voter registration and universal vote-by-mail system."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports progressive taxation and increased public investment in social programs."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong labor ally who signed paid family leave and worker protection legislation."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports strong data privacy protections and limits on government surveillance."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies benefiting Oregon's agricultural and tech export industries."
+      }
+    }
+  },
+  {
+    "name": "Josh Shapiro",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Eliminated four-year degree requirement for many state jobs and attracted manufacturing investment."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Expanded healthcare access and signed insulin price cap legislation."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Moderate on immigration, supports reform with both security and humanitarian elements."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Increased public school funding by record amounts and expanded scholarship programs."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports Pennsylvania's defense industry and veterans' services."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports climate action but took pragmatic approach by not joining RGGI cap-and-trade."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Signed bipartisan probation reform and expanded expungement access as attorney general."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong international alliances and has been vocal in support of Israel."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Signed executive order on responsible AI use in state government."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Firmly opposes any cuts to Social Security or Medicare benefits."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports universal background checks and red flag laws while respecting lawful gun ownership."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Fixed I-95 collapse in record time and invested in broadband and bridge repairs."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Launched housing programs and invested in affordable housing development."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "mixed",
+        "summary": "Supports natural gas as a transition fuel while investing in renewables, angering both sides."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Pledged to veto any abortion ban and defends reproductive healthcare access."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed LGBTQ nondiscrimination protections as a top priority."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports medical marijuana expansion and treatment-focused addiction policies."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports expanded voter access and fought election fraud claims as attorney general."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Signed corporate tax reduction while investing in education and infrastructure."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong union ally who signed project labor agreements and worker protection measures."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports consumer data privacy protections and responsible technology use."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies protecting Pennsylvania's manufacturing and agricultural sectors."
+      }
+    }
+  },
+  {
+    "name": "Dan McKee",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focused on small business recovery and workforce training programs in Rhode Island."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports expanded healthcare access and invested in behavioral health services."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports welcoming immigrant communities while deferring to federal immigration policy."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Invested in public education and Rhode Island Promise free college program."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports Naval Station Newport and Rhode Island's defense industry."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Signed executive order committing Rhode Island to 100% renewable electricity by 2033."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports incremental criminal justice reforms while maintaining public safety."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Focuses primarily on state governance with limited foreign policy positions."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports modest tech regulation and digital economy growth initiatives."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports protecting Social Security and Medicare for Rhode Island seniors."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Signed assault weapons ban, high-capacity magazine ban, and raised firearm purchase age to 21."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in bridge repairs and public transit improvements through RhodeWorks."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Signed affordable housing legislation and invested in housing development."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports offshore wind development and transition away from fossil fuels."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports Rhode Island's codified abortion rights protections."
+      },
+      "lgbtq-rights": {
+        "stance": "supports",
+        "summary": "Supports LGBTQ equality and anti-discrimination protections."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Signed marijuana legalization and supports treatment-based addiction approaches."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports expanded voter access and signed Let RI Vote Act."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Moderate on taxation, balancing fiscal restraint with public investment."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports organized labor and worker protection measures."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Supports data privacy protections with moderate regulatory approach."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports trade policies benefiting Rhode Island's maritime and manufacturing economy."
+      }
+    }
+  },
+  {
+    "name": "Henry McMaster",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Attracted major manufacturers to South Carolina with low taxes and business-friendly policies."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Refused Medicaid expansion and opposes government-run healthcare programs."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Deployed state resources to the southern border and signed anti-sanctuary city legislation."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Champions school choice and signed open enrollment legislation."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strong supporter of South Carolina's extensive military installations and defense industry."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes climate regulations and supports offshore drilling off South Carolina's coast."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Tough-on-crime governor who signed legislation expanding the death penalty."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong national defense and international trade for SC's port economy."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Favors minimal tech regulation to attract business investment."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Opposes cuts to current beneficiaries while supporting long-term program reform."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_opposes",
+        "summary": "Signed open carry without a permit into law and opposes gun restrictions."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in road improvements and Port of Charleston expansion."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Relies on market-based solutions rather than government housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly supports fossil fuel development and opposes federal energy regulations."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed a six-week abortion ban with limited exceptions."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed ban on gender-affirming care for minors and opposes LGBTQ civil rights legislation."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and maintains strict drug enforcement policies."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Signed strict voter ID requirements and opposes expanded mail-in voting."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_opposes",
+        "summary": "Signed income tax cuts and maintains fiscal conservatism in state spending."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strong right-to-work supporter who opposes union organizing expansion."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Prioritizes law enforcement tools over privacy regulation expansion."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports free trade through Port of Charleston, critical to SC's economy."
+      }
+    }
+  },
+  {
+    "name": "Larry Rhoden",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Continues South Dakota's low-tax, business-friendly economic development approach."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of government healthcare expansion though Medicaid was voter-expanded."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Continues Noem's hardline border stance and supports state border enforcement efforts."
+      },
+      "education-and-student-debt": {
+        "stance": "leans_support",
+        "summary": "Supports school choice and local control of education policy."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports Ellsworth Air Force Base and military expansion in South Dakota."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes climate regulations and supports South Dakota's agricultural and energy industries."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Takes a traditional tough-on-crime approach to criminal justice."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Focuses on state governance with limited foreign policy engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Favors minimal government regulation of technology."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Opposes benefit cuts for current recipients while supporting program reform."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_opposes",
+        "summary": "Supports constitutional carry and opposes any new firearm restrictions."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports rural infrastructure and broadband expansion in South Dakota."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors free market housing solutions over government intervention."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_opposes",
+        "summary": "Supports fossil fuel development and opposes pipeline restrictions."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Supports South Dakota's near-total abortion ban that took effect post-Dobbs."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Supports restrictions on transgender participation in sports and healthcare for minors."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization consistent with prior administration's position."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Supports voter ID requirements and opposes expanded mail-in voting."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_opposes",
+        "summary": "Maintains South Dakota's no state income tax policy and minimal spending."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Supports right-to-work policies and opposes union expansion."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Prioritizes law enforcement needs over privacy regulation."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Supports free trade particularly for South Dakota's agricultural exports."
+      }
+    }
+  },
+  {
+    "name": "Bill Lee",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Attracted major corporate relocations to Tennessee with no income tax and business incentives."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Has not expanded Medicaid and favors market-based healthcare alternatives."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Signed strict anti-immigration legislation and deployed National Guard to the border."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Signed Education Savings Account voucher program and invested in charter schools."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports Tennessee's military installations and defense industry."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes federal climate mandates and supports Tennessee's energy independence."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Signed bipartisan criminal justice reform bills focusing on reentry and expungement."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Focuses on state governance and attracting foreign direct investment to Tennessee."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Signed the ELVIS Act protecting artists from AI but generally opposes tech regulation."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Supports entitlement program reform to ensure long-term fiscal sustainability."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_opposes",
+        "summary": "Signed permitless carry and rejected calls for gun control after Nashville school shooting."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in transportation infrastructure to support Tennessee's rapid population growth."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Relies on private development rather than government housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes clean energy mandates and supports all forms of domestic energy production."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed trigger law banning nearly all abortions with no rape or incest exceptions."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed bills restricting drag performances, banning trans youth healthcare, and bathroom laws."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and maintains strict drug enforcement policies."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Signed strict voter ID requirements and penalties for voter registration drives."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_opposes",
+        "summary": "Maintains Tennessee's no state income tax and prioritizes minimal government spending."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strong right-to-work state supporter who opposes union expansion efforts."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports law enforcement surveillance while signing limited consumer privacy measures."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports free trade and attracted foreign manufacturing investment to Tennessee."
+      }
+    }
+  },
+  {
+    "name": "Greg Abbott",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Aggressively recruited businesses to Texas with no income tax and minimal regulation."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Refused Medicaid expansion, leaving Texas with the highest uninsured rate nationally."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_opposes",
+        "summary": "Launched Operation Lone Star, bused migrants to blue cities, and installed razor wire at the border."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Pushing school voucher program and increased teacher pay while opposing DEI in universities."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports Texas military bases and defied federal government on border enforcement."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "Signed law punishing companies that boycott fossil fuels and opposes all climate regulation."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Expanded police funding and opposes bail reform and criminal justice overhaul."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "leans_support",
+        "summary": "Supports strong border enforcement and has conducted independent diplomatic outreach to Mexico."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Favors minimal tech regulation while banning social media censorship of political viewpoints."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Supports restructuring entitlement programs as part of broader fiscal conservatism."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_opposes",
+        "summary": "Signed constitutional carry and refused gun control even after Uvalde school shooting."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in transportation but faced criticism over power grid failures during Winter Storm Uri."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Signed property tax relief but relies on deregulation rather than housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_opposes",
+        "summary": "Texas's biggest champion of oil and gas, signed anti-ESG legislation targeting clean energy."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed SB 8 bounty-hunter abortion ban and trigger ban eliminating nearly all abortion access."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Directed investigations of parents providing gender-affirming care to trans youth."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and maintains strict drug enforcement policies."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed SB 1 restricting mail-in voting, banning 24-hour voting, and adding voter ID requirements."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_opposes",
+        "summary": "Maintains no state income tax and signed major property tax cuts."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Signed law eliminating local water break mandates for construction workers."
+      },
+      "privacy-and-surveillance": {
+        "stance": "mixed",
+        "summary": "Signed data privacy law but expanded border surveillance and social media regulation."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports USMCA free trade while using border enforcement as trade leverage with Mexico."
+      }
+    }
+  },
+  {
+    "name": "Spencer Cox",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Pro-business governor who attracted tech companies while investing in workforce development."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports market-based healthcare solutions and expanded telehealth access."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports immigration reform with both security and economic immigration components."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Invested in education funding and supports school choice with public school accountability."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports Utah's military installations including Hill Air Force Base."
+      },
+      "climate-and-environment": {
+        "stance": "leans_support",
+        "summary": "Acknowledges climate change and signed Great Salt Lake preservation measures, unusual for a GOP governor."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports data-driven criminal justice reform and rehabilitation programs."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports diplomatic engagement and international cooperation."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Signed social media regulation for minors and supports balanced tech oversight."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving benefits while pursuing long-term sustainability reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "leans_oppose",
+        "summary": "Supports Second Amendment rights but has expressed openness to some safety measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in transportation and water infrastructure to manage Utah's rapid growth."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Made housing affordability a priority with zoning reform and state investment."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "mixed",
+        "summary": "Supports Utah's energy industry while investing in clean energy and conservation."
+      },
+      "reproductive-rights": {
+        "stance": "opposes",
+        "summary": "Supports Utah's abortion restrictions though has expressed some nuance on the issue."
+      },
+      "lgbtq-rights": {
+        "stance": "mixed",
+        "summary": "Wrote compassionate letter to LGBTQ youth while signing transgender sports ban."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes recreational marijuana while supporting limited medical cannabis program."
+      },
+      "voting-rights": {
+        "stance": "leans_support",
+        "summary": "Supports Utah's mail-in voting system and accessible election processes."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "Signed income tax cuts and maintains fiscally conservative spending approach."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Supports right-to-work framework but maintains constructive relationship with labor."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Signed strong consumer data privacy legislation making Utah a leader in privacy protection."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade and international commerce through Utah's tech and outdoor industry."
+      }
+    }
+  },
+  {
+    "name": "Abigail Spanberger",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on workforce development and economic opportunity for Virginia's diverse economy."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports expanding affordable healthcare access and lowering prescription drug costs."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Former CIA officer who supports balanced immigration reform with security components."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports increased public school funding and college affordability measures."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Former CIA officer who strongly supports Virginia's military and intelligence community."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports clean energy transition while taking pragmatic approach to environmental regulation."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports targeted reforms while maintaining strong law enforcement support."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "strongly_supports",
+        "summary": "Former CIA case officer with deep commitment to intelligence and diplomatic engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports responsible tech regulation aligned with Virginia's major tech sector."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Opposes any cuts to Social Security or Medicare benefits."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "leans_support",
+        "summary": "Supports background checks and red flag laws while respecting lawful gun ownership."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports transportation investment particularly for Northern Virginia congestion."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports affordable housing development to address Virginia's cost pressures."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports clean energy growth while maintaining pragmatic energy transition timeline."
+      },
+      "reproductive-rights": {
+        "stance": "supports",
+        "summary": "Supports protecting abortion access while taking a moderate pro-choice position."
+      },
+      "lgbtq-rights": {
+        "stance": "supports",
+        "summary": "Supports LGBTQ nondiscrimination protections and equality measures."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports Virginia's marijuana legalization and treatment-focused drug policies."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports accessible voting while ensuring election integrity measures."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Moderate on fiscal policy, supporting targeted investments with fiscal responsibility."
+      },
+      "labor-and-unions": {
+        "stance": "leans_support",
+        "summary": "Supports worker protections while maintaining Virginia's business-friendly environment."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports privacy protections informed by intelligence background on surveillance capabilities."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade through Port of Virginia and international commerce."
+      }
+    }
+  },
+  {
+    "name": "Phil Scott",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on attracting remote workers and growing Vermont's economy with low unemployment."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports healthcare access expansion while maintaining fiscal prudence."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Signed legislation welcoming immigrants and refugees to address Vermont's labor shortage."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports education reform and school consolidation to improve efficiency."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports Vermont National Guard and military installations."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports clean energy but vetoed Global Warming Solutions Act as too costly, later overridden."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Supports bail reform and restorative justice approaches in Vermont."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Focuses on state governance with limited foreign policy engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports broadband expansion and moderate tech oversight."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports protecting Social Security and Medicare from cuts."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Signed landmark gun control laws including universal background checks and magazine limits after Parkland."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in flood recovery infrastructure after devastating Vermont flooding."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Signed housing investment bills to address Vermont's severe housing shortage."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports clean energy transition but at a measured pace to manage costs."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports Vermont's constitutional amendment enshrining reproductive rights."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports LGBTQ rights in one of the most progressive states on the issue."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Allowed marijuana legalization to become law and supports treatment-based approaches."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports accessible voting and Vermont's town meeting democracy traditions."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "Consistently vetoes tax increases and advocates for fiscal restraint."
+      },
+      "labor-and-unions": {
+        "stance": "leans_support",
+        "summary": "Moderate on labor issues, working with both business and unions."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Signed comprehensive data privacy legislation for Vermont consumers."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies benefiting Vermont's agriculture and specialty products."
+      }
+    }
+  },
+  {
+    "name": "Bob Ferguson",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports equitable economic growth and worker-centered economic policies."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Fought pharmaceutical companies as AG and supports expanded healthcare access."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Led legal challenges against federal immigration bans as attorney general."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Supports robust public education funding and student debt relief."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports Washington's military bases and defense industry including Boeing."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Continues Washington's aggressive climate agenda with cap-and-invest program."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Pursued police accountability measures and supported reform as attorney general."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports diplomatic engagement and international cooperation, challenged travel bans as AG."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports tech regulation having sued major tech companies over consumer protection as AG."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports protecting and expanding social safety net programs."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Championed assault weapons ban and sued gun manufacturers as attorney general."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports transit investment and climate-resilient infrastructure."
+      },
+      "housing-and-affordability": {
+        "stance": "strongly_supports",
+        "summary": "Made housing affordability a top priority as governor."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports rapid transition to clean energy and away from fossil fuels."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Defended abortion access in courts as AG and signed expanded protections as governor."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Defended LGBTQ rights as AG and supports comprehensive equality legislation."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports treatment-focused approaches after Washington reversed drug decriminalization."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports Washington's mail-in voting and automatic voter registration system."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports progressive revenue measures to fund public services."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong labor ally who supports worker protections and collective bargaining rights."
+      },
+      "privacy-and-surveillance": {
+        "stance": "strongly_supports",
+        "summary": "Sued companies over data privacy violations and supports strong privacy protections."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies benefiting Washington's tech, agriculture, and aerospace exports."
+      }
+    }
+  },
+  {
+    "name": "Tony Evers",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Attracted major investments including Microsoft data center to Wisconsin."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Repeatedly proposed Medicaid expansion blocked by Republican legislature."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports comprehensive immigration reform and withdrew National Guard from border."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Former state superintendent who consistently pushes for major public school funding increases."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports Wisconsin's military installations and veterans' services."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Set goal of 100% carbon-free electricity by 2050 and joined US Climate Alliance."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Supports reform measures and issued pardons to address past injustices."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "leans_support",
+        "summary": "Supports diplomatic engagement and Wisconsin's agricultural trade relationships."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports broadband expansion and moderate technology regulation."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly opposes any cuts to Social Security or Medicare."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports universal background checks and red flag laws blocked by GOP legislature."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in roads, bridges, and broadband using federal infrastructure funds."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Proposed affordable housing investments though limited by Republican legislature."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports clean energy transition and renewable energy development in Wisconsin."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Called special session to repeal 1849 abortion ban and signed executive protections."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Signed executive order protecting LGBTQ state employees and supports equality measures."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana legalization repeatedly blocked by Republican legislature."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Vetoed Republican voter restriction bills and used veto power to protect voting access."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Supports middle-class tax relief and increased investment in public services."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong union supporter who opposes right-to-work and supports collective bargaining restoration."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy protections for Wisconsin consumers."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies benefiting Wisconsin's dairy, agriculture, and manufacturing sectors."
+      }
+    }
+  },
+  {
+    "name": "Patrick Morrisey",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on diversifying West Virginia's economy beyond coal dependence."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Led legal challenges against the ACA as attorney general and opposes government healthcare expansion."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Hardline on immigration enforcement, joined lawsuits against federal immigration policies."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports school choice and charter school expansion."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports military and veteran programs in West Virginia."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "Led legal fight against EPA Clean Power Plan and opposes climate regulations."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Tough-on-crime approach as attorney general focused on drug enforcement."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Focuses on state-level governance with limited foreign policy engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Favors minimal technology regulation and free market approaches."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports protecting benefits for current recipients while pursuing reform."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes gun restrictions and supports constitutional carry."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports infrastructure investment particularly broadband for rural West Virginia."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors market solutions over government housing intervention."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_opposes",
+        "summary": "West Virginia's fiercest defender of coal and fossil fuels against federal regulation."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Supports West Virginia's near-total abortion ban enacted post-Dobbs."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes LGBTQ civil rights expansion and supports religious liberty exemptions."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Aggressive anti-drug enforcement focus, particularly against opioid manufacturers."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Supports voter ID requirements and opposes expanded mail-in voting."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_opposes",
+        "summary": "Supports eliminating state income tax and aggressive spending cuts."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Supports right-to-work laws and opposes union power expansion."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Prioritizes law enforcement tools over privacy regulation."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Supports protecting West Virginia's energy exports in trade negotiations."
+      }
+    }
+  },
+  {
+    "name": "Mark Gordon",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on diversifying Wyoming's economy beyond energy with tech and tourism."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Has not expanded Medicaid despite some bipartisan support in the legislature."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports border security and joined Republican governors' border enforcement efforts."
+      },
+      "education-and-student-debt": {
+        "stance": "leans_support",
+        "summary": "Supports Wyoming's education system funded by mineral revenues and local control."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports Warren Air Force Base and Wyoming's military presence."
+      },
+      "climate-and-environment": {
+        "stance": "leans_oppose",
+        "summary": "Supports Wyoming's fossil fuel economy while acknowledging need for environmental stewardship."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally traditional approach to criminal justice in low-crime Wyoming."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "neutral",
+        "summary": "Focuses on state governance with limited foreign policy engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Signed blockchain-friendly legislation making Wyoming a crypto hub."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Opposes benefit cuts for current recipients in Wyoming's aging population."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_opposes",
+        "summary": "Signed Second Amendment sanctuary legislation and opposes all gun restrictions."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Invested in highway infrastructure and broadband for Wyoming's rural communities."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_support",
+        "summary": "Acknowledged housing affordability challenges in resort communities like Jackson Hole."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly defends Wyoming's coal, oil, and gas industry against federal regulation."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Signed near-total abortion ban challenged in Wyoming courts."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Signed legislation restricting transgender healthcare for minors."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization despite neighboring states legalizing."
+      },
+      "voting-rights": {
+        "stance": "leans_oppose",
+        "summary": "Supports voter ID requirements and traditional voting processes."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "Maintains Wyoming's no income tax status and conservative fiscal management."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Right-to-work state governor who favors business-friendly labor policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Signed data privacy measures as part of Wyoming's tech-friendly legislation."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Supports protecting Wyoming's energy and agricultural exports in trade policy."
+      }
+    }
+  },
+  {
+    "name": "Lemanu Peleti Mauga",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on economic development and reducing American Samoa's reliance on tuna canneries."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Advocates for increased federal healthcare funding for American Samoa's underserved system."
+      },
+      "immigration-and-border-security": {
+        "stance": "neutral",
+        "summary": "American Samoa has unique immigration controls; focuses on territorial immigration policy."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports expanding educational opportunities and vocational training for island residents."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "American Samoa has the highest military enlistment rate per capita in the U.S."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes climate resilience as rising sea levels directly threaten the territory."
+      },
+      "criminal-justice-reform": {
+        "stance": "neutral",
+        "summary": "Focuses on traditional justice approaches alongside the territorial court system."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "leans_support",
+        "summary": "Supports Pacific island diplomacy and strong U.S. presence in the region."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "neutral",
+        "summary": "Focuses on improving basic broadband infrastructure for the territory."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for equal federal benefits for American Samoa residents."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "neutral",
+        "summary": "American Samoa has strict local firearms regulations distinct from mainland policy."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes critical infrastructure improvements for the remote island territory."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports housing improvements within American Samoa's communal land system."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports transitioning from expensive diesel generation to renewable energy."
+      },
+      "reproductive-rights": {
+        "stance": "neutral",
+        "summary": "Largely defers to local cultural norms on reproductive health policy."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "American Samoa's fa'asamoa cultural traditions shape conservative social policy."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Maintains strict drug enforcement policies in the territory."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Advocates for full voting rights and representation for territorial residents."
+      },
+      "taxes-and-spending": {
+        "stance": "neutral",
+        "summary": "Balances fiscal management with advocacy for increased federal funding."
+      },
+      "labor-and-unions": {
+        "stance": "leans_support",
+        "summary": "Supports minimum wage increases for American Samoa workers."
+      },
+      "privacy-and-surveillance": {
+        "stance": "neutral",
+        "summary": "Limited engagement with privacy regulation at the territorial level."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies protecting American Samoa's tuna canning industry."
+      }
+    }
+  },
+  {
+    "name": "Lou Leon Guerrero",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on diversifying Guam's economy beyond military and tourism dependence."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Former nurse and hospital CEO who prioritizes healthcare access and infrastructure."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports comprehensive immigration reform relevant to Guam's diverse population."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Invested in public education improvements and University of Guam expansion."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports military buildup on Guam while advocating for community impact mitigation."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes climate resilience as Guam faces typhoons, sea level rise, and coral loss."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports reform measures to reduce recidivism on the island."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Advocates for Guam's strategic importance in Pacific diplomacy and regional security."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports broadband and digital infrastructure improvements for Guam."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for equitable federal benefits for Guam residents."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports gun safety measures for the island community."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes infrastructure modernization including water system and road improvements."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports affordable housing development and homeownership programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports transitioning Guam from imported oil to renewable energy sources."
+      },
+      "reproductive-rights": {
+        "stance": "supports",
+        "summary": "Supports reproductive healthcare access on the island."
+      },
+      "lgbtq-rights": {
+        "stance": "supports",
+        "summary": "Signed legislation supporting LGBTQ rights and equality in Guam."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Signed marijuana legalization legislation for Guam."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for self-determination and full voting representation for Guam."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Supports sustainable fiscal management while investing in public services."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports worker protections and minimum wage increases for Guam."
+      },
+      "privacy-and-surveillance": {
+        "stance": "neutral",
+        "summary": "Limited engagement with privacy regulation at the territorial level."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies benefiting Guam's import-dependent economy."
+      }
+    }
+  },
+  {
+    "name": "Arnold Palacios",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on economic recovery and reducing CNMI's dependence on tourism and garment industry."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Advocates for improved healthcare infrastructure and federal funding for CNMI."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports immigration reform relevant to CNMI's unique guest worker program."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports education improvements and workforce training for island residents."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports U.S. military presence in the Pacific and CNMI's strategic role."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes climate resilience as CNMI faces severe typhoons and rising seas."
+      },
+      "criminal-justice-reform": {
+        "stance": "neutral",
+        "summary": "Focuses on public safety within CNMI's small justice system."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports Pacific island regional cooperation and U.S. Pacific strategy."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "neutral",
+        "summary": "Focuses on basic digital infrastructure improvements."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Advocates for equitable federal benefits for CNMI residents."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "neutral",
+        "summary": "CNMI has distinct local firearms regulations."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes rebuilding infrastructure damaged by Super Typhoon Yutu."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports post-typhoon housing reconstruction and affordability measures."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports transitioning from costly imported diesel to solar and renewable energy."
+      },
+      "reproductive-rights": {
+        "stance": "neutral",
+        "summary": "Limited engagement with reproductive rights policy at the territorial level."
+      },
+      "lgbtq-rights": {
+        "stance": "neutral",
+        "summary": "Has not taken strong positions on LGBTQ policy issues."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Maintains conservative drug enforcement policies in the territory."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports expanded voting access and territorial representation."
+      },
+      "taxes-and-spending": {
+        "stance": "neutral",
+        "summary": "Balances fiscal austerity with need for federal disaster recovery funds."
+      },
+      "labor-and-unions": {
+        "stance": "leans_support",
+        "summary": "Supports labor protections within CNMI's unique economic framework."
+      },
+      "privacy-and-surveillance": {
+        "stance": "neutral",
+        "summary": "Limited engagement with privacy regulation at the territorial level."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies that reduce costs for CNMI's import-dependent economy."
+      }
+    }
+  },
+  {
+    "name": "Jenniffer Gonzalez-Colon",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on economic recovery and attracting investment through tax incentives like Act 60."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Advocates for equitable Medicaid funding for Puerto Rico from the federal government."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Generally supports immigration enforcement as a Republican while representing diverse territory."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports education reform and increased funding for University of Puerto Rico."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports Puerto Rico's military veterans and installations."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports climate resilience and renewable energy after Hurricane Maria devastation."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Favors tough-on-crime policies to address Puerto Rico's public safety challenges."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports statehood and Puerto Rico's full integration into U.S. foreign policy."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports tech sector growth through tax incentives attracting tech companies to PR."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for equal Social Security and Medicare treatment for Puerto Rico."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "leans_oppose",
+        "summary": "Supports Second Amendment while Puerto Rico maintains relatively strict local gun laws."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes rebuilding infrastructure devastated by hurricanes and grid failures."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports housing reconstruction and affordability programs post-hurricane."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports rebuilding the power grid with renewable energy after catastrophic failures."
+      },
+      "reproductive-rights": {
+        "stance": "leans_oppose",
+        "summary": "Generally pro-life as a Republican though Puerto Rico protects abortion access."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Conservative on social issues though Puerto Rico has some LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Supports Puerto Rico's medical marijuana program but opposes broader decriminalization."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly advocates for Puerto Rico statehood and full federal voting rights."
+      },
+      "taxes-and-spending": {
+        "stance": "opposes",
+        "summary": "Supports low taxes and fiscal responsibility while managing Puerto Rico's debt crisis."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Favors business-friendly labor policies to attract investment."
+      },
+      "privacy-and-surveillance": {
+        "stance": "neutral",
+        "summary": "Limited engagement with privacy regulation at the territorial level."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Advocates for Jones Act reform to reduce shipping costs for Puerto Rico."
+      }
+    }
+  },
+  {
+    "name": "Albert Bryan Jr.",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Focuses on tourism recovery and economic diversification for the U.S. Virgin Islands."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Advocates for equitable federal healthcare funding and improved hospital infrastructure."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports immigration policies relevant to USVI's Caribbean location and workforce needs."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Invested in rebuilding hurricane-damaged schools and expanding education programs."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports U.S. military presence and veterans' services in the territory."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes climate resilience after devastating 2017 hurricanes Irma and Maria."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports reform measures to address USVI's public safety challenges."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports Caribbean regional cooperation and USVI's role in the region."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "neutral",
+        "summary": "Focuses on basic digital infrastructure and connectivity improvements."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for equal federal benefits for USVI residents."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports gun safety measures to address violent crime in the territory."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Prioritizes rebuilding infrastructure and power grid after 2017 hurricanes."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports rebuilding hurricane-damaged housing and affordable housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports transitioning USVI from oil-dependent power generation to renewable energy."
+      },
+      "reproductive-rights": {
+        "stance": "supports",
+        "summary": "Supports reproductive healthcare access in the territory."
+      },
+      "lgbtq-rights": {
+        "stance": "supports",
+        "summary": "Supports LGBTQ equality protections in the U.S. Virgin Islands."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Signed legislation to legalize adult-use marijuana in the USVI."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Advocates for full voting representation for territorial residents."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Supports fiscal reform while investing in hurricane recovery and public services."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports worker protections and fair wages for USVI workers."
+      },
+      "privacy-and-surveillance": {
+        "stance": "neutral",
+        "summary": "Limited engagement with privacy regulation at the territorial level."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade policies reducing costs for the import-dependent USVI economy."
+      }
+    }
+  }
+]

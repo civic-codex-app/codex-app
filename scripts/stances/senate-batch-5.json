@@ -1,0 +1,185 @@
+[
+  {
+    "name": "Dan Sullivan",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Champions resource development and deregulation to boost Alaska's economy and create private-sector jobs."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Voted to repeal the ACA and favors market-based healthcare reforms over government-run programs."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports increased border security funding, opposes amnesty, and backs stricter enforcement of immigration laws."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes federal student loan forgiveness and favors state and local control over education policy."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Marine veteran who consistently pushes for higher defense spending and strengthening Arctic military capabilities."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes aggressive climate regulations like the Paris Agreement, arguing they harm Alaska's resource-dependent economy."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports tough-on-crime policies though he backed limited provisions of the First Step Act."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Advocates a strong forward-deployed military posture, particularly in the Arctic and Indo-Pacific regions."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of heavy tech regulation and prefers industry-led innovation over federal mandates."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving Social Security and Medicare benefits but favors long-term structural reforms to ensure solvency."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment defender with an A+ NRA rating who opposes federal gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Voted for the bipartisan infrastructure law with a focus on expanding broadband and roads in rural Alaska."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_support",
+        "summary": "Supports addressing rural and Native Alaskan housing shortages through targeted federal programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Leading advocate for Arctic drilling, the Willow Project, and expanding oil and gas production on federal lands."
+      }
+    }
+  },
+  {
+    "name": "Todd Young",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Pro-business fiscal conservative who backed the 2017 tax cuts and supports deregulation to spur growth."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Voted to repeal the ACA and prefers market-driven health reforms and expanded health savings accounts."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports border security but has shown willingness to work on bipartisan immigration reform including legal immigration pathways."
+      },
+      "education-and-student-debt": {
+        "stance": "leans_oppose",
+        "summary": "Opposes broad student loan forgiveness but supports workforce development and vocational training programs."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Marine veteran who consistently supports robust defense budgets and a strong Indo-Pacific military presence."
+      },
+      "climate-and-environment": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of sweeping climate mandates but open to market-based solutions and innovation-driven approaches."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supported the First Step Act and backs targeted reforms to reduce recidivism while maintaining public safety."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Internationalist who supports strong alliances, aid to Ukraine, and competition with China through economic and military tools."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Co-authored the CHIPS and Science Act and leads Senate efforts on AI policy and semiconductor competitiveness."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Committed to preserving benefits for current retirees while supporting bipartisan reforms for long-term fiscal stability."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Defends Second Amendment rights and opposes most federal gun control proposals though he engaged in post-Uvalde talks."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Voted for the bipartisan infrastructure law to improve Indiana's roads, bridges, and broadband access."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_support",
+        "summary": "Supports reducing regulatory barriers to home construction and expanding housing supply through private-sector incentives."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Favors an all-of-the-above energy strategy with support for fossil fuels alongside investment in emerging technologies."
+      }
+    }
+  },
+  {
+    "name": "John Kennedy",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Aggressive fiscal hawk who backs deep tax cuts, deregulation, and reducing federal spending to drive economic growth."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes government-run healthcare and the ACA, favoring free-market competition and reduced federal involvement."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Demands strict border enforcement, opposes sanctuary cities, and rejects any path to citizenship for undocumented immigrants."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_opposes",
+        "summary": "Sharply opposes student loan forgiveness and federal education mandates, favoring parental choice and local control."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports robust defense spending and a strong military posture to counter threats from China and Russia."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "Vocally opposes climate regulations like the Green New Deal, arguing they destroy Louisiana's energy-based economy."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Takes a tough-on-crime stance, opposing efforts to reduce sentences and supporting law enforcement funding increases."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong national defense posture abroad and takes a hawkish stance toward China and Iran."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes heavy-handed tech regulation while expressing concern about Big Tech censorship and data privacy."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Pledges to protect current benefits but supports long-term reforms to address entitlement spending and national debt."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Unwavering Second Amendment champion with top NRA ratings who opposes all federal gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports infrastructure investment for Louisiana's ports and flood protection but opposed the 2021 bipartisan bill's spending level."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors reducing government regulation rather than federal housing programs to address affordability concerns."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Fiercely defends Louisiana's oil and gas industry, opposes drilling restrictions, and fights EPA regulations on energy producers."
+      }
+    }
+  }
+]
