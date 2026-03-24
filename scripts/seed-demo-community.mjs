@@ -24,6 +24,8 @@ const supabase = createClient(vars.NEXT_PUBLIC_SUPABASE_URL, vars.SUPABASE_SERVI
 
 const DRY_RUN = process.argv.includes('--dry-run')
 const DELETE = process.argv.includes('--delete')
+const ADD_MODE = process.argv.includes('--add')
+const ADD_COUNT = ADD_MODE ? parseInt(process.argv[process.argv.indexOf('--add') + 1] || '400', 10) : 0
 
 // ── State political leanings ──
 // Scale: -1 = solid blue, -0.5 = lean blue, 0 = swing, 0.5 = lean red, 1 = solid red
@@ -170,6 +172,58 @@ function generateAnonymousId() {
   return crypto.randomBytes(4).toString('hex') // 8-char hex
 }
 
+// ── State population weights (relative, based on 2020 census) ──
+// Higher = more voters allocated when staggering
+const STATE_POP_WEIGHT = {
+  CA: 39.5, TX: 29.1, FL: 21.5, NY: 20.2, PA: 13.0,
+  IL: 12.8, OH: 11.8, GA: 10.7, NC: 10.4, MI: 10.0,
+  NJ: 9.3, VA: 8.6, WA: 7.6, AZ: 7.2, MA: 7.0,
+  TN: 6.9, IN: 6.8, MO: 6.2, MD: 6.2, WI: 5.9,
+  CO: 5.8, MN: 5.7, SC: 5.1, AL: 5.0, LA: 4.7,
+  KY: 4.5, OR: 4.2, OK: 4.0, CT: 3.6, UT: 3.3,
+  IA: 3.2, NV: 3.1, AR: 3.0, MS: 3.0, KS: 2.9,
+  NM: 2.1, NE: 1.9, ID: 1.9, WV: 1.8, HI: 1.5,
+  NH: 1.4, ME: 1.4, MT: 1.1, RI: 1.1, DE: 1.0,
+  SD: 0.9, ND: 0.8, AK: 0.7, VT: 0.6, WY: 0.6,
+  DC: 0.7,
+}
+
+/**
+ * Distribute `total` voters across states proportional to population.
+ * Every state gets at least 2, big states get up to ~20.
+ */
+function distributeByPopulation(total) {
+  const totalPop = Object.values(STATE_POP_WEIGHT).reduce((a, b) => a + b, 0)
+  const perState = {}
+  let assigned = 0
+
+  // First pass: proportional allocation with floor of 2
+  for (const st of STATES) {
+    const weight = STATE_POP_WEIGHT[st] || 1.0
+    const raw = Math.max(2, Math.round((weight / totalPop) * total))
+    perState[st] = raw
+    assigned += raw
+  }
+
+  // Adjust to hit target: add/remove from largest states
+  const sorted = [...STATES].sort((a, b) => (STATE_POP_WEIGHT[b] || 1) - (STATE_POP_WEIGHT[a] || 1))
+  let idx = 0
+  while (assigned > total) {
+    if (perState[sorted[idx]] > 2) {
+      perState[sorted[idx]]--
+      assigned--
+    }
+    idx = (idx + 1) % sorted.length
+  }
+  while (assigned < total) {
+    perState[sorted[idx]]++
+    assigned++
+    idx = (idx + 1) % sorted.length
+  }
+
+  return perState
+}
+
 // ── First names pool for display names ──
 const FIRST_NAMES = [
   'Alex', 'Jordan', 'Taylor', 'Morgan', 'Casey', 'Riley', 'Jamie', 'Drew',
@@ -293,8 +347,99 @@ async function seed() {
   console.log(`Total in DB: ${created} demo community members`)
 }
 
+async function addMore(total) {
+  const perState = distributeByPopulation(total)
+  const actualTotal = Object.values(perState).reduce((a, b) => a + b, 0)
+
+  console.log(`Adding ${actualTotal} more demo voters (population-weighted)...`)
+
+  // Show distribution
+  const sorted = Object.entries(perState).sort((a, b) => b[1] - a[1])
+  console.log(`Top 10: ${sorted.slice(0, 10).map(([s, n]) => `${s}:${n}`).join(', ')}`)
+  console.log(`Bottom 10: ${sorted.slice(-10).map(([s, n]) => `${s}:${n}`).join(', ')}`)
+
+  if (DRY_RUN) {
+    console.log('\nFull distribution:')
+    for (const [st, n] of sorted) console.log(`  ${st}: ${n}`)
+    console.log(`\nTotal: ${actualTotal}`)
+    return
+  }
+
+  // Get current max index per state to avoid email collisions
+  const { data: existing } = await supabase
+    .from('profiles')
+    .select('email')
+    .eq('is_demo', true)
+
+  const stateMaxIdx = {}
+  for (const e of existing ?? []) {
+    const match = e.email?.match(/^demo-(\w+)-(\d+)@/)
+    if (match) {
+      const st = match[1].toUpperCase()
+      const idx = parseInt(match[2], 10)
+      stateMaxIdx[st] = Math.max(stateMaxIdx[st] || 0, idx + 1)
+    }
+  }
+
+  let created = 0, failed = 0
+
+  for (const state of STATES) {
+    const count = perState[state]
+    const startIdx = stateMaxIdx[state] || 0
+    process.stdout.write(`${state}(${count})...`)
+
+    for (let i = 0; i < count; i++) {
+      const idx = startIdx + i
+      const anonymousId = generateAnonymousId()
+      const email = `demo-${state.toLowerCase()}-${idx}@poli-demo.local`
+      const displayName = FIRST_NAMES[(created) % FIRST_NAMES.length]
+      // Use idx to spread voters across spectrum within the state
+      const voterIndex = Math.random() * 7
+      const stances = generateVoterStances(STATE_LEAN[state], voterIndex)
+
+      const { data: authUser, error: authErr } = await supabase.auth.admin.createUser({
+        email,
+        email_confirm: true,
+        user_metadata: { display_name: displayName },
+      })
+
+      if (authErr) {
+        console.error(`\n  AUTH FAILED for ${email}: ${authErr.message}`)
+        failed++
+        continue
+      }
+
+      const { error: profileErr } = await supabase
+        .from('profiles')
+        .update({
+          state,
+          quiz_answers: stances,
+          sharing_enabled: true,
+          anonymous_id: anonymousId,
+          is_demo: true,
+          display_name: displayName,
+        })
+        .eq('id', authUser.user.id)
+
+      if (profileErr) {
+        console.error(`\n  PROFILE FAILED for ${email}: ${profileErr.message}`)
+        failed++
+        continue
+      }
+
+      created++
+    }
+  }
+
+  console.log(`\n\n=== SUMMARY ===`)
+  console.log(`Created: ${created}`)
+  console.log(`Failed: ${failed}`)
+}
+
 if (DELETE) {
   deleteDemo().catch(console.error)
+} else if (ADD_MODE) {
+  addMore(ADD_COUNT).catch(console.error)
 } else {
   seed().catch(console.error)
 }
