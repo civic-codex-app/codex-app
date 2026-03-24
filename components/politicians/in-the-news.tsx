@@ -104,31 +104,37 @@ export function InTheNews({ articles, politicianName }: InTheNewsProps) {
 
       {/* Articles */}
       {activeGroup === 'all' ? (
-        /* Three-column layout on desktop */
+        /* Three-column layout on desktop — balanced count across perspectives */
         <div className="grid gap-4 sm:grid-cols-3">
-          {GROUPS.map((g) => {
-            const items = grouped[g]
-            if (items.length === 0) return null
-            const colors = BIAS_GROUP_COLORS[g]
-            return (
-              <div key={g}>
-                <div className="mb-3 flex items-center gap-2">
-                  <span
-                    className="inline-block h-2 w-2 rounded-full"
-                    style={{ backgroundColor: colors.dot }}
-                  />
-                  <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
-                    {BIAS_GROUP_LABELS[g]}
-                  </span>
+          {(() => {
+            // Balance: cap all columns to the min non-zero count (max 5)
+            const counts = GROUPS.map((g) => grouped[g].length).filter((c) => c > 0)
+            const perColumn = Math.min(5, ...counts)
+
+            return GROUPS.map((g) => {
+              const items = grouped[g]
+              if (items.length === 0) return null
+              const colors = BIAS_GROUP_COLORS[g]
+              return (
+                <div key={g}>
+                  <div className="mb-3 flex items-center gap-2">
+                    <span
+                      className="inline-block h-2 w-2 rounded-full"
+                      style={{ backgroundColor: colors.dot }}
+                    />
+                    <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--codex-sub)]">
+                      {BIAS_GROUP_LABELS[g]}
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {items.slice(0, perColumn).map((a, i) => (
+                      <ArticleCard key={i} article={a} />
+                    ))}
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  {items.slice(0, 5).map((a, i) => (
-                    <ArticleCard key={i} article={a} />
-                  ))}
-                </div>
-              </div>
-            )
-          })}
+              )
+            })
+          })()}
         </div>
       ) : (
         /* Single column filtered view */
