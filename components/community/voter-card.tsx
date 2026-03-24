@@ -24,15 +24,30 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
     counts[bucket]++
   }
 
-  // Top 3 stances (strongest positions)
+  // Show a balanced mix of stances — pick from both sides if available
   const issueMap = new Map(issues.map((i) => [i.slug, i.name]))
-  const topStances = entries
+  const strong = entries
     .filter(([, s]) => s.startsWith('strongly_'))
-    .slice(0, 3)
     .map(([slug, stance]) => ({
       name: issueMap.get(slug) ?? slug,
       bucket: stanceBucket(stance),
     }))
+
+  const supportTags = strong.filter((s) => s.bucket === 'supports')
+  const opposeTags = strong.filter((s) => s.bucket === 'opposes')
+
+  // Balanced: if both sides exist, take up to 2 from each (max 4)
+  // If only one side, take up to 3
+  let topStances: typeof strong
+  if (supportTags.length > 0 && opposeTags.length > 0) {
+    const perSide = Math.min(2, Math.max(supportTags.length, opposeTags.length))
+    topStances = [
+      ...supportTags.slice(0, perSide),
+      ...opposeTags.slice(0, perSide),
+    ].slice(0, 4)
+  } else {
+    topStances = strong.slice(0, 3)
+  }
 
   const stateName = state ? STATE_NAMES[state as keyof typeof STATE_NAMES] ?? state : null
 
