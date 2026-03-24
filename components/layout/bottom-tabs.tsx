@@ -62,6 +62,7 @@ interface MoreLink {
 }
 
 const MORE_LINKS: MoreLink[] = [
+  { href: '/community', label: 'Community' },
   { href: '/insights', label: 'Insights' },
   { href: '/insights/money-map', label: 'Money Map' },
   { href: '/polls', label: 'Polls' },
