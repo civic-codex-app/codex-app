@@ -68,7 +68,9 @@ export function StanceAvatar({
   const oReverse = h[14] % 2 === 0 ? 'reverse' : 'normal'
   const nReverse = h[15] % 2 === 0 ? 'reverse' : 'normal'
 
-  const blur = size * 0.15
+  // Reduce blur on small sizes (mobile perf) — use CSS will-change for GPU compositing
+  const isMobile = size <= 48
+  const blur = isMobile ? size * 0.08 : size * 0.15
 
   return (
     <div
@@ -88,6 +90,7 @@ export function StanceAvatar({
             animation: `stance-blob-rotate ${sSpeed}s linear infinite ${sReverse}`,
             transformOrigin: `${sOriginX}% ${sOriginY}%`,
             animationDelay: `${sDelay}s`,
+            willChange: 'transform',
           }}
         />
       )}
@@ -105,6 +108,7 @@ export function StanceAvatar({
             animation: `stance-blob-rotate ${oSpeed}s linear infinite ${oReverse}`,
             transformOrigin: `${oOriginX}% ${oOriginY}%`,
             animationDelay: `${oDelay}s`,
+            willChange: 'transform',
           }}
         />
       )}
@@ -122,6 +126,7 @@ export function StanceAvatar({
             animation: `stance-blob-rotate ${nSpeed}s linear infinite ${nReverse}`,
             transformOrigin: '50% 50%',
             animationDelay: `${nDelay}s`,
+            willChange: 'transform',
           }}
         />
       )}
