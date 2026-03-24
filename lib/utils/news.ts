@@ -122,11 +122,13 @@ async function fetchPoliticianNews(name: string): Promise<NewsArticle[]> {
       byGroup[a.biasGroup].push(a)
     }
 
+    // Take up to 5 per known perspective + up to 5 from unknown/other
     const PER_GROUP = 5
     const balanced: NewsArticle[] = [
       ...byGroup.left.slice(0, PER_GROUP),
       ...byGroup.center.slice(0, PER_GROUP),
       ...byGroup.right.slice(0, PER_GROUP),
+      ...byGroup.unknown.slice(0, PER_GROUP),
     ]
 
     // Sort final selection by date (newest first)

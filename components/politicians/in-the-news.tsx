@@ -25,7 +25,7 @@ function timeAgo(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 }
 
-const GROUPS: BiasGroup[] = ['left', 'center', 'right']
+const GROUPS: BiasGroup[] = ['left', 'center', 'right', 'unknown']
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
@@ -104,8 +104,11 @@ export function InTheNews({ articles, politicianName }: InTheNewsProps) {
 
       {/* Articles */}
       {activeGroup === 'all' ? (
-        /* Three-column layout — data is already balanced by fetcher (5 per group) */
-        <div className="grid gap-4 sm:grid-cols-3">
+        /* Column layout — balanced by fetcher (5 per group) */
+        <div className={cn(
+          'grid gap-4',
+          grouped.unknown.length > 0 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'
+        )}>
           {GROUPS.map((g) => {
             const items = grouped[g]
             if (items.length === 0) return null
