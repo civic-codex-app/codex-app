@@ -41,7 +41,7 @@ export default async function BallotScorecardPage() {
   if (!hasQuizAnswers) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-        <h1 className="mb-2 font-serif text-3xl font-bold">Your Ballot Scorecard</h1>
+        <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
         <p className="mb-8 text-sm text-[var(--codex-sub)]">
           See how each candidate aligns with your views
         </p>
@@ -82,7 +82,7 @@ export default async function BallotScorecardPage() {
   if (!userState) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-        <h1 className="mb-2 font-serif text-3xl font-bold">Your Ballot Scorecard</h1>
+        <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
         <p className="mb-8 text-sm text-[var(--codex-sub)]">
           See how each candidate aligns with your views
         </p>
@@ -263,7 +263,7 @@ export default async function BallotScorecardPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-      <h1 className="mb-2 font-serif text-3xl font-bold">Your Ballot Scorecard</h1>
+      <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
       <p className="mb-1 text-sm text-[var(--codex-sub)]">
         See how each candidate aligns with your views
       </p>

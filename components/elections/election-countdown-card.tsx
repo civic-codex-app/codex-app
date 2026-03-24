@@ -29,7 +29,7 @@ export function ElectionCountdownCard({
   return (
     <div className="rounded-md border border-[var(--codex-border)] p-5">
       {/* Title */}
-      <h2 className="mb-1 font-serif text-xl font-bold text-[var(--codex-text)]">
+      <h2 className="mb-1 text-xl font-bold text-[var(--codex-text)]">
         {electionName}
       </h2>
       <p className="mb-4 text-[12px] uppercase tracking-[0.1em] text-[var(--codex-faint)]">

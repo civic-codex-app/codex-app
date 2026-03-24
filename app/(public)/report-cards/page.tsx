@@ -77,7 +77,7 @@ export default async function ReportCardsPage() {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
             </div>
-            <h1 className="mb-2 font-serif text-[clamp(24px,3vw,36px)] font-bold text-[var(--codex-text)]">
+            <h1 className="mb-2 text-[clamp(24px,3vw,36px)] font-bold text-[var(--codex-text)]">
               Civic Report Cards
             </h1>
             <p className="mx-auto mb-6 max-w-[400px] text-[14px] leading-[1.7] text-[var(--codex-sub)]">
