@@ -1,0 +1,2513 @@
+[
+  {
+    "name": "Steve Daines",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Champions tax cuts, deregulation, and pro-business policies as NRSC chair focused on economic growth."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Voted to repeal the ACA and opposes government-run healthcare, favoring free-market solutions."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Strong border security advocate who supports the border wall and stricter enforcement of immigration laws."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes federal student loan forgiveness and supports school choice and local control of education."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports robust defense spending and maintaining Malmstrom Air Force Base in Montana."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes aggressive climate regulations and the Green New Deal, prioritizing Montana's resource economy."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally tough-on-crime but supported the First Step Act's limited sentencing reforms."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Hawkish on China and supports strong alliances, particularly in the Indo-Pacific region."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of heavy-handed tech regulation, preferring market-driven innovation."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving Social Security and Medicare but favors structural reforms to ensure long-term solvency."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment defender with an A+ NRA rating who opposes virtually all gun restrictions."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports infrastructure investment for rural Montana but opposed the 2021 bipartisan infrastructure bill."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal housing mandates, preferring market-based solutions and reducing regulatory barriers."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Strong advocate for coal, oil, and gas production and opposes restrictions on fossil fuel development."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life, supports federal abortion restrictions and backed the overturn of Roe v. Wade."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Opposes the Equality Act and federal LGBTQ protections, citing religious liberty concerns."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes marijuana legalization at the federal level and takes a tough stance on drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposed federal voting rights legislation, arguing elections should be managed by states."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Led efforts to extend the 2017 Tax Cuts and Jobs Act and consistently pushes for lower taxes."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded union powers, favoring right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports law enforcement surveillance tools and has been skeptical of privacy restrictions on security agencies."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports fair trade deals that benefit Montana agriculture and backed USMCA negotiations."
+      }
+    }
+  },
+  {
+    "name": "Ted Budd",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Champions deregulation and tax cuts as central to economic growth, with a strong pro-business record."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes the ACA and government-run healthcare, advocating for free-market competition and price transparency."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Hard-line border security advocate who supports the wall, opposes amnesty, and backs mass deportation efforts."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes student loan forgiveness and federal education mandates, favoring parental choice."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports increased defense spending and a strong military posture against China and Russia."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes climate regulations and the Green New Deal, calling them job-killing government overreach."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Favors tough-on-crime policies and opposes efforts to reduce mandatory minimum sentences."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports a strong national defense posture and is hawkish on China and Iran."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "opposes",
+        "summary": "Opposes government regulation of technology companies, preferring free-market approaches."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Pledges to protect Social Security and Medicare for current beneficiaries while supporting long-term reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Gun shop owner and staunch Second Amendment advocate who opposes all gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_oppose",
+        "summary": "Opposed the bipartisan infrastructure bill, concerned about spending levels and non-infrastructure provisions."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal housing programs and rent control, preferring deregulation to address affordability."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports domestic oil and gas production and opposes restrictions on fossil fuels."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and supported federal abortion bans, including sponsoring restrictive legislation."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes the Equality Act and federal LGBTQ protections, opposing same-sex marriage recognition."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports strict drug enforcement policies."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposed federal voting rights legislation and supports state-level voter ID requirements."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports tax cuts and reducing federal spending, backed the 2017 TCJA."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes the PRO Act and expanded union power, supporting right-to-work protections."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports broad surveillance authorities for national security while expressing some concern about big tech data practices."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports tariffs on China and fair trade deals that protect American manufacturing."
+      }
+    }
+  },
+  {
+    "name": "Kevin Cramer",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Champions pro-energy economic policies and deregulation to benefit North Dakota's resource-driven economy."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes the ACA and single-payer healthcare, favoring market-based reforms and reducing insurance mandates."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports the border wall, stricter enforcement, and reducing both illegal and legal immigration."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes federal student loan forgiveness and supports local control of education policy."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strong defense hawk who supports increased military spending and the Minot Air Force Base mission."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes aggressive climate mandates but has pragmatically supported carbon capture technology for fossil fuels."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports tough-on-crime policies but voted for the First Step Act."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong U.S. leadership and military alliances, particularly against Russian and Chinese aggression."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of heavy tech regulation, preferring industry self-governance and innovation-friendly policies."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports preserving Social Security and Medicare benefits while pursuing fiscally responsible reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter with an A rating from the NRA who opposes gun control legislation."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Voted for the bipartisan infrastructure bill, citing critical needs for North Dakota roads and broadband."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors reducing regulatory barriers over federal housing programs to address affordability."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "North Dakota's top energy champion who fights aggressively for oil, gas, coal, and pipeline development."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Pro-life advocate who supports abortion restrictions and backed the Dobbs decision."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Opposes the Equality Act and has voiced concerns about transgender policies in schools and sports."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization while focusing on combating methamphetamine and opioid abuse."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposed federal voting rights legislation, supporting state control over election administration."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Strong supporter of tax cuts and reducing federal spending, championed the 2017 TCJA."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded union mandates, supporting right-to-work principles."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports law enforcement surveillance tools and is less focused on digital privacy restrictions."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports tariffs on China but has expressed concern about trade war impacts on North Dakota agriculture."
+      }
+    }
+  },
+  {
+    "name": "Deb Fischer",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports pro-business policies, tax reform, and reducing regulations to grow Nebraska's economy."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Voted to repeal the ACA and supports market-based healthcare reforms over government expansion."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports border security funding, opposes sanctuary cities, and backs stricter immigration enforcement."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes federal student loan forgiveness and supports school choice and local education control."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Senior Armed Services Committee member who is a leading advocate for nuclear modernization and defense spending."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes climate mandates like the Green New Deal while supporting voluntary conservation by farmers and ranchers."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally favors tough-on-crime policies but supported bipartisan criminal justice reforms."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports a strong U.S. military presence globally and robust alliances with NATO partners."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Prefers a light-touch approach to tech regulation, wary of government overreach in innovation."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Pledges to protect Social Security and Medicare while supporting responsible reforms for sustainability."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter who opposes gun control measures and holds an A rating from the NRA."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports rural infrastructure investment and voted for the bipartisan infrastructure law."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Prefers market solutions and reducing regulatory barriers over federal housing subsidies."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Supports an all-of-the-above energy strategy with emphasis on fossil fuels, ethanol, and nuclear."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Pro-life senator who supports abortion restrictions and backed overturning Roe v. Wade."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Opposes the Equality Act though she was one of 12 Republicans to vote for the Respect for Marriage Act."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization and focuses on combating opioid and methamphetamine abuse."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposed federal voting rights legislation, supporting state authority over elections."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Supports tax cuts and fiscal discipline, backed the 2017 Tax Cuts and Jobs Act."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded federal labor mandates, supporting right-to-work laws."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports national security surveillance programs while expressing moderate privacy concerns."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports fair trade deals that benefit Nebraska agriculture, backed USMCA."
+      }
+    }
+  },
+  {
+    "name": "Maggie Hassan",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports small business growth, workforce development, and targeted tax relief for middle-class families."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports expanding ACA coverage and lowering prescription drug costs, particularly for opioid treatment access."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports comprehensive immigration reform with a path to citizenship and border security, taking a moderate approach."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports reducing student debt burdens and increasing federal investment in public education and workforce training."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports strong national defense and the Portsmouth Naval Shipyard, taking a pragmatic approach to military spending."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports clean energy investment and emissions reduction while balancing economic impacts on New Hampshire."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports targeted reforms including opioid crisis response and reentry programs while maintaining public safety."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong alliances, diplomacy, and a firm stance against adversaries like Russia and China."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Active on cybersecurity issues and supports sensible regulation of AI and tech platforms."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly defends Social Security and Medicare benefits and opposes cuts or privatization."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports universal background checks and red flag laws while respecting New Hampshire's gun culture."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Championed the bipartisan infrastructure law and fights for New Hampshire broadband and road funding."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports federal investment in affordable housing and programs to help first-time homebuyers."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports a transition to clean energy while maintaining energy affordability for New Hampshire families."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports abortion rights and has made reproductive freedom a central campaign issue."
+      },
+      "lgbtq-rights": {
+        "stance": "supports",
+        "summary": "Supports LGBTQ protections including the Equality Act and voted for the Respect for Marriage Act."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Focuses heavily on opioid crisis response and supports treatment-over-incarceration approaches."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports federal voting rights protections and expanded access to the ballot."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Supports middle-class tax cuts and closing corporate loopholes while being fiscally moderate."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports workers' rights and raising the minimum wage while taking a moderate approach on union legislation."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy protections and cybersecurity measures, active on the Homeland Security Committee."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports fair trade agreements that protect American workers while maintaining international partnerships."
+      }
+    }
+  },
+  {
+    "name": "Jeanne Shaheen",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports small business programs, workforce development, and bipartisan economic growth initiatives."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports strengthening the ACA, lowering drug costs, and expanding access to mental health and opioid treatment."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports comprehensive immigration reform balancing border security with a pathway to citizenship."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports increased education funding, student debt relief, and Pell Grant expansion."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Senior Armed Services and Foreign Relations member who supports strong defense as a national security moderate."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports clean energy transition and emissions reductions while ensuring energy affordability."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports bipartisan reforms including opioid crisis response and reducing recidivism."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "strongly_supports",
+        "summary": "Senior Foreign Relations Committee member who strongly supports NATO, diplomacy, and American global leadership."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports balanced technology regulation focusing on data security and protecting consumers."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly defends Social Security and Medicare and opposes any cuts to benefits."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports background checks and gun safety measures while respecting New Hampshire's gun traditions."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Supported the bipartisan infrastructure law and champions rural broadband and transportation investment."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports affordable housing investments and programs to address the housing shortage."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports energy independence through a mix of clean energy and responsible domestic production."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports codifying Roe v. Wade and protecting reproductive rights at the federal level."
+      },
+      "lgbtq-rights": {
+        "stance": "supports",
+        "summary": "Supports LGBTQ equality and voted for the Respect for Marriage Act."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Focuses on combating the opioid crisis through treatment and prevention rather than criminalization alone."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports federal voting protections and expanded access to voting."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Supports targeted tax relief for working families and small businesses with fiscally moderate instincts."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports workers' rights, paid family leave, and raising the minimum wage."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Supports data privacy protections while balancing national security surveillance needs."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade with strong labor and environmental standards, backed USMCA."
+      }
+    }
+  },
+  {
+    "name": "Andy Kim",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports middle-class economic policies, small business support, and reducing income inequality."
+      },
+      "healthcare-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports expanding ACA coverage and lowering prescription drug costs through negotiation."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports comprehensive immigration reform with border security and a pathway to citizenship."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Supports student debt relief, increased education funding, and expanding access to higher education."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Former national security advisor with deep foreign policy expertise who supports strong but strategic defense."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports clean energy investment and climate action with a pragmatic, solutions-oriented approach."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Supports policing reforms, reducing mass incarceration, and investing in community-based solutions."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "strongly_supports",
+        "summary": "Former State Department and NSC official who strongly supports diplomacy, alliances, and American global engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports thoughtful AI regulation and protecting consumers from big tech abuses."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports protecting Social Security and Medicare from cuts or privatization."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports universal background checks, assault weapons ban, and red flag laws."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Champions infrastructure investment for New Jersey transit, roads, and broadband connectivity."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports federal investment in affordable housing and helping first-time buyers in New Jersey's expensive market."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports a clean energy transition while ensuring energy costs remain manageable for families."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports codifying abortion rights and protecting reproductive healthcare access."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports the Equality Act and comprehensive LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports treatment-focused drug policy and addressing the opioid crisis through public health approaches."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports federal voting rights protections and combating voter suppression."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports raising taxes on corporations and the wealthy while cutting taxes for middle-class families."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports workers' rights, paid leave, and strengthening collective bargaining protections."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy legislation and protecting Americans' digital rights."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports fair trade with strong labor and environmental standards, informed by national security perspective."
+      }
+    }
+  },
+  {
+    "name": "Kirsten Gillibrand",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Champions paid family leave, equal pay, and economic policies that support working families and women."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Supports Medicare expansion and universal healthcare access, having moved left from her earlier moderate positions."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports comprehensive immigration reform, DACA protections, and a humane approach to border policy."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Supports student debt cancellation, free community college, and increased federal education investment."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Armed Services Committee member focused on military sexual assault reform and modernizing defense policy."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Supports aggressive climate action, clean energy investment, and the Green New Deal framework."
+      },
+      "criminal-justice-reform": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive criminal justice reform, ending mass incarceration, and police accountability."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports diplomacy and multilateral engagement, with particular focus on human rights and women's issues globally."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports regulating AI and big tech, with focus on data privacy and algorithmic accountability."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports expanding Social Security benefits and protecting Medicare from any cuts."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Evolved from an A NRA rating to championing gun control, supporting assault weapons bans and universal background checks."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Champions New York transit investment and supported the bipartisan infrastructure law."
+      },
+      "housing-and-affordability": {
+        "stance": "strongly_supports",
+        "summary": "Supports major federal investment in affordable housing and tenant protections."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports transitioning away from fossil fuels to clean energy while managing economic impacts."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "One of the Senate's strongest advocates for reproductive rights and codifying abortion access into federal law."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strong champion of LGBTQ rights who led the effort to repeal Don't Ask, Don't Tell."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana decriminalization and treatment-focused approaches to drug addiction."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports federal voting rights protections and expanding access to the ballot."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports raising taxes on the wealthy and corporations to fund social programs and infrastructure."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong union ally who supports the PRO Act, paid family leave, and raising the minimum wage."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy protections and has pushed for transparency in government surveillance programs."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports trade deals with strong labor and environmental protections, opposes deals that outsource jobs."
+      }
+    }
+  },
+  {
+    "name": "Jon Husted",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Former Ohio Lt. Governor focused on economic development, workforce training, and attracting business investment."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Favors market-based healthcare solutions and reducing government involvement in healthcare."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports strict border security and immigration enforcement, consistent with Ohio Republican positions."
+      },
+      "education-and-student-debt": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal student loan forgiveness and supports school choice and vocational training programs."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports strong national defense and Ohio's significant military installations like Wright-Patterson AFB."
+      },
+      "climate-and-environment": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of aggressive climate mandates but supports practical environmental measures for Ohio."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally favors tough-on-crime policies with limited support for targeted reforms."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong American leadership and a firm stance against China, informed by his InvestOhio work."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Led Ohio's technology initiatives as Lt. Governor, including broadband expansion and InnovateOhio."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports protecting Social Security and Medicare while pursuing long-term fiscal reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter who opposes new gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Championed broadband expansion and infrastructure development as Ohio's Lt. Governor."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Prefers market-based solutions and reducing regulations to address housing costs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports Ohio's shale gas industry and an all-of-the-above energy strategy including natural gas."
+      },
+      "reproductive-rights": {
+        "stance": "opposes",
+        "summary": "Pro-life position consistent with Ohio Republican politics, supports state-level abortion restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes federal LGBTQ mandates, deferring to state-level decisions."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization while focusing on Ohio's opioid crisis response."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "As former Ohio Secretary of State, supported voter ID requirements and opposed federal voting mandates."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports tax cuts and reducing government spending, consistent with his fiscal record in Ohio."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes expanded union mandates while recognizing Ohio's significant union workforce."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports law enforcement tools while his tech background gives him some awareness of digital privacy issues."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports tariffs that protect Ohio manufacturing and worked to attract foreign investment as Lt. Governor."
+      }
+    }
+  },
+  {
+    "name": "Markwayne Mullin",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Former plumbing company owner who champions small business deregulation and economic freedom."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes the ACA and government-run healthcare, supporting free-market alternatives and health savings accounts."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Hard-line border security advocate who supports the wall and strict immigration enforcement."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes student loan forgiveness and federal education mandates, supporting school choice and vocational training."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strong defense supporter who has personally traveled to conflict zones and supports robust military funding."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes climate regulations and the Green New Deal, prioritizing Oklahoma's oil and gas industry."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally tough-on-crime but has supported tribal justice reform as a Cherokee Nation citizen."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Hawkish foreign policy stance who personally attempted to rescue Americans from Afghanistan."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "opposes",
+        "summary": "Opposes government regulation of technology, favoring free-market innovation."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving benefits for current recipients while pursuing reforms for long-term sustainability."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Staunch Second Amendment advocate who opposes all gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports infrastructure investment for rural Oklahoma, including broadband and water systems."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal housing programs, favoring deregulation and private-sector solutions."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "From oil-rich Oklahoma, strongly champions fossil fuel production and opposes restrictions on drilling."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and supports strict abortion bans consistent with Oklahoma law."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes LGBTQ protections including the Equality Act and transgender rights in schools."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports strict drug enforcement policies."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting rights legislation, supporting state control over elections."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Strong advocate for tax cuts and drastically reducing federal spending."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes the PRO Act and union expansion, famously challenged a union leader to a physical fight."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports law enforcement and national security surveillance tools over privacy restrictions."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports tariffs on China and trade deals that benefit Oklahoma agriculture and energy."
+      }
+    }
+  },
+  {
+    "name": "Jeff Merkley",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Champions economic policies focused on workers, living wages, and reducing corporate influence on the economy."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Supports Medicare for All and aggressive expansion of healthcare access and affordability."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports comprehensive immigration reform and was one of the first senators to visit migrant detention facilities."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Supports free public college, student debt cancellation, and increased education funding."
+      },
+      "national-defense-and-military": {
+        "stance": "leans_oppose",
+        "summary": "Opposes excessive military spending and favors redirecting defense dollars to domestic priorities."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "One of the Senate's strongest climate voices, authored major clean energy legislation and opposes fossil fuel expansion."
+      },
+      "criminal-justice-reform": {
+        "stance": "strongly_supports",
+        "summary": "Supports ending mass incarceration, police reform, and addressing systemic racism in the justice system."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Senior Foreign Relations Committee member who champions diplomacy and human rights over military intervention."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports regulating big tech and AI to protect consumers and prevent monopolistic behavior."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports expanding Social Security benefits and opposes any cuts or privatization."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Conducted a 15-hour filibuster for gun control and supports comprehensive gun safety legislation."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Supports major federal infrastructure investment including transit, clean energy, and broadband."
+      },
+      "housing-and-affordability": {
+        "stance": "strongly_supports",
+        "summary": "One of the Senate's leading housing advocates, pushing for major investment in affordable housing and tenant protections."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports transitioning to 100% clean energy and ending fossil fuel subsidies."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports codifying Roe v. Wade and protecting reproductive rights."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strong champion of LGBTQ equality and supports comprehensive non-discrimination protections."
+      },
+      "drug-policy": {
+        "stance": "strongly_supports",
+        "summary": "Supports marijuana legalization, decriminalization, and treatment-focused approaches to drug policy."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Champions voting rights expansion and led filibuster reform efforts to pass voting rights legislation."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports raising taxes on corporations and the ultra-wealthy to fund social programs."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong union ally who supports the PRO Act, living wages, and robust worker protections."
+      },
+      "privacy-and-surveillance": {
+        "stance": "strongly_supports",
+        "summary": "Strong privacy advocate who opposes warrantless surveillance and supports robust digital privacy protections."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of free trade deals that lack strong labor and environmental standards, opposed TPP."
+      }
+    }
+  },
+  {
+    "name": "Ron Wyden",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "As Finance Committee chair, shapes tax and economic policy focusing on fairness and closing corporate loopholes."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Long-time healthcare policy leader who supports expanding coverage and has authored major drug pricing reforms."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports comprehensive immigration reform with a path to citizenship and humane border policies."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Supports student debt relief and making higher education more affordable through tax policy reforms."
+      },
+      "national-defense-and-military": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of unchecked military spending and is a leading critic of intelligence agency overreach."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Supports aggressive climate action and clean energy investment, authored clean energy tax provisions."
+      },
+      "criminal-justice-reform": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive criminal justice reform, sentencing reduction, and ending the war on drugs."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports diplomacy over military intervention and is critical of unchecked executive war powers."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "strongly_supports",
+        "summary": "One of Congress's most tech-savvy members, leads on AI governance, algorithmic accountability, and platform regulation."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports protecting and expanding Social Security and Medicare as Finance Committee leader."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports universal background checks and gun safety measures while representing gun-friendly Oregon."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Supports major infrastructure investment including broadband, transit, and Oregon-specific projects."
+      },
+      "housing-and-affordability": {
+        "stance": "strongly_supports",
+        "summary": "Supports affordable housing investment and tax incentives for housing development."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Champions clean energy tax credits and transitioning away from fossil fuel dependence."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports abortion rights and codifying reproductive healthcare access into federal law."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Long-time champion of LGBTQ equality and comprehensive anti-discrimination protections."
+      },
+      "drug-policy": {
+        "stance": "strongly_supports",
+        "summary": "Supports marijuana legalization and led Oregon's approach to drug decriminalization and treatment."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports federal voting rights protections and Oregon's pioneering vote-by-mail system."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "As Finance Committee leader, champions closing corporate tax loopholes and ensuring the wealthy pay their fair share."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports workers' rights and the PRO Act while taking a pragmatic approach to labor policy."
+      },
+      "privacy-and-surveillance": {
+        "stance": "strongly_supports",
+        "summary": "The Senate's foremost privacy champion who exposed NSA mass surveillance and leads on digital rights, encryption, and data protection."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "As Finance Committee chair, supports trade with strong enforcement but has been critical of deals lacking labor protections."
+      }
+    }
+  },
+  {
+    "name": "Dave McCormick",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Former Bridgewater Associates CEO who champions free-market economics, deregulation, and American competitiveness."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes government-run healthcare and supports market-based reforms to reduce costs and increase competition."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports securing the border, building the wall, and ending illegal immigration."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes student loan forgiveness and supports school choice and vocational education."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "West Point graduate and combat veteran who strongly supports increased defense spending and military readiness."
+      },
+      "climate-and-environment": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of aggressive climate regulations but has acknowledged climate change and supports innovation-based solutions."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Favors tough-on-crime policies and backs law enforcement while supporting limited reforms."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "strongly_supports",
+        "summary": "Former Treasury Undersecretary with deep foreign policy experience who is hawkish on China and supports strong alliances."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Former tech-sector CEO who supports American AI leadership and targeted regulation focused on competing with China."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports preserving Social Security and Medicare while pursuing market-oriented reforms for sustainability."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter who opposes new gun control legislation."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports targeted infrastructure investment for Pennsylvania's roads, bridges, and broadband."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors reducing regulations and market-based approaches over federal housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Champions Pennsylvania's natural gas industry and supports expanding domestic fossil fuel production."
+      },
+      "reproductive-rights": {
+        "stance": "opposes",
+        "summary": "Pro-life but has softened rhetoric, opposing a federal ban while supporting state-level restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes federal LGBTQ mandates while avoiding the most combative rhetoric."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization and supports drug enforcement with attention to the opioid crisis."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Supports voter ID and state control of elections, opposed federal voting rights expansion."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports tax cuts and reducing government spending, informed by his finance background."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded union mandates, favoring business flexibility."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Supports national security surveillance tools while acknowledging some data privacy concerns."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports strategic tariffs on China and reshoring critical supply chains, informed by his global finance experience."
+      }
+    }
+  },
+  {
+    "name": "Sheldon Whitehouse",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports economic policies that reduce inequality and curb corporate influence, including dark money in politics."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Supports expanding healthcare access, lowering drug prices, and strengthening the ACA."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports comprehensive immigration reform with a pathway to citizenship and humane border policies."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Supports student debt relief and increasing investment in public education."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports adequate defense spending while prioritizing climate security as a national security threat."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "The Senate's most passionate climate advocate, delivering over 300 'Time to Wake Up' floor speeches and authoring landmark climate legislation."
+      },
+      "criminal-justice-reform": {
+        "stance": "strongly_supports",
+        "summary": "Former prosecutor who supports sentencing reform, reducing incarceration, and addressing systemic inequities."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports multilateral diplomacy and frames climate change as the defining foreign policy challenge."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports regulating big tech and addressing dark money's influence through digital platforms."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports protecting and expanding Social Security and Medicare benefits."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive gun safety legislation including universal background checks and assault weapons bans."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Supports major infrastructure investment, particularly climate-resilient coastal infrastructure for Rhode Island."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports affordable housing investment and addressing the housing crisis."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Champions the transition to 100% clean energy and ending fossil fuel subsidies, having authored major clean energy tax legislation."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports codifying Roe v. Wade and reproductive freedom."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive LGBTQ protections including the Equality Act."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana decriminalization and treatment-focused approaches to addiction."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Champions voting rights expansion and is a leading voice against dark money's corruption of democracy."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports closing corporate tax loopholes, ending dark money, and making the wealthy pay their fair share."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong labor ally who supports the PRO Act and workers' collective bargaining rights."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy protections and transparency in both government surveillance and corporate data practices."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports trade deals with strong environmental and labor standards."
+      }
+    }
+  },
+  {
+    "name": "Jack Reed",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports economic policies that help working families, including infrastructure investment and job training programs."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Supports expanding the ACA, lowering drug costs, and protecting healthcare access for all Americans."
+      },
+      "immigration-and-border-security": {
+        "stance": "leans_support",
+        "summary": "Supports comprehensive immigration reform with both border security and a pathway to citizenship."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Champions education funding, student debt relief, and has authored major student loan reform legislation."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Chairman of Armed Services Committee and West Point graduate who is one of Congress's most respected defense voices."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports climate action and clean energy investment, particularly protecting Rhode Island's coastal environment."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Supports bipartisan criminal justice reforms while maintaining a pragmatic approach to public safety."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "strongly_supports",
+        "summary": "As Armed Services chair, one of the Senate's leading voices on defense and foreign policy, supporting strong alliances and strategic engagement."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports regulation of AI in defense and national security contexts."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports protecting Social Security and Medicare from cuts or privatization."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive gun safety legislation after the Sandy Hook tragedy galvanized New England senators."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Supports major infrastructure investment and championed the bipartisan infrastructure law."
+      },
+      "housing-and-affordability": {
+        "stance": "strongly_supports",
+        "summary": "One of the Senate's leading housing advocates who has authored major affordable housing legislation."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports a clean energy transition while maintaining energy security and affordability."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports reproductive rights and codifying abortion access."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports the Equality Act and comprehensive LGBTQ protections."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports treatment-focused drug policy and has worked on opioid crisis legislation."
+      },
+      "voting-rights": {
+        "stance": "supports",
+        "summary": "Supports federal voting rights protections and expanding ballot access."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports progressive taxation and closing loopholes while maintaining fiscal responsibility."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "Strong labor ally from union-friendly Rhode Island who supports the PRO Act and workers' rights."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Balances privacy concerns with national security needs, informed by his Armed Services Committee role."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports trade with strong labor protections and enforcement mechanisms."
+      }
+    }
+  },
+  {
+    "name": "Tim Scott",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Architect of Opportunity Zones and champions economic empowerment, entrepreneurship, and private-sector job creation."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes the ACA and government-run healthcare, supporting market-based competition and health savings accounts."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports border security, opposes amnesty, and backs stricter immigration enforcement."
+      },
+      "education-and-student-debt": {
+        "stance": "supports",
+        "summary": "Champions school choice, charter schools, and vocational training while opposing federal student loan forgiveness."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports robust defense spending and a strong military presence, particularly for South Carolina installations."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes the Green New Deal and aggressive climate mandates, favoring innovation over regulation."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "One of few Republicans to champion police reform after George Floyd, authored the JUSTICE Act."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong U.S. global leadership and a firm stance against China, Russia, and Iran."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Generally skeptical of tech regulation, preferring innovation-friendly policies."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports preserving Social Security and Medicare while pursuing market-oriented reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter who opposes gun control legislation."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports targeted infrastructure investment, particularly through Opportunity Zone incentives."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Champions Opportunity Zones to spur private investment in affordable housing in distressed communities."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Supports domestic energy production, including oil, gas, and nuclear, and opposes production restrictions."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and has supported federal abortion restrictions including a 15-week ban."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Opposes the Equality Act and federal LGBTQ mandates, citing religious liberty."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes marijuana legalization while supporting some criminal justice reforms for drug offenses."
+      },
+      "voting-rights": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal voting mandates but supports voter ID and has spoken about the importance of ballot access."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Architect of Opportunity Zones tax incentives and champion of the 2017 Tax Cuts and Jobs Act."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded union mandates, supporting right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports law enforcement surveillance tools while voicing some concern about overreach."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports fair trade and tariffs that protect American interests, particularly in manufacturing."
+      }
+    }
+  },
+  {
+    "name": "Mike Rounds",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports pro-business policies and deregulation while taking a pragmatic approach to economic issues."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Opposes the ACA but takes a moderate approach, favoring incremental market-based reforms."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports border security but has been more open than many Republicans to bipartisan immigration solutions."
+      },
+      "education-and-student-debt": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal student loan forgiveness and supports local control of education policy."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Armed Services Committee member who strongly supports Ellsworth Air Force Base and cybersecurity defense."
+      },
+      "climate-and-environment": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of aggressive climate mandates but more moderate than many Republicans on environmental issues."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supported the First Step Act and takes a moderate approach to criminal justice issues."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong defense and alliances, with particular focus on cybersecurity threats."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Chairs the cybersecurity subcommittee and supports targeted AI and cybersecurity regulation."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports protecting Social Security and Medicare while pursuing responsible fiscal reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter who opposes new gun control legislation."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports rural infrastructure investment and broadband expansion for South Dakota."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Prefers market-based solutions and deregulation over federal housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports an all-of-the-above energy approach including fossil fuels and ethanol."
+      },
+      "reproductive-rights": {
+        "stance": "opposes",
+        "summary": "Pro-life but takes a more moderate tone than many conservatives on the issue."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes federal LGBTQ mandates but avoids combative rhetoric."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization but takes a pragmatic approach to drug policy."
+      },
+      "voting-rights": {
+        "stance": "leans_oppose",
+        "summary": "Supports state control of elections and voter ID requirements."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports tax cuts and fiscal discipline while being more moderate on spending than hard-line conservatives."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes expanded union mandates while taking a moderate approach."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "His cybersecurity focus gives him awareness of both surveillance needs and privacy risks."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports fair trade but has expressed concern about tariff impacts on South Dakota agriculture."
+      }
+    }
+  },
+  {
+    "name": "John Thune",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "As Senate Majority Leader, champions pro-growth economic policies, tax cuts, and deregulation."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes the ACA and government-run healthcare, supporting market-based reforms and competition."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports border security and stricter enforcement while occasionally backing bipartisan reform efforts."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes student loan forgiveness and supports school choice and local control of education."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports robust defense spending and Ellsworth Air Force Base in South Dakota."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes aggressive climate mandates but has supported some bipartisan conservation measures."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supported the First Step Act and bipartisan criminal justice reforms despite tough-on-crime instincts."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong American leadership, robust alliances, and a firm posture against adversaries."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "As former Commerce Committee chair, engaged on tech issues and supports targeted regulation of big tech."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports preserving Social Security and Medicare while pursuing long-term structural reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter who opposes federal gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports rural infrastructure and broadband investment, helped shape the bipartisan infrastructure discussions."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors market solutions and reducing regulatory barriers over federal housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Supports domestic energy production including oil, gas, ethanol, and wind energy for South Dakota."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and supports abortion restrictions at both state and federal levels."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Opposes the Equality Act and federal LGBTQ mandates, citing religious liberty."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization and supports enforcement-focused drug policy."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposed federal voting rights legislation, supporting state control over elections."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "As Majority Leader, leads Republican efforts on tax cuts and reducing federal spending."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded union mandates, supporting right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports law enforcement tools while his Commerce Committee background gives tech awareness."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade that benefits South Dakota agriculture while backing tariffs on China."
+      }
+    }
+  },
+  {
+    "name": "Marsha Blackburn",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Champions free-market economics, deregulation, and tax cuts as pillars of economic growth."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_opposes",
+        "summary": "One of the most vocal opponents of the ACA and any government-run healthcare expansion."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Hard-line immigration hawk who supports the border wall, mass deportation, and ending sanctuary cities."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes student loan forgiveness and federal education mandates, championing parental rights."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports increased defense spending and Fort Campbell military operations in Tennessee."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "One of the Senate's most vocal climate skeptics who opposes all climate regulations and the Green New Deal."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Tough-on-crime conservative who opposes most criminal justice reform proposals."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Hawkish foreign policy stance, particularly aggressive on China and TikTok ban efforts."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Paradoxically one of the Senate's most active anti-big-tech voices, pushing to regulate social media platforms and ban TikTok."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving current benefits but has historically favored restructuring entitlement programs."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "One of the strongest Second Amendment advocates in the Senate who opposes all gun control."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_oppose",
+        "summary": "Opposed the bipartisan infrastructure bill, citing excessive spending and non-infrastructure provisions."
+      },
+      "housing-and-affordability": {
+        "stance": "opposes",
+        "summary": "Opposes federal housing programs and regulations, favoring private-sector solutions."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports fossil fuel production and opposes any restrictions on oil, gas, and coal."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "One of the Senate's most outspoken pro-life voices who supports strict federal abortion bans."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes LGBTQ protections, the Equality Act, and transgender rights in schools and sports."
+      },
+      "drug-policy": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes marijuana legalization and supports aggressive drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes federal voting rights legislation, calling it a federal takeover of elections."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Champions deep tax cuts and dramatically reducing federal spending."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes the PRO Act, union expansion, and supports right-to-work laws."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Has authored data privacy legislation while simultaneously supporting law enforcement surveillance tools."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports tariffs on China and tough trade enforcement to protect American manufacturing."
+      }
+    }
+  },
+  {
+    "name": "Bill Hagerty",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Former ambassador to Japan and businessman who champions deregulation, tax cuts, and pro-growth policies."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes government-run healthcare and supports market-based reforms to increase competition."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Hard-line border security advocate who has blocked bipartisan immigration deals over enforcement concerns."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes student loan forgiveness and federal education mandates, supporting school choice."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports robust defense spending and strong alliances, particularly the U.S.-Japan relationship."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes aggressive climate regulations and supports fossil fuel production over green mandates."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Favors tough-on-crime policies and opposes most criminal justice reform legislation."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "strongly_supports",
+        "summary": "Former U.S. Ambassador to Japan with deep foreign policy expertise, hawkish on China and strong on Indo-Pacific alliances."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Skeptical of heavy tech regulation, favoring American competitiveness and innovation."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving benefits while favoring long-term structural reforms for sustainability."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Strong Second Amendment supporter who opposes gun control legislation."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_oppose",
+        "summary": "Opposed the bipartisan infrastructure bill over spending concerns and non-infrastructure provisions."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal housing programs, favoring deregulation and private-sector approaches."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports domestic oil and gas production and opposes restrictions on fossil fuels."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and supports federal abortion restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes LGBTQ protections and the Equality Act, citing religious liberty concerns."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports strict drug enforcement policies."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting mandates and supports state control over elections with voter ID."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Champions tax cuts and reduced government spending, aligned with Trump economic agenda."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded union mandates, supporting right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports national security surveillance tools over privacy restrictions."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Former ambassador who supports strategic trade policy, particularly tough tariffs on China and strong Japan ties."
+      }
+    }
+  },
+  {
+    "name": "John Cornyn",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Senior establishment Republican who supports tax cuts and deregulation to promote Texas economic growth."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes the ACA and government-run healthcare, favoring market-based reforms."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "As a Texas border-state senator, strongly supports border security while occasionally working on bipartisan immigration reform."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes student loan forgiveness and supports school choice and local control."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports robust defense spending and Texas's major military installations."
+      },
+      "climate-and-environment": {
+        "stance": "opposes",
+        "summary": "Opposes aggressive climate regulations while supporting Texas's energy industry."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Worked on bipartisan criminal justice reform including the First Step Act and mental health provisions."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Senior Intelligence Committee member who supports strong alliances and a firm stance against adversaries."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_oppose",
+        "summary": "Generally prefers light-touch tech regulation while supporting targeted cybersecurity measures."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports preserving Social Security and Medicare while pursuing long-term reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Negotiated the bipartisan Safer Communities Act after the Uvalde shooting, breaking with hardline GOP positions on gun safety."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports infrastructure investment for Texas but opposed the 2021 bipartisan bill over spending concerns."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors market-based approaches and reducing regulations to address housing costs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Strongly champions Texas oil and gas production, pipeline development, and energy independence."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Pro-life senator who supports abortion restrictions consistent with Texas's near-total ban."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Opposes the Equality Act and authored the Defense of Marriage Act defense, but has moderated tone."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization while focusing on border drug trafficking enforcement."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting mandates and supports Texas's voter ID and election security laws."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Supports tax cuts, fiscal restraint, and backed the 2017 Tax Cuts and Jobs Act."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and supports Texas's right-to-work laws."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "As Intelligence Committee member, generally supports surveillance tools while acknowledging some privacy concerns."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade and strong U.S.-Mexico economic ties, championed USMCA for Texas trade interests."
+      }
+    }
+  },
+  {
+    "name": "John Curtis",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports pro-business policies and job growth while taking a pragmatic, problem-solving approach."
+      },
+      "healthcare-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Favors market-based healthcare reforms and reducing costs through competition, not government expansion."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports border security but takes a more moderate approach, open to immigration reform that includes legal pathways."
+      },
+      "education-and-student-debt": {
+        "stance": "leans_oppose",
+        "summary": "Opposes blanket student loan forgiveness but supports making education more affordable."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports adequate defense spending with a pragmatic, fiscally responsible approach."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Founder of the Conservative Climate Caucus, champions market-based climate solutions and clean energy innovation as a Republican."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_support",
+        "summary": "Supports targeted criminal justice reforms and takes a moderate approach to justice issues."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong alliances and diplomacy, taking a measured approach to foreign policy."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "leans_support",
+        "summary": "Supports thoughtful tech regulation with a focus on AI governance and innovation, representing Utah's tech corridor."
+      },
+      "social-security-and-medicare": {
+        "stance": "supports",
+        "summary": "Supports preserving Social Security and Medicare through bipartisan, fiscally responsible reforms."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports Second Amendment rights but is more moderate than many Republicans on gun issues."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "supports",
+        "summary": "Supports infrastructure investment including Utah's transit and broadband needs."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_support",
+        "summary": "Acknowledges housing affordability challenges and supports reducing regulatory barriers to development."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports domestic energy production while uniquely championing clean energy transition among Republicans."
+      },
+      "reproductive-rights": {
+        "stance": "opposes",
+        "summary": "Pro-life consistent with Utah values but takes a less combative approach than many conservatives."
+      },
+      "lgbtq-rights": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes federal LGBTQ mandates but has a more measured tone, reflecting Utah's evolving culture."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization consistent with Utah's conservative drug policies."
+      },
+      "voting-rights": {
+        "stance": "leans_oppose",
+        "summary": "Supports state control of elections while being less combative on voting issues than many Republicans."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports tax reform and fiscal responsibility with a pragmatic, solutions-oriented approach."
+      },
+      "labor-and-unions": {
+        "stance": "leans_oppose",
+        "summary": "Generally opposes expanded union mandates while supporting Utah's right-to-work framework."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "More privacy-aware than many Republicans, influenced by Utah's tech sector and libertarian-leaning constituents."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports free trade and international economic engagement, reflecting Utah's export-oriented economy."
+      }
+    }
+  },
+  {
+    "name": "Tim Kaine",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "supports",
+        "summary": "Supports workforce development, career and technical education, and middle-class economic policies."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Supports expanding the ACA and has championed mental health parity and healthcare access in Virginia."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports comprehensive immigration reform with a path to citizenship and reasonable border security."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "One of the Senate's strongest education advocates, championing career and technical education and student debt relief."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Armed Services Committee member from military-heavy Virginia who supports defense while insisting on congressional war authorization."
+      },
+      "climate-and-environment": {
+        "stance": "supports",
+        "summary": "Supports clean energy transition and climate action while balancing Virginia's diverse energy interests."
+      },
+      "criminal-justice-reform": {
+        "stance": "supports",
+        "summary": "Supports bipartisan criminal justice reforms, having worked on juvenile justice and reentry programs."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "strongly_supports",
+        "summary": "Senior Foreign Relations Committee member and leading voice on war powers, insisting Congress authorize military action."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports AI regulation and represents Virginia's massive tech and defense contractor workforce."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports protecting Social Security and Medicare from cuts or privatization."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "supports",
+        "summary": "Supports universal background checks and gun safety reforms, galvanized by the Virginia Tech and Virginia Beach shootings."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Champions infrastructure investment for Virginia's transit systems, broadband, and military installations."
+      },
+      "housing-and-affordability": {
+        "stance": "supports",
+        "summary": "Supports affordable housing investment and addressing the housing crisis in Northern Virginia."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "leans_support",
+        "summary": "Supports a balanced energy approach transitioning to clean energy while managing impacts on Virginia's economy."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Personally pro-life Catholic who strongly supports keeping abortion legal, drawing a clear line between personal faith and public policy."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive LGBTQ protections and the Equality Act, having evolved from earlier positions."
+      },
+      "drug-policy": {
+        "stance": "leans_support",
+        "summary": "Supports marijuana reform and treatment-focused approaches to drug policy."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports federal voting rights protections and expanding access to the ballot."
+      },
+      "taxes-and-spending": {
+        "stance": "leans_support",
+        "summary": "Supports progressive tax reform and closing loopholes while maintaining fiscal responsibility."
+      },
+      "labor-and-unions": {
+        "stance": "supports",
+        "summary": "Supports workers' rights, paid leave, and the PRO Act."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy protections while balancing national security needs from Virginia's intelligence community."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports trade with strong labor and environmental standards, backed USMCA."
+      }
+    }
+  },
+  {
+    "name": "Ron Johnson",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Former plastics manufacturer who champions deregulation, tax cuts, and reducing government interference in business."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_opposes",
+        "summary": "One of the ACA's fiercest opponents who promoted unproven COVID treatments and questions mainstream healthcare policy."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Hard-line immigration hawk who champions border security and has held controversial hearings on immigration."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes student loan forgiveness and questions the value of traditional higher education."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports strong defense but has questioned aid to Ukraine and challenged some military spending."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "Climate change skeptic who opposes virtually all climate regulations and environmental mandates."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Tough-on-crime conservative who opposes most criminal justice reform efforts."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "leans_support",
+        "summary": "Supports American strength abroad but has been skeptical of Ukraine aid and some traditional alliance commitments."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "opposes",
+        "summary": "Opposes government regulation of technology, viewing it as government overreach."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_oppose",
+        "summary": "Has controversially proposed making Social Security and Medicare discretionary spending subject to annual review."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Staunch Second Amendment defender who opposes all gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "opposes",
+        "summary": "Opposed the bipartisan infrastructure bill over spending concerns and federal overreach."
+      },
+      "housing-and-affordability": {
+        "stance": "opposes",
+        "summary": "Opposes federal housing programs and government intervention in the housing market."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports unrestricted fossil fuel production and opposes green energy mandates."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and supports strict abortion restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes LGBTQ protections and has made controversial statements about LGBTQ issues."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports strict drug enforcement."
+      },
+      "voting-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes federal voting mandates and has promoted debunked claims about election fraud."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Among the Senate's strongest tax cut advocates and most vocal critics of federal spending."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes the PRO Act and union expansion, championing right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Has questioned government surveillance overreach, particularly regarding political investigations."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports tariffs on China but his manufacturing background makes him aware of trade war costs."
+      }
+    }
+  },
+  {
+    "name": "Tammy Baldwin",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Champions Buy American policies, manufacturing jobs, and economic policies that support Wisconsin's working families."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "One of the earliest advocates for universal healthcare and has fought to protect ACA coverage."
+      },
+      "immigration-and-border-security": {
+        "stance": "supports",
+        "summary": "Supports comprehensive immigration reform with a path to citizenship and reasonable security measures."
+      },
+      "education-and-student-debt": {
+        "stance": "strongly_supports",
+        "summary": "Supports student debt relief, free community college, and increased funding for public education."
+      },
+      "national-defense-and-military": {
+        "stance": "supports",
+        "summary": "Supports adequate defense spending while prioritizing domestic needs and diplomatic solutions."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_supports",
+        "summary": "Supports aggressive climate action and clean energy investment, particularly protecting the Great Lakes."
+      },
+      "criminal-justice-reform": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive criminal justice reform, ending mass incarceration, and police accountability."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports diplomacy and multilateral engagement while maintaining a focus on domestic priorities."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "Supports regulating big tech and protecting consumers from algorithmic harms and data exploitation."
+      },
+      "social-security-and-medicare": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports expanding Social Security benefits and protecting Medicare from any cuts."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Supports comprehensive gun safety legislation including background checks and assault weapons bans."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "strongly_supports",
+        "summary": "Champions Buy American infrastructure investment and Wisconsin manufacturing in infrastructure projects."
+      },
+      "housing-and-affordability": {
+        "stance": "strongly_supports",
+        "summary": "Supports major federal investment in affordable housing and addressing the housing crisis."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "supports",
+        "summary": "Supports the clean energy transition while ensuring it creates manufacturing jobs in Wisconsin."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports codifying Roe v. Wade and protecting reproductive healthcare access."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_supports",
+        "summary": "The first openly gay person elected to the U.S. Senate, a trailblazing champion of LGBTQ equality and the Equality Act."
+      },
+      "drug-policy": {
+        "stance": "supports",
+        "summary": "Supports marijuana reform and treatment-focused approaches to drug addiction."
+      },
+      "voting-rights": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports federal voting rights protections and expanding ballot access."
+      },
+      "taxes-and-spending": {
+        "stance": "supports",
+        "summary": "Supports raising taxes on the wealthy and corporations to fund working-class priorities."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_supports",
+        "summary": "One of the Senate's strongest union allies from labor-friendly Wisconsin, champions the PRO Act and workers' rights."
+      },
+      "privacy-and-surveillance": {
+        "stance": "supports",
+        "summary": "Supports data privacy protections and has raised concerns about government surveillance overreach."
+      },
+      "trade-and-tariffs": {
+        "stance": "leans_support",
+        "summary": "Supports trade enforcement and Buy American policies that protect Wisconsin manufacturing jobs."
+      }
+    }
+  },
+  {
+    "name": "John Barrasso",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "As Republican Conference Chair, champions deregulation, tax cuts, and pro-energy economic growth."
+      },
+      "healthcare-and-medicare": {
+        "stance": "strongly_opposes",
+        "summary": "Orthopedic surgeon who is one of the ACA's fiercest critics and opposes government-run healthcare."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Strong border security advocate who supports the wall and strict immigration enforcement."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes student loan forgiveness and federal education mandates, supporting local control."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports robust defense spending and maintaining America's nuclear deterrent, with Wyoming's missile bases."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "One of the Senate's most vocal opponents of climate regulations, calling climate policies a war on fossil fuels."
+      },
+      "criminal-justice-reform": {
+        "stance": "opposes",
+        "summary": "Favors tough-on-crime policies and generally opposes criminal justice reform legislation."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong American leadership and energy dominance as a tool of foreign policy."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "opposes",
+        "summary": "Opposes heavy tech regulation, viewing it as government overreach that stifles innovation."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving benefits but has pushed for structural reforms and spending discipline."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Staunch Second Amendment defender who opposes all gun control legislation."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports targeted infrastructure for rural Wyoming but opposed the 2021 infrastructure bill's scope."
+      },
+      "housing-and-affordability": {
+        "stance": "opposes",
+        "summary": "Opposes federal housing programs and supports market-based solutions."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "As ranking member of Energy Committee, Wyoming's fiercest champion of coal, oil, gas, and uranium production."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and supports strict federal and state-level abortion restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes the Equality Act and federal LGBTQ protections, citing traditional values."
+      },
+      "drug-policy": {
+        "stance": "opposes",
+        "summary": "Opposes marijuana legalization and supports tough drug enforcement policies."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting rights legislation and supports state control over elections."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports tax cuts and dramatically reducing federal spending."
+      },
+      "labor-and-unions": {
+        "stance": "strongly_opposes",
+        "summary": "Strongly opposes the PRO Act and union expansion, supporting right-to-work laws."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_oppose",
+        "summary": "Generally supports law enforcement surveillance tools over privacy restrictions."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports fair trade and energy exports, particularly coal and natural gas to global markets."
+      }
+    }
+  },
+  {
+    "name": "Cynthia Lummis",
+    "stances": {
+      "economy-and-jobs": {
+        "stance": "strongly_supports",
+        "summary": "Libertarian-leaning conservative who champions deregulation, cryptocurrency, and economic freedom."
+      },
+      "healthcare-and-medicare": {
+        "stance": "opposes",
+        "summary": "Opposes government-run healthcare and supports market-based reforms and reducing insurance mandates."
+      },
+      "immigration-and-border-security": {
+        "stance": "strongly_supports",
+        "summary": "Supports strict border security, opposes amnesty, and backs tough immigration enforcement."
+      },
+      "education-and-student-debt": {
+        "stance": "opposes",
+        "summary": "Opposes student loan forgiveness and supports school choice and local education control."
+      },
+      "national-defense-and-military": {
+        "stance": "strongly_supports",
+        "summary": "Supports strong defense spending and Wyoming's nuclear missile installations."
+      },
+      "climate-and-environment": {
+        "stance": "strongly_opposes",
+        "summary": "Opposes climate regulations and mandates, strongly defending Wyoming's coal and fossil fuel industries."
+      },
+      "criminal-justice-reform": {
+        "stance": "leans_oppose",
+        "summary": "Generally favors tough-on-crime policies with a libertarian streak on some sentencing issues."
+      },
+      "foreign-policy-and-diplomacy": {
+        "stance": "supports",
+        "summary": "Supports strong national defense and American leadership while favoring restraint in foreign entanglements."
+      },
+      "technology-and-ai-regulation": {
+        "stance": "supports",
+        "summary": "The Senate's leading cryptocurrency champion who authored the Responsible Financial Innovation Act for digital asset regulation."
+      },
+      "social-security-and-medicare": {
+        "stance": "leans_support",
+        "summary": "Supports preserving benefits while favoring reforms, and has proposed using Bitcoin as a reserve asset."
+      },
+      "gun-policy-and-2nd-amendment": {
+        "stance": "strongly_supports",
+        "summary": "Staunch Second Amendment advocate who opposes all gun control measures."
+      },
+      "infrastructure-and-transportation": {
+        "stance": "leans_support",
+        "summary": "Supports rural infrastructure investment for Wyoming but was skeptical of the 2021 bill's spending."
+      },
+      "housing-and-affordability": {
+        "stance": "leans_oppose",
+        "summary": "Favors deregulation and market-based approaches over federal housing programs."
+      },
+      "energy-policy-and-oil-gas": {
+        "stance": "strongly_supports",
+        "summary": "Fiercely defends Wyoming's coal, oil, gas, and uranium industries against any federal restrictions."
+      },
+      "reproductive-rights": {
+        "stance": "strongly_opposes",
+        "summary": "Firmly pro-life and supports state and federal abortion restrictions."
+      },
+      "lgbtq-rights": {
+        "stance": "opposes",
+        "summary": "Opposes the Equality Act and federal LGBTQ mandates, though she faced backlash for anti-trans comments."
+      },
+      "drug-policy": {
+        "stance": "leans_oppose",
+        "summary": "Opposes federal marijuana legalization though her libertarian instincts create some nuance."
+      },
+      "voting-rights": {
+        "stance": "opposes",
+        "summary": "Opposes federal voting mandates and supports state control over election administration."
+      },
+      "taxes-and-spending": {
+        "stance": "strongly_supports",
+        "summary": "Strongly supports tax cuts and dramatically reducing federal spending, with a libertarian fiscal philosophy."
+      },
+      "labor-and-unions": {
+        "stance": "opposes",
+        "summary": "Opposes the PRO Act and expanded union mandates, supporting right-to-work policies."
+      },
+      "privacy-and-surveillance": {
+        "stance": "leans_support",
+        "summary": "Her libertarian leanings give her more concern about government surveillance than typical Republicans."
+      },
+      "trade-and-tariffs": {
+        "stance": "supports",
+        "summary": "Supports fair trade and energy exports, particularly Wyoming's coal and natural gas to global markets."
+      }
+    }
+  }
+]

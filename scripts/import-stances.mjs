@@ -113,32 +113,17 @@ async function run() {
 
         const { error } = await supabase
           .from('politician_issues')
-          .update({
+          .upsert({
+            politician_id: dbPol.id,
+            issue_id: issueId,
             stance: stanceInfo.stance,
             summary: stanceInfo.summary,
             is_verified: true,
-          })
-          .eq('politician_id', dbPol.id)
-          .eq('issue_id', issueId)
+          }, { onConflict: 'politician_id,issue_id' })
 
         if (error) {
-          // Try upsert if update didn't match
-          const { error: err2 } = await supabase
-            .from('politician_issues')
-            .upsert({
-              politician_id: dbPol.id,
-              issue_id: issueId,
-              stance: stanceInfo.stance,
-              summary: stanceInfo.summary,
-              is_verified: true,
-            }, { onConflict: 'politician_id,issue_id' })
-
-          if (err2) {
-            console.error(`  UPSERT FAILED: ${pol.name}/${issueSlug}: ${err2.message}`)
-            failed++
-          } else {
-            updated++
-          }
+          console.error(`  UPSERT FAILED: ${pol.name}/${issueSlug}: ${error.message}`)
+          failed++
         } else {
           updated++
         }
