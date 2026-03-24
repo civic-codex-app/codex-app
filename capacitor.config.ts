@@ -1,17 +1,16 @@
 import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'com.codex.app',
+  appId: 'app.getpoli.poli',
   appName: 'Poli',
   webDir: 'public',
   server: {
-    // Update this to your production URL once deployed
-    url: 'http://localhost:3000',
-    allowNavigation: ['localhost'],
+    url: process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://getpoli.app',
+    allowNavigation: ['getpoli.app', '*.getpoli.app', 'localhost'],
   },
   ios: {
     contentInset: 'never',
-    scheme: 'codex',
+    scheme: 'poli',
     backgroundColor: '#050505',
   },
   plugins: {

@@ -471,6 +471,8 @@ async function renderStateElection(
     grouped[race.chamber].push(race)
   }
 
+  const racesWithCandidates = Object.values(grouped).reduce((sum, arr) => sum + arr.length, 0)
+
   const stateCode = election.slug.split('-')[0]?.toUpperCase()
   const electionDate = new Date(election.election_date + 'T00:00:00').toLocaleDateString('en-US', {
     month: 'long', day: 'numeric', year: 'numeric',
@@ -505,7 +507,7 @@ async function renderStateElection(
           {election.name}
         </h1>
         <p className="mb-4 text-[14px] text-[var(--codex-sub)]">
-          {electionDate} · {allRaces.length} race{allRaces.length !== 1 ? 's' : ''}
+          {electionDate} · {racesWithCandidates} race{racesWithCandidates !== 1 ? 's' : ''}
         </p>
 
         <div className="mb-8">
@@ -513,30 +515,30 @@ async function renderStateElection(
         </div>
 
         {/* Race groups */}
-        {CHAMBER_ORDER_STATE.map(chamber => {
-          const races = grouped[chamber]
-          if (!races || races.length === 0) return null
-          const label = CHAMBER_DISPLAY[chamber] || chamber
+        {racesWithCandidates > 0 ? (
+          CHAMBER_ORDER_STATE.map(chamber => {
+            const races = grouped[chamber]
+            if (!races || races.length === 0) return null
+            const label = CHAMBER_DISPLAY[chamber] || chamber
 
-          return (
-            <section key={chamber} className="mb-10">
-              <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
-                {label} · {races.length} race{races.length !== 1 ? 's' : ''}
-              </h2>
-              <div className="space-y-2">
-                {races.map((race: any) => {
-                  const candidates = race.candidates ?? []
-                  return (
-                    <Link
-                      key={race.id}
-                      href={`/elections/${race.slug}`}
-                      className="flex items-center justify-between rounded-lg border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
-                    >
-                      <div>
-                        <div className="text-[14px] font-medium text-[var(--codex-text)]">
-                          {race.name}
-                        </div>
-                        {candidates.length > 0 && (
+            return (
+              <section key={chamber} className="mb-10">
+                <h2 className="mb-4 text-sm font-semibold text-[var(--codex-sub)]">
+                  {label} · {races.length} race{races.length !== 1 ? 's' : ''}
+                </h2>
+                <div className="space-y-2">
+                  {races.map((race: any) => {
+                    const candidates = race.candidates ?? []
+                    return (
+                      <Link
+                        key={race.id}
+                        href={`/elections/${race.slug}`}
+                        className="flex items-center justify-between rounded-lg border border-[var(--codex-border)] p-4 no-underline transition-all hover:border-[var(--codex-text)] hover:shadow-sm"
+                      >
+                        <div>
+                          <div className="text-[14px] font-medium text-[var(--codex-text)]">
+                            {race.name}
+                          </div>
                           <div className="mt-1 flex items-center gap-2 text-[12px] text-[var(--codex-faint)]">
                             {candidates.slice(0, 3).map((c: any) => (
                               <span key={c.id} className="flex items-center gap-1">
@@ -551,25 +553,28 @@ async function renderStateElection(
                               <span className="text-[var(--codex-faint)]">+{candidates.length - 3} more</span>
                             )}
                           </div>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {candidates.length > 0 && (
+                        </div>
+                        <div className="flex items-center gap-2">
                           <span className="rounded bg-[var(--codex-badge-bg)] px-2 py-0.5 text-[10px] text-[var(--codex-faint)]">
                             {candidates.length} candidate{candidates.length !== 1 ? 's' : ''}
                           </span>
-                        )}
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--codex-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                      </div>
-                    </Link>
-                  )
-                })}
-              </div>
-            </section>
-          )
-        })}
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--codex-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </section>
+            )
+          })
+        ) : (
+          <div className="py-12 text-center text-[var(--codex-faint)]">
+            <div className="mb-2 text-lg font-semibold">No upcoming races</div>
+            <div className="text-sm">Candidate announcements for this election haven&apos;t been added yet</div>
+          </div>
+        )}
 
         <Footer />
       </div>

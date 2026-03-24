@@ -24,6 +24,16 @@ export function MobileNav() {
     setOpen(false)
   }, [pathname])
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!open) return
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [open])
+
   // Prevent body scroll when open
   useEffect(() => {
     if (open) {

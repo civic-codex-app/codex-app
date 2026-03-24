@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { partyColor } from '@/lib/constants/parties'
@@ -213,10 +214,13 @@ function PoliticianAutocomplete({
               } ${i < suggestions.length - 1 ? 'border-b border-[var(--codex-border)]' : ''}`}
             >
               {s.image_url ? (
-                <img
+                <Image
                   src={s.image_url}
                   alt=""
+                  width={28}
+                  height={28}
                   className="h-7 w-7 rounded-full object-cover"
+                  unoptimized
                 />
               ) : (
                 <div

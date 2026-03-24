@@ -184,12 +184,12 @@ export function ProfileTabs({
     <>
       {/* ── Tab Bar ── */}
       <div
-        className="sticky top-[60px] z-30 border-b border-[var(--codex-border)] bg-[var(--codex-bg)]"
+        className="sticky top-[47px] z-30 border-b border-[var(--codex-border)] bg-[var(--codex-bg)]"
         role="tablist"
         aria-label="Profile sections"
       >
-        {/* Mobile: pill scroller */}
-        <div className="flex gap-2 overflow-x-auto pb-2 pt-2 sm:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Mobile: full-width evenly spaced tabs */}
+        <div className="flex w-full overflow-x-auto pb-2 pt-2 sm:hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {visibleTabs.map((t) => (
             <button
               key={t}
@@ -197,10 +197,10 @@ export function ProfileTabs({
               role="tab"
               aria-selected={activeTab === t}
               className={cn(
-                'flex-shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-medium transition-all',
+                'flex-1 whitespace-nowrap px-2 py-2 text-center text-[12px] font-medium transition-all',
                 activeTab === t
-                  ? 'bg-[var(--codex-text)] text-[var(--codex-bg)]'
-                  : 'bg-[var(--codex-badge-bg)] text-[var(--codex-sub)]'
+                  ? 'border-b-2 border-[var(--codex-text)] text-[var(--codex-text)]'
+                  : 'text-[var(--codex-sub)]'
               )}
             >
               {TAB_LABELS[t]}

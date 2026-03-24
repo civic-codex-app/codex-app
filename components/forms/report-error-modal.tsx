@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 export function ReportErrorButton() {
   const [open, setOpen] = useState(false)
@@ -8,6 +8,17 @@ export function ReportErrorButton() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
   const tsRef = useRef(Date.now())
+
+  const closeModal = useCallback(() => { setOpen(false); setSuccess(false) }, [])
+
+  useEffect(() => {
+    if (!open) return
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') closeModal()
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [open, closeModal])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -52,8 +63,8 @@ export function ReportErrorButton() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setOpen(false)}>
-          <div className="w-full max-w-md rounded-xl border border-[var(--codex-border)] bg-[var(--codex-bg)] p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={closeModal}>
+          <div role="dialog" aria-modal="true" aria-labelledby="report-error-title" className="w-full max-w-md rounded-xl border border-[var(--codex-border)] bg-[var(--codex-bg)] p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
             {success ? (
               <div className="text-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-2 text-[var(--codex-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
@@ -61,10 +72,12 @@ export function ReportErrorButton() {
               </div>
             ) : (
               <>
-                <h2 className="mb-1 text-[16px] font-semibold text-[var(--codex-text)]">Report an Error</h2>
+                <h2 id="report-error-title" className="mb-1 text-[16px] font-semibold text-[var(--codex-text)]">Report an Error</h2>
                 <p className="mb-4 text-[12px] text-[var(--codex-faint)]">Found something wrong on this page? Let us know.</p>
                 <form onSubmit={handleSubmit}>
+                  <label htmlFor="report-error-description" className="sr-only">Describe the error</label>
                   <textarea
+                    id="report-error-description"
                     name="description"
                     required
                     maxLength={2000}

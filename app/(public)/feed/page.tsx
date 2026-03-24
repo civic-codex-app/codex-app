@@ -28,7 +28,7 @@ interface PageProps {
 /* ------------------------------------------------------------------ */
 
 interface FeedItem {
-  type: 'vote' | 'stance'
+  type: 'vote'
   date: string
   politician: {
     name: string
@@ -52,16 +52,6 @@ interface VoteRow {
   } | null
 }
 
-interface StanceRow {
-  id: string
-  stance: string
-  updated_at: string | null
-  politicians: {
-    name: string; slug: string; party: string; image_url: string | null; state: string | null
-  } | null
-  issues: { name: string; slug: string; icon: string | null } | null
-}
-
 /* ------------------------------------------------------------------ */
 /*  Data Fetching                                                      */
 /* ------------------------------------------------------------------ */
@@ -72,32 +62,19 @@ async function fetchActivityItems(
   page = 1,
 ): Promise<{ items: FeedItem[]; hasMore: boolean }> {
   const supabase = createServiceRoleClient()
-  const PAGE_SIZE = 30
+  const PAGE_SIZE = 8
   const from = (page - 1) * PAGE_SIZE
-
-  const thirtyDaysAgo = new Date()
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-  const dateThreshold = thirtyDaysAgo.toISOString().split('T')[0]
 
   let voteQuery = supabase
     .from('voting_records')
     .select('id, bill_name, bill_number, bill_id, vote, vote_date, politicians:politician_id(name, slug, party, image_url, state)')
-    .gte('vote_date', dateThreshold)
+    .not('vote_date', 'is', null)
     .order('vote_date', { ascending: false })
     .limit(PAGE_SIZE)
 
   if (party) voteQuery = voteQuery.eq('politicians.party', party)
 
-  let stanceQuery = supabase
-    .from('politician_issues')
-    .select('id, stance, updated_at, politicians:politician_id(name, slug, party, image_url, state), issues:issue_id(name, slug, icon)')
-    .gte('updated_at', dateThreshold)
-    .order('updated_at', { ascending: false })
-    .limit(PAGE_SIZE)
-
-  if (party) stanceQuery = stanceQuery.eq('politicians.party', party)
-
-  const [{ data: voteData }, { data: stanceData }] = await Promise.all([voteQuery, stanceQuery])
+  const { data: voteData } = await voteQuery
 
   const items: FeedItem[] = []
 
@@ -109,17 +86,6 @@ async function fetchActivityItems(
       date: v.vote_date ?? '',
       politician: v.politicians,
       details: { kind: 'vote', billName: v.bill_name, billNumber: v.bill_number, billId: v.bill_id, vote: v.vote },
-    })
-  }
-
-  for (const s of (stanceData ?? []) as unknown as StanceRow[]) {
-    if (!s.politicians || !s.issues) continue
-    if (state && s.politicians.state !== state) continue
-    items.push({
-      type: 'stance',
-      date: s.updated_at ?? '',
-      politician: s.politicians,
-      details: { kind: 'stance', issueName: s.issues.name, issueSlug: s.issues.slug, issueIcon: s.issues.icon, stance: s.stance },
     })
   }
 
@@ -258,29 +224,26 @@ export default async function FeedPage({ searchParams }: PageProps) {
       <Header />
       <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
         {/* Page header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
             Feed
           </h1>
           <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">
-            The latest in politics — news, votes, stance updates, elections, and more.
+            The latest in politics — news, votes, elections, and more.
           </p>
         </div>
 
         {/* Filters */}
-        <div className="mb-8">
+        <div className="mb-6">
           <Suspense fallback={null}>
             <FeedFilters />
           </Suspense>
         </div>
 
-        {/* Top section: News + Sidebar cards */}
+        {/* Top row: News + Sidebar */}
         {page === 1 && (
-          <div className="mb-10 grid gap-5 lg:grid-cols-[1fr_340px]">
-            {/* News headlines */}
+          <div className="mb-8 grid gap-5 lg:grid-cols-[1fr_340px]">
             <NewsHighlightCard articles={newsArticles} />
-
-            {/* Sidebar: poll + election or finance */}
             <div className="flex flex-col gap-5">
               {polls.length > 0 && <PollCard poll={polls[0]} />}
               {races.length > 0 && <ElectionCountdownCard race={races[0]} />}
@@ -288,19 +251,18 @@ export default async function FeedPage({ searchParams }: PageProps) {
           </div>
         )}
 
-        {/* Activity feed with injected cards */}
-        {items.length === 0 ? (
-          <div className="py-20 text-center">
-            <div className="mb-2 text-lg font-medium text-[var(--codex-text)]">
-              No recent activity
-            </div>
-            <p className="text-sm text-[var(--codex-sub)]">
-              {party || state
-                ? 'Try adjusting your filters to see more results.'
-                : 'Check back soon for the latest political activity.'}
-            </p>
+        {/* Middle row: Finance + Extra widgets */}
+        {page === 1 && (fundraisers.length > 0 || races.length > 1) && (
+          <div className="mb-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {fundraisers.length > 0 && <FinanceHighlightCard records={fundraisers} />}
+            {races.slice(1, 3).map((r) => (
+              <ElectionCountdownCard key={r.id} race={r} />
+            ))}
           </div>
-        ) : (
+        )}
+
+        {/* Activity feed — compact, max 6 per page */}
+        {items.length > 0 && (
           <>
             <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
               {page > 1 ? `Page ${page}` : 'Latest Activity'}
@@ -308,56 +270,49 @@ export default async function FeedPage({ searchParams }: PageProps) {
 
             <div className="flex flex-col gap-2.5">
               {items.map((item, i) => (
-                <div key={`${item.type}-${i}`}>
-                  <ActivityItem
-                    type={item.type}
-                    politician={item.politician}
-                    date={item.date}
-                    details={item.details}
-                  />
-
-                  {/* Inject variety cards every 8 activity items (page 1 only) */}
-                  {page === 1 && i === 7 && fundraisers.length > 0 && (
-                    <div className="my-4">
-                      <FinanceHighlightCard records={fundraisers} />
-                    </div>
-                  )}
-                  {page === 1 && i === 15 && races.length > 1 && (
-                    <div className="my-4 grid gap-4 sm:grid-cols-2">
-                      {races.slice(1, 3).map((r) => (
-                        <ElectionCountdownCard key={r.id} race={r} />
-                      ))}
-                    </div>
-                  )}
-                  {page === 1 && i === 23 && polls.length > 1 && (
-                    <div className="my-4">
-                      <PollCard poll={polls[1]} />
-                    </div>
-                  )}
-                </div>
+                <ActivityItem
+                  key={`${item.type}-${i}`}
+                  type={item.type}
+                  politician={item.politician}
+                  date={item.date}
+                  details={item.details}
+                />
               ))}
             </div>
 
             {/* Pagination */}
-            <div className="mt-8 flex items-center justify-center gap-4">
-              {page > 1 && (
-                <Link
-                  href={buildPageUrl(page - 1)}
-                  className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
-                >
-                  Previous
-                </Link>
-              )}
-              {hasMore && (
-                <Link
-                  href={buildPageUrl(page + 1)}
-                  className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
-                >
-                  Load More
-                </Link>
-              )}
-            </div>
+            {(hasMore || page > 1) && (
+              <div className="mt-6 flex items-center justify-center gap-4">
+                {page > 1 && (
+                  <Link
+                    href={buildPageUrl(page - 1)}
+                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                  >
+                    Previous
+                  </Link>
+                )}
+                {hasMore && (
+                  <Link
+                    href={buildPageUrl(page + 1)}
+                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                  >
+                    Load More
+                  </Link>
+                )}
+              </div>
+            )}
           </>
+        )}
+
+        {items.length === 0 && page > 1 && (
+          <div className="py-20 text-center">
+            <div className="mb-2 text-lg font-medium text-[var(--codex-text)]">
+              No more activity
+            </div>
+            <p className="text-sm text-[var(--codex-sub)]">
+              You&apos;ve reached the end.
+            </p>
+          </div>
         )}
 
         <Footer />

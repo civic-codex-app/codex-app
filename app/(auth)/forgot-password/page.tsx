@@ -55,16 +55,17 @@ export default function ForgotPasswordPage() {
       </div>
 
       {error && (
-        <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div role="alert" className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
 
       <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="forgot-email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
           Email
         </label>
         <input
+          id="forgot-email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}

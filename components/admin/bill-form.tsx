@@ -2,20 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { fieldClass, labelClass } from '@/lib/utils'
-
-const billSchema = z.object({
-  number: z.string().min(1, 'Bill number is required').max(50),
-  title: z.string().min(1, 'Title is required').max(500),
-  summary: z.string().max(5000).nullable().optional(),
-  status: z.string().max(100).nullable().optional(),
-  introduced_date: z.string().optional(),
-  last_action_date: z.string().optional(),
-  congress_session: z.string().max(50).nullable().optional(),
-})
+import { billSchema } from '@/lib/validations/admin'
 
 const STATUSES = [
   'Introduced',

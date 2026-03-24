@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { USMap, STATE_NAMES } from '@/components/visualizations/us-map'
 import { IssueIcon } from '@/components/icons/issue-icon'
@@ -291,10 +292,13 @@ export function IssueMapView({
                   >
                     {/* Avatar */}
                     {pol.image_url ? (
-                      <img
+                      <Image
                         src={pol.image_url}
                         alt={pol.name}
+                        width={32}
+                        height={32}
                         className="h-8 w-8 shrink-0 rounded-full object-cover"
+                        unoptimized
                       />
                     ) : (
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--codex-hover)] text-xs font-medium text-[var(--codex-sub)]">

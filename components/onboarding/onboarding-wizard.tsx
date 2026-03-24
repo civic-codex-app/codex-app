@@ -159,7 +159,9 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
                 </div>
               )}
 
+              <label htmlFor="onboarding-state" className="sr-only">Select your state</label>
               <select
+                id="onboarding-state"
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
                 className={fieldClass}

@@ -109,6 +109,8 @@ export async function syncQuizToServer(answers: Record<string, string>): Promise
  */
 export async function loadQuizFromServer(): Promise<Record<string, string> | null> {
   try {
+    // Skip server call if no auth cookie present (avoids 401 noise)
+    if (typeof document !== 'undefined' && !document.cookie.includes('sb-')) return null
     const res = await fetch('/api/quiz-answers')
     if (!res.ok) return null
     const data = await res.json()

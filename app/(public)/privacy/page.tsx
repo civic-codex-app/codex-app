@@ -28,12 +28,22 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="mb-2 text-[16px] font-semibold text-[var(--codex-text)]">Cookies</h2>
-            <p>We use essential cookies for authentication (managed by Supabase) and to prevent duplicate poll votes. We do not use tracking cookies or third-party advertising cookies.</p>
+            <p>We use essential cookies for authentication and to prevent duplicate poll votes. We do not use tracking cookies or third-party advertising cookies.</p>
           </section>
 
           <section>
             <h2 className="mb-2 text-[16px] font-semibold text-[var(--codex-text)]">Third-Party Services</h2>
-            <p>We use Supabase for authentication and database hosting, Vercel for web hosting, and Cloudflare R2 for image storage. These services have their own privacy policies. We use Vercel Analytics for anonymous, aggregated usage metrics — no personal data is shared.</p>
+            <p>We use third-party services for hosting, authentication, analytics, and data storage. These services process data on our behalf and have their own privacy policies. We use cookieless, anonymous analytics that collect no personal data — only aggregated page view metrics.</p>
+          </section>
+
+          <section>
+            <h2 className="mb-2 text-[16px] font-semibold text-[var(--codex-text)]">News & Media Bias</h2>
+            <p>Poli displays news articles about politicians sourced from publicly available RSS feeds. We classify articles by political leaning (left, center, right) based on the news source. This classification happens server-side — no user data is involved, and we do not track which articles you view.</p>
+          </section>
+
+          <section>
+            <h2 className="mb-2 text-[16px] font-semibold text-[var(--codex-text)]">Public Data</h2>
+            <p>Politician profiles, voting records, campaign finance data, and election information are compiled from publicly available government sources. This data does not involve any user information. For details, see our <a href="/data-sources" className="font-medium text-[var(--codex-text)] underline underline-offset-2">Data Sources</a> page.</p>
           </section>
 
           <section>
@@ -43,7 +53,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="mb-2 text-[16px] font-semibold text-[var(--codex-text)]">Data Security</h2>
-            <p>All data is transmitted over HTTPS. Passwords are hashed by Supabase Auth. We use Row-Level Security on our database to ensure users can only access their own data. Admin access is restricted to authorized team members.</p>
+            <p>All data is transmitted over HTTPS. Passwords are securely hashed and never stored in plain text. We use row-level security on our database to ensure users can only access their own data. Admin access is restricted to authorized team members.</p>
           </section>
 
           <section>

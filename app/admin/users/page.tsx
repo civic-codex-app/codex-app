@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
 export const dynamic = 'force-dynamic'
@@ -40,7 +41,7 @@ export default async function AdminUsersPage() {
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
                     {u.avatar_url ? (
-                      <img src={u.avatar_url} alt={u.display_name || 'User avatar'} className="h-8 w-8 rounded-full object-cover" />
+                      <Image src={u.avatar_url} alt={u.display_name || 'User avatar'} width={32} height={32} className="h-8 w-8 rounded-full object-cover" unoptimized />
                     ) : (
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--codex-border)] text-xs font-medium text-[var(--codex-sub)]">
                         {(u.display_name || u.email || '?')[0].toUpperCase()}

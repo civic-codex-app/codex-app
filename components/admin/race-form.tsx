@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { slugify, fieldClass, labelClass } from '@/lib/utils'
 import { US_STATES } from '@/lib/constants/us-states'
+import { raceSchema } from '@/lib/validations/admin'
 
 const CHAMBERS = [
   { value: 'senate', label: 'Senate' },
@@ -54,16 +55,26 @@ export function RaceForm({ election_id, race, politicians }: Props) {
 
     const supabase = createClient()
     const form = new FormData(e.currentTarget)
-    const name = form.get('name') as string
 
-    const raceData = {
-      name,
+    const data = {
+      name: form.get('name') as string,
       state: form.get('state') as string,
       chamber: form.get('chamber') as string,
       district: (form.get('district') as string) || null,
       description: (form.get('description') as string) || null,
       incumbent_id: (form.get('incumbent_id') as string) || null,
-      ...(race ? {} : { slug: slugify(name), election_id }),
+    }
+
+    const result = raceSchema.safeParse(data)
+    if (!result.success) {
+      setError(result.error.issues.map((i) => i.message).join(', '))
+      setLoading(false)
+      return
+    }
+
+    const raceData = {
+      ...result.data,
+      ...(race ? {} : { slug: slugify(result.data.name), election_id }),
     }
 
     if (race) {

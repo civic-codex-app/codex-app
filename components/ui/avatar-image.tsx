@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { PartyIcon } from '@/components/icons/party-icons'
 
 interface AvatarImageProps {
@@ -36,14 +35,16 @@ export function AvatarImage({ src, alt, size, fallbackColor, party, className }:
     )
   }
 
+  /* eslint-disable @next/next/no-img-element */
   return (
-    <Image
+    <img
       src={src}
       alt={alt}
       width={size}
       height={size}
-      unoptimized
       onError={() => setError(true)}
+      loading="lazy"
+      decoding="async"
       className={className ?? 'h-full w-full object-cover'}
     />
   )

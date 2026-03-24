@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { PartyIcon } from '@/components/icons/party-icons'
@@ -227,10 +228,13 @@ export function SearchInput({ size = 'default', basePath }: { size?: 'default' |
             >
               {/* Avatar / party icon area */}
               {s.image_url ? (
-                <img
+                <Image
                   src={s.image_url}
                   alt={s.name}
+                  width={32}
+                  height={32}
                   className="h-8 w-8 rounded-full object-cover"
+                  unoptimized
                 />
               ) : (
                 <div

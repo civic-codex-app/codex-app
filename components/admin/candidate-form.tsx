@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { fieldClass, labelClass } from '@/lib/utils'
 import { PARTIES } from '@/lib/constants/parties'
+import { candidateSchema } from '@/lib/validations/admin'
 
 const STATUSES = [
   { value: 'running', label: 'Running' },
@@ -50,7 +51,7 @@ export function CandidateForm({ race_id, election_id, candidate, politicians }: 
     const supabase = createClient()
     const form = new FormData(e.currentTarget)
 
-    const candidateData = {
+    const data = {
       name: form.get('name') as string,
       party: form.get('party') as string,
       is_incumbent: form.has('is_incumbent'),
@@ -59,6 +60,17 @@ export function CandidateForm({ race_id, election_id, candidate, politicians }: 
       website_url: (form.get('website_url') as string) || null,
       image_url: (form.get('image_url') as string) || null,
       bio: (form.get('bio') as string) || null,
+    }
+
+    const result = candidateSchema.safeParse(data)
+    if (!result.success) {
+      setError(result.error.issues.map((i) => i.message).join(', '))
+      setLoading(false)
+      return
+    }
+
+    const candidateData = {
+      ...result.data,
       ...(candidate ? {} : { race_id }),
     }
 

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { slugify, fieldClass, labelClass } from '@/lib/utils'
+import { electionSchema } from '@/lib/validations/admin'
 
 interface Props {
   election?: {
@@ -30,14 +31,24 @@ export function ElectionForm({ election }: Props) {
 
     const supabase = createClient()
     const form = new FormData(e.currentTarget)
-    const name = form.get('name') as string
 
-    const electionData = {
-      name,
+    const data = {
+      name: form.get('name') as string,
       election_date: form.get('election_date') as string,
       description: (form.get('description') as string) || null,
       is_active: form.has('is_active'),
-      ...(election ? {} : { slug: slugify(name) }),
+    }
+
+    const result = electionSchema.safeParse(data)
+    if (!result.success) {
+      setError(result.error.issues.map((i) => i.message).join(', '))
+      setLoading(false)
+      return
+    }
+
+    const electionData = {
+      ...result.data,
+      ...(election ? {} : { slug: slugify(result.data.name) }),
     }
 
     if (election) {

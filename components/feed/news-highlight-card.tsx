@@ -34,7 +34,7 @@ export function NewsHighlightCard({ articles, label = 'Trending in Politics' }: 
       </div>
 
       <div className="space-y-3">
-        {articles.map((a, i) => {
+        {articles.slice(0, 10).map((a, i) => {
           const colors = BIAS_GROUP_COLORS[a.biasGroup]
           return (
             <a
@@ -55,7 +55,7 @@ export function NewsHighlightCard({ articles, label = 'Trending in Politics' }: 
                 <div className="mt-0.5 flex items-center gap-2 text-[11px] text-[var(--codex-faint)]">
                   <span>{a.source}</span>
                   <span>&middot;</span>
-                  <span>{timeAgo(a.publishedAt)}</span>
+                  <span suppressHydrationWarning>{timeAgo(a.publishedAt)}</span>
                 </div>
               </div>
             </a>

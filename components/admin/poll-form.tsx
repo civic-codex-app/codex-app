@@ -2,18 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { fieldClass, labelClass } from '@/lib/utils'
-
-const pollSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(300),
-  description: z.string().max(2000).nullable().optional(),
-  poll_type: z.enum(['approval', 'matchup', 'issue']),
-  status: z.enum(['draft', 'active', 'closed']),
-  ends_at: z.string().optional(),
-})
+import { pollSchema } from '@/lib/validations/admin'
 
 interface PollOption {
   id?: string

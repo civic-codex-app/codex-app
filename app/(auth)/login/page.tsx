@@ -43,16 +43,17 @@ function LoginForm() {
       </div>
 
       {error && (
-        <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div role="alert" className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       )}
 
       <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="login-email" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
           Email
         </label>
         <input
+          id="login-email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -62,10 +63,11 @@ function LoginForm() {
       </div>
 
       <div>
-        <label className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
+        <label htmlFor="login-password" className="mb-1.5 block text-xs font-medium uppercase tracking-wider text-[var(--codex-sub)]">
           Password
         </label>
         <input
+          id="login-password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

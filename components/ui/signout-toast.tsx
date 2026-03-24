@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
+import { clearQuizProgress } from '@/lib/utils/quiz-storage'
 
 export function SignoutToast() {
   const searchParams = useSearchParams()
@@ -11,6 +12,8 @@ export function SignoutToast() {
   useEffect(() => {
     if (searchParams.get('signedout') === '1') {
       setShow(true)
+      // Clear quiz data on logout
+      clearQuizProgress()
       // Clean the URL
       const url = new URL(window.location.href)
       url.searchParams.delete('signedout')

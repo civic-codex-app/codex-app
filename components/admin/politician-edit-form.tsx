@@ -2,26 +2,12 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { PARTIES } from '@/lib/constants/parties'
 import type { Politician } from '@/lib/types/politician'
 import { ImageUpload } from '@/components/admin/image-upload'
-
-const politicianSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(200),
-  title: z.string().min(1, 'Title is required').max(200),
-  state: z.string().min(2, 'State is required').max(2),
-  chamber: z.enum(['senate', 'house', 'governor', 'presidential', 'mayor', 'city_council', 'state_senate', 'state_house', 'county', 'school_board', 'other_local']),
-  party: z.string().min(1, 'Party is required'),
-  since_year: z.number().min(1776).max(2030).nullable().optional(),
-  bio: z.string().max(5000).nullable().optional(),
-  website_url: z.string().url('Invalid URL').or(z.literal('')).nullable().optional(),
-  donate_url: z.string().url('Invalid URL').or(z.literal('')).nullable().optional(),
-  wiki_url: z.string().url('Invalid URL').or(z.literal('')).nullable().optional(),
-  image_url: z.string().url('Invalid URL').or(z.literal('')).nullable().optional(),
-})
+import { politicianSchema } from '@/lib/validations/admin'
 
 const US_STATES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',

@@ -27,6 +27,7 @@ export function StateFilter() {
     <select
       value={current}
       onChange={(e) => handleChange(e.target.value)}
+      aria-label="Filter by state"
       className="h-9 rounded-sm border border-[var(--codex-border)] bg-[var(--codex-input-bg)] px-3 text-[12px] text-[var(--codex-text)] outline-none transition-colors focus:border-[var(--codex-input-focus)] appearance-none cursor-pointer"
       style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 8px center' }}
     >

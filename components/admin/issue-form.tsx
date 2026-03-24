@@ -2,17 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { slugify, fieldClass, labelClass } from '@/lib/utils'
-
-const issueSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(200),
-  category: z.string().min(1, 'Category is required'),
-  icon: z.string().max(10).nullable().optional(),
-  description: z.string().max(2000).nullable().optional(),
-})
+import { issueSchema } from '@/lib/validations/admin'
 
 const CATEGORIES = [
   { value: 'economy', label: 'Economy' },

@@ -94,6 +94,13 @@ export function QuizForm({ issues }: Props) {
   useEffect(() => {
     let cancelled = false
     async function init() {
+      // Always restore local answers + step first (works for guests and logged-in)
+      const localAnswers = loadQuizAnswers()
+      if (Object.keys(localAnswers).length > 0 && !cancelled) {
+        setAnswers(localAnswers)
+        setCurrentStep(loadQuizStep())
+      }
+
       try {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -108,28 +115,39 @@ export function QuizForm({ issues }: Props) {
           const serverAnswers = await loadQuizFromServer()
           if (cancelled) return
 
-          const local = loadQuizAnswers(user.id)
-          const merged = mergeQuizAnswers(local, serverAnswers)
+          const guestLocal = loadQuizAnswers()
+          const hasServer = serverAnswers && Object.keys(serverAnswers).length > 0
+          const hasGuest = Object.keys(guestLocal).length > 0
 
-          // Restore answers and step for this user
-          setAnswers(merged)
-          setCurrentStep(loadQuizStep())
+          // Server takes over if it has data; otherwise keep guest answers
+          const merged = hasServer
+            ? serverAnswers
+            : hasGuest
+              ? guestLocal
+              : {}
+
+          if (Object.keys(merged).length > 0) {
+            setAnswers(merged)
+            setCurrentStep(loadQuizStep())
+          }
+          // Re-save under this user's key and sync guest answers up if server was empty
           saveQuizAnswers(merged, user.id)
+          if (!hasServer && hasGuest) {
+            syncQuizToServer(merged)
+          }
           if (Object.keys(merged).length > 0 && Object.keys(local).length > Object.keys(serverAnswers ?? {}).length) {
             syncQuizToServer(merged)
           }
         }
       } catch {
-        // Not logged in or network error — continue with localStorage only
+        // Not logged in or network error — localStorage answers already loaded above
       }
 
-      // Load cached results only for logged-in users, keyed to their account
-      if (isLoggedIn.current) {
-        const cached = loadQuizResults(userId.current)
-        if (cached && cached.results.length > 0 && !cancelled) {
-          setResults(cached.results)
-          setStateResults(cached.stateResults)
-        }
+      // Load cached results — for logged-in users keyed to account, for guests keyed to no user
+      const cached = loadQuizResults(isLoggedIn.current ? userId.current : undefined)
+      if (cached && cached.results.length > 0 && !cancelled) {
+        setResults(cached.results)
+        setStateResults(cached.stateResults)
       }
       // Track quiz start for users who don't have cached results
       if (!cancelled && !results) {

@@ -20,6 +20,12 @@ const SOURCES = [
           'Official source for member biographies, committee assignments, and legislative activity for U.S. Senators and Representatives.',
       },
       {
+        name: 'Congress.gov API',
+        url: 'https://api.congress.gov',
+        description:
+          'Official Library of Congress API used to seed current member data, including all 435 House Representatives, 100 Senators, and official portrait photos.',
+      },
+      {
         name: 'Official Government Websites',
         url: null,
         description:
@@ -63,7 +69,7 @@ const SOURCES = [
         name: 'FEC OpenFEC API',
         url: 'https://api.open.fec.gov',
         description:
-          'Public API for querying campaign finance records, candidate filings, and committee data.',
+          'Public API providing real-time campaign finance data for 3,700+ active candidates — total receipts, disbursements, cash on hand, and FEC filing links. Updated as new filings are submitted.',
       },
     ],
   },
@@ -114,6 +120,23 @@ const SOURCES = [
     ],
   },
   {
+    category: 'News & Media Bias',
+    items: [
+      {
+        name: 'Google News RSS',
+        url: 'https://news.google.com',
+        description:
+          'Aggregated news headlines used to surface recent coverage about politicians from multiple outlets.',
+      },
+      {
+        name: 'Media Bias/Fact Check (MBFC)',
+        url: 'https://mediabiasfactcheck.com',
+        description:
+          'Bias ratings for 6,000+ news sources used to classify articles as left-leaning, center, or right-leaning. Ratings sourced via the MBFC API.',
+      },
+    ],
+  },
+  {
     category: 'Photos & Media',
     items: [
       {
@@ -127,6 +150,41 @@ const SOURCES = [
         url: 'https://commons.wikimedia.org',
         description:
           'Public domain and Creative Commons licensed images used under applicable licenses with attribution.',
+      },
+      {
+        name: 'Open States',
+        url: 'https://openstates.org',
+        description:
+          'State legislator data and official portrait photos sourced via the Open States API for state-level officials.',
+      },
+      {
+        name: 'unitedstates/images (GitHub)',
+        url: 'https://github.com/unitedstates/images',
+        description:
+          'Public domain congressional photos maintained by the @unitedstates project, used for federal officials.',
+      },
+      {
+        name: 'Wikidata',
+        url: 'https://www.wikidata.org',
+        description:
+          'Structured data repository used to find additional politician photos via SPARQL queries.',
+      },
+    ],
+  },
+  {
+    category: 'State & Local Officials',
+    items: [
+      {
+        name: 'Open States API',
+        url: 'https://openstates.org',
+        description:
+          'Primary source for state legislator data including names, parties, districts, committees, and contact information across all 50 states.',
+      },
+      {
+        name: 'Civic Information API',
+        url: 'https://developers.google.com/civic-information',
+        description:
+          'Google Civic Information API used for address-based representative lookups and local official data.',
       },
     ],
   },
