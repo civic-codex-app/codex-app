@@ -9,6 +9,8 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
+import { getCachedNews } from '@/lib/utils/news'
+import { InTheNews } from '@/components/politicians/in-the-news'
 
 export const dynamic = 'force-dynamic'
 
@@ -83,6 +85,9 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         year: 'numeric',
       })
     : null
+
+  // Fetch news
+  const newsArticles = await getCachedNews(candidate.name)
 
   // Fetch candidate stances
   const { data: stances } = await supabase
@@ -292,6 +297,16 @@ export default async function CandidateProfilePage({ params }: PageProps) {
                 )
               })}
             </div>
+          </section>
+        )}
+
+        {/* In the News */}
+        {newsArticles.length > 0 && (
+          <section className="mb-10">
+            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+              In the News
+            </h2>
+            <InTheNews articles={newsArticles} politicianName={candidate.name} />
           </section>
         )}
 

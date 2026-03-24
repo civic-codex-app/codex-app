@@ -28,6 +28,7 @@ import type {
 import { computeAlignment } from '@/lib/utils/alignment'
 import { type LikeMindedPolitician } from '@/components/politicians/like-minded'
 import { computeReportCard } from '@/lib/utils/report-card'
+import { getCachedNews } from '@/lib/utils/news'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker'
 import { UpdatePoliticianButton } from '@/components/forms/update-politician-modal'
@@ -103,13 +104,14 @@ export default async function PoliticianPage({ params }: PageProps) {
   const pol = data as Politician
 
   // Run all queries in parallel for performance
-  const [stancesResult, committeeResult, votingResult, financeResult, electionResult, stanceHistoryResult] = await Promise.all([
+  const [stancesResult, committeeResult, votingResult, financeResult, electionResult, stanceHistoryResult, newsArticles] = await Promise.all([
     supabase.from('politician_issues').select('politician_id, issue_id, stance, is_verified, summary, source_url, issues:issue_id(id, name, slug, icon, category)').eq('politician_id', pol.id).order('created_at'),
     supabase.from('politician_committees').select('role, committees:committee_id(id, name, slug, chamber)').eq('politician_id', pol.id),
     supabase.from('voting_records').select('id, bill_name, bill_number, bill_id, vote, vote_date').eq('politician_id', pol.id).order('vote_date', { ascending: false }),
     supabase.from('campaign_finance').select('id, politician_id, cycle, total_raised, total_spent, cash_on_hand, source_url').eq('politician_id', pol.id).order('cycle', { ascending: false }).limit(10),
     supabase.from('election_results').select('id, politician_id, election_year, state, chamber, district, race_name, party, result, vote_percentage, total_votes, opponent_name, opponent_party, opponent_vote_percentage').eq('politician_id', pol.id).order('election_year', { ascending: false }).limit(20),
     supabase.from('stance_history').select('id, issue_id, stance, effective_date, source_url, source_description').eq('politician_id', pol.id).order('effective_date', { ascending: false }).limit(50),
+    getCachedNews(pol.name),
   ])
 
   const politicianStances = (stancesResult.data ?? []) as any as PoliticianStanceRow[]
@@ -338,7 +340,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 Compare
               </Link>
               <ExportPdfButton />
-              <UpdatePoliticianButton politicianId={pol.id} politicianName={pol.name} />
+              {isAuthenticated && <UpdatePoliticianButton politicianId={pol.id} politicianName={pol.name} />}
               {pol.twitter_url && (
                 <a href={pol.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--codex-border)] text-[var(--codex-sub)] transition-all hover:border-[var(--codex-input-focus)] hover:text-[var(--codex-text)]" aria-label="X (Twitter)">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -380,6 +382,11 @@ export default async function PoliticianPage({ params }: PageProps) {
               </div>
             )}
 
+            {/* Title */}
+            <p className="mb-1 text-[15px] font-medium text-[var(--codex-text)]">
+              {pol.title}
+            </p>
+
             {/* Metadata line */}
             <div className="text-sm text-[var(--codex-sub)]">
               {[
@@ -414,6 +421,7 @@ export default async function PoliticianPage({ params }: PageProps) {
               electionResults={electionResults as any}
               reportCard={reportCard as any}
               likeMinded={likeMinded}
+              newsArticles={newsArticles}
             />
           </div>
         </div>

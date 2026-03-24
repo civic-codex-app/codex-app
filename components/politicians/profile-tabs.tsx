@@ -20,12 +20,14 @@ import { AskYourRep } from '@/components/politicians/ask-your-rep'
 import { StanceTimeline } from '@/components/politicians/stance-timeline'
 import { StanceTimelineToggle } from '@/components/politicians/stance-timeline-toggle'
 import { getStanceContext } from '@/lib/data/educational-content'
+import { InTheNews } from '@/components/politicians/in-the-news'
+import type { NewsArticle } from '@/lib/utils/news'
 
 /* ------------------------------------------------------------------ */
 /*  Tab definitions                                                    */
 /* ------------------------------------------------------------------ */
 
-const TABS = ['overview', 'stances', 'voting', 'finance', 'elections'] as const
+const TABS = ['overview', 'stances', 'voting', 'finance', 'elections', 'news'] as const
 type TabKey = (typeof TABS)[number]
 
 const TAB_LABELS: Record<TabKey, string> = {
@@ -34,6 +36,7 @@ const TAB_LABELS: Record<TabKey, string> = {
   voting: 'Voting Record',
   finance: 'Campaign Finance',
   elections: 'Election History',
+  news: 'In the News',
 }
 
 /* ------------------------------------------------------------------ */
@@ -124,6 +127,7 @@ export interface ProfileTabsProps {
   electionResults: ElectionResult[]
   reportCard: ReportCardData
   likeMinded: LikeMindedPolitician[]
+  newsArticles?: NewsArticle[]
 }
 
 /* ------------------------------------------------------------------ */
@@ -142,6 +146,7 @@ export function ProfileTabs({
   electionResults,
   reportCard,
   likeMinded,
+  newsArticles = [],
 }: ProfileTabsProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -171,6 +176,7 @@ export function ProfileTabs({
     if (t === 'voting') return votingRecords.length > 0
     if (t === 'finance') return financeRecords.length > 0
     if (t === 'elections') return electionResults.length > 0
+    if (t === 'news') return newsArticles.length > 0
     return true
   })
 
@@ -262,6 +268,9 @@ export function ProfileTabs({
             electionResults={electionResults}
             party={pol.party}
           />
+        )}
+        {activeTab === 'news' && (
+          <InTheNews articles={newsArticles} politicianName={pol.name} />
         )}
       </div>
     </>
