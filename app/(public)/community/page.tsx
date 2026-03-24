@@ -1,0 +1,169 @@
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { Header } from '@/components/layout/header'
+import { Footer } from '@/components/layout/footer'
+import { VoterCard } from '@/components/community/voter-card'
+import { StateFilterSelect } from '@/components/community/state-filter-select'
+import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const revalidate = 300 // 5 min
+
+export const metadata: Metadata = {
+  title: 'Community | Poli',
+  description:
+    'See where anonymous voters stand on the issues. Compare your political stances with others and find common ground.',
+}
+
+const PER_PAGE = 24
+
+interface PageProps {
+  searchParams: Promise<{ state?: string; page?: string }>
+}
+
+export default async function CommunityPage({ searchParams }: PageProps) {
+  const params = await searchParams
+  const stateFilter = params.state ?? ''
+  const page = Math.max(1, parseInt(params.page ?? '1', 10))
+
+  const supabase = createServiceRoleClient()
+
+  // Fetch issues for display metadata
+  const { data: issues } = await supabase
+    .from('issues')
+    .select('slug, name')
+    .order('name')
+
+  // Build query — only select anonymous-safe columns
+  let query = supabase
+    .from('profiles')
+    .select('anonymous_id, state, quiz_answers', { count: 'exact' })
+    .eq('sharing_enabled', true)
+    .not('quiz_answers', 'is', null)
+
+  if (stateFilter) {
+    query = query.eq('state', stateFilter)
+  }
+
+  const from = (page - 1) * PER_PAGE
+  const { data: voters, count } = await query
+    .range(from, from + PER_PAGE - 1)
+
+  const totalPages = Math.ceil((count ?? 0) / PER_PAGE)
+
+  // Filter out empty quiz_answers client-side (Supabase can't easily filter JSONB != '{}')
+  const validVoters = (voters ?? []).filter(
+    (v) => v.anonymous_id && v.quiz_answers && Object.keys(v.quiz_answers as Record<string, string>).length > 0
+  )
+
+  function buildUrl(p: number, state?: string) {
+    const sp = new URLSearchParams()
+    if (state) sp.set('state', state)
+    if (p > 1) sp.set('page', String(p))
+    const qs = sp.toString()
+    return `/community${qs ? `?${qs}` : ''}`
+  }
+
+  return (
+    <>
+      <Header />
+      <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
+        <div className="mb-6">
+          <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+            Community
+          </h1>
+          <p className="text-[15px] leading-[1.7] text-[var(--codex-sub)]">
+            See where anonymous voters stand on the issues. Compare your stances with theirs.
+          </p>
+        </div>
+
+        {/* State filter */}
+        <div className="mb-8 flex flex-wrap items-center gap-3">
+          <Link
+            href={buildUrl(1)}
+            className={`rounded-full px-3.5 py-1.5 text-[12px] font-medium no-underline transition-colors ${
+              !stateFilter
+                ? 'bg-blue-500/10 text-blue-400'
+                : 'text-[var(--codex-sub)] hover:text-[var(--codex-text)]'
+            }`}
+          >
+            All States
+          </Link>
+          <StateFilterSelect current={stateFilter} />
+          {count !== null && (
+            <span className="text-[12px] text-[var(--codex-faint)]">
+              {count} voter{count !== 1 ? 's' : ''} sharing
+            </span>
+          )}
+        </div>
+
+        {/* Voter grid */}
+        {validVoters.length === 0 ? (
+          <div className="py-20 text-center">
+            <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/10 text-blue-400">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <h2 className="mb-2 text-lg font-semibold text-[var(--codex-text)]">
+              No voters sharing yet
+            </h2>
+            <p className="mx-auto max-w-[360px] text-[13px] text-[var(--codex-sub)]">
+              Be the first! Take the quiz and enable sharing in your account settings
+              to appear here anonymously.
+            </p>
+            <Link
+              href="/quiz"
+              className="mt-4 inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-2.5 text-[13px] font-semibold text-white no-underline transition-all hover:bg-blue-700"
+            >
+              Take the Quiz
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {validVoters.map((v) => (
+                <VoterCard
+                  key={v.anonymous_id!}
+                  anonymousId={v.anonymous_id!}
+                  state={v.state}
+                  stances={v.quiz_answers as Record<string, string>}
+                  issues={issues ?? []}
+                />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-8 flex items-center justify-center gap-4">
+                {page > 1 && (
+                  <Link
+                    href={buildUrl(page - 1, stateFilter || undefined)}
+                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                  >
+                    Previous
+                  </Link>
+                )}
+                <span className="text-[12px] text-[var(--codex-faint)]">
+                  Page {page} of {totalPages}
+                </span>
+                {page < totalPages && (
+                  <Link
+                    href={buildUrl(page + 1, stateFilter || undefined)}
+                    className="rounded-lg border border-[var(--codex-border)] px-4 py-2 text-sm font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+                  >
+                    Next
+                  </Link>
+                )}
+              </div>
+            )}
+          </>
+        )}
+
+        <Footer />
+      </main>
+    </>
+  )
+}

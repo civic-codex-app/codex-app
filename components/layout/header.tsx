@@ -56,6 +56,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { href: '/feed', label: 'Feed' },
+  { href: '/community', label: 'Community' },
 ]
 
 const USER_MENU_ITEMS: DropdownItem[] = [

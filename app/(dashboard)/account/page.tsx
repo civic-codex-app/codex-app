@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { AccountForm } from '@/components/account/account-form'
+import { SharingToggle } from '@/components/account/sharing-toggle'
 import { ChangePasswordForm } from '@/components/account/change-password-form'
 import { NotificationPreferences } from '@/components/account/notification-preferences'
 import { DeleteAccount } from '@/components/account/delete-account'
@@ -30,6 +31,13 @@ export default async function AccountPage() {
           Profile
         </h2>
         <AccountForm profile={profile} />
+      </div>
+
+      <div className="mb-10">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
+          Community
+        </h2>
+        <SharingToggle />
       </div>
 
       <div className="mb-10">

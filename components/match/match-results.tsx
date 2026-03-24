@@ -620,6 +620,33 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
           Start Over
         </button>
       </div>
+
+      {/* Community sharing prompt */}
+      <div className="mt-10 rounded-lg border border-[var(--codex-border)] p-5 text-center">
+        <div className="mb-2 text-[14px] font-semibold text-[var(--codex-text)]">
+          Want to compare with other voters?
+        </div>
+        <p className="mx-auto mb-4 max-w-[400px] text-[12px] leading-[1.6] text-[var(--codex-sub)]">
+          Share your stances anonymously on the community page.
+          Others can see where they agree and disagree with you — without knowing who you are.
+        </p>
+        <div className="flex items-center justify-center gap-3">
+          <Link
+            href="/community"
+            className="rounded-full border border-[var(--codex-border)] px-5 py-2 text-[13px] font-medium text-[var(--codex-sub)] no-underline transition-colors hover:border-[var(--codex-text)] hover:text-[var(--codex-text)]"
+          >
+            Browse Community
+          </Link>
+          {isLoggedIn && (
+            <Link
+              href="/account"
+              className="rounded-full bg-blue-600 px-5 py-2 text-[13px] font-semibold text-white no-underline transition-colors hover:bg-blue-700"
+            >
+              Enable Sharing
+            </Link>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

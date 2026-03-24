@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { href: '/issues', label: 'Issues' },
   { href: '/polls', label: 'Polls' },
   { href: '/insights', label: 'Insights' },
+  { href: '/community', label: 'Community' },
 ]
 
 export function MobileNav() {
