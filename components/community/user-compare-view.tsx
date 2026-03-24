@@ -133,10 +133,12 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
           label={meProp ? `Voter #${displayIdMe}` : 'You'}
           stances={myStances}
           color="#3b82f6"
+          seed={meProp?.anonymousId ?? 'me'}
         />
         <ProfileHeader
           label={`Voter #${displayIdThem}`}
           stances={theirStances}
+          seed={them.anonymousId}
           color="#8b5cf6"
         />
       </div>
@@ -245,10 +247,12 @@ export function UserCompareView({ them, me: meProp, issues, isAuthenticated }: U
 function ProfileHeader({
   label,
   stances,
+  seed,
 }: {
   label: string
   stances: Record<string, string>
   color: string
+  seed: string
 }) {
   const entries = Object.values(stances)
   const total = entries.length
@@ -259,7 +263,7 @@ function ProfileHeader({
   return (
     <div className="rounded-lg border border-[var(--codex-border)] p-4 text-center">
       <div className="mx-auto mb-2 flex justify-center">
-        <StanceAvatar supports={supports} opposes={opposes} neutral={neutral} total={total} size={48} />
+        <StanceAvatar supports={supports} opposes={opposes} neutral={neutral} total={total} size={48} seed={seed} />
       </div>
       <div className="mb-1 text-[14px] font-semibold text-[var(--codex-text)]">{label}</div>
       <div className="text-[11px] text-[var(--codex-faint)]">

@@ -1,9 +1,7 @@
-'use client'
-
 /**
  * Animated blob avatar showing stance distribution.
  * Blue blobs = supports, red blobs = opposes, gray blobs = neutral/mixed.
- * Blobs rotate slowly and are heavily blurred on a white background.
+ * Each avatar is unique based on the seed (derived from anonymous ID).
  */
 export function StanceAvatar({
   supports,
@@ -11,12 +9,14 @@ export function StanceAvatar({
   neutral,
   total,
   size = 40,
+  seed = '',
 }: {
   supports: number
   opposes: number
   neutral: number
   total: number
   size?: number
+  seed?: string
 }) {
   if (total === 0) {
     return (
@@ -27,24 +27,54 @@ export function StanceAvatar({
     )
   }
 
+  // Simple hash from seed string to get deterministic pseudo-random values
+  const h = hashSeed(seed || `${supports}-${opposes}-${neutral}`)
+
   const sPct = supports / total
   const oPct = opposes / total
   const nPct = neutral / total
 
-  // Scale blob sizes based on percentages (min 20%, max 70%)
-  const sSize = 20 + sPct * 50
-  const oSize = 20 + oPct * 50
-  const nSize = 20 + nPct * 50
+  // Blob sizes scaled by percentage (min 25%, max 75%)
+  const sSize = 25 + sPct * 50
+  const oSize = 25 + oPct * 50
+  const nSize = 25 + nPct * 50
 
-  // Unique animation offset based on percentages (pseudo-random per voter)
-  const offset = Math.round(sPct * 360)
+  // Per-blob randomized positions (5%–35% range)
+  const sTop = 5 + (h[0] % 30)
+  const sLeft = 5 + (h[1] % 30)
+  const oBottom = 5 + (h[2] % 30)
+  const oRight = 5 + (h[3] % 30)
+  const nTop = 20 + (h[4] % 30)
+  const nLeft = 15 + (h[5] % 30)
+
+  // Per-blob randomized speeds (6–14s range)
+  const sSpeed = 6 + (h[6] % 8) + sPct * 2
+  const oSpeed = 6 + (h[7] % 8) + oPct * 2
+  const nSpeed = 7 + (h[8] % 7) + nPct * 2
+
+  // Per-blob randomized origins
+  const sOriginX = 30 + (h[9] % 40)
+  const sOriginY = 30 + (h[10] % 40)
+  const oOriginX = 30 + (h[11] % 40)
+  const oOriginY = 30 + (h[12] % 40)
+
+  // Per-blob randomized delays (negative for immediate offset)
+  const sDelay = -(h[0] * 0.1)
+  const oDelay = -(h[3] * 0.15)
+  const nDelay = -(h[5] * 0.12)
+
+  // Randomized direction
+  const sReverse = h[13] % 2 === 0 ? 'reverse' : 'normal'
+  const oReverse = h[14] % 2 === 0 ? 'reverse' : 'normal'
+  const nReverse = h[15] % 2 === 0 ? 'reverse' : 'normal'
+
+  const blur = size * 0.15
 
   return (
     <div
       className="relative shrink-0 overflow-hidden rounded-full border border-[var(--codex-border)]"
       style={{ width: size, height: size, background: '#fff' }}
     >
-      {/* Blue blob (supports) */}
       {supports > 0 && (
         <div
           className="absolute rounded-full"
@@ -52,17 +82,16 @@ export function StanceAvatar({
             width: `${sSize}%`,
             height: `${sSize}%`,
             background: `rgba(59, 130, 246, ${0.4 + sPct * 0.5})`,
-            filter: `blur(${size * 0.15}px)`,
-            top: '15%',
-            left: '10%',
-            animation: `stance-blob-rotate ${8 + sPct * 4}s linear infinite`,
-            transformOrigin: '60% 60%',
-            animationDelay: `${-offset * 0.01}s`,
+            filter: `blur(${blur}px)`,
+            top: `${sTop}%`,
+            left: `${sLeft}%`,
+            animation: `stance-blob-rotate ${sSpeed}s linear infinite ${sReverse}`,
+            transformOrigin: `${sOriginX}% ${sOriginY}%`,
+            animationDelay: `${sDelay}s`,
           }}
         />
       )}
 
-      {/* Red blob (opposes) */}
       {opposes > 0 && (
         <div
           className="absolute rounded-full"
@@ -70,17 +99,16 @@ export function StanceAvatar({
             width: `${oSize}%`,
             height: `${oSize}%`,
             background: `rgba(239, 68, 68, ${0.4 + oPct * 0.5})`,
-            filter: `blur(${size * 0.15}px)`,
-            bottom: '15%',
-            right: '10%',
-            animation: `stance-blob-rotate ${9 + oPct * 4}s linear infinite reverse`,
-            transformOrigin: '40% 40%',
-            animationDelay: `${-offset * 0.02}s`,
+            filter: `blur(${blur}px)`,
+            bottom: `${oBottom}%`,
+            right: `${oRight}%`,
+            animation: `stance-blob-rotate ${oSpeed}s linear infinite ${oReverse}`,
+            transformOrigin: `${oOriginX}% ${oOriginY}%`,
+            animationDelay: `${oDelay}s`,
           }}
         />
       )}
 
-      {/* Gray blob (neutral/mixed) */}
       {neutral > 0 && (
         <div
           className="absolute rounded-full"
@@ -88,26 +116,29 @@ export function StanceAvatar({
             width: `${nSize}%`,
             height: `${nSize}%`,
             background: `rgba(107, 114, 128, ${0.3 + nPct * 0.4})`,
-            filter: `blur(${size * 0.12}px)`,
-            top: '40%',
-            left: '35%',
-            animation: `stance-blob-rotate ${10 + nPct * 3}s linear infinite`,
+            filter: `blur(${blur * 0.8}px)`,
+            top: `${nTop}%`,
+            left: `${nLeft}%`,
+            animation: `stance-blob-rotate ${nSpeed}s linear infinite ${nReverse}`,
             transformOrigin: '50% 50%',
-            animationDelay: `${-offset * 0.015}s`,
+            animationDelay: `${nDelay}s`,
           }}
         />
       )}
-
-      {/* CSS keyframes injected via style tag */}
-      <style>{`
-        @keyframes stance-blob-rotate {
-          0% { transform: rotate(0deg) translate(10%, 5%); }
-          25% { transform: rotate(90deg) translate(-5%, 10%); }
-          50% { transform: rotate(180deg) translate(-10%, -5%); }
-          75% { transform: rotate(270deg) translate(5%, -10%); }
-          100% { transform: rotate(360deg) translate(10%, 5%); }
-        }
-      `}</style>
     </div>
   )
+}
+
+/** Simple deterministic hash from a string → array of numbers 0-99 */
+function hashSeed(str: string): number[] {
+  const result: number[] = []
+  let h = 0
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) - h + str.charCodeAt(i)) | 0
+  }
+  for (let i = 0; i < 20; i++) {
+    h = ((h * 16807) + 1) | 0
+    result.push(Math.abs(h) % 100)
+  }
+  return result
 }

@@ -98,7 +98,6 @@ export function SharingToggle() {
             >
               <div className="absolute rounded-full" style={{ width: '50%', height: '50%', background: 'rgba(59,130,246,0.6)', filter: 'blur(5px)', top: '15%', left: '10%', animation: 'stance-blob-rotate 8s linear infinite', transformOrigin: '60% 60%' }} />
               <div className="absolute rounded-full" style={{ width: '45%', height: '45%', background: 'rgba(239,68,68,0.5)', filter: 'blur(5px)', bottom: '15%', right: '10%', animation: 'stance-blob-rotate 9s linear infinite reverse', transformOrigin: '40% 40%' }} />
-              <style>{`@keyframes stance-blob-rotate { 0% { transform: rotate(0deg) translate(10%, 5%); } 50% { transform: rotate(180deg) translate(-10%, -5%); } 100% { transform: rotate(360deg) translate(10%, 5%); } }`}</style>
             </div>
             <div>
               <div className="text-[13px] font-medium text-[var(--codex-text)]">

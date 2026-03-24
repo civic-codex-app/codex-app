@@ -40,7 +40,7 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
     <div className="rounded-lg border border-[var(--codex-border)] p-4 transition-all hover:border-[var(--codex-input-border)] hover:bg-[var(--codex-hover)]">
       {/* Header */}
       <div className="mb-3 flex items-center gap-3">
-        <StanceAvatar supports={counts.supports} opposes={counts.opposes} neutral={counts.neutral + counts.mixed + counts.unknown} total={total} size={40} />
+        <StanceAvatar supports={counts.supports} opposes={counts.opposes} neutral={counts.neutral + counts.mixed + counts.unknown} total={total} size={40} seed={anonymousId} />
         <div className="min-w-0 flex-1">
           <div className="text-[14px] font-medium text-[var(--codex-text)]">
             Voter #{displayId}
