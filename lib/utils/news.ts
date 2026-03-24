@@ -150,7 +150,7 @@ export function getCachedNews(name: string): Promise<NewsArticle[]> {
 
   return unstable_cache(
     () => fetchPoliticianNews(name),
-    [`news-${slug}`],
+    [`news-v2-${slug}`],
     { revalidate: 1800, tags: ['news'] }
   )()
 }
