@@ -111,7 +111,7 @@ export function VoterCard({ anonymousId, state, stances, issues }: VoterCardProp
                 color: s.bucket === 'supports' ? '#60a5fa' : '#f87171',
               }}
             >
-              {s.bucket === 'supports' ? 'For' : 'Against'} {s.name}
+              {s.name}
             </span>
           ))}
         </div>
