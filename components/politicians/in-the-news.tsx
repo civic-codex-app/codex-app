@@ -34,12 +34,20 @@ const GROUPS: BiasGroup[] = ['left', 'center', 'right', 'unknown']
 interface InTheNewsProps {
   articles: NewsArticle[]
   politicianName: string
+  party?: string
 }
 
-export function InTheNews({ articles, politicianName }: InTheNewsProps) {
+export function InTheNews({ articles, politicianName, party }: InTheNewsProps) {
   const [activeGroup, setActiveGroup] = useState<BiasGroup | 'all'>('all')
 
   if (!articles.length) return null
+
+  // Order columns: show the "home team" perspective first
+  // Republicans see right first, Democrats see left first
+  const isConservative = party === 'republican'
+  const orderedGroups: BiasGroup[] = isConservative
+    ? ['right', 'center', 'left', 'unknown']
+    : ['left', 'center', 'right', 'unknown']
 
   // Group articles
   const grouped: Record<BiasGroup, NewsArticle[]> = {
@@ -72,7 +80,7 @@ export function InTheNews({ articles, politicianName }: InTheNewsProps) {
         >
           All ({articles.length})
         </button>
-        {GROUPS.map((g) => {
+        {orderedGroups.map((g) => {
           const count = grouped[g].length
           if (count === 0) return null
           const colors = BIAS_GROUP_COLORS[g]
@@ -109,7 +117,7 @@ export function InTheNews({ articles, politicianName }: InTheNewsProps) {
           'grid gap-4',
           grouped.unknown.length > 0 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-3'
         )}>
-          {GROUPS.map((g) => {
+          {orderedGroups.map((g) => {
             const items = grouped[g]
             if (items.length === 0) return null
             const colors = BIAS_GROUP_COLORS[g]

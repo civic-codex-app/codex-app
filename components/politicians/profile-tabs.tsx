@@ -270,7 +270,7 @@ export function ProfileTabs({
           />
         )}
         {activeTab === 'news' && (
-          <InTheNews articles={newsArticles} politicianName={pol.name} />
+          <InTheNews articles={newsArticles} politicianName={pol.name} party={pol.party} />
         )}
       </div>
     </>

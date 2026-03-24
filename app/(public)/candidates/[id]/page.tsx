@@ -306,7 +306,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
             <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--codex-sub)]">
               In the News
             </h2>
-            <InTheNews articles={newsArticles} politicianName={candidate.name} />
+            <InTheNews articles={newsArticles} politicianName={candidate.name} party={candidate.party} />
           </section>
         )}
 
