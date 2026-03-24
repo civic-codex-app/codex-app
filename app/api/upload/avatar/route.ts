@@ -4,7 +4,7 @@ import { uploadImage, deleteImage, imageKeyFromUrl } from '@/lib/r2'
 import { rateLimit, WRITE_OP } from '@/lib/utils/rate-limit'
 import { validateImageMagicBytes } from '@/lib/utils/file-validation'
 
-const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+const MAX_SIZE = 10 * 1024 * 1024 // 10MB (client crops+compresses before upload)
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 
 export async function POST(req: NextRequest) {

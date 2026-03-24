@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
+import { ImageCropper } from '@/components/ui/image-cropper'
 import { fieldClass, labelClass } from '@/lib/utils'
 import { US_STATES } from '@/lib/constants/us-states'
 import Image from 'next/image'
@@ -30,32 +31,33 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
   const [error, setError] = useState('')
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url ?? null)
   const [uploading, setUploading] = useState(false)
+  const [cropSrc, setCropSrc] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const userInitial = (profile?.display_name ?? profile?.email ?? 'U').charAt(0).toUpperCase()
 
-  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
       setError('Invalid file type. Please use JPEG, PNG, or WebP.')
       return
     }
 
-    // Validate file size
-    if (file.size > MAX_FILE_SIZE) {
-      setError('File too large. Maximum size is 5MB.')
-      return
-    }
-
+    // No size check here — cropper will compress it down
     setError('')
+    const url = URL.createObjectURL(file)
+    setCropSrc(url)
+  }
+
+  async function handleCropComplete(blob: Blob) {
+    setCropSrc(null)
     setUploading(true)
 
     try {
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('file', new File([blob], 'avatar.webp', { type: blob.type }))
 
       const res = await fetch('/api/upload/avatar', {
         method: 'POST',
@@ -69,7 +71,6 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
         return
       }
 
-      // Append cache-bust to force image refresh
       setAvatarUrl(`${data.url}?t=${Date.now()}`)
       setSuccess(true)
       router.refresh()
@@ -77,9 +78,13 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
       setError('Upload failed. Please try again.')
     } finally {
       setUploading(false)
-      // Reset file input so the same file can be re-selected
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
+  }
+
+  function handleCropCancel() {
+    setCropSrc(null)
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -131,6 +136,15 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
   }
 
   return (
+    <>
+    {cropSrc && (
+      <ImageCropper
+        imageSrc={cropSrc}
+        aspect={1}
+        onCropComplete={handleCropComplete}
+        onCancel={handleCropCancel}
+      />
+    )}
     <form onSubmit={handleSubmit} className="space-y-4 rounded-md border border-[var(--codex-border)] p-6">
       {error && (
         <div className="rounded-md border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm text-red-400" role="alert">{error}</div>
@@ -262,5 +276,6 @@ export function AccountForm({ profile }: { profile: Profile | null }) {
         </span>
       </div>
     </form>
+    </>
   )
 }
