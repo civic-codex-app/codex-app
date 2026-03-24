@@ -51,13 +51,13 @@ export function NotificationPreferences({ profileId }: { profileId: string }) {
   useEffect(() => {
     async function load() {
       const supabase = createClient()
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select('notification_prefs')
         .eq('id', profileId)
         .single()
 
-      if (data?.notification_prefs && typeof data.notification_prefs === 'object') {
+      if (!error && data?.notification_prefs && typeof data.notification_prefs === 'object') {
         setPrefs({ ...DEFAULT_PREFS, ...(data.notification_prefs as Partial<NotificationPrefs>) })
       }
       setLoading(false)

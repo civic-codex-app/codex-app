@@ -1,8 +1,13 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 
+// R2 endpoints should be just the account URL (no bucket path).
+// Strip trailing bucket name if accidentally included (e.g. .../codex → ...).
+const rawEndpoint = process.env.R2_ENDPOINT ?? ''
+const endpoint = rawEndpoint.replace(/\.com\/.*$/, '.com')
+
 const R2 = new S3Client({
   region: 'auto',
-  endpoint: process.env.R2_ENDPOINT!,
+  endpoint,
   credentials: {
     accessKeyId: process.env.R2_ACCESS_KEY_ID!,
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
