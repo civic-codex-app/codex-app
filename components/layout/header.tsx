@@ -52,7 +52,6 @@ const NAV_ITEMS: NavItem[] = [
     dropdown: [
       { href: '/insights', label: 'Overview' },
       { href: '/insights/money-map', label: 'Money Map' },
-      { href: '/polls', label: 'Polls' },
     ],
   },
   { href: '/feed', label: 'Feed' },

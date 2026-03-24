@@ -65,7 +65,6 @@ const MORE_LINKS: MoreLink[] = [
   { href: '/community', label: 'Community' },
   { href: '/insights', label: 'Insights' },
   { href: '/insights/money-map', label: 'Money Map' },
-  { href: '/polls', label: 'Polls' },
   { href: '/report-cards', label: 'Civic Profiles' },
   { href: '/bills', label: 'Bills' },
   { href: '/issues/map', label: 'Issue Map' },

@@ -11,7 +11,6 @@ const NAV_LINKS = [
   { href: '/bills', label: 'Bills' },
   { href: '/elections', label: 'Elections' },
   { href: '/issues', label: 'Issues' },
-  { href: '/polls', label: 'Polls' },
   { href: '/insights', label: 'Insights' },
   { href: '/community', label: 'Community' },
 ]
