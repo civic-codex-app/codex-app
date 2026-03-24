@@ -75,16 +75,24 @@ async function fetchPoliticianNews(name: string): Promise<NewsArticle[]> {
 
     const resp = await fetch(url, {
       signal: controller.signal,
+      cache: 'no-store',
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; PoliApp/1.0)',
       },
     })
     clearTimeout(timeout)
 
-    if (!resp.ok) return []
+    if (!resp.ok) {
+      console.error(`[News] RSS fetch failed for "${name}": HTTP ${resp.status}`)
+      return []
+    }
 
     const xml = await resp.text()
     const items = parseRssItems(xml)
+
+    if (items.length === 0) {
+      console.warn(`[News] No items parsed for "${name}" (xml length: ${xml.length})`)
+    }
 
     return items
       .slice(0, 30) // Take top 30 raw items
