@@ -84,6 +84,7 @@ export default async function AdminOverviewPage() {
     { label: 'Add Election', href: '/admin/elections/new' },
     { label: 'Add Issue', href: '/admin/issues/new' },
     { label: 'Add Bill', href: '/admin/bills/new' },
+    { label: 'Daily Topics', href: '/admin/daily-topics' },
     { label: 'View Inbox', href: '/admin/inbox' },
   ]
 

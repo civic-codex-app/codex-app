@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/politicians', label: 'Politicians' },
   { href: '/admin/elections', label: 'Elections' },
+  { href: '/admin/daily-topics', label: 'Daily Topics' },
   { href: '/admin/polls', label: 'Polls' },
   { href: '/admin/bills', label: 'Bills' },
   { href: '/admin/issues', label: 'Issues' },

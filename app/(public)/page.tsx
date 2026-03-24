@@ -12,6 +12,7 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { StatePoliticianList } from '@/components/states/state-politician-list'
 import { Trending } from '@/components/directory/trending'
+import { HotTopics } from '@/components/home/hot-topics'
 import { SignoutToast } from '@/components/ui/signout-toast'
 import { PARTY_EXPLAINERS } from '@/lib/data/educational-content'
 import { getSiteSettings } from '@/lib/utils/site-settings'
@@ -33,15 +34,22 @@ export default async function HomePage() {
   type UserProfile = { state: string | null; quiz_answers: Record<string, string> | null; quiz_results: unknown }
   let userProfile: UserProfile | null = null
   let userRepresentatives: { id: string; name: string; slug: string; party: string; state: string; chamber: string; title: string; image_url: string | null }[] = []
+  let followedIssueIds: string[] = []
   try {
     const authClient = await createClient()
     const { data: { user } } = await authClient.auth.getUser()
     if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('state, quiz_answers, quiz_results')
-        .eq('id', user.id)
-        .single()
+      const [{ data: profile }, { data: issueFollows }] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('state, quiz_answers, quiz_results')
+          .eq('id', user.id)
+          .single(),
+        supabase
+          .from('issue_follows')
+          .select('issue_id')
+          .eq('user_id', user.id),
+      ])
       if (profile) {
         userProfile = profile as unknown as UserProfile
         // Fetch representatives for the user's state
@@ -56,6 +64,7 @@ export default async function HomePage() {
           userRepresentatives = reps ?? []
         }
       }
+      followedIssueIds = (issueFollows ?? []).map(f => f.issue_id)
     }
   } catch {
     // Not authenticated or profile fetch failed — show anonymous view
@@ -140,7 +149,7 @@ export default async function HomePage() {
                 <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
                   Your Representatives
                 </h2>
-                <StatePoliticianList politicians={userRepresentatives} size="compact" />
+                <StatePoliticianList politicians={userRepresentatives} pageSize={3} size="compact" />
               </div>
             )}
 
@@ -241,6 +250,11 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
+
+        {/* Hot Topics — top issues with politician stances */}
+        <Suspense>
+          <HotTopics followedIssueIds={followedIssueIds} />
+        </Suspense>
 
         {/* Trending — only renders if enough follows */}
         <Trending minTotalFollows={10} />
