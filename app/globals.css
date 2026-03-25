@@ -255,21 +255,21 @@ html {
   }
 }
 
-/* Stance avatar blob animation */
+/* Stance avatar blob animation — fast, fluid */
 @keyframes stance-blob-rotate {
-  0% { transform: rotate(0deg) translate(10%, 5%); }
-  25% { transform: rotate(90deg) translate(-5%, 10%); }
-  50% { transform: rotate(180deg) translate(-10%, -5%); }
-  75% { transform: rotate(270deg) translate(5%, -10%); }
-  100% { transform: rotate(360deg) translate(10%, 5%); }
+  0% { transform: rotate(0deg) translate(12%, 6%); }
+  25% { transform: rotate(90deg) translate(-6%, 12%); }
+  50% { transform: rotate(180deg) translate(-12%, -6%); }
+  75% { transform: rotate(270deg) translate(6%, -12%); }
+  100% { transform: rotate(360deg) translate(12%, 6%); }
 }
 
 /* Mobile: simpler animation for blob avatars (iOS GPU perf) */
 @media (max-width: 768px) {
   @keyframes stance-blob-rotate {
-    0% { transform: scale(1) translate(10%, 5%); }
-    50% { transform: scale(1.15) translate(-5%, -5%); }
-    100% { transform: scale(1) translate(10%, 5%); }
+    0% { transform: scale(1) translate(12%, 6%); }
+    50% { transform: scale(1.18) translate(-6%, -6%); }
+    100% { transform: scale(1) translate(12%, 6%); }
   }
 }
 

@@ -47,10 +47,10 @@ export function StanceAvatar({
   const nTop = 20 + (h[4] % 30)
   const nLeft = 15 + (h[5] % 30)
 
-  // Per-blob randomized speeds (6–14s range)
-  const sSpeed = 6 + (h[6] % 8) + sPct * 2
-  const oSpeed = 6 + (h[7] % 8) + oPct * 2
-  const nSpeed = 7 + (h[8] % 7) + nPct * 2
+  // Per-blob randomized speeds (2–5s range)
+  const sSpeed = 2 + (h[6] % 3) + sPct * 1
+  const oSpeed = 2 + (h[7] % 3) + oPct * 1
+  const nSpeed = 2.5 + (h[8] % 2.5) + nPct * 1
 
   // Per-blob randomized origins
   const sOriginX = 30 + (h[9] % 40)
