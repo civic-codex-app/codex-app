@@ -54,7 +54,7 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
   const stateName = state ? STATE_NAMES[state as keyof typeof STATE_NAMES] ?? state : null
 
   // Compute alignment with both parties
-  const stanceArray = entries.map(([slug, stance]) => ({ issue_slug: slug, stance }))
+  const stanceArray = entries.map(([slug, stance]) => ({ stance, issues: { slug } }))
   const demAlign = computeAlignment('democrat', stanceArray)
   const repAlign = computeAlignment('republican', stanceArray)
   const leanLabel = Math.abs(demAlign - repAlign) < 5
