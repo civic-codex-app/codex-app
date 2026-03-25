@@ -47,10 +47,10 @@ export default async function UserComparePage({ searchParams }: PageProps) {
 
   const supabase = createServiceRoleClient()
 
-  // Fetch "them" profile (anonymous-safe columns only)
+  // Fetch "them" profile
   const { data: themProfile } = await supabase
     .from('profiles')
-    .select('anonymous_id, state, quiz_answers')
+    .select('id, anonymous_id, state, quiz_answers')
     .eq('anonymous_id', themId)
     .eq('sharing_enabled', true)
     .single()
@@ -80,12 +80,38 @@ export default async function UserComparePage({ searchParams }: PageProps) {
     )
   }
 
-  // If "me" is provided, fetch that profile too (two public profiles comparing)
+  // Fetch their followed politicians and issues
+  const [
+    { data: themFollows },
+    { data: themIssueFollows },
+    { data: themLikes },
+  ] = await Promise.all([
+    supabase
+      .from('follows')
+      .select('politician_id, politicians(name, slug, party, state, chamber, image_url)')
+      .eq('user_id', themProfile.id)
+      .limit(20),
+    supabase
+      .from('issue_follows')
+      .select('issue_id, issues(name, slug, icon)')
+      .eq('user_id', themProfile.id),
+    supabase
+      .from('likes')
+      .select('politician_id, politicians(name, slug, party, state, chamber, image_url)')
+      .eq('user_id', themProfile.id)
+      .limit(20),
+  ])
+
+  // If "me" is provided, fetch that profile too
   let meProfile = null
+  let meFollows: any[] = []
+  let meIssueFollows: any[] = []
+  let meLikes: any[] = []
+
   if (meId) {
     const { data } = await supabase
       .from('profiles')
-      .select('anonymous_id, state, quiz_answers')
+      .select('id, anonymous_id, state, quiz_answers')
       .eq('anonymous_id', meId)
       .eq('sharing_enabled', true)
       .single()
@@ -96,16 +122,39 @@ export default async function UserComparePage({ searchParams }: PageProps) {
         state: data.state,
         stances: data.quiz_answers as Record<string, string>,
       }
+      const [mf, mif, ml] = await Promise.all([
+        supabase.from('follows').select('politician_id, politicians(name, slug, party, state, chamber, image_url)').eq('user_id', data.id).limit(20),
+        supabase.from('issue_follows').select('issue_id, issues(name, slug, icon)').eq('user_id', data.id),
+        supabase.from('likes').select('politician_id, politicians(name, slug, party, state, chamber, image_url)').eq('user_id', data.id).limit(20),
+      ])
+      meFollows = mf.data ?? []
+      meIssueFollows = mif.data ?? []
+      meLikes = ml.data ?? []
     }
   }
 
   // Check if current user is authenticated
-  let isAuthenticated = false
+  let myUserId: string | null = null
   try {
     const authClient = await createServerAuthClient()
     const { data: { user } } = await authClient.auth.getUser()
-    isAuthenticated = !!user
+    if (user) myUserId = user.id
   } catch {}
+
+  // If authenticated and not comparing two public profiles, fetch my data too
+  let myFollows: any[] = []
+  let myIssueFollows: any[] = []
+  let myLikes: any[] = []
+  if (myUserId && !meId) {
+    const [mf, mif, ml] = await Promise.all([
+      supabase.from('follows').select('politician_id, politicians(name, slug, party, state, chamber, image_url)').eq('user_id', myUserId).limit(20),
+      supabase.from('issue_follows').select('issue_id, issues(name, slug, icon)').eq('user_id', myUserId),
+      supabase.from('likes').select('politician_id, politicians(name, slug, party, state, chamber, image_url)').eq('user_id', myUserId).limit(20),
+    ])
+    myFollows = mf.data ?? []
+    myIssueFollows = mif.data ?? []
+    myLikes = ml.data ?? []
+  }
 
   // Fetch issues for display
   const { data: issues } = await supabase
@@ -145,7 +194,13 @@ export default async function UserComparePage({ searchParams }: PageProps) {
           them={them}
           me={meProfile}
           issues={(issues ?? []) as Array<{ slug: string; name: string; icon?: string }>}
-          isAuthenticated={isAuthenticated}
+          isAuthenticated={!!myUserId}
+          themFollows={(themFollows ?? []).map((f: any) => f.politicians).filter(Boolean)}
+          themIssueFollows={(themIssueFollows ?? []).map((f: any) => f.issues).filter(Boolean)}
+          themLikes={(themLikes ?? []).map((f: any) => f.politicians).filter(Boolean)}
+          meFollows={meId ? meFollows.map((f: any) => f.politicians).filter(Boolean) : myFollows.map((f: any) => f.politicians).filter(Boolean)}
+          meIssueFollows={meId ? meIssueFollows.map((f: any) => f.issues).filter(Boolean) : myIssueFollows.map((f: any) => f.issues).filter(Boolean)}
+          meLikes={meId ? meLikes.map((f: any) => f.politicians).filter(Boolean) : myLikes.map((f: any) => f.politicians).filter(Boolean)}
         />
 
         <Footer />
