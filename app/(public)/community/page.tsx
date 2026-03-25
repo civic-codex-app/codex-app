@@ -20,6 +20,14 @@ interface PageProps {
   searchParams: Promise<{ state?: string; page?: string }>
 }
 
+function formatEstimate(n: number): string {
+  if (n >= 10000) return `${Math.floor(n / 1000)}k+`
+  if (n >= 1000) return `${(Math.floor(n / 100) / 10).toFixed(1)}k+`.replace('.0k+', 'k+')
+  if (n >= 100) return `${Math.floor(n / 10) * 10}+`
+  if (n >= 10) return `${Math.floor(n / 5) * 5}+`
+  return String(n)
+}
+
 export default async function CommunityPage({ searchParams }: PageProps) {
   const params = await searchParams
   const stateFilter = params.state ?? ''
@@ -27,11 +35,22 @@ export default async function CommunityPage({ searchParams }: PageProps) {
 
   const supabase = createServiceRoleClient()
 
-  // Fetch issues for display metadata
-  const { data: issues } = await supabase
-    .from('issues')
-    .select('slug, name')
-    .order('name')
+  // Fetch issues and community stats in parallel
+  const [
+    { data: issues },
+    { count: totalVoters },
+    { count: totalLikes },
+    { count: totalFollows },
+    { count: totalIssueFollows },
+    { count: totalBillFollows },
+  ] = await Promise.all([
+    supabase.from('issues').select('slug, name').order('name'),
+    supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('sharing_enabled', true).not('quiz_answers', 'is', null),
+    supabase.from('likes').select('*', { count: 'exact', head: true }),
+    supabase.from('follows').select('*', { count: 'exact', head: true }),
+    supabase.from('issue_follows').select('*', { count: 'exact', head: true }),
+    supabase.from('bill_follows').select('*', { count: 'exact', head: true }),
+  ])
 
   // Build query — only select anonymous-safe columns
   let query = supabase
@@ -74,6 +93,22 @@ export default async function CommunityPage({ searchParams }: PageProps) {
           <p className="text-[15px] leading-[1.7] text-[var(--poli-sub)]">
             See where anonymous voters stand on the issues. Compare your stances with theirs.
           </p>
+        </div>
+
+        {/* Community stats */}
+        <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-5">
+          {[
+            { label: 'Voters', value: formatEstimate(totalVoters ?? 0) },
+            { label: 'Likes', value: formatEstimate(totalLikes ?? 0) },
+            { label: 'Follows', value: formatEstimate(totalFollows ?? 0) },
+            { label: 'Issues Tracked', value: formatEstimate(totalIssueFollows ?? 0) },
+            { label: 'Bills Saved', value: formatEstimate(totalBillFollows ?? 0) },
+          ].map((stat) => (
+            <div key={stat.label} className="rounded-lg border border-[var(--poli-border)] px-4 py-3 text-center">
+              <div className="text-[18px] font-bold text-[var(--poli-text)]">{stat.value}</div>
+              <div className="text-[11px] text-[var(--poli-faint)]">{stat.label}</div>
+            </div>
+          ))}
         </div>
 
         {/* State filter */}
