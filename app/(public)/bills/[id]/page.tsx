@@ -77,8 +77,8 @@ export default async function BillDetailPage({ params }: PageProps) {
   const { id } = await params
   const supabase = createServiceRoleClient()
 
-  // Run both queries in parallel
-  const [billResult, votesResult] = await Promise.all([
+  // Run queries in parallel
+  const [billResult, votesResult, followCountResult] = await Promise.all([
     supabase.from('bills').select('*').eq('id', id).single(),
     supabase
       .from('voting_records')
@@ -86,6 +86,7 @@ export default async function BillDetailPage({ params }: PageProps) {
       .eq('bill_id', id)
       .order('vote')
       .order('created_at'),
+    supabase.from('bill_follows').select('*', { count: 'exact', head: true }).eq('bill_id', id),
   ])
 
   const bill = billResult.data
@@ -170,7 +171,7 @@ export default async function BillDetailPage({ params }: PageProps) {
               {bill.congress_session} Congress
             </span>
           )}
-          <FollowBillButton billId={bill.id} className="ml-auto" />
+          <FollowBillButton billId={bill.id} initialCount={followCountResult.count ?? 0} className="ml-auto" />
         </div>
 
         <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">

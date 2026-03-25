@@ -21,14 +21,6 @@ export function FollowBillButton({ billId, initialCount = 0, className }: Follow
     const supabase = createClient()
 
     async function check() {
-      // Get follow count
-      const { count: followCount } = await supabase
-        .from('bill_follows')
-        .select('*', { count: 'exact', head: true })
-        .eq('bill_id', billId)
-
-      if (followCount !== null) setCount(followCount)
-
       const {
         data: { user },
       } = await supabase.auth.getUser()

@@ -224,14 +224,17 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
 
   const issue = issueData as any as IssueRow
 
-  // Check if user is following this issue
+  // Get follow count (service role bypasses RLS) and check if user follows
+  const { count: issueFollowCount } = await supabase
+    .from('issue_follows')
+    .select('*', { count: 'exact', head: true })
+    .eq('issue_id', issue.id)
+
   let isFollowing = false
-  let isAuthenticated = false
   try {
     const authClient = await createClient()
     const { data: { user } } = await authClient.auth.getUser()
     if (user) {
-      isAuthenticated = true
       const { data: followData } = await authClient
         .from('issue_follows')
         .select('id')
@@ -333,7 +336,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
             {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--poli-sub)]" />}
             {issue.name}
           </h1>
-          <FollowIssueButton issueId={issue.id} initialFollowing={isFollowing} className="mt-2 flex-shrink-0" />
+          <FollowIssueButton issueId={issue.id} initialFollowing={isFollowing} initialCount={issueFollowCount ?? 0} className="mt-2 flex-shrink-0" />
         </div>
 
         {issue.description && (

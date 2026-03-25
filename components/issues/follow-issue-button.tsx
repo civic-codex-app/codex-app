@@ -21,14 +21,6 @@ export function FollowIssueButton({ issueId, initialFollowing, initialCount = 0,
 
   useEffect(() => {
     const supabase = createClient()
-    // Fetch count and auth state
-    supabase
-      .from('issue_follows')
-      .select('*', { count: 'exact', head: true })
-      .eq('issue_id', issueId)
-      .then(({ count: c }) => {
-        if (c !== null) setCount(c)
-      })
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (user) setUserId(user.id)
     })
