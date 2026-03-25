@@ -7,11 +7,13 @@ import { trackEvent } from '@/lib/utils/analytics'
 
 interface FollowBillButtonProps {
   billId: string
+  initialCount?: number
   className?: string
 }
 
-export function FollowBillButton({ billId, className }: FollowBillButtonProps) {
+export function FollowBillButton({ billId, initialCount = 0, className }: FollowBillButtonProps) {
   const [following, setFollowing] = useState(false)
+  const [count, setCount] = useState(initialCount)
   const [loading, setLoading] = useState(true)
   const [userId, setUserId] = useState<string | null>(null)
 
@@ -19,25 +21,31 @@ export function FollowBillButton({ billId, className }: FollowBillButtonProps) {
     const supabase = createClient()
 
     async function check() {
+      // Get follow count
+      const { count: followCount } = await supabase
+        .from('bill_follows')
+        .select('*', { count: 'exact', head: true })
+        .eq('bill_id', billId)
+
+      if (followCount !== null) setCount(followCount)
+
       const {
         data: { user },
       } = await supabase.auth.getUser()
 
-      if (!user) {
-        setLoading(false)
-        return
+      if (user) {
+        setUserId(user.id)
+
+        const { data } = await supabase
+          .from('bill_follows')
+          .select('id')
+          .eq('user_id', user.id)
+          .eq('bill_id', billId)
+          .maybeSingle()
+
+        setFollowing(!!data)
       }
 
-      setUserId(user.id)
-
-      const { data } = await supabase
-        .from('bill_follows')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('bill_id', billId)
-        .maybeSingle()
-
-      setFollowing(!!data)
       setLoading(false)
     }
 
@@ -62,13 +70,17 @@ export function FollowBillButton({ billId, className }: FollowBillButtonProps) {
         .delete()
         .eq('user_id', userId)
         .eq('bill_id', billId)
-      if (!error) setFollowing(false)
+      if (!error) {
+        setFollowing(false)
+        setCount((c) => Math.max(0, c - 1))
+      }
     } else {
       const { error } = await supabase
         .from('bill_follows')
         .insert({ user_id: userId, bill_id: billId })
       if (!error) {
         setFollowing(true)
+        setCount((c) => c + 1)
         trackEvent('bill_followed', { billId })
       }
     }
@@ -76,24 +88,10 @@ export function FollowBillButton({ billId, className }: FollowBillButtonProps) {
     setLoading(false)
   }
 
-  if (loading) {
-    return (
-      <button
-        disabled
-        className={cn(
-          'inline-flex items-center gap-1.5 rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-xs text-[var(--poli-faint)]',
-          className
-        )}
-      >
-        <BookmarkIcon filled={false} />
-        ...
-      </button>
-    )
-  }
-
   return (
     <button
       onClick={handleToggle}
+      disabled={loading}
       className={cn(
         'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
         following
@@ -104,6 +102,7 @@ export function FollowBillButton({ billId, className }: FollowBillButtonProps) {
     >
       <BookmarkIcon filled={following} />
       {following ? 'Saved' : 'Save'}
+      {count > 0 && <span className="text-[var(--poli-faint)]">{count}</span>}
     </button>
   )
 }

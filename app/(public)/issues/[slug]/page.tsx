@@ -333,9 +333,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
             {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--poli-sub)]" />}
             {issue.name}
           </h1>
-          {isAuthenticated && (
-            <FollowIssueButton issueId={issue.id} initialFollowing={isFollowing} className="mt-2 flex-shrink-0" />
-          )}
+          <FollowIssueButton issueId={issue.id} initialFollowing={isFollowing} className="mt-2 flex-shrink-0" />
         </div>
 
         {issue.description && (
