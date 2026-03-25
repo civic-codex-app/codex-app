@@ -157,12 +157,12 @@ async function run() {
     from += 1000
   }
 
-  // Load demo users
+  // Load demo users (with state for same-state preference)
   let demos = []
   from = 0
   while (true) {
     const { data } = await supabase.from('profiles')
-      .select('id, quiz_answers')
+      .select('id, state, quiz_answers')
       .eq('is_demo', true)
       .range(from, from + 999)
     if (!data?.length) break
@@ -211,20 +211,24 @@ async function run() {
     const ps = polStances[pol.id]
     if (!ps) continue
 
-    // Score all demo users and pick the most aligned
+    // Score all demo users — boost same-state voters significantly
     const candidates = []
     for (const demo of demos) {
       if (!demo.quiz_answers || Object.keys(demo.quiz_answers).length === 0) continue
       const key = `${demo.id}:${pol.id}`
       if (existingLikes.has(key)) continue
       const score = alignmentScore(demo.quiz_answers, ps)
-      if (score > 0.35) {
-        candidates.push({ userId: demo.id, score })
-      }
+      if (score < 0.25) continue // very low threshold — centrists can still like
+
+      // Same-state boost: voters are much more likely to like their own reps
+      const sameState = demo.state && pol.state === demo.state
+      const boostedScore = sameState ? score + 0.3 : score
+
+      candidates.push({ userId: demo.id, score: boostedScore })
     }
 
-    // Shuffle candidates with similar scores for variety
-    candidates.sort((a, b) => b.score - a.score + (Math.random() - 0.5) * 0.1)
+    // Sort by boosted score with slight randomization
+    candidates.sort((a, b) => b.score - a.score + (Math.random() - 0.5) * 0.08)
 
     const numToAdd = Math.min(target, candidates.length)
     for (let i = 0; i < numToAdd; i++) {
