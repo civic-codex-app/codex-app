@@ -57,14 +57,15 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
   const stanceArray = entries.map(([slug, stance]) => ({ stance, issues: { slug } }))
   const demAlign = computeAlignment('democrat', stanceArray)
   const repAlign = computeAlignment('republican', stanceArray)
-  const leanLabel = Math.abs(demAlign - repAlign) < 5
+  const leanDiff = demAlign - repAlign
+  const leanLabel = Math.abs(leanDiff) < 15
     ? 'Centrist'
-    : demAlign > repAlign
+    : leanDiff > 0
       ? 'Leans Left'
       : 'Leans Right'
-  const leanColor = Math.abs(demAlign - repAlign) < 5
+  const leanColor = Math.abs(leanDiff) < 15
     ? 'var(--poli-faint)'
-    : demAlign > repAlign
+    : leanDiff > 0
       ? '#60a5fa'
       : '#f87171'
 
