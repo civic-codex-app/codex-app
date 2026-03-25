@@ -56,28 +56,41 @@ export async function GET(request: Request) {
 
   const supabase = createServiceRoleClient()
 
-  const searches = [
-    'Congress legislation policy',
-    'White House president executive',
-    'Senate House representatives bill',
-    'governor state policy',
-  ]
-
   const allArticles: { title: string; description: string; url: string; source: { name: string }; image: string; publishedAt: string }[] = []
   const seenUrls = new Set<string>()
 
-  for (const q of searches) {
-    const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(q)}&lang=en&country=us&max=5&apikey=${GNEWS_KEY}`
-    const res = await fetch(url)
-    if (!res.ok) continue
-    const { articles } = await res.json()
-    if (!articles) continue
+  const addArticles = (articles: typeof allArticles) => {
     for (const a of articles) {
-      if (!seenUrls.has(a.url)) {
+      if (a.url && !seenUrls.has(a.url)) {
         seenUrls.add(a.url)
         allArticles.push(a)
       }
     }
+  }
+
+  // 1. Top headlines — freshest political news
+  for (const topic of ['nation', 'world'] as const) {
+    const url = `https://gnews.io/api/v4/top-headlines?topic=${topic}&lang=en&country=us&max=10&apikey=${GNEWS_KEY}`
+    const res = await fetch(url)
+    if (!res.ok) continue
+    const { articles } = await res.json()
+    if (articles) addArticles(articles)
+  }
+
+  // 2. Targeted searches for political coverage
+  const searches = [
+    'Congress legislation bill vote',
+    'Senate House representatives policy',
+    'governor state law executive order',
+    'Supreme Court ruling decision',
+  ]
+
+  for (const q of searches) {
+    const url = `https://gnews.io/api/v4/search?q=${encodeURIComponent(q)}&lang=en&country=us&max=5&sortby=publishedAt&apikey=${GNEWS_KEY}`
+    const res = await fetch(url)
+    if (!res.ok) continue
+    const { articles } = await res.json()
+    if (articles) addArticles(articles)
   }
 
   if (allArticles.length === 0) {
@@ -91,7 +104,7 @@ export async function GET(request: Request) {
     const isDupe = dedupedArticles.some(existing => {
       const existingWords = existing.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 3)
       const overlap = words.filter(w => existingWords.includes(w)).length
-      return overlap >= Math.min(words.length, existingWords.length) * 0.5
+      return overlap >= Math.min(words.length, existingWords.length) * 0.7
     })
     if (!isDupe) dedupedArticles.push(a)
   }
