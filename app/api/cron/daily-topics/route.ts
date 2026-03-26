@@ -7,40 +7,46 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 const GNEWS_KEY = process.env.GNEWS_API_KEY
 const CRON_SECRET = process.env.CRON_SECRET
 
+// Keywords use word-boundary matching to avoid false positives (e.g. "AI" in "Air Canada")
+// Each keyword can be a phrase (matched as substring) or a single word (matched with boundaries)
 const ISSUE_KEYWORDS: Record<string, string[]> = {
-  'immigration-and-border-security': ['immigration', 'border', 'migrant', 'deportation', 'asylum', 'ICE'],
-  'economy-and-jobs': ['economy', 'jobs', 'unemployment', 'inflation', 'tariff', 'trade', 'GDP', 'recession'],
-  'healthcare-and-medicare': ['healthcare', 'medicare', 'medicaid', 'ACA', 'obamacare', 'drug prices'],
-  'climate-and-environment': ['climate', 'environment', 'EPA', 'emissions', 'renewable', 'fossil fuel'],
-  'gun-policy-and-2nd-amendment': ['gun', 'firearm', 'shooting', 'NRA', 'gun control'],
-  'education-and-student-debt': ['education', 'student loan', 'student debt', 'college', 'school'],
-  'national-defense-and-military': ['military', 'defense', 'pentagon', 'troops', 'NATO'],
-  'foreign-policy-and-diplomacy': ['foreign policy', 'diplomacy', 'sanctions', 'China', 'Russia', 'Ukraine'],
-  'technology-and-ai-regulation': ['AI', 'artificial intelligence', 'tech regulation', 'TikTok', 'data privacy'],
-  'criminal-justice-reform': ['criminal justice', 'police', 'prison', 'crime'],
-  'social-security-and-medicare': ['social security', 'retirement', 'pension'],
-  'infrastructure-and-transportation': ['infrastructure', 'roads', 'bridges', 'transportation'],
-  'housing-and-affordability': ['housing', 'rent', 'mortgage', 'affordable housing'],
-  'energy-policy-and-oil-gas': ['energy', 'oil', 'gas', 'pipeline', 'drilling'],
-  'reproductive-rights': ['abortion', 'reproductive', 'roe', 'planned parenthood', 'contraception'],
-  'lgbtq-rights': ['lgbtq', 'transgender', 'same-sex', 'marriage equality', 'gender identity'],
-  'drug-policy': ['marijuana', 'cannabis', 'drug', 'opioid', 'fentanyl', 'legalization'],
-  'voting-rights': ['voting rights', 'voter', 'election', 'gerrymandering', 'ballot'],
-  'taxes-and-spending': ['tax', 'budget', 'deficit', 'spending', 'debt ceiling'],
-  'labor-and-unions': ['labor', 'union', 'workers', 'strike', 'minimum wage'],
-  'privacy-and-surveillance': ['privacy', 'surveillance', 'FISA', 'NSA', 'data collection'],
-  'trade-and-tariffs': ['tariff', 'trade war', 'import', 'export', 'trade deal'],
+  'immigration-and-border-security': ['immigration', 'border wall', 'border security', 'migrant', 'deportation', 'asylum seeker', 'undocumented', 'illegal immigrant', 'border patrol', 'immigration policy'],
+  'economy-and-jobs': ['economic growth', 'unemployment rate', 'inflation rate', 'job market', 'recession', 'GDP growth', 'federal reserve', 'interest rate', 'economic policy', 'stock market crash'],
+  'healthcare-and-medicare': ['healthcare', 'medicare', 'medicaid', 'affordable care act', 'obamacare', 'drug prices', 'health insurance', 'public health', 'prescription drug'],
+  'climate-and-environment': ['climate change', 'global warming', 'carbon emissions', 'environmental protection', 'renewable energy', 'paris agreement', 'greenhouse gas', 'clean energy'],
+  'gun-policy-and-2nd-amendment': ['gun control', 'gun violence', 'firearm', 'mass shooting', 'second amendment', 'gun legislation', 'background check'],
+  'education-and-student-debt': ['student loan', 'student debt', 'college tuition', 'public education', 'education policy', 'school funding', 'teacher pay'],
+  'national-defense-and-military': ['military spending', 'defense budget', 'pentagon', 'armed forces', 'military base', 'defense secretary', 'national security'],
+  'foreign-policy-and-diplomacy': ['foreign policy', 'diplomatic', 'sanctions against', 'international relations', 'peace deal', 'treaty', 'ambassador', 'state department'],
+  'technology-and-ai-regulation': ['artificial intelligence', 'tech regulation', 'data privacy law', 'social media regulation', 'antitrust tech', 'ai regulation', 'ai policy'],
+  'criminal-justice-reform': ['criminal justice', 'police reform', 'prison reform', 'sentencing reform', 'mass incarceration', 'death penalty'],
+  'social-security-and-medicare': ['social security', 'retirement benefits', 'pension fund', 'social security reform'],
+  'infrastructure-and-transportation': ['infrastructure bill', 'infrastructure spending', 'highway', 'public transit', 'broadband access'],
+  'housing-and-affordability': ['housing crisis', 'affordable housing', 'housing market', 'rent control', 'homelessness', 'mortgage rate'],
+  'energy-policy-and-oil-gas': ['energy policy', 'oil drilling', 'natural gas', 'pipeline project', 'energy independence', 'oil production', 'fracking'],
+  'reproductive-rights': ['abortion', 'reproductive rights', 'roe v wade', 'planned parenthood', 'contraception', 'abortion ban'],
+  'lgbtq-rights': ['lgbtq', 'transgender rights', 'same-sex marriage', 'marriage equality', 'gender identity', 'anti-lgbtq'],
+  'drug-policy': ['marijuana legalization', 'cannabis', 'opioid crisis', 'fentanyl', 'drug enforcement', 'drug trafficking', 'war on drugs'],
+  'voting-rights': ['voting rights', 'voter suppression', 'election integrity', 'gerrymandering', 'ballot access', 'voter registration'],
+  'taxes-and-spending': ['tax reform', 'tax cut', 'tax increase', 'federal budget', 'national debt', 'debt ceiling', 'government spending', 'government shutdown'],
+  'labor-and-unions': ['labor union', 'workers rights', 'strike action', 'minimum wage', 'collective bargaining', 'labor dispute'],
+  'privacy-and-surveillance': ['privacy law', 'government surveillance', 'wiretapping', 'data collection', 'digital privacy'],
+  'trade-and-tariffs': ['trade tariff', 'trade war', 'trade agreement', 'trade deficit', 'import tariff', 'trade policy', 'trade deal'],
 }
 
 function matchIssueSlug(title: string, description: string): string | null {
   const text = `${title} ${description}`.toLowerCase()
   let bestSlug: string | null = null
-  let bestCount = 0
+  let bestScore = 0
   for (const [slug, keywords] of Object.entries(ISSUE_KEYWORDS)) {
-    const count = keywords.filter(kw => text.includes(kw.toLowerCase())).length
-    if (count > bestCount) { bestCount = count; bestSlug = slug }
+    let score = 0
+    for (const kw of keywords) {
+      if (text.includes(kw.toLowerCase())) score++
+    }
+    if (score > bestScore) { bestScore = score; bestSlug = slug }
   }
-  return bestSlug
+  // Require at least 2 keyword matches to assign a category — avoids false positives
+  return bestScore >= 2 ? bestSlug : null
 }
 
 export async function GET(request: Request) {
