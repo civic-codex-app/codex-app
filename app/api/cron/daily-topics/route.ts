@@ -10,28 +10,28 @@ const CRON_SECRET = process.env.CRON_SECRET
 // Keywords use word-boundary matching to avoid false positives (e.g. "AI" in "Air Canada")
 // Each keyword can be a phrase (matched as substring) or a single word (matched with boundaries)
 const ISSUE_KEYWORDS: Record<string, string[]> = {
-  'immigration-and-border-security': ['immigration', 'border wall', 'border security', 'migrant', 'deportation', 'asylum seeker', 'undocumented', 'illegal immigrant', 'border patrol', 'immigration policy'],
-  'economy-and-jobs': ['economic growth', 'unemployment rate', 'inflation rate', 'job market', 'recession', 'GDP growth', 'federal reserve', 'interest rate', 'economic policy', 'stock market crash'],
-  'healthcare-and-medicare': ['healthcare', 'medicare', 'medicaid', 'affordable care act', 'obamacare', 'drug prices', 'health insurance', 'public health', 'prescription drug'],
-  'climate-and-environment': ['climate change', 'global warming', 'carbon emissions', 'environmental protection', 'renewable energy', 'paris agreement', 'greenhouse gas', 'clean energy'],
-  'gun-policy-and-2nd-amendment': ['gun control', 'gun violence', 'firearm', 'mass shooting', 'second amendment', 'gun legislation', 'background check'],
-  'education-and-student-debt': ['student loan', 'student debt', 'college tuition', 'public education', 'education policy', 'school funding', 'teacher pay'],
-  'national-defense-and-military': ['military spending', 'defense budget', 'pentagon', 'armed forces', 'military base', 'defense secretary', 'national security'],
-  'foreign-policy-and-diplomacy': ['foreign policy', 'diplomatic', 'sanctions against', 'international relations', 'peace deal', 'treaty', 'ambassador', 'state department'],
-  'technology-and-ai-regulation': ['artificial intelligence', 'tech regulation', 'data privacy law', 'social media regulation', 'antitrust tech', 'ai regulation', 'ai policy'],
+  'immigration-and-border-security': ['immigration', 'deportation', 'undocumented', 'border wall', 'border security', 'border patrol', 'asylum seeker', 'illegal immigrant', 'immigration policy', 'migrant crisis'],
+  'economy-and-jobs': ['recession', 'inflation', 'unemployment', 'economic growth', 'job market', 'federal reserve', 'interest rate', 'economic policy', 'stock market'],
+  'healthcare-and-medicare': ['healthcare', 'medicare', 'medicaid', 'obamacare', 'affordable care act', 'drug prices', 'health insurance', 'prescription drug'],
+  'climate-and-environment': ['climate change', 'global warming', 'carbon emissions', 'environmental protection', 'renewable energy', 'greenhouse gas', 'clean energy', 'paris agreement'],
+  'gun-policy-and-2nd-amendment': ['gun control', 'gun violence', 'firearm', 'mass shooting', 'second amendment', 'gun legislation'],
+  'education-and-student-debt': ['student loan', 'student debt', 'college tuition', 'education policy', 'school funding', 'teacher pay'],
+  'national-defense-and-military': ['pentagon', 'military spending', 'defense budget', 'armed forces', 'defense secretary', 'national security', 'troops deployed'],
+  'foreign-policy-and-diplomacy': ['foreign policy', 'diplomatic', 'sanctions', 'ceasefire', 'peace deal', 'state department', 'ambassador', 'nato'],
+  'technology-and-ai-regulation': ['artificial intelligence', 'tech regulation', 'social media regulation', 'ai regulation', 'ai policy', 'data privacy law'],
   'criminal-justice-reform': ['criminal justice', 'police reform', 'prison reform', 'sentencing reform', 'mass incarceration', 'death penalty'],
-  'social-security-and-medicare': ['social security', 'retirement benefits', 'pension fund', 'social security reform'],
-  'infrastructure-and-transportation': ['infrastructure bill', 'infrastructure spending', 'highway', 'public transit', 'broadband access'],
+  'social-security-and-medicare': ['social security', 'retirement benefits', 'social security reform'],
+  'infrastructure-and-transportation': ['infrastructure bill', 'infrastructure spending', 'public transit', 'broadband access'],
   'housing-and-affordability': ['housing crisis', 'affordable housing', 'housing market', 'rent control', 'homelessness', 'mortgage rate'],
-  'energy-policy-and-oil-gas': ['energy policy', 'oil drilling', 'natural gas', 'pipeline project', 'energy independence', 'oil production', 'fracking'],
+  'energy-policy-and-oil-gas': ['oil drilling', 'natural gas', 'pipeline project', 'energy independence', 'oil production', 'fracking', 'energy policy'],
   'reproductive-rights': ['abortion', 'reproductive rights', 'roe v wade', 'planned parenthood', 'contraception', 'abortion ban'],
-  'lgbtq-rights': ['lgbtq', 'transgender rights', 'same-sex marriage', 'marriage equality', 'gender identity', 'anti-lgbtq'],
-  'drug-policy': ['marijuana legalization', 'cannabis', 'opioid crisis', 'fentanyl', 'drug enforcement', 'drug trafficking', 'war on drugs'],
+  'lgbtq-rights': ['lgbtq', 'transgender rights', 'same-sex marriage', 'marriage equality', 'gender identity'],
+  'drug-policy': ['marijuana legalization', 'cannabis', 'opioid crisis', 'fentanyl', 'drug trafficking', 'drug enforcement'],
   'voting-rights': ['voting rights', 'voter suppression', 'election integrity', 'gerrymandering', 'ballot access', 'voter registration'],
-  'taxes-and-spending': ['tax reform', 'tax cut', 'tax increase', 'federal budget', 'national debt', 'debt ceiling', 'government spending', 'government shutdown'],
-  'labor-and-unions': ['labor union', 'workers rights', 'strike action', 'minimum wage', 'collective bargaining', 'labor dispute'],
-  'privacy-and-surveillance': ['privacy law', 'government surveillance', 'wiretapping', 'data collection', 'digital privacy'],
-  'trade-and-tariffs': ['trade tariff', 'trade war', 'trade agreement', 'trade deficit', 'import tariff', 'trade policy', 'trade deal'],
+  'taxes-and-spending': ['tax reform', 'tax cut', 'tax increase', 'federal budget', 'national debt', 'debt ceiling', 'government shutdown'],
+  'labor-and-unions': ['labor union', 'minimum wage', 'workers rights', 'collective bargaining', 'labor dispute'],
+  'privacy-and-surveillance': ['government surveillance', 'wiretapping', 'digital privacy', 'privacy law'],
+  'trade-and-tariffs': ['tariff', 'trade war', 'trade agreement', 'trade deficit', 'trade policy', 'trade deal'],
 }
 
 function matchIssueSlug(title: string, description: string): string | null {
@@ -45,8 +45,7 @@ function matchIssueSlug(title: string, description: string): string | null {
     }
     if (score > bestScore) { bestScore = score; bestSlug = slug }
   }
-  // Require at least 2 keyword matches to assign a category — avoids false positives
-  return bestScore >= 2 ? bestSlug : null
+  return bestScore >= 1 ? bestSlug : null
 }
 
 export async function GET(request: Request) {
