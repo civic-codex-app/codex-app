@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
-// Vercel Cron: runs daily at 12pm UTC (7am CT)
+// Vercel Cron: runs every hour
 // Configured in vercel.json
 
 const GNEWS_KEY = process.env.GNEWS_API_KEY
@@ -139,8 +139,8 @@ export async function GET(request: Request) {
   const { data: issues } = await supabase.from('issues').select('id, slug')
   const issueMap = new Map((issues ?? []).map(i => [i.slug, i.id]))
 
-  // Deactivate old topics (48h, non-pinned)
-  const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
+  // Deactivate old topics (24h, non-pinned)
+  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
   await supabase
     .from('daily_topics')
     .update({ is_active: false })

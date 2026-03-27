@@ -11,7 +11,7 @@ import { FinanceHighlightCard } from '@/components/feed/finance-highlight-card'
 import { getCachedNews } from '@/lib/utils/news'
 import Link from 'next/link'
 
-export const revalidate = 300 // 5 minutes
+export const revalidate = 120 // 2 minutes
 
 export const metadata = {
   title: 'Activity Feed | Poli',

@@ -3,7 +3,7 @@
   "crons": [
     {
       "path": "/api/cron/daily-topics",
-      "schedule": "0 12 * * *"
+      "schedule": "0 * * * *"
     },
     {
       "path": "/api/cron/weekly-maintenance",
