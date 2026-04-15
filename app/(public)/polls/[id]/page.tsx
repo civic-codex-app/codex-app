@@ -24,9 +24,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const supabase = createServiceRoleClient()
   const { data } = await supabase.from('polls').select('title').eq('id', id).single()
   if (!data) return { title: 'Not Found | Poli' }
+  const description = `Vote on: ${data.title}`
+  const ogUrl = `/api/og?title=${encodeURIComponent(data.title)}&subtitle=${encodeURIComponent('Community Poll')}&type=default`
   return {
     title: `${data.title} | Poli Polls`,
-    description: `Vote on: ${data.title}`,
+    description,
+    alternates: { canonical: `https://getpoli.app/polls/${id}` },
+    openGraph: {
+      title: data.title,
+      description,
+      url: `https://getpoli.app/polls/${id}`,
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+    },
+    twitter: { card: 'summary_large_image', title: data.title, images: [ogUrl] },
   }
 }
 

@@ -37,18 +37,41 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const supabase = createServiceRoleClient()
 
   // Check if it's a state election first
-  const { data: election } = await supabase.from('elections').select('name').eq('slug', slug).single()
+  const { data: election } = await supabase.from('elections').select('name, description, election_date').eq('slug', slug).single()
   if (election) {
-    return { title: `${election.name} | Poli` }
+    const description = election.description?.slice(0, 160) || `Track races, candidates, and results for ${election.name}`
+    const ogUrl = `/api/og?title=${encodeURIComponent(election.name)}&subtitle=${encodeURIComponent('Election Races')}&type=election`
+    return {
+      title: `${election.name} | Poli`,
+      description,
+      alternates: { canonical: `https://getpoli.app/elections/${slug}` },
+      openGraph: {
+        title: election.name,
+        description,
+        url: `https://getpoli.app/elections/${slug}`,
+        images: [{ url: ogUrl, width: 1200, height: 630 }],
+      },
+      twitter: { card: 'summary_large_image', title: election.name, images: [ogUrl] },
+    }
   }
 
   // Otherwise it's a race slug
-  const { data } = await supabase.from('races').select('name, state').eq('slug', slug).single()
+  const { data } = await supabase.from('races').select('name, state, chamber').eq('slug', slug).single()
   if (!data) return { title: 'Not Found | Poli' }
 
+  const description = `Candidates, stances, and polls for ${data.name} in ${data.state}`
+  const ogUrl = `/api/og?title=${encodeURIComponent(data.name)}&subtitle=${encodeURIComponent(data.state)}&type=election`
   return {
     title: `${data.name} | Poli Elections`,
-    openGraph: { title: data.name, description: `${data.name} - ${data.state}` },
+    description,
+    alternates: { canonical: `https://getpoli.app/elections/${slug}` },
+    openGraph: {
+      title: data.name,
+      description,
+      url: `https://getpoli.app/elections/${slug}`,
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+    },
+    twitter: { card: 'summary_large_image', title: data.name, images: [ogUrl] },
   }
 }
 

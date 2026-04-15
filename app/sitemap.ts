@@ -24,6 +24,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/privacy`, changeFrequency: 'monthly', priority: 0.2 },
     { url: `${baseUrl}/terms`, changeFrequency: 'monthly', priority: 0.2 },
     { url: `${baseUrl}/data-sources`, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/community`, changeFrequency: 'daily', priority: 0.5 },
+    { url: `${baseUrl}/ballot`, changeFrequency: 'weekly', priority: 0.5 },
+    { url: `${baseUrl}/insights/money-map`, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/issues/map`, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/elections/countdown`, changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${baseUrl}/compare/users`, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/contribute/tip`, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${baseUrl}/contribute/suggest`, changeFrequency: 'monthly', priority: 0.3 },
   ]
 
   // Politicians

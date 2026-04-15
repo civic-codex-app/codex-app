@@ -58,11 +58,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${data.number}: ${data.title} | Poli`,
     description,
+    alternates: { canonical: `https://getpoli.app/bills/${id}` },
     openGraph: {
       title: `${data.number}: ${data.title}`,
       description,
       type: 'article',
-      url: `https://getpoli.com/bills/${id}`,
+      url: `https://getpoli.app/bills/${id}`,
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {

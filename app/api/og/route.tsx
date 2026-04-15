@@ -164,7 +164,7 @@ export async function GET(req: NextRequest) {
             color: '#4B5563',
           }}
         >
-          getpoli.com
+          getpoli.app
         </div>
       </div>
     ),

@@ -34,10 +34,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${data.name} | Poli Issues`,
     description,
+    alternates: { canonical: `https://getpoli.app/issues/${slug}` },
     openGraph: {
       title: `${data.name} - Political Stances`,
       description,
-      url: `https://getpoli.com/issues/${slug}`,
+      url: `https://getpoli.app/issues/${slug}`,
       images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
     twitter: {
@@ -300,9 +301,9 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     '@type': 'WebPage',
     name: `${issue.name} - Political Stances`,
     description: issue.description || `Track where U.S. politicians stand on ${issue.name}`,
-    url: `https://getpoli.com/issues/${slug}`,
+    url: `https://getpoli.app/issues/${slug}`,
     about: { '@type': 'Thing', name: issue.name, description: issue.description },
-    isPartOf: { '@type': 'WebSite', name: 'Poli', url: 'https://getpoli.com' },
+    isPartOf: { '@type': 'WebSite', name: 'Poli', url: 'https://getpoli.app' },
   }
 
   const bucketOrder = ['supports', 'mixed', 'opposes', 'unknown'] as const

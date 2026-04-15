@@ -23,13 +23,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const name = STATE_NAMES[abbr]
   if (!name) return { title: 'Not Found | Poli' }
 
+  const description = `Elected officials, campaign finance, and upcoming races in ${name}.`
+  const ogUrl = `/api/og?title=${encodeURIComponent(name)}&subtitle=${encodeURIComponent('Elected Officials & Races')}&type=default`
   return {
-    title: `${name} | Poli`,
-    description: `Elected officials, campaign finance, and upcoming races in ${name}.`,
+    title: `${name} Politicians & Elections | Poli`,
+    description,
+    alternates: { canonical: `https://getpoli.app/states/${state}` },
     openGraph: {
       title: `${name} | Poli`,
-      description: `Elected officials, campaign finance, and upcoming races in ${name}.`,
+      description,
+      url: `https://getpoli.app/states/${state}`,
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
     },
+    twitter: { card: 'summary_large_image', title: `${name} | Poli`, images: [ogUrl] },
   }
 }
 
