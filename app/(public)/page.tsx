@@ -180,29 +180,44 @@ export default async function HomePage() {
           </div>
         )}
 
-        {/* Party stats — 3 colored cards */}
+        {/* Party stats — 3 colored cards, each filtering the directory by party */}
         <div className="mb-12 grid animate-fade-up grid-cols-3 gap-3">
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('democrat')}12` }}>
+          <Link
+            href="/directory?party=democrat"
+            aria-label={`Browse ${dem.toLocaleString()} Democrats`}
+            className="rounded-lg p-4 text-center no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+            style={{ backgroundColor: `${partyColor('democrat')}12` }}
+          >
             <div className="flex items-center justify-center gap-2">
               <PartyIcon party="democrat" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('democrat') }}>{dem.toLocaleString()}</span>
             </div>
             <div className="mt-1 text-[12px] font-medium text-[var(--poli-sub)]">Democrats</div>
-          </div>
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('republican')}12` }}>
+          </Link>
+          <Link
+            href="/directory?party=republican"
+            aria-label={`Browse ${gop.toLocaleString()} Republicans`}
+            className="rounded-lg p-4 text-center no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+            style={{ backgroundColor: `${partyColor('republican')}12` }}
+          >
             <div className="flex items-center justify-center gap-2">
               <PartyIcon party="republican" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('republican') }}>{gop.toLocaleString()}</span>
             </div>
             <div className="mt-1 text-[12px] font-medium text-[var(--poli-sub)]">Republicans</div>
-          </div>
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: `${partyColor('independent')}12` }}>
+          </Link>
+          <Link
+            href="/directory?party=independent"
+            aria-label={`Browse ${ind.toLocaleString()} Independents`}
+            className="rounded-lg p-4 text-center no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+            style={{ backgroundColor: `${partyColor('independent')}12` }}
+          >
             <div className="flex items-center justify-center gap-2">
               <PartyIcon party="independent" size={16} />
               <span className="text-2xl font-bold" style={{ color: partyColor('independent') }}>{ind.toLocaleString()}</span>
             </div>
             <div className="mt-1 text-[12px] font-medium text-[var(--poli-sub)]">Independents</div>
-          </div>
+          </Link>
         </div>
 
         {/* Quick Actions — above the fold */}
