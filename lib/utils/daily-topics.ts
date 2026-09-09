@@ -14,8 +14,10 @@ import { parseRssItems } from './news'
  *      only source -- publisher RSS needs no key and no quota, so a missing,
  *      rejected, or quota-exhausted key degrades quality instead of freezing
  *      the homepage.
- *   2. GNews free tier allows 100 requests/day. This module costs 6 per run, so
- *      the cron must stay at or below every-3-hours (48/day). See vercel.json.
+ *   2. This module costs 6 GNews requests per run. The GNews free tier allows
+ *      100/day, but the binding constraint is Vercel's Hobby plan, which only
+ *      permits a cron to fire once per day — an hourly schedule made every
+ *      deployment fail outright. See vercel.json and the cron route.
  */
 
 /** Politics sections from outlets spread across the spectrum. No key required. */
