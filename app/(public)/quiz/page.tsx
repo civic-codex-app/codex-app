@@ -6,7 +6,10 @@ import { QuizForm } from '@/components/match/quiz-form'
 
 export const dynamic = 'force-dynamic'
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://getpoli.app'
+// Trailing slash stripped: the deployed NEXT_PUBLIC_APP_URL ends in "/", which
+// turned the concatenations below into "getpoli.app//api/og/quiz" and broke the
+// share-card image that social platforms fetch.
+const BASE_URL = (process.env.NEXT_PUBLIC_APP_URL || 'https://getpoli.app').replace(/\/+$/, '')
 
 interface PageProps {
   searchParams: Promise<{ result?: string; score?: string }>
