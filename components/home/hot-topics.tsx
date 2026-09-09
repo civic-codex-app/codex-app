@@ -82,10 +82,14 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
           return (
             <div
               key={topic.id}
-              className="group rounded-xl border border-[var(--poli-border)] p-4 transition-all hover:border-[var(--poli-text)]/30"
+              // min-w-0 is load-bearing: a grid item's automatic minimum size is
+              // its min-content width, so one long unbreakable token in a
+              // headline or summary would otherwise widen the track past the
+              // viewport and scroll the whole page sideways on mobile.
+              className="group min-w-0 rounded-xl border border-[var(--poli-border)] p-4 transition-all hover:border-[var(--poli-text)]/30"
             >
               {/* Issue tag + time */}
-              <div className="mb-2 flex items-center gap-2">
+              <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1">
                 {issue && (
                   <Link
                     href={`/issues/${issue.slug}`}
@@ -102,21 +106,21 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
                 href={topic.source_url ?? '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mb-1 block text-[14px] font-semibold leading-snug text-[var(--poli-text)] no-underline hover:underline"
+                className="mb-1 block break-words text-[14px] font-semibold leading-snug text-[var(--poli-text)] no-underline hover:underline"
               >
                 {topic.title}
               </a>
 
               {/* Summary excerpt */}
               {topic.summary && (
-                <p className="mb-1.5 line-clamp-2 text-[12px] leading-relaxed text-[var(--poli-sub)]">
+                <p className="mb-1.5 line-clamp-2 break-words text-[12px] leading-relaxed text-[var(--poli-sub)]">
                   {topic.summary}
                 </p>
               )}
 
               {/* Source */}
               {topic.source_name && (
-                <div className="text-[11px] text-[var(--poli-faint)]">
+                <div className="break-words text-[11px] text-[var(--poli-faint)]">
                   {topic.source_name}
                 </div>
               )}
