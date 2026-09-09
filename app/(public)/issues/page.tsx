@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -11,6 +12,30 @@ import { IssueSortSelect } from '@/components/filters/issue-sort-select'
 import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 
 export const revalidate = 3600 // 1 hour
+
+/**
+ * Per-issue stance tallies, aggregated by Postgres.
+ *
+ * politician_issues is ~189k rows, so neither counting in the app (≈189 paged
+ * requests) nor 3 count queries per issue (66 round-trips) is viable. The
+ * issue_stance_counts view (supabase/025_issue_stance_counts.sql) does the
+ * GROUP BY and returns ~200 rows in a single request.
+ */
+const getStanceCounts = unstable_cache(
+  async (): Promise<Array<{ issue_id: string; stance: string; n: number }>> => {
+    const supabase = createServiceRoleClient()
+    const { data, error } = await supabase
+      .from('issue_stance_counts')
+      .select('issue_id, stance, n')
+    if (error) {
+      console.error('[issues] issue_stance_counts unavailable:', error.message)
+      return []
+    }
+    return (data ?? []) as Array<{ issue_id: string; stance: string; n: number }>
+  },
+  ['issues-stance-counts'],
+  { revalidate: 3600, tags: ['stances'] }
+)
 
 export const metadata = {
   title: 'Issues | Poli',
@@ -59,34 +84,30 @@ export default async function IssuesPage({ searchParams }: PageProps) {
 
   const issueIds = issues.map(i => i.id)
 
-  // Lightweight count queries — 3 per issue, all in parallel (66 head-only queries)
-  const supportArr = ['strongly_supports', 'supports', 'leans_support']
-  const opposeArr = ['strongly_opposes', 'opposes', 'leans_oppose']
-
+  // Postgres does the counting (see getStanceCounts) — one request returning
+  // ~200 grouped rows, instead of 66 count round-trips (5.4s) or paginating
+  // 189k rows into the app (>20s).
   type IssueAgg = { total: number; supports: number; opposes: number; mixed: number; demTotal: number; demSupports: number; demOpposes: number; gopTotal: number; gopSupports: number; gopOpposes: number }
   const issueStats = new Map<string, IssueAgg>()
   const issueTotalCounts = new Map<string, number>()
 
-  // Run all count queries in parallel — head:true means no data transferred
-  const countResults = await Promise.all(issueIds.map(async (id) => {
-    const [totalR, supR, oppR] = await Promise.all([
-      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', id),
-      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', id).in('stance', supportArr),
-      supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', id).in('stance', opposeArr),
-    ])
-    const total = totalR.count ?? 0
-    const supports = supR.count ?? 0
-    const opposes = oppR.count ?? 0
-    return { id, total, supports, opposes, mixed: total - supports - opposes }
-  }))
-
-  for (const r of countResults) {
-    issueStats.set(r.id, {
-      ...r,
+  for (const id of issueIds) {
+    issueStats.set(id, {
+      total: 0, supports: 0, opposes: 0, mixed: 0,
       demTotal: 0, demSupports: 0, demOpposes: 0,
       gopTotal: 0, gopSupports: 0, gopOpposes: 0,
     })
-    issueTotalCounts.set(r.id, r.total)
+  }
+  for (const row of await getStanceCounts()) {
+    const agg = issueStats.get(row.issue_id)
+    if (!agg) continue
+    agg.total += row.n
+    if (supportStances.has(row.stance)) agg.supports += row.n
+    else if (opposeStances.has(row.stance)) agg.opposes += row.n
+  }
+  for (const [id, agg] of issueStats) {
+    agg.mixed = agg.total - agg.supports - agg.opposes
+    issueTotalCounts.set(id, agg.total)
   }
 
   // Sort

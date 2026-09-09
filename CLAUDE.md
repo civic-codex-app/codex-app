@@ -85,15 +85,70 @@ Central stance definitions used everywhere:
 ### `lib/constants/chambers.ts`
 - `CHAMBER_LABELS` — display names for chamber types
 
-## Data Status
-- **271 politicians** in DB (100 Senators, ~100 House members, 50 Governors, Cabinet/Presidential)
-- **3,794 stances** across 14 issues — migrated to 7-point intensity scale
-- **276 election results** (historical)
-- **206 campaign finance records** (real FEC data)
-- **Social media links** for 271 politicians (real Twitter/Facebook/Instagram/YouTube)
-- **2026 Midterms:** 33 Senate + 435 House + 35 Governor + 83 local = **586 total races**
-- **Candidates:** 146 (Senate/Gov) + 171 (local) = **317 candidates** seeded
-- **Local races:** 10 mayoral, 18 county, 20 state senate, 20 state house, 15 school board
+## Data Status (verified 2026-09-09)
+- **8,584 politicians** (4,610 state house, 1,982 state senate, 440 US House, 100 Senate, 55 governor, 383 other local, 376 county, 260 city council, 210 mayor, 148 school board, 20 presidential)
+- **668 races** for the 2026 midterms across 52 election records (all dated 2026-11-03)
+- **531 candidates** — 526 `running`, 5 `withdrawn`
+- **1,893 campaign finance rows** — all real FEC API data, cycles 2018/2020/2022/2024/2026
+- **175 bills** — all real Congress.gov data for the 119th Congress
+- **0 voting records** — see Data Integrity below
+- **271 election results** (historical, unverified)
+- **22 issues** and **~188,848 `politician_issues` rows** (8,584 politicians × 22 issues)
+
+> The figures "3,794 stances across 14 issues" appeared here for a long time and
+> were stale by ~50x. Two live bugs came from trusting them: `/insights` sized its
+> fetch batches as `70 × 14 = 980` and so silently lost 33.5% of all stances to
+> Supabase's 1,000-row cap, and an attempt to count stances in the app timed out
+> at 20s+. **Re-count before sizing any query against these numbers.**
+
+## Data Integrity — READ BEFORE SEEDING ANYTHING
+
+An audit on 2026-09-09 found that large parts of the original seed were
+**fabricated data presented as fact**. This is a voter-facing civic site; that is
+the most serious class of bug here, worse than missing or stale data.
+
+What was found and done:
+- **bills** — ~73% of 118 rows paired a real bill number with the wrong title
+  (`S.1` stored as "For the People Act of 2023" when S.1 is the Freedom to Vote
+  Act; `S.14` stored as the "Laken Riley Act" when S.14 does not exist and the
+  real one is S.5). Replaced with 175 real bills via
+  `scripts/rebuild-bills-from-congress.mjs`.
+- **voting_records** — all 3,838 rows joined to those bad bills and referenced
+  only 49 distinct bills across 43 dates, so real members were shown voting on
+  misidentified legislation. Deleted. Not rebuilt: Congress.gov exposes House
+  roll calls only (beta `/house-vote`), and Senate roll calls exist solely as XML
+  on senate.gov, so a single-source rebuild would look complete while omitting
+  the Senate.
+- **campaign_finance** — 199 rows sourced `"FEC/OpenSecrets (approximate)"` were
+  invented estimates, clustering at 0.58–0.73x of real filings (Cruz $73.6M
+  stored vs $107.1M actual). Replaced with real FEC data; the 62 that FEC cannot
+  verify (mostly governors, who file with state agencies) were deleted.
+- **candidates** — the 2026 roster was machine-generated assuming *every
+  incumbent seeks reelection*. False for retirements, members seeking another
+  office, and primary losers. Five senators who announced 2025 retirements
+  (McConnell, Durbin, Smith, Peters, Shaheen) were listed as active candidates in
+  their own open-seat races; corrected to `withdrawn`.
+
+Rules going forward:
+1. Never seed politician, bill, vote, or finance data from model recollection.
+   Use the FEC and Congress.gov APIs, or leave the row absent.
+2. Stamp every imported row with its real `source` and the upstream coverage
+   date, so vintage is auditable (see how the FEC importer builds `source`).
+3. `candidates.is_verified` is true **only** for rows confirmed against an
+   authoritative source. Seed-generated rows stay false.
+4. Missing data beats invented data. An empty section is honest; a fabricated
+   one is not.
+
+### Still unverified
+- 526 `running` candidates are seed-generated (`is_verified = false`). 2026
+  primary outcomes are unconfirmed — no free API covers them; needs state SoS,
+  AP, or Ballotpedia.
+- 196 races have no `incumbent_id` (mostly local: state house/senate, mayor,
+  county, school board) and 172 races have zero candidates.
+- 271 `election_results` rows are 270 `won` / 1 `lost` with every vote total
+  populated — implausible for real historical data, so treat as suspect.
+- The retirement list in `scripts/destale-2026.mjs` is hand-verified but **not
+  exhaustive**.
 
 ## SQL Migrations (in order)
 Run in Supabase SQL Editor. Each is idempotent:
@@ -107,6 +162,21 @@ Run in Supabase SQL Editor. Each is idempotent:
 8. `008_stance_verified.sql` — is_verified flag on politician_issues
 9. `009_stance_intensity.sql` — expand stance_type to 7-point scale
 10. `010_local_chambers.sql` — add mayor, city_council, state_senate, state_house, county, school_board, other_local
+11. …`011`–`023` — incremental features (profile fields, annotations, analytics, quizzes, site settings, indexes, submissions)
+12. `024_candidate_verification.sql` — `candidates.is_verified`/`last_checked`, normalizes off-vocabulary `status`, and adds a CHECK locking it to `running|withdrawn|won|lost`
+
+## Data Refresh Scripts
+All are dry-run by default; pass `--apply` to write. Prefix with
+`export $(grep -v '^#' .env.local | xargs)`.
+
+| Script | Purpose |
+|---|---|
+| `scripts/destale-2026.mjs` | Derivable-only fixes: race incumbents via `(state, chamber, district)`, candidate→politician links, expired polls, status vocabulary, known retirements |
+| `scripts/import-fec-finance.mjs` | Real FEC finance. `--cycle=2026 --office=S,H,P`. Caches responses to `.fec-cache/` |
+| `scripts/rebuild-bills-from-congress.mjs` | Real 119th-Congress bills from Congress.gov (`--scan`, `--active`) |
+
+Required keys in `.env.local`: `FEC_API_KEY` ([api.data.gov/signup](https://api.data.gov/signup/), 60/hr)
+and `CONGRESS_API_KEY` ([api.congress.gov/sign-up](https://api.congress.gov/sign-up/), 20,000/hr).
 
 ## Key Pages
 | Route | Description |

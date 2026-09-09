@@ -24,20 +24,17 @@ export interface NewsArticle {
 /*  Simple RSS XML parser (no dependency needed)                       */
 /* ------------------------------------------------------------------ */
 
-function parseRssItems(xml: string): Array<{
+export interface RssItem {
   title: string
   link: string
   pubDate: string
   source: string
   sourceUrl: string
-}> {
-  const items: Array<{
-    title: string
-    link: string
-    pubDate: string
-    source: string
-    sourceUrl: string
-  }> = []
+  description: string
+}
+
+export function parseRssItems(xml: string): RssItem[] {
+  const items: RssItem[] = []
 
   // Match all <item>...</item> blocks
   const itemRegex = /<item>([\s\S]*?)<\/item>/g
@@ -52,9 +49,19 @@ function parseRssItems(xml: string): Array<{
     const sourceMatch = block.match(/<source\s+url="([^"]*)"[^>]*>([\s\S]*?)<\/source>/)
     const source = sourceMatch?.[2]?.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').trim() ?? ''
     const sourceUrl = sourceMatch?.[1] ?? ''
+    const description = block
+      .match(/<description>([\s\S]*?)<\/description>/)?.[1]
+      ?.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&#8217;|&rsquo;/g, '’')
+      .replace(/&quot;/g, '"')
+      .replace(/\s+/g, ' ')
+      .trim() ?? ''
 
     if (title && link) {
-      items.push({ title, link, pubDate, source, sourceUrl })
+      items.push({ title, link, pubDate, source, sourceUrl, description })
     }
   }
 

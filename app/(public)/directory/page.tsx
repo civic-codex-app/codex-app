@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { unstable_cache } from 'next/cache'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
@@ -25,33 +26,51 @@ interface PageProps {
 
 const PAGE_SIZE = 50
 
+interface FacetRow {
+  party: string | null
+  chamber: string | null
+  state: string | null
+}
+
+/**
+ * Every politician's facet dimensions, fetched once and cached. The roster
+ * changes rarely, so this survives across requests and page-number changes
+ * (which are what made the old per-request refetching so expensive).
+ */
+const getFacetRows = unstable_cache(
+  async (): Promise<FacetRow[]> => {
+    const supabase = createServiceRoleClient()
+    const all: FacetRow[] = []
+    let from = 0
+    for (;;) {
+      const { data } = await supabase
+        .from('politicians')
+        .select('party, chamber, state')
+        .range(from, from + 999)
+      if (!data || data.length === 0) break
+      all.push(...(data as FacetRow[]))
+      if (data.length < 1000) break
+      from += 1000
+    }
+    return all
+  },
+  ['directory-facet-rows'],
+  { revalidate: 1800, tags: ['politicians'] }
+)
+
 export default async function DirectoryPage({ searchParams }: PageProps) {
   const params = await searchParams
   const supabase = createServiceRoleClient()
   const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1)
   const offset = (page - 1) * PAGE_SIZE
 
-  // Fetch ALL politicians (lightweight: just filter fields) to compute facet counts
-  // Then fetch the paginated results for display
-  const [facetResult, pageResult] = await Promise.all([
-    (async () => {
-      const all: Array<{ party: string; chamber: string; state: string }> = []
-      let from = 0
-      while (true) {
-        let q = supabase.from('politicians').select('party, chamber, state')
-        // Apply current filters for cascading counts
-        if (params.state) q = q.eq('state', params.state)
-        if (params.party) q = q.eq('party', params.party)
-        if (params.chamber) q = q.eq('chamber', params.chamber)
-        q = q.range(from, from + 999)
-        const { data } = await q
-        if (!data || data.length === 0) break
-        all.push(...data)
-        if (data.length < 1000) break
-        from += 1000
-      }
-      return all
-    })(),
+  // One cached projection of every politician's (party, chamber, state) serves all
+  // three cascading facet counts. This page previously ran FOUR full-table
+  // pagination loops over 8,584 rows (~36 round-trips, ~34k rows) to produce three
+  // small tallies, and the first loop's result was never even read — that was the
+  // 9.5s TTFB. Counting in memory over one projection is the same answer.
+  const [facetRows, pageResult] = await Promise.all([
+    getFacetRows(),
     (async () => {
       let query = supabase
         .from('politicians')
@@ -64,67 +83,27 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
     })(),
   ])
 
-  // Also fetch unfiltered facets for dimensions NOT currently filtered
-  // This lets us show counts for party options even when chamber is selected, etc.
-  const [partyFacet, chamberFacet, stateFacet] = await Promise.all([
-    // Party counts: apply chamber + state filters, but NOT party
-    (async () => {
-      const all: Array<{ party: string }> = []
-      let from = 0
-      while (true) {
-        let q = supabase.from('politicians').select('party')
-        if (params.state) q = q.eq('state', params.state)
-        if (params.chamber) q = q.eq('chamber', params.chamber)
-        q = q.range(from, from + 999)
-        const { data } = await q
-        if (!data || data.length === 0) break
-        all.push(...data)
-        if (data.length < 1000) break
-        from += 1000
-      }
-      const counts: Record<string, number> = {}
-      for (const p of all) counts[p.party] = (counts[p.party] || 0) + 1
-      return counts
-    })(),
-    // Chamber counts: apply party + state filters, but NOT chamber
-    (async () => {
-      const all: Array<{ chamber: string }> = []
-      let from = 0
-      while (true) {
-        let q = supabase.from('politicians').select('chamber')
-        if (params.state) q = q.eq('state', params.state)
-        if (params.party) q = q.eq('party', params.party)
-        q = q.range(from, from + 999)
-        const { data } = await q
-        if (!data || data.length === 0) break
-        all.push(...data)
-        if (data.length < 1000) break
-        from += 1000
-      }
-      const counts: Record<string, number> = {}
-      for (const c of all) counts[c.chamber] = (counts[c.chamber] || 0) + 1
-      return counts
-    })(),
-    // State counts: apply party + chamber filters, but NOT state
-    (async () => {
-      const all: Array<{ state: string }> = []
-      let from = 0
-      while (true) {
-        let q = supabase.from('politicians').select('state')
-        if (params.party) q = q.eq('party', params.party)
-        if (params.chamber) q = q.eq('chamber', params.chamber)
-        q = q.range(from, from + 999)
-        const { data } = await q
-        if (!data || data.length === 0) break
-        all.push(...data)
-        if (data.length < 1000) break
-        from += 1000
-      }
-      const counts: Record<string, number> = {}
-      for (const s of all) if (s.state) counts[s.state] = (counts[s.state] || 0) + 1
-      return counts
-    })(),
-  ])
+  // Cascading semantics preserved exactly: each facet applies the OTHER two
+  // filters but not its own, so selecting a party still shows sibling counts.
+  const tally = (
+    key: 'party' | 'chamber' | 'state',
+    keep: (r: FacetRow) => boolean
+  ): Record<string, number> => {
+    const counts: Record<string, number> = {}
+    for (const r of facetRows) {
+      const v = r[key]
+      if (!v || !keep(r)) continue
+      counts[v] = (counts[v] || 0) + 1
+    }
+    return counts
+  }
+  const matchState = (r: FacetRow) => !params.state || r.state === params.state
+  const matchParty = (r: FacetRow) => !params.party || r.party === params.party
+  const matchChamber = (r: FacetRow) => !params.chamber || r.chamber === params.chamber
+
+  const partyFacet = tally('party', (r) => matchState(r) && matchChamber(r))
+  const chamberFacet = tally('chamber', (r) => matchState(r) && matchParty(r))
+  const stateFacet = tally('state', (r) => matchParty(r) && matchChamber(r))
 
   const politicians = pageResult.data ?? []
   const totalCount = pageResult.count ?? 0

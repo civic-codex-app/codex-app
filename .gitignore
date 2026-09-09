@@ -46,3 +46,6 @@ next-env.d.ts
 /public/workbox-*.js
 /public/workbox-*.js.map
 /public/swe-worker-*.js
+
+# FEC API response cache (rate-limit friendly)
+.fec-cache/
