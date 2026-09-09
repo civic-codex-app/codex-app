@@ -33,6 +33,60 @@ export interface RssItem {
   description: string
 }
 
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: '&',
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  nbsp: ' ',
+  lsquo: '‘',
+  rsquo: '’',
+  ldquo: '“',
+  rdquo: '”',
+  hellip: '…',
+  mdash: '—',
+  ndash: '–',
+  middot: '·',
+}
+
+/** Decode the named and numeric HTML entities that show up in publisher feeds. */
+export function decodeEntities(input: string): string {
+  return input.replace(/&(#\d+|#[xX][0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]*);/g, (whole, body: string) => {
+    if (body[0] !== '#') return NAMED_ENTITIES[body.toLowerCase()] ?? whole
+    const code =
+      body[1] === 'x' || body[1] === 'X'
+        ? parseInt(body.slice(2), 16)
+        : parseInt(body.slice(1), 10)
+    // Lone surrogates make String.fromCodePoint throw; leave those as written.
+    if (!Number.isFinite(code) || code <= 0 || code > 0x10ffff) return whole
+    if (code >= 0xd800 && code <= 0xdfff) return whole
+    return String.fromCodePoint(code)
+  })
+}
+
+/**
+ * Reduce a feed field to display-safe plain text.
+ *
+ * Decoding has to happen *before* the tag strip, and has to repeat. Feeds
+ * disagree on how many layers of escaping they apply: The Guardian wraps
+ * entity-escaped markup in CDATA, so once the CDATA is unwrapped the anchor is
+ * still the literal text `&lt;a href="…"&gt;`, containing no `<` for a tag
+ * strip to match. Stripping first left that whole anchor -- including a
+ * 279-character utm tracking URL -- in the stored summary, and one unbreakable
+ * token that long sets the min-content width of its grid track, which blew the
+ * homepage "Today in Politics" strip past the viewport on mobile.
+ */
+export function htmlToText(raw: string): string {
+  let text = raw.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+  for (let pass = 0; pass < 3; pass++) {
+    const next = decodeEntities(text).replace(/<[^>]*>/g, ' ')
+    if (next === text) break
+    text = next
+  }
+  return text.replace(/\s+/g, ' ').trim()
+}
+
 export function parseRssItems(xml: string): RssItem[] {
   const items: RssItem[] = []
 
@@ -43,22 +97,15 @@ export function parseRssItems(xml: string): RssItem[] {
   while ((match = itemRegex.exec(xml)) !== null) {
     const block = match[1]
 
-    const title = block.match(/<title>([\s\S]*?)<\/title>/)?.[1]?.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').trim() ?? ''
+    const title = htmlToText(block.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '')
     const link = block.match(/<link>([\s\S]*?)<\/link>/)?.[1]?.trim() ?? ''
     const pubDate = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/)?.[1]?.trim() ?? ''
     const sourceMatch = block.match(/<source\s+url="([^"]*)"[^>]*>([\s\S]*?)<\/source>/)
-    const source = sourceMatch?.[2]?.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').trim() ?? ''
+    const source = htmlToText(sourceMatch?.[2] ?? '')
     const sourceUrl = sourceMatch?.[1] ?? ''
-    const description = block
-      .match(/<description>([\s\S]*?)<\/description>/)?.[1]
-      ?.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-      .replace(/&#8217;|&rsquo;/g, '’')
-      .replace(/&quot;/g, '"')
-      .replace(/\s+/g, ' ')
-      .trim() ?? ''
+    const description = htmlToText(
+      block.match(/<description>([\s\S]*?)<\/description>/)?.[1] ?? ''
+    )
 
     if (title && link) {
       items.push({ title, link, pubDate, source, sourceUrl, description })
