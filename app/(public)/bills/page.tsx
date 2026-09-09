@@ -179,7 +179,11 @@ export default async function BillsPage({ searchParams }: PageProps) {
 
                   {bill.summary && (
                     <p className="mb-3 line-clamp-2 text-[13px] leading-[1.6] text-[var(--poli-sub)]">
-                      {bill.summary}
+                      {/* line-clamp-2 shows ~2 lines, but CRS summaries run to
+                          2,000 chars. Sending them all for 175 bills was ~650KB
+                          of payload nobody could read; the full text lives on
+                          the bill detail page. */}
+                      {bill.summary.length > 200 ? `${bill.summary.slice(0, 200).trimEnd()}…` : bill.summary}
                     </p>
                   )}
 

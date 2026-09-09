@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
@@ -16,6 +17,44 @@ import type {
 } from '@/lib/types/supabase'
 
 export const revalidate = 3600 // 1 hour
+
+/**
+ * All stances for politicians in the given chambers, scoped by an inner join so
+ * the chamber filter runs in Postgres rather than by shipping ~600 UUIDs in the
+ * query string, and paged until exhausted so a growing issue count can't
+ * silently truncate the result.
+ */
+const getScopedStances = unstable_cache(
+  async (chambers: string[]): Promise<Array<{ politician_id: string; stance: string; issue_id: string }>> => {
+    const supabase = createServiceRoleClient()
+    const all: Array<{ politician_id: string; stance: string; issue_id: string }> = []
+    let from = 0
+    for (;;) {
+      const { data, error } = await supabase
+        .from('politician_issues')
+        .select('politician_id, stance, issue_id, politicians!inner(chamber)')
+        .in('politicians.chamber', chambers)
+        .range(from, from + 999)
+      if (error) {
+        console.error('[insights] stance fetch failed:', error.message)
+        break
+      }
+      if (!data || data.length === 0) break
+      all.push(
+        ...data.map((r: any) => ({
+          politician_id: r.politician_id,
+          stance: r.stance,
+          issue_id: r.issue_id,
+        }))
+      )
+      if (data.length < 1000) break
+      from += 1000
+    }
+    return all
+  },
+  ['insights-scoped-stances'],
+  { revalidate: 3600, tags: ['stances'] }
+)
 
 export const metadata: Metadata = {
   title: 'Insights | Poli',
@@ -61,35 +100,29 @@ export default async function InsightsPage() {
   const issues = (allIssues ?? []) as any as InsightsIssueRow[]
   const issueMap = new Map(issues.map(i => [i.id, i]))
 
-  // Fetch stances WITHOUT join (much faster) — paginate through scoped politician IDs
-  const polIds = politicians.map(p => p.id)
-  const BATCH = 100 // 100 pols × 14 issues = 1400 rows, over 1000 limit. Use 70.
-  const SAFE_BATCH = 70 // 70 × 14 = 980, under 1000-row limit
-  const stancePromises = []
-  for (let i = 0; i < polIds.length; i += SAFE_BATCH) {
-    const batch = polIds.slice(i, i + SAFE_BATCH)
-    stancePromises.push(
-      supabase
-        .from('politician_issues')
-        .select('politician_id, stance, issue_id')
-        .in('politician_id', batch)
-    )
-  }
-  const stanceResults = await Promise.all(stancePromises)
+  // Scope by chamber through an inner join and page with .range() until the rows
+  // run out.
+  //
+  // The previous version sliced politician IDs into fixed batches of 70, sized by
+  // the comment "70 × 14 = 980, under 1000-row limit". There are 22 issues now,
+  // not 14, so each batch asked for ~1,540 rows, silently received Supabase's
+  // 1,000-row maximum, and dropped roughly a third of all stances — every
+  // alignment score, heatmap and bipartisan figure on this page was computed on
+  // partial data. Never size a batch against an assumed row count; page until
+  // the result set is exhausted.
+  const stanceRows = await getScopedStances(INSIGHT_CHAMBERS)
 
   // Reconstruct with issue info from the map
   const stances: InsightsStanceRow[] = []
-  for (const result of stanceResults) {
-    if (result.data) {
-      for (const row of result.data) {
-        const issue = issueMap.get(row.issue_id)
-        if (issue) {
-          stances.push({
-            politician_id: row.politician_id,
-            stance: row.stance,
-            issues: issue,
-          } as InsightsStanceRow)
-        }
+  {
+    for (const row of stanceRows) {
+      const issue = issueMap.get(row.issue_id)
+      if (issue) {
+        stances.push({
+          politician_id: row.politician_id,
+          stance: row.stance,
+          issues: issue,
+        } as InsightsStanceRow)
       }
     }
   }
