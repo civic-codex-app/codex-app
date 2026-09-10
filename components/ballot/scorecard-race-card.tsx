@@ -73,7 +73,9 @@ export function ScorecardRaceCard({ race, candidateScores }: ScorecardRaceCardPr
         </div>
       ) : (
         <div className="px-5 py-6 text-center text-sm text-[var(--poli-faint)]">
-          No candidates filed yet
+          {/* See ballot/page.tsx -- we know our table is empty, not that
+              nobody filed. */}
+          No candidates on record for this race yet
         </div>
       )}
     </div>

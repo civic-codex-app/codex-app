@@ -10,6 +10,7 @@ import { BackgroundComparison } from '@/components/compare/background-comparison
 import { FinanceComparison } from '@/components/compare/finance-comparison'
 import { VotingOverlap } from '@/components/compare/voting-overlap'
 import { ElectionComparison } from '@/components/compare/election-comparison'
+import { EstimatedStanceNote } from '@/components/ui/estimated-stance-note'
 
 interface CompareViewProps {
   polA: any
@@ -144,6 +145,7 @@ export function CompareView({
       )}
 
       {/* Stance Scale (replaces radar + issue table) */}
+      {comparableIssues.length > 0 && <EstimatedStanceNote className="mb-4" />}
       {comparableIssues.length > 0 && (
         <StanceScale
           issues={comparableIssues}

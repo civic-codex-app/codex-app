@@ -13,6 +13,7 @@ import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabas
 import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
 import { StanceGroup, type StanceEntry } from '@/components/issues/stance-group'
 import { FollowIssueButton } from '@/components/issues/follow-issue-button'
+import { EstimatedStanceNote } from '@/components/ui/estimated-stance-note'
 
 export const revalidate = 3600 // 1 hour
 
@@ -441,9 +442,11 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         <div className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
           Where Officials Stand
         </div>
-        <p className="mb-6 text-[11px] text-[var(--poli-faint)]">
+        <p className="mb-3 text-[11px] text-[var(--poli-faint)]">
           Officials grouped by where they land on this issue.
         </p>
+
+        <EstimatedStanceNote className="mb-6" />
 
         {/* Stance groups: Progressive / Mixed / Conservative / Unknown */}
         {bucketOrder.map((bucket) => {

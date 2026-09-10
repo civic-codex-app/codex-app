@@ -198,7 +198,9 @@ function BallotRaceCard({ race }: { race: Race }) {
         </div>
       ) : (
         <div className="px-5 py-6 text-center text-sm text-[var(--poli-faint)]">
-          No candidates filed yet
+          {/* "Filed" is a legal act with a deadline. We only know our own
+              table is empty, so say that instead. */}
+          No candidates on record for this race yet
         </div>
       )}
     </div>

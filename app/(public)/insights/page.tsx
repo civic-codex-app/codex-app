@@ -9,6 +9,7 @@ import { PartyAlignmentSpectrum } from '@/components/visualizations/party-alignm
 import { BipartisanScoreCard } from '@/components/visualizations/bipartisan-score-card'
 import { computeAlignment } from '@/lib/utils/alignment'
 import { stanceBucket } from '@/lib/utils/stances'
+import { EstimatedStanceNote } from '@/components/ui/estimated-stance-note'
 import type { Metadata } from 'next'
 import type {
   InsightsPoliticianRow,
@@ -255,7 +256,7 @@ export default async function InsightsPage() {
             Political Insights
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
-            These charts break down how the government is split between parties, where politicians agree and disagree, and who works across the aisle. Everything here is based on real data from official records.
+            These charts break down how the government is split between parties, where politicians agree and disagree, and who works across the aisle. Party and chamber come from official records; the issue-position charts are built from estimated stances, not sourced positions.
           </p>
         </div>
 
@@ -310,6 +311,9 @@ export default async function InsightsPage() {
               Each bar shows how politicians from that party feel about an issue. Blue means they support it, red means they oppose it. When both parties have mostly the same color, they agree. When the colors are opposite, that issue is a major dividing line.
             </p>
           </div>
+          {/* The heatmap is built entirely from estimated stances, so the
+              note belongs on the chart itself, not only in the page intro. */}
+          <EstimatedStanceNote className="mb-3" />
           <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
             <Suspense fallback={<ChartSkeleton />}>
               <IssueHeatmap stanceData={heatmapData} />

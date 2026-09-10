@@ -122,9 +122,15 @@ export function RaceCard({ race }: RaceCardProps) {
 
       <div className="flex items-center justify-between">
         <div className="text-[11px] text-[var(--poli-faint)]">
+          {/* NOTE: this component is currently unreachable -- RaceSection is its
+              only importer and nothing imports RaceSection. Fixing the string
+              anyway so it is not a trap if someone wires it up: 475 races hold
+              only a seed-generated incumbent and 172 hold nobody, so an empty
+              challenger list means we have not confirmed the field, not that
+              the incumbent is running unopposed. */}
           {challengers.length > 0
             ? `${challengers.length} challenger${challengers.length !== 1 ? 's' : ''}`
-            : 'No challengers yet'}
+            : 'Challengers not confirmed'}
         </div>
         {incumbent && (
           <div className="flex items-center gap-1.5">

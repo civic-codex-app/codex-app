@@ -260,6 +260,9 @@ export interface CandidateRow {
   bio: string | null
   website_url: string | null
   race_id: string
+  /** True only for rows confirmed against an authoritative source. 526 of 531
+   *  are seed-generated and false; see CLAUDE.md "Data Integrity". */
+  is_verified: boolean | null
   politician: PoliticianCandidateJoin | null
 }
 
