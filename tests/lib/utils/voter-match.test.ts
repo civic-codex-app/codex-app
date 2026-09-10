@@ -95,6 +95,37 @@ describe('computeVoterMatch', () => {
     expect(result.score).toBe(100)
   })
 
+  it('uniform verification weight cancels out of the score', () => {
+    // The verified/estimated multiplier is applied to both the numerator and
+    // the denominator, so it only shifts a score when the flags DIFFER across
+    // issues. Flagging every row the same way -- all true or all false --
+    // leaves every score identical. This is why clearing the bogus
+    // `is_verified = true` across politician_issues was a correctness fix to
+    // the data rather than a change to anyone's match percentage.
+    const user = { a: 'strongly_supports', b: 'supports', c: 'opposes' }
+    const pol = { a: 'supports', b: 'strongly_opposes', c: 'leans_oppose' }
+    const allVerified = { a: true, b: true, c: true }
+    const allEstimated = { a: false, b: false, c: false }
+
+    const verified = computeVoterMatch(user, pol, allVerified)
+    const estimated = computeVoterMatch(user, pol, allEstimated)
+
+    expect(estimated.score).toBe(verified.score)
+    expect(estimated.matched).toBe(verified.matched)
+  })
+
+  it('mixed verification flags DO move the score', () => {
+    // The counterpart to the above: the weighting is real, it just needs a mix.
+    // Down-weighting the issue the politician agrees on lowers the score.
+    const user = { a: 'strongly_supports', b: 'strongly_supports' }
+    const pol = { a: 'strongly_supports', b: 'strongly_opposes' }
+
+    const agreementVerified = computeVoterMatch(user, pol, { a: true, b: false })
+    const agreementEstimated = computeVoterMatch(user, pol, { a: false, b: true })
+
+    expect(agreementVerified.score).toBeGreaterThan(agreementEstimated.score)
+  })
+
   it('handles empty inputs', () => {
     expect(computeVoterMatch({}, {}).score).toBe(0)
     expect(computeVoterMatch({}, {}).matched).toBe(0)

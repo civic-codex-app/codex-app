@@ -263,8 +263,19 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
       <h2 className="mb-2 text-center text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-[var(--poli-text)]">
         Across the Country
       </h2>
-      <p className="mb-4 text-center text-[14px] text-[var(--poli-sub)]">
+      <p className="mb-3 text-center text-[14px] text-[var(--poli-sub)]">
         Based on {results[0]?.matchedIssues ?? 0} issues you answered
+      </p>
+
+      {/* Provenance. These stances are estimates, not positions sourced to a
+          public record, so the page has to say so -- that is the difference
+          between a starting point and a false record on a voter-facing site.
+          See scripts/unverify-unsourced-stances.mjs. */}
+      <p className="mx-auto mb-6 max-w-xl text-center text-[12px] leading-relaxed text-[var(--poli-faint)]">
+        Stance data is estimated and is not individually sourced to each
+        official&rsquo;s public record. Treat these matches as a starting point
+        &mdash; check a politician&rsquo;s profile and their own statements
+        before you vote.
       </p>
 
       {/* Party breakdown summary */}

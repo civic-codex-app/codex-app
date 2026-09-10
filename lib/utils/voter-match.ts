@@ -40,10 +40,14 @@ const ESTIMATED_WEIGHT = 0.5
  *
  * Distance-decay similarity:
  *   0 distance = 1.0 (exact same position)
- *   1 step     = 0.85
- *   2 steps    = 0.55
- *   3 steps    = 0.25
- *   4+ steps   = 0.0 (opposite ends)
+ *   1 step     = 0.9
+ *   2 steps    = 0.7
+ *   3 steps    = 0.4
+ *   4 steps    = 0.15
+ *   5+ steps   = 0.0 (opposite ends)
+ *
+ * Same-side positions never incur distance: if the politician holds the user's
+ * view more strongly, that counts as a full match rather than a near miss.
  */
 export function computeVoterMatch(
   userStances: Record<string, string>,

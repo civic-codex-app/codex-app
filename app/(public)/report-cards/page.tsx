@@ -143,26 +143,34 @@ export default async function ReportCardsPage() {
 
   const polIds = politicians.map((p) => p.id)
 
-  // 2. Fetch stances (batched to stay under 1000-row limit per query)
-  const STANCE_BATCH = 70 // 70 pols * ~14 issues = ~980 rows
-  const stancePromises: Promise<{
-    data: { politician_id: string; stance: string; issue_id: string; is_verified: boolean }[] | null
-    error: any
-  }>[] = []
+  // 2. Fetch stances. Batch by politician id to stay under URL-length limits,
+  // and paginate WITHIN each batch -- Supabase caps every .select() at 1000
+  // rows no matter how many the filter matches. The old sizing comment here
+  // read "70 pols * ~14 issues = ~980 rows", but the issue count grew to 22, so
+  // each batch asked for 1540 and silently got 1000, discarding ~35% of every
+  // batch and quietly deflating the transparency dimension of every grade.
+  // Same failure that hit /insights; see CLAUDE.md.
+  type StanceRow = {
+    politician_id: string
+    stance: string
+    issue_id: string
+    is_verified: boolean
+  }
+  const STANCE_BATCH = 70
+  const stanceBatches: Promise<StanceRow[]>[] = []
   for (let i = 0; i < polIds.length; i += STANCE_BATCH) {
     const batch = polIds.slice(i, i + STANCE_BATCH)
-    stancePromises.push(
-      supabase
-        .from('politician_issues')
-        .select('politician_id, stance, issue_id, is_verified')
-        .in('politician_id', batch) as any
+    stanceBatches.push(
+      fetchAllRows<StanceRow>((from, to) =>
+        supabase
+          .from('politician_issues')
+          .select('politician_id, stance, issue_id, is_verified')
+          .in('politician_id', batch)
+          .range(from, to)
+      )
     )
   }
-  const stanceResults = await Promise.all(stancePromises)
-  const allStances: { politician_id: string; stance: string; issue_id: string; is_verified: boolean }[] = []
-  for (const r of stanceResults) {
-    if (r.data) allStances.push(...r.data)
-  }
+  const allStances: StanceRow[] = (await Promise.all(stanceBatches)).flat()
 
   // 3. Fetch issues (for slug mapping)
   const { data: issuesData } = await supabase
