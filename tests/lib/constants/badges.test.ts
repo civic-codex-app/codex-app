@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { BADGES, checkBadges, type EngagementStats } from '@/lib/constants/badges'
+import { BADGES, checkBadges, QUIZ_ISSUE_COUNT, type EngagementStats } from '@/lib/constants/badges'
 
 const emptyStats: EngagementStats = {
   pollVotes: 0,
@@ -50,8 +50,11 @@ describe('individual badge checks', () => {
 
   it('issue_expert requires 14 quiz issues answered', () => {
     const badge = BADGES.find(b => b.id === 'issue_expert')!
-    expect(badge.check({ ...emptyStats, quizIssuesAnswered: 13 })).toBe(false)
-    expect(badge.check({ ...emptyStats, quizIssuesAnswered: 14 })).toBe(true)
+    // Threshold tracks the live quiz, so assert against it rather than a
+    // literal -- pinning 14 here is what let the badge drift out of step with
+    // a 22-issue quiz and still advertise "all".
+    expect(badge.check({ ...emptyStats, quizIssuesAnswered: QUIZ_ISSUE_COUNT - 1 })).toBe(false)
+    expect(badge.check({ ...emptyStats, quizIssuesAnswered: QUIZ_ISSUE_COUNT })).toBe(true)
   })
 
   it('bill_watcher requires 5 bills followed', () => {
@@ -125,7 +128,7 @@ describe('checkBadges', () => {
     const maxStats: EngagementStats = {
       pollVotes: 10,
       quizComplete: true,
-      quizIssuesAnswered: 14,
+      quizIssuesAnswered: QUIZ_ISSUE_COUNT,
       billsFollowed: 10,
       politiciansFollowed: 20,
       currentStreak: 30,
