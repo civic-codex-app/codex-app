@@ -49,3 +49,7 @@ next-env.d.ts
 
 # FEC API response cache (rate-limit friendly)
 .fec-cache/
+
+# Data backups written by scripts/purge-*.mjs before destructive runs.
+# Kept on disk for recovery; not source, and not fit to ship in the repo.
+*-backup-*.json
