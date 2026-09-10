@@ -92,7 +92,7 @@ Central stance definitions used everywhere:
 - **1,893 campaign finance rows** — all real FEC API data, cycles 2018/2020/2022/2024/2026
 - **175 bills** — all real Congress.gov data for the 119th Congress
 - **0 voting records** — see Data Integrity below
-- **271 election results** (historical, unverified)
+- **0 election results** — all 271 were deleted 2026-09-10 as fabricated (see below)
 - **22 issues** and **~188,848 `politician_issues` rows** (8,584 politicians × 22 issues)
 
 > The figures "3,794 stances across 14 issues" appeared here for a long time and
@@ -139,14 +139,55 @@ Rules going forward:
 4. Missing data beats invented data. An empty section is honest; a fabricated
    one is not.
 
+### Second audit — 2026-09-10
+
+- **election_results** — the 271 rows flagged suspect above were confirmed
+  fabricated and deleted. The decisive signal: **269 of 271 `total_votes` were
+  exact multiples of 1000** (288,000; 2,900,000; 11,400,000). `source` was NULL
+  on all of them, 20 named the opponent "Various", one row's `result`
+  contradicted its own percentages, and a FL presidential row carried national
+  popular-vote totals. JSON backup written locally before deletion; see
+  `scripts/purge-fabricated-election-results.mjs`.
+- **politician_issues `is_verified`** — 13,558 rows claimed verification with
+  **zero `source_url`**, because `scripts/generate-stances.mjs` hardcodes
+  `is_verified: true` (line 73). All cleared via
+  `scripts/unverify-unsourced-stances.mjs`. Note this does NOT change match
+  scores: voter-match weights verified 1.0 / estimated 0.5, but the multiplier
+  applies to numerator and denominator alike, so a uniform flag cancels out.
+  There is a test pinning that.
+- **report card "Engagement"** — was `isExecutive ? -1 : 60`. `voting_records`
+  is empty, so the real branch never ran and every legislator was shown a
+  hardcoded 60 as a measured score — a quarter of each grade. Now excluded
+  when there are no votes.
+- **`/report-cards` 1000-row truncation** — batch was sized `70 × ~14 issues`
+  while the catalog is 22, so each query asked for 1,540 and silently got
+  1,000. ~35% of stances discarded. Same bug as `/insights`. Fixed.
+
+### The stance data — decided, not resolved
+
+All **188,848** `politician_issues` rows are template-generated: 8,584
+politicians × 22 issues, every one a definite position with a written summary,
+and **not one `unknown`**. The summaries are templates with a name substituted
+(a San Antonio ISD school board president holds a stance on Foreign Policy &
+Diplomacy). 175,318 of those rows belong to state/local officials for whom
+most of the catalog is outside their office entirely.
+
+**Decision (2026-09-10): keep the data, label it everywhere.** Deletion was
+considered and declined. That makes the labelling the safeguard, so:
+
+- Every surface rendering a stance must show `EstimatedStanceNote`
+  (`components/ui/estimated-stance-note.tsx`). Profiles use their own `Est.`
+  badge, driven off `is_verified`.
+- Do not reintroduce copy claiming this data is sourced. `/insights` used to
+  say "Everything here is based on real data from official records", which was
+  false for its stance-derived charts.
+
 ### Still unverified
 - 526 `running` candidates are seed-generated (`is_verified = false`). 2026
   primary outcomes are unconfirmed — no free API covers them; needs state SoS,
   AP, or Ballotpedia.
 - 196 races have no `incumbent_id` (mostly local: state house/senate, mayor,
   county, school board) and 172 races have zero candidates.
-- 271 `election_results` rows are 270 `won` / 1 `lost` with every vote total
-  populated — implausible for real historical data, so treat as suspect.
 - The retirement list in `scripts/destale-2026.mjs` is hand-verified but **not
   exhaustive**.
 
