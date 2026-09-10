@@ -280,6 +280,19 @@ export default async function RaceDetailPage({ params }: PageProps) {
             <span className="text-[var(--poli-faint)]">{candidateList.length}</span>
           </h2>
 
+          {/* Provenance. 526 of 531 candidate rows are seed-generated with
+              is_verified = false, produced by assuming every incumbent seeks
+              reelection -- so a list showing only the incumbent means "we have
+              not confirmed the field", not "the incumbent is unopposed". Say
+              which one it is rather than letting the reader assume. */}
+          {candidateList.length > 0 && candidateList.every((c) => !c.is_verified) && (
+            <p className="mb-4 rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] leading-relaxed text-[var(--poli-faint)]">
+              This candidate list is unconfirmed and may be incomplete. It has
+              not been checked against state filing records, so challengers may
+              be missing.
+            </p>
+          )}
+
           {candidateList.length > 0 ? (
             <div className="space-y-4">
               {candidateList.map((candidate) => {
@@ -437,8 +450,12 @@ export default async function RaceDetailPage({ params }: PageProps) {
             </div>
           ) : (
             <div className="py-12 text-center text-[var(--poli-faint)]">
-              <div className="mb-2 text-lg font-semibold">No candidates announced yet</div>
-              <div className="text-sm">Check back as the race develops</div>
+              {/* Describes our data, not the world's. 172 races carry no
+                  candidate rows, and the seed never generated challengers --
+                  asserting nobody has announced would be a claim we cannot
+                  support, especially where filing deadlines have passed. */}
+              <div className="mb-2 text-lg font-semibold">No candidates on record yet</div>
+              <div className="text-sm">We don&rsquo;t have a candidate list for this race</div>
             </div>
           )}
         </section>
