@@ -91,6 +91,39 @@ describe('computeReportCard', () => {
     expect(card.engagement).toBe(100)
   })
 
+  it('excludes engagement entirely when a legislator has no votes', () => {
+    // voting_records is empty in production, so this is the real-world path.
+    // It used to return a hardcoded 60, putting an invented constant into a
+    // quarter of every legislator's grade.
+    const card = computeReportCard({ ...baseInput, votingRecords: [] })
+    expect(card.engagement).toBe(-1)
+  })
+
+  it('a legislator with no votes is scored on the remaining dimensions only', () => {
+    const card = computeReportCard({ ...baseInput, votingRecords: [] })
+    const applicable = [card.bipartisanship, card.transparency, card.effectiveness]
+    const expected = Math.round(applicable.reduce((a, b) => a + b, 0) / applicable.length)
+    expect(card.score).toBe(expected)
+  })
+
+  it('a placeholder engagement would have changed the grade', () => {
+    // Guards the regression directly: averaging in a fabricated 60 produces a
+    // different score than omitting the dimension, so the old behaviour was
+    // not a harmless default.
+    const card = computeReportCard({ ...baseInput, votingRecords: [] })
+    const dims = [card.bipartisanship, card.transparency, card.effectiveness]
+    const withPlaceholder = Math.round([...dims, 60].reduce((a, b) => a + b, 0) / 4)
+    expect(card.score).not.toBe(withPlaceholder)
+  })
+
+  it('coverage uses the supplied issue count as its denominator', () => {
+    // With a 22-issue catalog, 14 stances is partial coverage. The old
+    // hardcoded /14 scored it as complete.
+    const partial = computeReportCard({ ...baseInput, totalStances: 14, verifiedStances: 0, issueCount: 22 })
+    const full = computeReportCard({ ...baseInput, totalStances: 22, verifiedStances: 0, issueCount: 22 })
+    expect(partial.transparency).toBeLessThan(full.transparency)
+  })
+
   it('engagement drops when votes are abstain/not_voting', () => {
     const card = computeReportCard({
       ...baseInput,

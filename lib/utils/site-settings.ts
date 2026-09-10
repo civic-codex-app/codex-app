@@ -17,7 +17,7 @@ const DEFAULTS: SiteSettings = {
     'Look up any U.S. politician and instantly see where they stand on the issues that matter to you. Stances, voting records, campaign finance, and elections — all in one place.',
   og_title: 'Poli — Know Your Politicians',
   og_description:
-    'Search 8,000+ elected officials from President to school board. Compare stances on 14 key issues, track campaign finance, and find who represents you.',
+    'Search 8,000+ elected officials from President to school board. Compare stances on 22 key issues, track campaign finance, and find who represents you.',
   homepage_title: 'Poli — Know Your Politicians',
   homepage_description:
     'A nonpartisan civic transparency platform tracking 8,000+ U.S. officials. See where they stand on the issues, how they vote, who funds them, and what races are coming up.',

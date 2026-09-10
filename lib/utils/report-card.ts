@@ -1,12 +1,23 @@
 /**
  * Politician Report Card scoring utility.
  *
- * Computes a letter grade (A–F) based on four equally weighted dimensions:
- *   Bipartisanship, Engagement, Transparency, Effectiveness
+ * Computes a letter grade (A–F) by averaging the dimensions that apply to a
+ * given politician: Bipartisanship, Engagement, Transparency, Effectiveness.
+ *
+ * Dimensions are equally weighted, but not all of them always apply. Engagement
+ * needs roll-call votes, which executives never have and which are currently
+ * absent for everyone (voting_records is empty). A dimension with no data is
+ * excluded from the average rather than filled with a placeholder.
  */
 
 import { computeAlignment } from './alignment'
 import { type StanceRecord } from './alignment'
+
+/**
+ * Fallback issue-catalog size for callers that cannot supply one. Prefer
+ * passing the live count from the issues table over relying on this.
+ */
+export const DEFAULT_ISSUE_COUNT = 22
 
 export interface ReportCardInput {
   party: string
@@ -16,6 +27,13 @@ export interface ReportCardInput {
   committees: Array<{ role: string }>
   verifiedStances: number // count of is_verified=true
   totalStances: number
+  /**
+   * Size of the issue catalog, used as the denominator for stance coverage.
+   * Pass the real count -- this was hardcoded to 14 while the catalog grew to
+   * 22, so every politician with 14+ stances pinned the coverage term and the
+   * dimension stopped discriminating between them entirely.
+   */
+  issueCount?: number
 }
 
 export interface ReportCard {
@@ -34,7 +52,16 @@ export interface ReportCard {
  * and the letter grade is derived from that score.
  */
 export function computeReportCard(input: ReportCardInput): ReportCard {
-  const { party, chamber, stances, votingRecords, committees, verifiedStances, totalStances } = input
+  const {
+    party,
+    chamber,
+    stances,
+    votingRecords,
+    committees,
+    verifiedStances,
+    totalStances,
+    issueCount = DEFAULT_ISSUE_COUNT,
+  } = input
 
   // Executives (president, governor) don't vote on bills or sit on
   // congressional committees — only score them on dimensions that apply
@@ -52,8 +79,15 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
       : Math.round(40 + 60 * (1 - Math.pow((alignment - 50) / 50, 2)))
 
   // --- Engagement ---
-  // For legislators: proportion of yea/nay votes. For executives: skip (N/A)
-  let engagement = isExecutive ? -1 : 60
+  // Proportion of yea/nay votes, for legislators only. -1 means "not
+  // applicable" and drops the dimension from the average.
+  //
+  // This used to default to 60 for legislators. voting_records is empty -- the
+  // 2026-09 audit deleted every row because they joined to misidentified bills
+  // -- so that branch never ran and a hardcoded 60 was rendered as a measured
+  // Engagement score for all 615 federal politicians, a quarter of each grade.
+  // An absent dimension is honest; an invented one is not.
+  let engagement = -1
   if (!isExecutive && votingRecords.length > 0) {
     const engaged = votingRecords.filter(
       (v) => v.vote === 'yea' || v.vote === 'nay'
@@ -67,7 +101,7 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
   let transparency = 30 // no stances at all
   if (totalStances > 0) {
     // Base: 50 for having stances, up to 80 for having many (14 = full coverage)
-    const coverageScore = Math.min(totalStances / 14, 1) * 30 + 50
+    const coverageScore = Math.min(totalStances / Math.max(issueCount, 1), 1) * 30 + 50
     // Bonus for verified stances
     const verifiedBonus = totalStances > 0 ? (verifiedStances / totalStances) * 20 : 0
     transparency = Math.round(Math.min(coverageScore + verifiedBonus, 100))

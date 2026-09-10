@@ -39,7 +39,7 @@ const getStanceCounts = unstable_cache(
 
 export const metadata = {
   title: 'Issues | Poli',
-  description: 'See where every U.S. politician stands on 14 key issues — from healthcare to immigration. Filter by party and compare stances across the aisle.',
+  description: 'See where every U.S. politician stands on 22 key issues — from healthcare to immigration. Filter by party and compare stances across the aisle.',
 }
 
 const CATEGORY_LABELS: Record<string, string> = {

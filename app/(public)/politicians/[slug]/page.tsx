@@ -143,7 +143,12 @@ export default async function PoliticianPage({ params }: PageProps) {
     isAuthenticated = !!user
   } catch {}
 
-  // Compute report card
+  // Compute report card. The issue catalog size is the denominator for stance
+  // coverage, so read it rather than assuming -- it has already grown 14 -> 22.
+  const { count: issueCatalogSize } = await supabase
+    .from('issues')
+    .select('*', { count: 'exact', head: true })
+
   const verifiedCount = politicianStances.filter((s: any) => s.is_verified).length
   const reportCard = computeReportCard({
     party: pol.party,
@@ -153,6 +158,7 @@ export default async function PoliticianPage({ params }: PageProps) {
     committees: committees.map((c: any) => ({ role: c.role })),
     verifiedStances: verifiedCount,
     totalStances: politicianStances.length,
+    issueCount: issueCatalogSize ?? undefined,
   })
 
   // Build stance map for this politician: issue_id -> stance

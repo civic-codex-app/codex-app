@@ -14,7 +14,7 @@ export const revalidate = 3600 // 1 hour
 export const metadata: Metadata = {
   title: 'Report Cards | Poli',
   description:
-    'Grade every U.S. politician on bipartisanship, engagement, transparency, and effectiveness. Data-driven scores — no opinions.',
+    'Grade every U.S. politician on bipartisanship, transparency, and effectiveness. Data-driven scores — no opinions.',
 }
 
 // ---- helpers for paginated Supabase fetches ----
@@ -81,8 +81,8 @@ export default async function ReportCardsPage() {
               Civic Report Cards
             </h1>
             <p className="mx-auto mb-6 max-w-[400px] text-[14px] leading-[1.7] text-[var(--poli-sub)]">
-              Unlock detailed scores on bipartisanship, transparency, engagement,
-              and effectiveness for every politician.
+              Unlock detailed scores on bipartisanship, transparency, and
+              effectiveness for every politician.
             </p>
             <Link
               href="/signup"
@@ -236,6 +236,8 @@ export default async function ReportCardsPage() {
       committees: committeesByPol.get(p.id) ?? [],
       verifiedStances: stanceData?.verified ?? 0,
       totalStances: stanceData?.total ?? 0,
+      // Live catalog size, so coverage keeps discriminating as issues are added
+      issueCount: issueMap.size,
     })
     return { ...p, reportCard }
   })
@@ -251,8 +253,11 @@ export default async function ReportCardsPage() {
           Civic Profiles
         </h1>
         <p className="mb-8 max-w-2xl text-sm leading-relaxed text-[var(--poli-sub)]">
-          Every politician scored on civic activity: bipartisanship, engagement,
-          transparency, and effectiveness. Higher scores mean more active public service.
+          Every politician scored on civic activity: bipartisanship, transparency,
+          and effectiveness. Higher scores mean more active public service.
+          {/* Engagement is a fourth dimension, shown only where roll-call votes
+              exist. voting_records is empty today, so it is omitted rather than
+              advertised -- restore it here alongside the vote data. */}
         </p>
 
         <ReportCardList politicians={ranked} />

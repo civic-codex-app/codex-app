@@ -1,3 +1,8 @@
+import { QUIZ_CONTENT } from '@/lib/data/quiz-content'
+
+/** Number of issues the quiz actually asks about. Derived, never hardcoded. */
+export const QUIZ_ISSUE_COUNT = Object.keys(QUIZ_CONTENT).length
+
 export interface EngagementStats {
   pollVotes: number
   quizComplete: boolean
@@ -38,10 +43,12 @@ export const BADGES: Badge[] = [
   {
     id: 'issue_expert',
     name: 'Issue Expert',
-    description: 'Answered all 14 quiz questions',
+    description: `Answered all ${QUIZ_ISSUE_COUNT} quiz questions`,
     icon: 'issue_expert',
-    requirement: 'Answer all 14 quiz issues',
-    check: (s) => s.quizIssuesAnswered >= 14,
+    requirement: `Answer all ${QUIZ_ISSUE_COUNT} quiz issues`,
+    // Derived from the quiz itself. Hardcoding 14 meant the badge unlocked at
+    // 14 of 22 while still claiming the user had answered "all" of them.
+    check: (s) => s.quizIssuesAnswered >= QUIZ_ISSUE_COUNT,
   },
   {
     id: 'bill_watcher',
