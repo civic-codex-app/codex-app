@@ -53,3 +53,6 @@ next-env.d.ts
 # Data backups written by scripts/purge-*.mjs before destructive runs.
 # Kept on disk for recovery; not source, and not fit to ship in the repo.
 *-backup-*.json
+
+# Congress.gov API response cache (audit-congress-members.mjs)
+.congress-cache/
