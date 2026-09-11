@@ -132,7 +132,7 @@ if (colErr) {
 }
 
 /* ---------- 3. races missing incumbent_id (derivable join) ---------- */
-const pols = await page('politicians', 'id,name,state,chamber,district,party')
+const pols = await page('politicians', 'id,name,state,chamber,district,party,title')
 const races = await page('races', 'id,name,state,chamber,district,description,incumbent_id')
 const missing = races.filter((r) => !r.incumbent_id)
 
@@ -152,6 +152,7 @@ for (const p of pols) {
 }
 
 const DISTRICTED = new Set(['house', 'state_house', 'state_senate'])
+const PLACE_OFFICES = new Set(['mayor', 'county', 'school_board', 'city_council'])
 const matches = []
 const ambiguous = []
 const nomatch = []
@@ -176,6 +177,52 @@ for (const r of missing) {
       if (hit.length === 1) {
         cands2 = hit
         how = 'description-named + verified'
+      }
+    }
+  }
+
+  // Local offices carry no district, and a state holds many of them, so
+  // (state, chamber) is not a derivation -- it resolves uniquely only because
+  // the table happens to hold one mayor per state, which would silently point
+  // "Chicago Mayor" at whichever Illinois mayor we stored. Match the place
+  // instead: the race name minus its office word, found in the officeholder's
+  // title. "Chicago Mayor" -> "chicago" -> "Mayor of Chicago".
+  if ((!cands2 || cands2.length !== 1) && PLACE_OFFICES.has(r.chamber)) {
+    const place = norm(r.name)
+      .replace(/\b(mayoral|mayor|county executive|county|school board|city council|district|election|race)\b/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+    // A place match alone is not enough. "Miami-Dade County Mayor" matched
+    // the State Attorney for Miami-Dade County -- right place, wrong office --
+    // so the title has to name the office too.
+    const OFFICE_WORD = {
+      mayor: /\bmayor\b/,
+      county: /\bcounty (executive|commissioner|judge|mayor)\b/,
+      school_board: /\bschool board\b/,
+      city_council: /\bcity council|\bcouncil ?(member|man|woman)\b/,
+    }[r.chamber]
+
+    // And a race for a numbered seat ("School Board District 3") cannot be
+    // derived from a board-wide title: the chair is not necessarily the member
+    // for that district.
+    const seatSpecific = /\bdistrict\s*\d+\b|\bward\s*\d+\b|\bseat\s*\d+\b/i.test(r.name)
+
+    // Compare places for EQUALITY, not containment: "Las Vegas" is a substring
+    // of "North Las Vegas", and those are different cities with different
+    // mayors. Strip the office words off both sides and require a full match.
+    if (place.length >= 4 && OFFICE_WORD && !seatSpecific) {
+      const pool = byStateChamber.get(`${r.state}|${r.chamber}`) || []
+      const hit = pool.filter((p) => {
+        if (!p.title || !OFFICE_WORD.test(norm(p.title))) return false
+        const titlePlace = norm(p.title)
+          .replace(/\b(mayoral|mayor|county executive|county commissioner|county judge|county mayor|county|school board|city council|councilmember|councilman|councilwoman|president|chair|of|the)\b/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim()
+        return titlePlace === place
+      })
+      if (hit.length === 1) {
+        cands2 = hit
+        how = 'place + office in title'
       }
     }
   }
