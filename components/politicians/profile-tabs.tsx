@@ -69,7 +69,17 @@ interface VoteRecord {
 }
 
 interface FinanceRecord {
-  [key: string]: any
+  // Was `[key: string]: any`, which is how a query selecting a column that
+  // does not exist (`source_url` instead of `source`) went unnoticed: the
+  // request errored, returned zero rows, and the Finance tab silently hid
+  // itself on every profile while 1,893 real FEC rows sat in the table.
+  id: string
+  cycle: string
+  total_raised: number | null
+  total_spent: number | null
+  cash_on_hand: number | null
+  source: string | null
+  last_updated: string | null
 }
 
 interface ElectionResult {
