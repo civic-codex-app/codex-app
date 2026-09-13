@@ -181,6 +181,20 @@ for (const r of missing) {
     }
   }
 
+  // At-large House seats are encoded three different ways. Races store "AL";
+  // politicians store "1" in DE, ND, VT and AK but "0" in WY and SD; and
+  // Congress.gov reports null. So the (state, chamber, district) join above
+  // never matched a single-member state, leaving six races incumbent-less for
+  // no reason other than spelling. If the state holds exactly one House member
+  // there is nothing to disambiguate.
+  if ((!cands2 || cands2.length !== 1) && r.chamber === 'house' && /^(al|0|1)$/i.test(String(r.district ?? '').trim())) {
+    const pool = byStateChamber.get(`${r.state}|house`) || []
+    if (pool.length === 1) {
+      cands2 = pool
+      how = 'at-large, sole House member for the state'
+    }
+  }
+
   // Local offices carry no district, and a state holds many of them, so
   // (state, chamber) is not a derivation -- it resolves uniquely only because
   // the table happens to hold one mayor per state, which would silently point
