@@ -278,6 +278,46 @@ const cMatches = []
 const cAmb = []
 let cNo = 0
 
+/**
+ * Formal-vs-familiar first names, both directions. Needed because FEC files
+ * people under their legal name and the politicians table holds the name they
+ * campaign under: "William M. Cassidy" is "Bill Cassidy", "Richard J. Durbin"
+ * is "Dick Durbin".
+ */
+const NICKNAMES = {
+  william: ['bill', 'will', 'billy', 'liam'], robert: ['bob', 'rob', 'bobby'],
+  richard: ['dick', 'rick', 'rich', 'richie'], james: ['jim', 'jimmy', 'jamie'],
+  michael: ['mike', 'mikey', 'mick'], edward: ['ed', 'eddie', 'ted', 'ne'],
+  thomas: ['tom', 'tommy'], christopher: ['chris'], joseph: ['joe', 'joey'],
+  daniel: ['dan', 'danny'], david: ['dave', 'davey'], stephen: ['steve'],
+  steven: ['steve'], anthony: ['tony'], nicholas: ['nick'], ronald: ['ron'],
+  kenneth: ['ken', 'kenny'], matthew: ['matt'], gregory: ['greg'],
+  jeffrey: ['jeff'], andrew: ['andy', 'drew'], charles: ['charlie', 'chuck'],
+  peter: ['pete'], samuel: ['sam'], benjamin: ['ben'], alexander: ['alex'],
+  elizabeth: ['liz', 'beth', 'betsy', 'lisa'], katherine: ['kate', 'kathy', 'katie'],
+  catherine: ['cathy', 'kate'], patricia: ['pat', 'patty', 'trish'],
+  deborah: ['debbie', 'deb'], margaret: ['maggie', 'peggy', 'meg'],
+  jennifer: ['jen', 'jenny'], lawrence: ['larry'], frederick: ['fred'],
+  theodore: ['ted', 'teddy'], timothy: ['tim'], douglas: ['doug'],
+  ronaldo: ['ron'], franklin: ['frank'], francis: ['frank'], albert: ['al'],
+  alfred: ['al'], raymond: ['ray'], eugene: ['gene'], vincent: ['vince'],
+  walter: ['walt'], russell: ['russ'], leonard: ['len', 'lenny'],
+}
+const firstName = (s) => norm(s).split(' ').filter(Boolean)[0] || ''
+function sameFirstName(a, b) {
+  const x = firstName(a), y = firstName(b)
+  if (!x || !y) return false
+  if (x === y) return true
+  // "Thom" for "Thomas", "Chris" for "Christopher"
+  if (x.length >= 3 && y.startsWith(x)) return true
+  if (y.length >= 3 && x.startsWith(y)) return true
+  for (const [formal, shorts] of Object.entries(NICKNAMES)) {
+    const set = [formal, ...shorts]
+    if (set.includes(x) && set.includes(y)) return true
+  }
+  return false
+}
+
 for (const c of unlinked) {
   const r = raceById.get(c.race_id)
   if (!r) { cNo++; continue }
@@ -285,12 +325,67 @@ for (const c of unlinked) {
   const want = norm(c.name)
   let hit = pool.filter((p) => norm(p.name) === want)
   if (hit.length !== 1) {
+    // Surname alone is not enough. It matched "Darline Graham" to "Lindsey
+    // Graham" in the SC senate race -- two different people -- and the party
+    // guard did not stop it, because it passes whenever either side's party is
+    // missing. On a civic site a wrong link attributes one person's stances
+    // and record to another, so require the first name to agree too.
     const wl = lastName(c.name)
-    hit = pool.filter((p) => lastName(p.name) === wl && (!c.party || !p.party || p.party === c.party))
+    hit = pool.filter(
+      (p) =>
+        lastName(p.name) === wl &&
+        sameFirstName(p.name, c.name) &&
+        (!c.party || !p.party || p.party === c.party)
+    )
   }
   if (hit.length === 1) cMatches.push({ c, pol: hit[0], race: r })
   else if (hit.length > 1) cAmb.push(c)
   else cNo++
+}
+
+// A politician receiving two links inside one race means the name rule could
+// not tell two people apart. "Robert Menendez" (FEC H2NJ13075, the father's old
+// NJ-13 seat) and "Robert J. Menendez" (H2NJ08232, NJ-08) both resolve to
+// "Rob Menendez" on surname plus a robert/rob nickname. Attributing one
+// person's record to another is exactly the failure this project keeps paying
+// for, so drop the whole group unless one name matches the politician exactly.
+{
+  const perRacePol = new Map()
+  // Seed the map with links ALREADY in the database, not just the ones being
+  // proposed now. Without this the guard only sees within a single run: after
+  // unlinking a bad pair, the next run re-proposes the survivor's twin, finds
+  // it alone among the new matches, and recreates the link it just removed.
+  for (const c of cands) {
+    if (!c.politician_id) continue
+    const k = `${c.race_id}|${c.politician_id}`
+    if (!perRacePol.has(k)) perRacePol.set(k, [])
+    perRacePol.get(k).push({ c, pol: { id: c.politician_id, name: '' }, existing: true })
+  }
+  for (const m of cMatches) {
+    const k = `${m.c.race_id}|${m.pol.id}`
+    if (!perRacePol.has(k)) perRacePol.set(k, [])
+    perRacePol.get(k).push(m)
+  }
+  const rejected = new Set()
+  for (const [, group] of perRacePol) {
+    if (group.length < 2) continue
+    // An existing link already holds the slot, so every new proposal for that
+    // politician in that race is a second claim on one person and is dropped.
+    const proposals = group.filter((m) => !m.existing)
+    if (group.some((m) => m.existing)) {
+      for (const m of proposals) rejected.add(m)
+      continue
+    }
+    const exact = proposals.filter((m) => norm(m.c.name) === norm(m.pol.name))
+    const keep = exact.length === 1 ? exact[0] : null
+    for (const m of proposals) if (m !== keep) rejected.add(m)
+  }
+  if (rejected.size) {
+    for (const m of rejected) cAmb.push(m.c)
+    const before = cMatches.length
+    cMatches.splice(0, cMatches.length, ...cMatches.filter((m) => !rejected.has(m)))
+    console.log(`\n   (${before - cMatches.length} link(s) withheld: two candidates in one race resolved to the same politician)`)
+  }
 }
 
 console.log(`\n4. CANDIDATES unlinked to politician_id: ${unlinked.length}`)
