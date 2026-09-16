@@ -56,3 +56,4 @@ next-env.d.ts
 
 # Congress.gov API response cache (audit-congress-members.mjs)
 .congress-cache/
+candidate-repair-backup-*.json

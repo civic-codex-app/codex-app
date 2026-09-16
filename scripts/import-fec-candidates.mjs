@@ -65,7 +65,13 @@ const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABA
  * be title-cased into the name as if "Dr" were a middle name. Honorifics are
  * dropped; generational suffixes are kept, since they distinguish people.
  */
-const HONORIFICS = new Set(['DR', 'MR', 'MRS', 'MS', 'MISS', 'REV', 'HON', 'PROF', 'SGT', 'CAPT', 'TRUSTE'])
+// SEN/REP/GOV/DEL belong here: filers routinely put their current office in
+// the given-name field, and leaving them out stored "Edward Sen. Markey" and
+// "Thom R Sen Tillis" as people's names.
+const HONORIFICS = new Set([
+  'DR', 'MR', 'MRS', 'MS', 'MISS', 'REV', 'HON', 'PROF', 'SGT', 'CAPT', 'TRUSTE',
+  'SEN', 'SENATOR', 'REP', 'REPRESENTATIVE', 'GOV', 'GOVERNOR', 'DEL', 'CONGRESSMAN', 'CONGRESSWOMAN',
+])
 const SUFFIXES = new Set(['JR', 'SR', 'II', 'III', 'IV', 'V'])
 
 function properName(fecName) {
@@ -207,7 +213,7 @@ const raceKey = (state, chamber, district) => `${state}|${chamber}|${undistrict(
 const raceIdx = new Map()
 for (const r of races) raceIdx.set(raceKey(r.state, r.chamber, r.district), r)
 
-const existing = await pageAll('candidates', 'id,race_id,name,party,is_incumbent,is_verified')
+const existing = await pageAll('candidates', 'id,race_id,name,party,is_incumbent,is_verified,fec_candidate_id')
 const byRace = new Map()
 for (const c of existing) {
   if (!byRace.has(c.race_id)) byRace.set(c.race_id, [])
@@ -227,9 +233,17 @@ for (const f of fecRows) {
     continue
   }
   const mine = byRace.get(race.id) ?? []
-  const hit = mine.find((c) => norm(c.name) === norm(f.name))
+  // Identity is the FEC candidate id, not the name. Matching on a normalised
+  // name inserted a second row whenever the two sides spelled a person
+  // differently -- FEC's "MARKEY, EDWARD SEN." against the seed's "Ed Markey"
+  // -- which is how 125 races ended up listing the same candidate twice and
+  // 235 races showed more incumbents than they have seats. The name fallback
+  // stays for rows imported before the id column existed.
+  const hit =
+    mine.find((c) => c.fec_candidate_id && c.fec_candidate_id === f.fecId) ??
+    mine.find((c) => !c.fec_candidate_id && norm(c.name) === norm(f.name))
   if (hit) {
-    if (!hit.is_verified) toStamp.push({ id: hit.id, fec: f, race })
+    toStamp.push({ id: hit.id, fec: f, race, alreadyVerified: hit.is_verified })
   } else {
     toInsert.push({ fec: f, race })
   }
@@ -269,6 +283,7 @@ for (let i = 0; i < toInsert.length; i += 200) {
     status: 'running',
     is_verified: true,
     last_checked: new Date().toISOString(),
+    fec_candidate_id: fec.fecId,
     source: SOURCE,
   }))
   const { error } = await sb.from('candidates').insert(chunk)
@@ -277,10 +292,15 @@ for (let i = 0; i < toInsert.length; i += 200) {
 }
 
 let stamped = 0
-for (const { id } of toStamp) {
+for (const { id, fec } of toStamp) {
   const { error } = await sb
     .from('candidates')
-    .update({ is_verified: true, last_checked: new Date().toISOString(), source: SOURCE })
+    .update({
+      is_verified: true,
+      last_checked: new Date().toISOString(),
+      fec_candidate_id: fec.fecId,
+      source: SOURCE,
+    })
     .eq('id', id)
   if (error) console.log(`  ! stamp ${id}: ${error.message}`)
   else stamped++

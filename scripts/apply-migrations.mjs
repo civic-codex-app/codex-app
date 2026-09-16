@@ -26,7 +26,7 @@
  * runs first. The rest are independent of each other.
  */
 import pg from 'pg'
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -44,10 +44,16 @@ const PENDING = [
 
 const APPLY = process.argv.includes('--apply')
 const onlyArg = process.argv.find((a) => a.startsWith('--only='))
+
+// Resolve --only against the migrations directory, not just PENDING — a file
+// added after PENDING was last edited is exactly the case you want to run in
+// isolation, and matching only against PENDING made that impossible.
+const onDisk = existsSync(MIGRATIONS) ? readdirSync(MIGRATIONS).filter((f) => f.endsWith('.sql')).sort() : []
 const FILES = onlyArg
-  ? onlyArg.split('=')[1].split(',').map((s) => {
-      const t = s.trim()
-      return t.endsWith('.sql') ? t : PENDING.find((f) => f.startsWith(t)) ?? t
+  ? onlyArg.split('=')[1].split(',').map((raw) => {
+      const t = raw.trim()
+      if (t.endsWith('.sql')) return t
+      return onDisk.find((f) => f.startsWith(t)) ?? PENDING.find((f) => f.startsWith(t)) ?? t
     })
   : PENDING
 
