@@ -90,7 +90,11 @@ Central stance definitions used everywhere:
 - **668 races** for the 2026 midterms across 52 election records (all dated 2026-11-03)
 - **531 candidates** — 526 `running`, 5 `withdrawn`
 - **1,893 campaign finance rows** — all real FEC API data, cycles 2018/2020/2022/2024/2026
-- **175 bills** — all real Congress.gov data for the 119th Congress
+- **175 bills** — all real Congress.gov data for the 119th Congress. All 175
+  re-verified title-by-title against the API on 2026-09-14: zero mismatches.
+  (`scripts/verify-bills-against-congress.mjs`. Note `congress_session` is the
+  string `"119th"`, so anything building an API path from it must parse the
+  integer first, and two rows store the number flattened as `HCONRES.58`.)
 - **0 voting records** — see Data Integrity below
 - **0 election results** — all 271 were deleted 2026-09-10 as fabricated (see below)
 - **22 issues** and **~188,848 `politician_issues` rows** (8,584 politicians × 22 issues)
@@ -182,12 +186,63 @@ considered and declined. That makes the labelling the safeguard, so:
   say "Everything here is based on real data from official records", which was
   false for its stance-derived charts.
 
+### Security — 2026-09-15
+
+**`daily_topics` and `daily_topic_politicians` accept anonymous writes.**
+Confirmed against the live database: an anonymous INSERT succeeded, an
+anonymous UPDATE changed a row's title, an anonymous DELETE removed it.
+`daily_topics` is the homepage "Today in Politics" strip, so this is content
+injection and removal on a voter-facing site by anyone holding the anon key —
+which ships in the client bundle. Probe rows were removed immediately.
+
+Cause, in `013_daily_topics.sql`:
+
+```sql
+CREATE POLICY "Service role full access topics" ON daily_topics
+  FOR ALL USING (true) WITH CHECK (true);
+```
+
+Named for the service role, but with no `TO` clause it applies to every role
+including `anon`, and `FOR ALL` covers all three write verbs. The service role
+bypasses RLS entirely and never needed a policy. `029` replaces both with
+admin-only writes. **Still unapplied as of 2026-09-15.**
+
+`011_contact_submissions.sql` repeats the pattern; that table does not exist,
+so it never took effect. Do not copy it forward.
+
+Scope was checked empirically across all 24 tables — those two are the only
+ones affected. `likes` separately exposes 11,281 rows with `user_id` to anon
+(028 fixes it); `profiles`, `follows` and `issue_follows` are correctly closed.
+
+### Verification gates
+
+Two classes of bug here are invisible to TypeScript, tests and the build,
+because PostgREST returns `{ data: null, error }` rather than throwing and most
+callers ignore `error` — so a broken query renders as an empty section.
+
+| Command | Catches |
+|---|---|
+| `pnpm verify:selects` | Any `.select()`, `.order()`, filter or insert/update payload naming a column or relationship that does not exist. Found 4 real outages, incl. the campaign-finance section hidden on every profile and the feed's poll card never rendering. |
+| `pnpm verify:rls` | Tables accepting anonymous writes. |
+
+Both need `.env.local` exported. Run them after schema changes.
+
+When probing RLS, note that **DELETE is useless as a test**: an RLS DELETE
+policy acts as a row filter, so a delete matching nothing returns success
+whether or not a policy exists. Sweeping with it reports every table as
+writable. Use INSERT, with foreign keys pointed at a nonexistent uuid so a
+permitted write fails on the FK rather than on a cast — a cast error is raised
+before RLS is consulted and reads as a false negative.
+
 ### Still unverified
 - 526 `running` candidates are seed-generated (`is_verified = false`). 2026
   primary outcomes are unconfirmed — no free API covers them; needs state SoS,
   AP, or Ballotpedia.
-- 196 races have no `incumbent_id` (mostly local: state house/senate, mayor,
-  county, school board) and 172 races have zero candidates.
+- 152 races have no `incumbent_id` (was 196; 44 were derived on 2026-09-10 —
+  38 mayors and county executives matched by place name + office, 6 at-large
+  House seats). The rest are genuinely underivable from what we hold.
+- 172 races have zero candidates. `scripts/import-fec-candidates.mjs` would
+  take the federal share of that from 17 to 6, but needs migration 025.
 - The retirement list in `scripts/destale-2026.mjs` is hand-verified but **not
   exhaustive**.
 
@@ -205,6 +260,22 @@ Run in Supabase SQL Editor. Each is idempotent:
 10. `010_local_chambers.sql` — add mayor, city_council, state_senate, state_house, county, school_board, other_local
 11. …`011`–`023` — incremental features (profile fields, annotations, analytics, quizzes, site settings, indexes, submissions)
 12. `024_candidate_verification.sql` — `candidates.is_verified`/`last_checked`, normalizes off-vocabulary `status`, and adds a CHECK locking it to `running|withdrawn|won|lost`
+13. `025_candidate_source.sql` — `candidates.source`; unblocks the FEC candidate importer
+14. `026_politician_source.sql` — `politicians.source`/`is_verified`/`last_checked`
+15. `027_public_submissions.sql` — creates the table `app/api/submissions` and `app/admin/inbox` already use but which does not exist
+16. `028_like_counts_view.sql` — `public_like_counts` view; stops `likes` exposing a per-user political-preference graph
+17. **`029_fix_daily_topics_rls.sql` — SECURITY, run this first.** See below.
+
+> **Only 011–015 are in this repo.** 001–010 and 016–024 exist solely in the
+> live Supabase project, so the schema cannot be rebuilt from source control.
+> That is also why `public_submissions` and `contact_submissions` are missing
+> from the database despite being referenced in code.
+
+> **Do not run `015_public_follow_counts.sql` as written.** It grants
+> `FOR SELECT USING (true)` on `follows`, `bill_follows` and `issue_follows` to
+> expose aggregate counts. That would publish three per-user preference graphs
+> (28,337 follow rows among them). It has never been applied — anon reads 0
+> rows from all three. If those counts are wanted, give each a view like 028's.
 
 ## Data Refresh Scripts
 All are dry-run by default; pass `--apply` to write. Prefix with
@@ -215,6 +286,13 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 | `scripts/destale-2026.mjs` | Derivable-only fixes: race incumbents via `(state, chamber, district)`, candidate→politician links, expired polls, status vocabulary, known retirements |
 | `scripts/import-fec-finance.mjs` | Real FEC finance. `--cycle=2026 --office=S,H,P`. Caches responses to `.fec-cache/` |
 | `scripts/rebuild-bills-from-congress.mjs` | Real 119th-Congress bills from Congress.gov (`--scan`, `--active`) |
+| `scripts/import-fec-candidates.mjs` | Real FEC 2026 candidate filings. Needs migration 025; refuses to `--apply` without it |
+| `scripts/import-congress-members.mjs` | Inserts serving members we lack, corrects party/district, stamps provenance. Needs 026. Never deletes |
+| `scripts/audit-congress-members.mjs` | Report-only reconciliation against Congress.gov |
+| `scripts/verify-bills-against-congress.mjs` | Title-by-title bill verification. Report-only |
+| `scripts/merge-duplicate-politicians.mjs` | Merges the 3 people stored twice (Waltz/Turner/Carter), whose records are split across the pair. Needs a decision on the surviving slug |
+| `scripts/unverify-unsourced-stances.mjs` | Clears `is_verified` where no `source_url`. Already applied |
+| `scripts/purge-fabricated-election-results.mjs` | Deleted the 271 fabricated rows. Already applied |
 
 Required keys in `.env.local`: `FEC_API_KEY` ([api.data.gov/signup](https://api.data.gov/signup/), 60/hr)
 and `CONGRESS_API_KEY` ([api.congress.gov/sign-up](https://api.congress.gov/sign-up/), 20,000/hr).

@@ -98,26 +98,41 @@ async function fetchActivityItems(
 
 async function fetchActivePolls() {
   const supabase = createServiceRoleClient()
+
+  // Every column this function used to name was wrong, so it always returned
+  // [] and the feed's poll card never rendered. polls stores the prompt as
+  // `title` (not `question`) and is filtered by `status` (there is no
+  // is_active); poll_options stores `label` (not `text`) and has no
+  // vote_count at all -- votes are rows in poll_votes. PostgREST rejects a
+  // select naming a missing column outright, so the failure was silent.
   const { data: polls } = await supabase
     .from('polls')
-    .select('id, question, created_at')
-    .eq('is_active', true)
+    .select(`
+      id,
+      title,
+      created_at,
+      poll_options (id, label),
+      poll_votes (id, option_id)
+    `)
+    .eq('status', 'active')
     .order('created_at', { ascending: false })
     .limit(3)
 
   if (!polls || polls.length === 0) return []
 
-  const pollIds = polls.map((p) => p.id)
-  const { data: options } = await supabase
-    .from('poll_options')
-    .select('id, poll_id, text, vote_count')
-    .in('poll_id', pollIds)
-    .order('vote_count', { ascending: false })
+  // PollCard's contract is { question, options: [{ text, vote_count }],
+  // total_votes }, so map the storage shape onto it here rather than
+  // reshaping the component.
+  return polls.map((p: any) => {
+    const votes = p.poll_votes ?? []
+    const counts = new Map<string, number>()
+    for (const v of votes) counts.set(v.option_id, (counts.get(v.option_id) ?? 0) + 1)
 
-  return polls.map((p) => {
-    const opts = (options ?? []).filter((o) => o.poll_id === p.id)
-    const total = opts.reduce((sum, o) => sum + (o.vote_count ?? 0), 0)
-    return { id: p.id, question: p.question, options: opts, total_votes: total }
+    const options = (p.poll_options ?? [])
+      .map((o: any) => ({ id: o.id, text: o.label, vote_count: counts.get(o.id) ?? 0 }))
+      .sort((a: { vote_count: number }, b: { vote_count: number }) => b.vote_count - a.vote_count)
+
+    return { id: p.id, question: p.title, options, total_votes: votes.length }
   })
 }
 

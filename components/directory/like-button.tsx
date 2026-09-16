@@ -21,13 +21,30 @@ export function LikeButton({ politicianId, initialCount = 0, className }: LikeBu
     const supabase = createClient()
 
     async function check() {
-      // Get like count
-      const { count: likeCount } = await supabase
-        .from('likes')
-        .select('*', { count: 'exact', head: true })
+      // Read the total from public_like_counts, not from `likes` itself.
+      // Counting the table from the browser requires SELECT on every row,
+      // which made the whole per-user like graph readable by anyone holding
+      // the anon key. The view exposes the total and nothing else.
+      //
+      // Falls back to counting the table so this keeps working before
+      // 028_like_counts_view.sql has been applied; once it has, the table is
+      // restricted to own-rows and the fallback returns 0, which the view
+      // path has already covered.
+      const { data: agg, error: aggError } = await supabase
+        .from('public_like_counts')
+        .select('like_count')
         .eq('politician_id', politicianId)
+        .maybeSingle()
 
-      if (likeCount !== null) setCount(likeCount)
+      if (!aggError) {
+        setCount(agg?.like_count ?? 0)
+      } else {
+        const { count: likeCount } = await supabase
+          .from('likes')
+          .select('*', { count: 'exact', head: true })
+          .eq('politician_id', politicianId)
+        if (likeCount !== null) setCount(likeCount)
+      }
 
       // Check if user liked
       const {

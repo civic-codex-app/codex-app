@@ -43,9 +43,15 @@ export default function AdminAnnotationsPage() {
 
   const fetchAnnotations = useCallback(async () => {
     setLoading(true)
+    // `profiles` cannot be embedded here. annotations.user_id references
+    // auth.users, and profiles.id references auth.users too, but there is no
+    // direct foreign key between the two -- so PostgREST reports "Could not
+    // find a relationship between 'annotations' and 'profiles'" and rejects
+    // the whole request, which left this page permanently empty. Fetch the
+    // annotations first and attach the authors in a second query.
     let query = supabase
       .from('annotations')
-      .select('*, profiles(display_name, email), politicians(name, slug), issues(name)')
+      .select('*, politicians(name, slug), issues(name)')
       .order('created_at', { ascending: false })
       .limit(100)
 
@@ -53,7 +59,19 @@ export default function AdminAnnotationsPage() {
       query = query.eq('status', filter)
     }
 
-    const { data } = await query
+    const { data: rows } = await query
+
+    const userIds = [...new Set((rows ?? []).map((r: any) => r.user_id).filter(Boolean))]
+    const authors = new Map<string, { display_name: string | null; email: string }>()
+    if (userIds.length) {
+      const { data: people } = await supabase
+        .from('profiles')
+        .select('id, display_name, email')
+        .in('id', userIds)
+      for (const p of people ?? []) authors.set(p.id, { display_name: p.display_name, email: p.email })
+    }
+
+    const data = (rows ?? []).map((r: any) => ({ ...r, profiles: authors.get(r.user_id) ?? null }))
     setAnnotations((data as any) ?? [])
     setLoading(false)
   }, [filter])
