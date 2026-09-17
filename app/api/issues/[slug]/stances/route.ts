@@ -34,8 +34,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   if (!issue) return NextResponse.json({ error: 'issue not found' }, { status: 404 })
 
-  const groups = await getIssueStanceGroups(supabase, issue.id)
-  const group = groups[bucket]
+  const { buckets } = await getIssueStanceGroups(supabase, issue.id)
+  const group = buckets[bucket]
   if (!group) return NextResponse.json({ error: 'no politicians in that bucket' }, { status: 404 })
 
   if (entryKey) {

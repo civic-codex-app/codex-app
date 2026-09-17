@@ -45,6 +45,24 @@ export interface StanceGroupData {
   style: typeof STANCE_STYLES.supports
 }
 
+export interface PartyStats {
+  total: number
+  supports: number
+  opposes: number
+  /** Everyone who is neither in supports nor opposes: mixed, neutral, unknown. */
+  mixed: number
+}
+
+export interface IssueStances {
+  buckets: Partial<Record<StanceBucketKey, StanceGroupData>>
+  /** Politicians with a stance on the issue, one row each ((politician_id, issue_id) is unique). */
+  total: number
+  supports: number
+  opposes: number
+  mixed: number
+  partyStats: Record<string, PartyStats>
+}
+
 /** Entries per bucket in the initial HTML; "Show more" fetches the next batch. */
 export const INITIAL_ENTRIES = 6
 /** Politicians per entry in the initial HTML: the representative plus five others. */
@@ -145,7 +163,7 @@ const entryKey = (normalized: string) => createHash('sha1').update(normalized).d
  * entry. Entries are ordered by size; politicians with only a boilerplate
  * summary form the last entry.
  */
-export function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]): Partial<Record<StanceBucketKey, StanceGroupData>> {
+export function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]): IssueStances {
   const seenPol = new Set<string>()
   const deduped = stances.filter((s) => {
     const polId = s.politicians?.id
@@ -171,6 +189,23 @@ export function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]): Part
     if (bucket === 'neutral') bucket = 'mixed'
     buckets[bucket as StanceBucketKey].push(s)
   }
+
+  // Headline and per-party counts come from the same rows as the groups.
+  // The page used to run thirteen separate count queries for these on every
+  // render, on top of the ten that fetch the rows — and could disagree with
+  // the groups if the data moved between queries.
+  const partyStats: Record<string, PartyStats> = {}
+  const tally = (party: string, bucket: StanceBucketKey) => {
+    const p = (partyStats[party] ??= { total: 0, supports: 0, opposes: 0, mixed: 0 })
+    p.total++
+    if (bucket === 'supports') p.supports++
+    else if (bucket === 'opposes') p.opposes++
+    else p.mixed++
+  }
+  for (const bucket of STANCE_BUCKETS) for (const s of buckets[bucket]) tally(s.politicians!.party, bucket)
+  const total = deduped.length
+  const supports = buckets.supports.length
+  const opposes = buckets.opposes.length
 
   const result: Partial<Record<StanceBucketKey, StanceGroupData>> = {}
 
@@ -216,7 +251,7 @@ export function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]): Part
     result[bucket] = { entries, totalCount: items.length, label: config.label, style: config.style }
   }
 
-  return result
+  return { buckets: result, total, supports, opposes, mixed: total - supports - opposes, partyStats }
 }
 
 export async function getIssueStanceGroups(supabase: Supabase, issueId: string) {

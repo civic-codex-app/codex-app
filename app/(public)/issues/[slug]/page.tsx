@@ -87,61 +87,15 @@ export default async function IssuePage({ params }: PageProps) {
 
   const issue = issueData as any as IssueRow
 
-  // Get follow count (service role bypasses RLS) and check if user follows
-  const { count: issueFollowCount } = await supabase
-    .from('issue_follows')
-    .select('*', { count: 'exact', head: true })
-    .eq('issue_id', issue.id)
-
   // Whether the visitor follows this issue is resolved in the FollowIssueButton
   // on the client. Reading cookies here would make the page render on every
   // request — ~8,600 rows each time — and silently defeat the hourly
   // revalidate above.
-
-  // Stance types grouped by bucket
-  const supportStances = ['strongly_supports', 'supports', 'leans_support']
-  const opposeStances = ['strongly_opposes', 'opposes', 'leans_oppose']
-
-  function countQ(filters: { stance?: string[]; party?: string } = {}) {
-    let q = filters.party
-      ? supabase.from('politician_issues').select('id, politicians:politician_id!inner(id)', { count: 'exact', head: true }).eq('issue_id', issue.id).eq('politicians.party', filters.party)
-      : supabase.from('politician_issues').select('id', { count: 'exact', head: true }).eq('issue_id', issue.id)
-    if (filters.stance) q = q.in('stance', filters.stance)
-    return q
-  }
-
-  const [totalRes, supportsRes, opposesRes, stanceGroups,
-    demTotalR, demSupR, demOppR,
-    gopTotalR, gopSupR, gopOppR,
-    indTotalR, indSupR, indOppR,
-  ] = await Promise.all([
-    countQ(),
-    countQ({ stance: supportStances }),
-    countQ({ stance: opposeStances }),
+  const [{ count: issueFollowCount }, stances] = await Promise.all([
+    supabase.from('issue_follows').select('*', { count: 'exact', head: true }).eq('issue_id', issue.id),
     getIssueStanceGroups(supabase, issue.id),
-    countQ({ party: 'democrat' }),
-    countQ({ party: 'democrat', stance: supportStances }),
-    countQ({ party: 'democrat', stance: opposeStances }),
-    countQ({ party: 'republican' }),
-    countQ({ party: 'republican', stance: supportStances }),
-    countQ({ party: 'republican', stance: opposeStances }),
-    countQ({ party: 'independent' }),
-    countQ({ party: 'independent', stance: supportStances }),
-    countQ({ party: 'independent', stance: opposeStances }),
   ])
-
-  const totalAll = totalRes.count ?? 0
-  const supportsAll = supportsRes.count ?? 0
-  const opposesAll = opposesRes.count ?? 0
-  const mixedAll = totalAll - supportsAll - opposesAll
-
-  const partyStats: Record<string, { total: number; supports: number; opposes: number; mixed: number }> = {}
-  const demTotal = demTotalR.count ?? 0
-  if (demTotal > 0) partyStats.democrat = { total: demTotal, supports: demSupR.count ?? 0, opposes: demOppR.count ?? 0, mixed: demTotal - (demSupR.count ?? 0) - (demOppR.count ?? 0) }
-  const gopTotal = gopTotalR.count ?? 0
-  if (gopTotal > 0) partyStats.republican = { total: gopTotal, supports: gopSupR.count ?? 0, opposes: gopOppR.count ?? 0, mixed: gopTotal - (gopSupR.count ?? 0) - (gopOppR.count ?? 0) }
-  const indTotal = indTotalR.count ?? 0
-  if (indTotal > 0) partyStats.independent = { total: indTotal, supports: indSupR.count ?? 0, opposes: indOppR.count ?? 0, mixed: indTotal - (indSupR.count ?? 0) - (indOppR.count ?? 0) }
+  const { buckets: stanceGroups, total: totalAll, supports: supportsAll, opposes: opposesAll, mixed: mixedAll, partyStats } = stances
 
   const jsonLd = {
     '@context': 'https://schema.org',
