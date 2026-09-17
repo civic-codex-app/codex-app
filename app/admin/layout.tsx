@@ -9,7 +9,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const { data: { user } } = await authClient.auth.getUser()
 
   if (!user) {
-    redirect('/login?redirect=/admin')
+    redirect(`/login?redirectTo=${encodeURIComponent('/admin')}`)
   }
 
   // Use service role to check admin status (bypasses RLS)

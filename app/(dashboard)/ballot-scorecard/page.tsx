@@ -21,7 +21,7 @@ export default async function BallotScorecardPage() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login?redirect=/ballot-scorecard')
+    redirect(`/login?redirectTo=${encodeURIComponent('/ballot-scorecard')}`)
   }
 
   const { data: profile } = await supabase

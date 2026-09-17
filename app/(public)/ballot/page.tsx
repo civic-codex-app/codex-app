@@ -23,7 +23,7 @@ export default async function BallotPreviewPage() {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login?redirect=/ballot')
+    redirect(`/login?redirectTo=${encodeURIComponent('/ballot')}`)
   }
 
   const { data: profile } = await supabase

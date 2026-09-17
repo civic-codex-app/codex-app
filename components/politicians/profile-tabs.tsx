@@ -219,7 +219,11 @@ export function ProfileTabs({
         </div>
 
         {/* Desktop: underline tabs */}
-        <div className="hidden min-w-max gap-0 sm:flex">
+        {/* Scrolls rather than widening the page. min-w-max with no scroll
+            container made this strip push every profile 100px past the
+            viewport at 768px — the mobile strip directly above already
+            scrolls, so this just matches it. */}
+        <div className="hidden gap-0 overflow-x-auto sm:flex [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {visibleTabs.map((t) => (
             <button
               key={t}
@@ -227,7 +231,7 @@ export function ProfileTabs({
               role="tab"
               aria-selected={activeTab === t}
               className={cn(
-                'whitespace-nowrap border-b-2 px-4 py-3 font-sans text-[13px] transition-all sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
+                'shrink-0 whitespace-nowrap border-b-2 px-4 py-3 font-sans text-[13px] transition-all sm:px-5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
                 activeTab === t
                   ? 'border-[var(--poli-text)] font-semibold text-[var(--poli-text)]'
                   : 'border-transparent font-normal text-[var(--poli-faint)] hover:text-[var(--poli-sub)]'

@@ -314,7 +314,7 @@ export default async function InsightsPage() {
           {/* The heatmap is built entirely from estimated stances, so the
               note belongs on the chart itself, not only in the page intro. */}
           <EstimatedStanceNote className="mb-3" />
-          <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+          <div className="min-w-0 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
             <Suspense fallback={<ChartSkeleton />}>
               <IssueHeatmap stanceData={heatmapData} />
             </Suspense>
@@ -352,8 +352,12 @@ export default async function InsightsPage() {
               The left list shows politicians who vote across party lines the most — they don&apos;t always follow their party. The right list shows those who almost never break from their party&apos;s position.
             </p>
           </div>
+          {/* min-w-0 on the items: a grid item's automatic minimum is its
+              min-content width, so these cards sized themselves to 354px
+              against a 327px track and pushed /insights 3px sideways at
+              375px. Same cause as the homepage "Today in Politics" strip. */}
           <div className="grid gap-8 md:grid-cols-2">
-            <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+            <div className="min-w-0 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
               <Suspense fallback={<ChartSkeleton />}>
                 <BipartisanScoreCard
                   politicians={mostBipartisan}
@@ -363,7 +367,7 @@ export default async function InsightsPage() {
                 />
               </Suspense>
             </div>
-            <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
+            <div className="min-w-0 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
               <Suspense fallback={<ChartSkeleton />}>
                 <BipartisanScoreCard
                   politicians={mostPartisan}
