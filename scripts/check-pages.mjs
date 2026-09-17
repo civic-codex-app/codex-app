@@ -210,16 +210,24 @@ if (FOLLOW_LINKS) {
   const seeds = new Set(ROUTES)
   const discovered = [...linkedFrom.keys()].filter((l) => !seeds.has(l)).sort()
 
-  // Sample high-cardinality patterns evenly across the list, and say so.
+  // A link that appears on three or more pages is navigation — a sidebar, a
+  // header, a footer — and a 404 there is on every screen. Those are always
+  // checked. The rest of a high-cardinality pattern is sampled evenly, and
+  // the report says so. (An even sample of 40 in 312 admin links missed both
+  // dead sidebar entries the first time.)
+  const NAV_MIN_PAGES = 3
   const byPattern = new Map()
   for (const l of discovered) { const k = pattern(l); if (!byPattern.has(k)) byPattern.set(k, []); byPattern.get(k).push(l) }
   const toCheck = []
   const sampled = []
   for (const [k, list] of [...byPattern].sort()) {
-    if (list.length <= CAP) { toCheck.push(...list); continue }
-    const step = list.length / CAP
-    for (let i = 0; i < CAP; i++) toCheck.push(list[Math.floor(i * step)])
-    sampled.push(`${k}: ${CAP} of ${list.length}`)
+    const nav = list.filter((l) => linkedFrom.get(l).size >= NAV_MIN_PAGES)
+    const rest = list.filter((l) => linkedFrom.get(l).size < NAV_MIN_PAGES)
+    toCheck.push(...nav)
+    if (rest.length <= CAP) { toCheck.push(...rest); continue }
+    const step = rest.length / CAP
+    for (let i = 0; i < CAP; i++) toCheck.push(rest[Math.floor(i * step)])
+    sampled.push(`${k}: ${nav.length} nav + ${CAP} of ${rest.length}`)
   }
 
   console.log(`\n${discovered.length} internal link(s) discovered beyond the ${ROUTES.length} routes; fetching ${toCheck.length}${sampled.length ? ` (sampled — ${sampled.join(', ')})` : ''}, ${CONCURRENCY} at a time\n`)

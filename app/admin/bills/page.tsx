@@ -14,7 +14,7 @@ export default async function AdminBillsPage() {
 
   return (
     <div>
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="mb-1 text-3xl font-bold">Bills</h1>
           <p className="text-sm text-[var(--poli-sub)]">{bills.length} bills</p>
@@ -27,7 +27,7 @@ export default async function AdminBillsPage() {
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
+      <div className="overflow-x-auto rounded-md border border-[var(--poli-border)]">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">
