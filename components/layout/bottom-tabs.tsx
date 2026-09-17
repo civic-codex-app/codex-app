@@ -103,7 +103,7 @@ export function BottomTabs() {
       {/* More panel overlay */}
       {moreOpen && (
         <div
-          className="fixed inset-0 z-30 sm:hidden"
+          className="fixed inset-0 z-30 lg:hidden"
           style={{ backgroundColor: 'rgba(0,0,0,0.4)', cursor: 'pointer' }}
           onClick={closeMore}
         />
@@ -112,7 +112,7 @@ export function BottomTabs() {
       {/* More drawer sheet */}
       {moreOpen && (
         <div
-          className="fixed left-0 right-0 z-50 rounded-t-xl border-t sm:hidden"
+          className="fixed left-0 right-0 z-50 rounded-t-xl border-t lg:hidden"
           style={{
             bottom: 'calc(56px + var(--safe-bottom, 0px))',
             backgroundColor: 'var(--poli-bg)',
@@ -182,7 +182,7 @@ export function BottomTabs() {
 
       {/* Tab bar */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-40 sm:hidden"
+        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
         style={{
           backgroundColor: 'var(--poli-bg)',
           borderTop: '1px solid var(--poli-border)',

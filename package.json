@@ -24,7 +24,8 @@
     "cap:sync": "cap sync",
     "cap:open": "cap open ios",
     "verify:selects": "node scripts/verify-supabase-selects.mjs",
-    "verify:rls": "node scripts/audit-anon-write-access.mjs"
+    "verify:rls": "node scripts/audit-anon-write-access.mjs",
+    "verify:overflow": "node scripts/check-overflow.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1014.0",
@@ -75,6 +76,7 @@
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "puppeteer-core": "^23.11.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
     "vitest": "^4.1.0"

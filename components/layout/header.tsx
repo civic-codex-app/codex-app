@@ -154,7 +154,13 @@ export function Header() {
             <DonkeyIcon size={22} color="#2563EB" />
           </Link>
 
-          <nav ref={navRef} className="ml-4 hidden items-center gap-1 sm:flex" aria-label="Main navigation">
+          {/* lg, not sm. This nav needs ~850px to lay out, so revealing it at
+              640px overflowed every page by 82px between 640 and 850 — and the
+              bottom tab bar had already hidden itself at the same breakpoint,
+              so that range had a sideways-scrolling page and no working
+              navigation. The breakpoint is shared with bottom-tabs.tsx,
+              mobile-nav.tsx and footer.tsx; move all four together. */}
+          <nav ref={navRef} className="ml-4 hidden items-center gap-1 lg:flex" aria-label="Main navigation">
             {NAV_ITEMS.map((item) => {
               const active = isNavActive(item)
               const hasDropdown = !!item.dropdown
@@ -227,7 +233,7 @@ export function Header() {
           {/* Search icon link */}
           <Link
             href="/"
-            className="hidden text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)] sm:block"
+            className="hidden text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)] lg:block"
             aria-label="Search"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -295,7 +301,7 @@ export function Header() {
           ) : (
             <Link
               href="/login"
-              className="hidden text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:text-[var(--poli-text)] sm:inline"
+              className="hidden text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:text-[var(--poli-text)] lg:inline"
             >
               Sign In
             </Link>

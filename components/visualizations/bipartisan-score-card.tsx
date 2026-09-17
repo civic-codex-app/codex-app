@@ -84,7 +84,7 @@ export function BipartisanScoreCard({
               </div>
 
               {/* Name + party pill */}
-              <div className="min-w-0 shrink" style={{ width: 140 }}>
+              <div className="min-w-0 shrink basis-[140px]">
                 <div className="truncate text-[13px] text-[var(--poli-text)] transition-colors group-hover:text-[var(--poli-text)]">
                   {p.name}
                 </div>
@@ -94,8 +94,10 @@ export function BipartisanScoreCard({
                 </div>
               </div>
 
-              {/* Bar */}
-              <div className="relative flex-1">
+              {/* Bar. min-w-0 because a flex child defaults to min-width:auto,
+                  which refuses to shrink below its content and pushed these
+                  cards 3px past a 375px viewport. */}
+              <div className="relative min-w-0 flex-1">
                 <div className="h-5 overflow-hidden rounded-sm bg-[var(--poli-border)]" style={{ opacity: 0.3 }}>
                   <div
                     className="h-full rounded-sm"

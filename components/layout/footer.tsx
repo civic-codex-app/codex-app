@@ -8,7 +8,7 @@ export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } 
   const { mode, toggle } = useThemeStore()
 
   return (
-    <footer className="mt-10 border-t border-[var(--poli-border)] py-10 max-sm:hidden">
+    <footer className="mt-10 border-t border-[var(--poli-border)] py-10 max-lg:hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <DonkeyIcon size={12} color="var(--poli-faint)" />
