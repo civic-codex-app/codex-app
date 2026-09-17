@@ -33,6 +33,14 @@
  * Usage:
  *   export $(grep -v '^#' .env.local | xargs)
  *   node scripts/check-image-urls.mjs [--out=dead-images.json] [--concurrency=12] [--table=politicians]
+ *   node scripts/check-image-urls.mjs --host=akleg.gov            # one host only
+ *   node scripts/check-image-urls.mjs --skip-host=pub-….r2.dev     # e.g. leave our own bucket out
+ *
+ * Requests carry the headers Chrome sends for a cross-site <img> — Referer,
+ * Sec-Fetch-Dest: image and friends — because hotlink protection keys on them.
+ * akleg.gov answers a bare request with the photo and a request with a Referer
+ * with an HTML page, which Chrome then blocks; a probe without the headers
+ * calls that URL alive.
  */
 import { createClient } from '@supabase/supabase-js'
 import { writeFileSync } from 'node:fs'
@@ -42,6 +50,10 @@ const OUT = arg('out', './dead-images.json')
 const CONCURRENCY = Number(arg('concurrency', '12'))
 const PER_HOST = 2
 const TABLES = arg('table', 'politicians,candidates').split(',')
+const ONLY_HOST = arg('host', null)
+const SKIP_HOSTS = arg('skip-host', '').split(',').filter(Boolean)
+// The site the photos are embedded on; hotlink protection compares against it.
+const REFERER = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://getpoli.app/'
 
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
 
@@ -54,12 +66,21 @@ for (const table of TABLES) {
     if (data.length < 1000) break
   }
 }
-const urls = [...new Set(rows.map((r) => r.image_url))]
-const count = (t) => rows.filter((r) => r.table === t).length
+const hostOf = (u) => { try { return new URL(u).host } catch { return '(invalid URL)' } }
+const wanted = (u) => (ONLY_HOST ? hostOf(u) === ONLY_HOST : !SKIP_HOSTS.includes(hostOf(u)))
+const urls = [...new Set(rows.map((r) => r.image_url))].filter(wanted)
+const count = (t) => rows.filter((r) => r.table === t && wanted(r.image_url)).length
 console.log(`${rows.length} rows with image_url (${TABLES.map((t) => `${count(t)} ${t}`).join(', ')}); ${urls.length} distinct URLs\n`)
 
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36'
-const hostOf = (u) => { try { return new URL(u).host } catch { return '(invalid URL)' } }
+const IMG_HEADERS = {
+  'user-agent': UA,
+  accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+  referer: REFERER,
+  'sec-fetch-dest': 'image',
+  'sec-fetch-mode': 'no-cors',
+  'sec-fetch-site': 'cross-site',
+}
 
 async function attempt(url) {
   const ctl = new AbortController()
@@ -67,7 +88,7 @@ async function attempt(url) {
   try {
     // GET, not HEAD: hosts answer HEAD differently or not at all, and the
     // Cross-Origin-Resource-Policy header only reliably appears on GET.
-    const r = await fetch(url, { redirect: 'follow', signal: ctl.signal, headers: { 'user-agent': UA, accept: 'image/avif,image/webp,image/*,*/*;q=0.8' } })
+    const r = await fetch(url, { redirect: 'follow', signal: ctl.signal, headers: IMG_HEADERS })
     try { await r.body?.cancel() } catch {}
     return { status: r.status, ct: (r.headers.get('content-type') ?? '').split(';')[0].trim(), corp: r.headers.get('cross-origin-resource-policy') ?? '' }
   } catch (e) {
@@ -152,7 +173,7 @@ for (const [h, b] of [...byHost].sort((a, c) => c[1].dead - a[1].dead || c[1].to
 }
 console.log(`(${[...byHost.values()].filter((b) => !b.dead && !b.chain && !b.unreachable).length} host(s) with nothing to report not listed)`)
 
-const flagged = rows.filter((r) => results.get(r.image_url)?.bucket !== 'ok').map((r) => { const x = results.get(r.image_url); return { ...r, bucket: x.bucket, why: x.why, status: x.status } })
+const flagged = rows.filter((r) => wanted(r.image_url) && results.get(r.image_url)?.bucket !== 'ok').map((r) => { const x = results.get(r.image_url); return { ...r, bucket: x.bucket, why: x.why, status: x.status } })
 writeFileSync(OUT, JSON.stringify(flagged, null, 1))
 const n = (bucket) => [...results.values()].filter((r) => r.bucket === bucket).length
 const nr = (bucket) => flagged.filter((r) => r.bucket === bucket).length
