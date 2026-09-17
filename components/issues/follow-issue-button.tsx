@@ -7,23 +7,39 @@ import { trackEvent } from '@/lib/utils/analytics'
 
 interface FollowIssueButtonProps {
   issueId: string
-  initialFollowing: boolean
+  /** Optional: the button asks /api/issue-follow itself once it knows who is signed in. */
+  initialFollowing?: boolean
   initialCount?: number
   className?: string
 }
 
-export function FollowIssueButton({ issueId, initialFollowing, initialCount = 0, className }: FollowIssueButtonProps) {
+export function FollowIssueButton({ issueId, initialFollowing = false, initialCount = 0, className }: FollowIssueButtonProps) {
   const [following, setFollowing] = useState(initialFollowing)
   const [count, setCount] = useState(initialCount)
   const [loading, setLoading] = useState(false)
 
   const [userId, setUserId] = useState<string | null>(null)
 
+  // Resolve the signed-in user and whether they follow this issue here, on the
+  // client, so the issue page itself never reads cookies and can stay in its
+  // hourly static cache.
   useEffect(() => {
+    let cancelled = false
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) setUserId(user.id)
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user || cancelled) return
+      setUserId(user.id)
+      try {
+        const res = await fetch('/api/issue-follow')
+        if (!res.ok) return
+        const data = await res.json()
+        const followed: string[] = Array.isArray(data) ? data : data.followed ?? []
+        if (!cancelled) setFollowing(followed.includes(issueId))
+      } catch {
+        // Leave the initial state; the toggle still works.
+      }
     })
+    return () => { cancelled = true }
   }, [issueId])
 
   async function handleToggle() {

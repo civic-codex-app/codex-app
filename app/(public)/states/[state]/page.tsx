@@ -13,6 +13,17 @@ import { StatePoliticianList } from '@/components/states/state-politician-list'
 
 export const revalidate = 1800
 
+/**
+ * On-demand ISR. Without generateStaticParams a dynamic segment renders on
+ * every request no matter what revalidate says — checked against the
+ * production build: Cache-Control no-store, no x-nextjs-cache header.
+ * Returning no params prerenders nothing at build time and caches each state
+ * page for revalidate seconds after its first visitor.
+ */
+export async function generateStaticParams(): Promise<{ state: string }[]> {
+  return []
+}
+
 interface PageProps {
   params: Promise<{ state: string }>
 }

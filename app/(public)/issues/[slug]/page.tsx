@@ -2,24 +2,34 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
-import { stanceBucket, stanceDisplayBadge, STANCE_STYLES } from '@/lib/utils/stances'
-import type { IssueRow, IssueStanceWithPoliticianRow } from '@/lib/types/supabase'
+import type { IssueRow } from '@/lib/types/supabase'
 import { ISSUE_EXPLAINERS } from '@/lib/data/educational-content'
-import { StanceGroup, type StanceEntry } from '@/components/issues/stance-group'
+import { StanceGroup } from '@/components/issues/stance-group'
+import { getIssueStanceGroups, trimEntry, INITIAL_ENTRIES, STANCE_BUCKETS } from '@/lib/issues/stance-groups'
 import { FollowIssueButton } from '@/components/issues/follow-issue-button'
 import { EstimatedStanceNote } from '@/components/ui/estimated-stance-note'
 
 export const revalidate = 3600 // 1 hour
 
+/**
+ * On-demand ISR. Without generateStaticParams a dynamic segment renders on
+ * every request no matter what revalidate says — checked against the
+ * production build: no x-nextjs-cache header, Cache-Control no-store, about
+ * a second per hit. Returning no params prerenders nothing at build time (so
+ * the build does not depend on Supabase) and caches each issue page for
+ * revalidate seconds after its first visitor.
+ */
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return []
+}
+
 interface PageProps {
   params: Promise<{ slug: string }>
-  searchParams: Promise<{ party?: string; chamber?: string }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -67,173 +77,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   energy: 'Energy',
 }
 
-/**
- * Every stance row for the issue, past Supabase's 1000-row cap.
- *
- * One round trip for the count, then every page at once. Paging sequentially
- * meant nine dependent round trips for ~8,600 rows: about 9s per issue page on
- * its own, and with six visitors at once the issue pages took two minutes.
- * The ordering is what makes parallel ranges safe — without it, pages could
- * overlap or skip rows.
- */
-async function fetchAllStances(supabase: ReturnType<typeof createServiceRoleClient>, issueId: string) {
-  const PAGE = 1000
-  const { count, error: countError } = await supabase
-    .from('politician_issues')
-    .select('id', { count: 'exact', head: true })
-    .eq('issue_id', issueId)
-  if (countError || count === null) {
-    console.error('Failed to count stances:', countError?.message ?? 'no count')
-    return []
-  }
-  const pages = Math.ceil(count / PAGE)
-  const results = await Promise.all(
-    Array.from({ length: pages }, (_, i) =>
-      supabase
-        .from('politician_issues')
-        .select('stance, summary, politician_id, politicians:politician_id!inner(id, name, slug, party, chamber, state, title, image_url)')
-        .eq('issue_id', issueId)
-        .order('stance')
-        .order('id')
-        .range(i * PAGE, i * PAGE + PAGE - 1)
-    )
-  )
-  const all: IssueStanceWithPoliticianRow[] = []
-  for (const { data, error } of results) {
-    if (error) {
-      console.error('Failed to fetch stances:', error.message)
-      continue
-    }
-    all.push(...((data ?? []) as any as IssueStanceWithPoliticianRow[]))
-  }
-  return all
-}
-
-/** Patterns that indicate a generic/boilerplate summary */
-const GENERIC_PATTERNS = [
-  /^supports?\s+(this\s+)?issue/i,
-  /^opposes?\s+(this\s+)?issue/i,
-  /^has\s+(a\s+)?(mixed|neutral|unknown)\s+(stance|position)/i,
-  /^no\s+(known\s+)?(stance|position)/i,
-  /^position\s+(is\s+)?(unclear|unknown)/i,
-  /supports?\s+key\s+aspects?\s+of/i,
-  /opposes?\s+key\s+aspects?\s+of/i,
-  /generally\s+(supports?|opposes?|favors?)/i,
-  /estimated\s+position/i,
-  /based\s+on\s+party/i,
-  /^\w+\s+\w+\s+supports?\s+key\s+aspects/i, // "[Name] supports key aspects"
-  /^\w+\s+\w+\s+opposes?\s+key\s+aspects/i,
-  /^\w+\s+\w+\s+has\s+(a\s+)?(mixed|neutral)/i,
-  /^\w+\s+\w+\s+generally\s+(supports?|opposes?)/i,
-]
-
-function isGenericSummary(summary: string | null): boolean {
-  if (!summary || summary.trim().length === 0) return true
-  if (summary.trim().length < 20) return true
-  // Also treat as generic if it's a very common summary seen many times
-  return GENERIC_PATTERNS.some((p) => p.test(summary.trim()))
-}
-
-/**
- * Process stances into deduplicated entries grouped by bucket.
- * Politicians with identical summaries are collapsed into one entry.
- */
-function buildStanceGroups(stances: IssueStanceWithPoliticianRow[]) {
-  // Deduplicate by politician id
-  const seenPol = new Set<string>()
-  const deduped = stances.filter((s) => {
-    const polId = s.politicians?.id
-    if (!polId || seenPol.has(polId)) return false
-    seenPol.add(polId)
-    return true
-  })
-
-  const forBadge = stanceDisplayBadge('supports')
-  const mixedBadge = stanceDisplayBadge('mixed')
-  const againstBadge = stanceDisplayBadge('opposes')
-  const unknownBadge = stanceDisplayBadge('unknown')
-  const BUCKET_CONFIG = {
-    supports: { label: 'Favors', style: { ...STANCE_STYLES.supports, bg: 'bg-emerald-50', text: 'text-emerald-700', color: forBadge.color } },
-    mixed: { label: 'Mixed', style: { ...STANCE_STYLES.mixed, bg: 'bg-amber-50', text: 'text-amber-700', color: mixedBadge.color } },
-    opposes: { label: 'Opposes', style: { ...STANCE_STYLES.opposes, bg: 'bg-red-50', text: 'text-red-700', color: againstBadge.color } },
-    unknown: { label: 'Unknown', style: { ...STANCE_STYLES.unknown, bg: 'bg-gray-50', text: 'text-gray-500', color: unknownBadge.color } },
-  }
-
-  // Group into buckets, merging neutral into mixed
-  const buckets: Record<string, IssueStanceWithPoliticianRow[]> = {
-    supports: [],
-    mixed: [],
-    opposes: [],
-    unknown: [],
-  }
-  for (const s of deduped) {
-    let bucket = stanceBucket(s.stance)
-    if (bucket === 'neutral') bucket = 'mixed'
-    buckets[bucket].push(s)
-  }
-
-  const result: Record<string, { entries: StanceEntry[]; totalCount: number; label: string; style: typeof STANCE_STYLES.supports }> = {}
-
-  for (const [bucket, items] of Object.entries(buckets)) {
-    if (items.length === 0) continue
-
-    const config = BUCKET_CONFIG[bucket as keyof typeof BUCKET_CONFIG]
-
-    // Group by normalized summary
-    const summaryMap = new Map<string, StanceEntry>()
-    const noSummaryPols: StanceEntry['politicians'] = []
-
-    for (const s of items) {
-      const pol = s.politicians!
-      const polData = {
-        id: pol.id,
-        name: pol.name,
-        slug: pol.slug,
-        party: pol.party,
-        chamber: pol.chamber,
-        state: pol.state,
-        title: pol.title,
-        image_url: pol.image_url,
-      }
-
-      if (isGenericSummary(s.summary)) {
-        noSummaryPols.push(polData)
-      } else {
-        // Normalize: lowercase, strip trailing punctuation, collapse whitespace,
-        // remove common filler words to catch near-identical summaries
-        const key = s.summary!.trim().toLowerCase()
-          .replace(/[.,;:!?]+$/g, '')
-          .replace(/\s+/g, ' ')
-          .replace(/\b(the|a|an|of|and|in|on|for|to|is|has|with|their|this|that)\b/g, '')
-          .replace(/\b(\w{4,})s\b/g, '$1')  // naive depluralize (5+ char words) to merge "protections"/"protection"
-          .replace(/\s+/g, ' ')
-          .trim()
-        const existing = summaryMap.get(key)
-        if (existing) {
-          existing.politicians.push(polData)
-        } else {
-          summaryMap.set(key, { summary: s.summary!.trim(), politicians: [polData] })
-        }
-      }
-    }
-
-    // Unique summaries first (sorted by politician count desc), then no-summary group
-    const entries: StanceEntry[] = Array.from(summaryMap.values())
-      .sort((a, b) => b.politicians.length - a.politicians.length)
-
-    if (noSummaryPols.length > 0) {
-      entries.push({ summary: null, politicians: noSummaryPols })
-    }
-
-    result[bucket] = { entries, totalCount: items.length, label: config.label, style: config.style }
-  }
-
-  return result
-}
-
-export default async function IssuePage({ params, searchParams }: PageProps) {
+export default async function IssuePage({ params }: PageProps) {
   const { slug } = await params
-  const sp = await searchParams
   const supabase = createServiceRoleClient()
 
   const { data: issueData, error: issueError } = await supabase.from('issues').select('*').eq('slug', slug).single()
@@ -248,22 +93,10 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     .select('*', { count: 'exact', head: true })
     .eq('issue_id', issue.id)
 
-  let isFollowing = false
-  try {
-    const authClient = await createClient()
-    const { data: { user } } = await authClient.auth.getUser()
-    if (user) {
-      const { data: followData } = await authClient
-        .from('issue_follows')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('issue_id', issue.id)
-        .maybeSingle()
-      isFollowing = !!followData
-    }
-  } catch {
-    // Auth check failed, continue without follow state
-  }
+  // Whether the visitor follows this issue is resolved in the FollowIssueButton
+  // on the client. Reading cookies here would make the page render on every
+  // request — ~8,600 rows each time — and silently defeat the hourly
+  // revalidate above.
 
   // Stance types grouped by bucket
   const supportStances = ['strongly_supports', 'supports', 'leans_support']
@@ -277,7 +110,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     return q
   }
 
-  const [totalRes, supportsRes, opposesRes, allStances,
+  const [totalRes, supportsRes, opposesRes, stanceGroups,
     demTotalR, demSupR, demOppR,
     gopTotalR, gopSupR, gopOppR,
     indTotalR, indSupR, indOppR,
@@ -285,7 +118,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     countQ(),
     countQ({ stance: supportStances }),
     countQ({ stance: opposeStances }),
-    fetchAllStances(supabase, issue.id),
+    getIssueStanceGroups(supabase, issue.id),
     countQ({ party: 'democrat' }),
     countQ({ party: 'democrat', stance: supportStances }),
     countQ({ party: 'democrat', stance: opposeStances }),
@@ -310,9 +143,6 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
   const indTotal = indTotalR.count ?? 0
   if (indTotal > 0) partyStats.independent = { total: indTotal, supports: indSupR.count ?? 0, opposes: indOppR.count ?? 0, mixed: indTotal - (indSupR.count ?? 0) - (indOppR.count ?? 0) }
 
-  // Build deduplicated stance groups
-  const stanceGroups = buildStanceGroups(allStances)
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -322,8 +152,6 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
     about: { '@type': 'Thing', name: issue.name, description: issue.description },
     isPartOf: { '@type': 'WebSite', name: 'Poli', url: 'https://getpoli.app' },
   }
-
-  const bucketOrder = ['supports', 'mixed', 'opposes', 'unknown'] as const
 
   return (
     <>
@@ -354,7 +182,7 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
             {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--poli-sub)]" />}
             {issue.name}
           </h1>
-          <FollowIssueButton issueId={issue.id} initialFollowing={isFollowing} initialCount={issueFollowCount ?? 0} className="mt-2 flex-shrink-0" />
+          <FollowIssueButton issueId={issue.id} initialCount={issueFollowCount ?? 0} className="mt-2 flex-shrink-0" />
         </div>
 
         {issue.description && (
@@ -465,17 +293,20 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
         <EstimatedStanceNote className="mb-6" />
 
         {/* Stance groups: Progressive / Mixed / Conservative / Unknown */}
-        {bucketOrder.map((bucket) => {
+        {STANCE_BUCKETS.map((bucket) => {
           const group = stanceGroups[bucket]
           if (!group) return null
           return (
             <StanceGroup
               key={bucket}
+              issueSlug={slug}
+              bucket={bucket}
               label={group.label}
               color={group.style.color}
               bgClass={group.style.bg}
               textClass={group.style.text}
-              entries={group.entries}
+              entries={group.entries.slice(0, INITIAL_ENTRIES).map(trimEntry)}
+              entryCount={group.entries.length}
               totalCount={group.totalCount}
             />
           )
