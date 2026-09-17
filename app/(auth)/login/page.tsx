@@ -9,7 +9,12 @@ import { Button } from '@/components/ui/button'
 function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const rawRedirect = searchParams.get('redirectTo') ?? '/dashboard'
+  // `redirect` is accepted alongside `redirectTo` because three server-side
+  // guards emitted the former while this only ever read the latter, so signing
+  // in from /admin, /ballot or /ballot-scorecard silently dropped the
+  // destination and landed on /dashboard. Those emitters are fixed; this keeps
+  // any straggler working instead of failing quietly.
+  const rawRedirect = searchParams.get('redirectTo') ?? searchParams.get('redirect') ?? '/dashboard'
   // Prevent open redirect — only allow relative paths
   const redirectTo = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/dashboard'
   const [email, setEmail] = useState('')

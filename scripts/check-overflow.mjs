@@ -22,19 +22,53 @@
 import puppeteer from 'puppeteer-core'
 import { existsSync } from 'node:fs'
 
-const arg = (n, d) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || `--${n}=${d}`).split('=')[1]
+// Split on the FIRST '=' only. Using .split('=')[1] truncated any value
+// containing one, which silently cut the route list short at
+// "/compare?a=lisa-murkowski&b=..." and made a 32-route sweep look like it
+// had passed after 5.
+const arg = (n, d) => {
+  const hit = process.argv.find((a) => a.startsWith(`--${n}=`))
+  return hit === undefined ? d : hit.slice(`--${n}=`.length)
+}
 const BASE = arg('base', 'http://localhost:3000')
 const WIDTHS = arg('widths', '375,768,1440').split(',').map(Number)
 
+// Every public route. Dynamic segments use real ids so the page renders with
+// content rather than a not-found. Auth-gated routes are included too: they
+// redirect, and the report says so, which is itself worth knowing.
 const DEFAULT_ROUTES = [
   '/',
+  '/directory',
+  '/politicians/lisa-murkowski',
+  '/compare',
+  '/compare?a=lisa-murkowski&b=bernie-sanders',
+  '/issues',
+  '/issues/climate-and-environment',
+  '/issues/map',
+  '/insights',
+  '/insights/money-map',
+  '/elections',
+  '/elections/countdown',
   '/elections/il-senate-2026', // 20 candidates — the heaviest race
   '/elections/ny-12-house-2026',
-  '/politicians/lisa-murkowski',
-  '/issues/climate-and-environment',
-  '/insights',
+  '/states',
   '/bills',
   '/report-cards',
+  '/polls',
+  '/feed',
+  '/community',
+  '/ballot',
+  '/quiz',
+  '/contribute',
+  '/contribute/suggest',
+  '/contribute/tip',
+  '/contact',
+  '/data-sources',
+  '/privacy',
+  '/terms',
+  '/login',
+  '/signup',
+  '/forgot-password',
 ]
 const ROUTES = arg('routes', DEFAULT_ROUTES.join(',')).split(',')
 
@@ -48,25 +82,46 @@ if (!CHROME) {
   process.exit(1)
 }
 
-const browser = await puppeteer.launch({
-  executablePath: CHROME,
-  headless: 'new',
-  args: ['--no-sandbox', '--hide-scrollbars'],
-})
+const launch = () =>
+  puppeteer.launch({
+    executablePath: CHROME,
+    headless: 'new',
+    args: ['--no-sandbox', '--hide-scrollbars', '--disable-dev-shm-usage'],
+  })
+
+let browser = await launch()
+// One page, reused. Opening and closing a target per measurement killed the
+// browser session partway through a 32-route sweep ("Session with given id not
+// found"), which looks like a page bug but is just target churn.
+let page = await browser.newPage()
+
+async function recover() {
+  try { await browser.close() } catch {}
+  browser = await launch()
+  page = await browser.newPage()
+}
 
 let anyOverflow = false
+let failures = 0
 
 for (const route of ROUTES) {
   for (const width of WIDTHS) {
-    const page = await browser.newPage()
-    await page.setViewport({ width, height: 900, deviceScaleFactor: 1 })
-    try {
-      await page.goto(BASE + route, { waitUntil: 'networkidle2', timeout: 120000 })
-    } catch (e) {
-      console.log(`  ${route} @${width}  LOAD FAILED: ${e.message.slice(0, 60)}`)
-      await page.close()
-      continue
+    let loaded = false
+    for (let attempt = 0; attempt < 2 && !loaded; attempt++) {
+      try {
+        await page.setViewport({ width, height: 900, deviceScaleFactor: 1 })
+        await page.goto(BASE + route, { waitUntil: 'networkidle2', timeout: 120000 })
+        loaded = true
+      } catch (e) {
+        if (attempt === 0 && /Session|Target|detached|closed/i.test(e.message)) {
+          await recover()
+          continue
+        }
+        console.log(`  ${route.padEnd(42)} @${String(width).padEnd(5)} LOAD FAILED: ${e.message.slice(0, 60)}`)
+        failures++
+      }
     }
+    if (!loaded) continue
 
     const result = await page.evaluate(() => {
       const doc = document.documentElement
@@ -106,8 +161,14 @@ for (const route of ROUTES) {
       return { scrollWidth: doc.scrollWidth, clientWidth: doc.clientWidth, over, offenders: offenders.slice(0, 5) }
     })
 
+    // A route that redirects is measuring a different page than requested —
+    // say so, rather than reporting /login as though it were /dashboard.
+    const landed = new URL(page.url()).pathname + new URL(page.url()).search
+    const want = route.split('#')[0]
+    const redirected = landed !== want ? `  (redirected -> ${landed})` : ''
+
     const tag = result.over > 0 ? `OVERFLOW +${result.over}px` : 'ok'
-    console.log(`  ${route.padEnd(36)} @${String(width).padEnd(5)} ${result.clientWidth}px viewport, ${result.scrollWidth}px content  ${tag}`)
+    console.log(`  ${route.padEnd(42)} @${String(width).padEnd(5)} ${result.clientWidth}px viewport, ${result.scrollWidth}px content  ${tag}${redirected}`)
     if (result.over > 0) {
       anyOverflow = true
       for (const o of result.offenders) {
@@ -115,10 +176,10 @@ for (const route of ROUTES) {
         if (o.text) console.log(`          "${o.text}"`)
       }
     }
-    await page.close()
   }
 }
 
 await browser.close()
-console.log(`\n${anyOverflow ? 'horizontal overflow found' : 'no horizontal overflow at any tested width'}`)
-process.exit(anyOverflow ? 1 : 0)
+if (failures) console.log(`\n${failures} route/width combination(s) failed to load`)
+console.log(`${anyOverflow ? 'horizontal overflow found' : 'no horizontal overflow at any tested width'}`)
+process.exit(anyOverflow || failures ? 1 : 0)
