@@ -99,8 +99,8 @@ Central stance definitions used everywhere:
 - **0 voting records** — see Data Integrity below
 - **0 election results** — all 271 were deleted 2026-09-10 as fabricated (see below)
 - **22 issues** and **~188,848 `politician_issues` rows** (8,584 politicians × 22 issues)
-- **5,509 politicians with a photo** (4,659 on our R2 bucket, 850 on external
-  sites) after 571 dead `image_url`s were nulled on 2026-09-17 — see the page
+- **5,501 politicians with a photo** (4,659 on our R2 bucket, 842 on external
+  sites) after 579 dead `image_url`s were nulled on 2026-09-17 — see the page
   crawl below. 207 more point at hosts that omit their intermediate TLS
   certificate; those load in Chrome/Safari but not in Node, so an R2
   migration would skip them.
@@ -244,7 +244,13 @@ dynamic segments — update an id there rather than dropping a route. Signed
 out, the 31 dashboard and admin routes measure the login page, so both take
 `--login=email:password` or `--ephemeral-admin`, which creates an admin with a
 random password for the run and deletes it afterwards (a survivor of a
-crashed run is removed at the start of the next). After a branch switch,
+crashed run is removed at the start of the next). `verify:pages` fetches
+links two at a time on purpose: the dev server renders concurrent heavy pages
+far slower than in sequence (issue pages: 2–7s alone, 25–32s two at a time,
+timeouts six at a time). Pass `--concurrency=8` against a production build.
+Editing a layout while a sweep runs produces "Hydration failed" noise — the
+server HTML comes from one version of the module and the client bundle from
+the other — so re-run the affected routes before treating it as a bug. After a branch switch,
 restart `pnpm dev` before trusting a "still broken" result: the Turbopack
 watcher has been seen to stop picking up edits.
 
@@ -294,12 +300,17 @@ The first `verify:pages` run over 69 routes and 571 links, plus
   strip under a top bar. Admin tables scroll inside `overflow-x-auto`. The
   sidebar also linked to `/admin/voting-records` and `/admin/finance`, which
   never existed, and omitted `/admin/polls` and `/admin/inbox`, which did.
-- **571 politician/candidate photos were dead URLs** rendering as
+- **579 politician/candidate photos were dead URLs** rendering as
   broken-image icons (`<Image unoptimized>` has no fallback). Found with
   `scripts/check-image-urls.mjs`, which judges a URL the way Chrome does
-  (status, non-image body → ORB, CORP header, dead host, bad certificate),
-  and nulled with `scripts/clear-dead-image-urls.mjs` so the party mark
-  renders instead. Backup: `dead-images-backup-2026-09-17.json` (gitignored).
+  (status, non-image body → ORB, CORP header, dead host, bad certificate) and
+  sends the headers Chrome sends for a cross-site `<img>` — Referer and
+  `Sec-Fetch-Dest: image` — because hotlink protection keys on them:
+  akleg.gov serves a bare request the photo and a request with a Referer a
+  403, which is what the voter's browser gets. Nulled with
+  `scripts/clear-dead-image-urls.mjs` so the party mark renders instead.
+  Backups: `dead-images-backup-2026-09-17.json` and
+  `dead-images-hotlink-backup-2026-09-17.json` (gitignored).
   A first version of the probe reported 1,357 dead: 584 were our own R2
   bucket rate-limiting a 12-wide sweep and 240 were incomplete-certificate
   hosts. Per-host concurrency is 2 and 429s retry. Re-run it before acting.

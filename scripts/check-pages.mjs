@@ -28,7 +28,7 @@
  *   node scripts/check-pages.mjs --ephemeral-admin                    # same, with a throwaway admin
  *                                                                     # created for the run and deleted after
  *   node scripts/check-pages.mjs --routes-file=urls.txt --links=0    # e.g. every /politicians/[slug]
- *   node scripts/check-pages.mjs --cap=200 --concurrency=8
+ *   node scripts/check-pages.mjs --cap=200 --concurrency=8               # against a production build
  */
 import { readFileSync } from 'node:fs'
 import { arg, has } from './lib/cli.mjs'
@@ -40,7 +40,11 @@ const BASE = arg('base', 'http://localhost:3000').replace(/\/$/, '')
 const ORIGIN = new URL(BASE).origin
 const WIDTH = Number(arg('width', '1280'))
 const CAP = Number(arg('cap', '60'))
-const CONCURRENCY = Number(arg('concurrency', '6'))
+// Two at a time. The dev server renders concurrent heavy pages far slower
+// than in sequence: the 22 issue pages take 2-7s each alone, 25-32s each two
+// at a time, and time out at 120s six at a time. A timeout reported as a
+// failure is worse than a slower gate. Raise it for a production build.
+const CONCURRENCY = Number(arg('concurrency', '2'))
 const FOLLOW_LINKS = arg('links', '1') !== '0'
 let LOGIN = arg('login', null)
 let ephemeral = null
