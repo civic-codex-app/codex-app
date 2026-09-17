@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
+import { AvatarImage } from '@/components/ui/avatar-image'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { useTheme } from '@/lib/hooks/use-theme'
@@ -127,20 +127,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {profile && (
               <Link href="/account" className="no-underline">
                 <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)]">
-                  {profile.avatar_url ? (
-                    <Image
-                      src={profile.avatar_url}
-                      alt={profile.display_name ?? 'Avatar'}
-                      width={28}
-                      height={28}
-                      unoptimized
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-[var(--poli-badge-bg)]">
-                      <span className="text-xs font-semibold text-[var(--poli-sub)]">{userInitial}</span>
-                    </div>
-                  )}
+                  {/* Falls back to the initial when the avatar URL fails to load. */}
+                  <AvatarImage src={profile.avatar_url} alt={profile.display_name ?? userInitial} size={28} />
                 </div>
               </Link>
             )}
