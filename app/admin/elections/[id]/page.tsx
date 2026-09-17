@@ -37,7 +37,7 @@ export default async function EditElectionPage({ params }: PageProps) {
       </div>
 
       <div className="mt-12">
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-2xl font-bold">Races</h2>
           <Link
             href={`/admin/elections/${id}/races/new`}
@@ -47,7 +47,7 @@ export default async function EditElectionPage({ params }: PageProps) {
           </Link>
         </div>
 
-        <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
+        <div className="overflow-x-auto rounded-md border border-[var(--poli-border)]">
           <table className="w-full">
             <thead>
               <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">

@@ -142,7 +142,7 @@ export default async function AdminOverviewPage() {
       <div className="mt-10 grid gap-8 md:grid-cols-2">
         {/* Recent Politicians */}
         <div>
-          <div className="mb-4 flex items-center justify-between">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-sm font-semibold text-[var(--poli-sub)]">
               Recently Added Officials
             </h2>

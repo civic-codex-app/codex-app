@@ -64,7 +64,7 @@ export default async function AdminInboxPage({
       </p>
 
       {/* Status tabs */}
-      <div className="mb-4 flex gap-2">
+      <div className="mb-4 flex flex-wrap gap-2">
         {['', 'new', 'reviewed', 'resolved', 'dismissed'].map((s) => (
           <Link
             key={s}
@@ -82,7 +82,7 @@ export default async function AdminInboxPage({
       </div>
 
       {/* Type filter */}
-      <div className="mb-6 flex gap-2">
+      <div className="mb-6 flex flex-wrap gap-2">
         {['', ...Object.keys(TYPE_LABELS)].map((t) => (
           <Link
             key={t}

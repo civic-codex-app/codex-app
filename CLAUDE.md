@@ -99,6 +99,11 @@ Central stance definitions used everywhere:
 - **0 voting records** — see Data Integrity below
 - **0 election results** — all 271 were deleted 2026-09-10 as fabricated (see below)
 - **22 issues** and **~188,848 `politician_issues` rows** (8,584 politicians × 22 issues)
+- **5,501 politicians with a photo** (4,659 on our R2 bucket, 842 on external
+  sites) after 579 dead `image_url`s were nulled on 2026-09-17 — see the page
+  crawl below. 207 more point at hosts that omit their intermediate TLS
+  certificate; those load in Chrome/Safari but not in Node, so an R2
+  migration would skip them.
 
 > The figures "3,794 stances across 14 issues" appeared here for a long time and
 > were stale by ~50x. Two live bugs came from trusting them: `/insights` sized its
@@ -229,8 +234,25 @@ callers ignore `error` — so a broken query renders as an empty section.
 |---|---|
 | `pnpm verify:selects` | Any `.select()`, `.order()`, filter or insert/update payload naming a column or relationship that does not exist. Found 4 real outages, incl. the campaign-finance section hidden on every profile and the feed's poll card never rendering. |
 | `pnpm verify:rls` | Tables accepting anonymous writes. |
+| `pnpm verify:overflow` | Horizontal overflow at 375/768/1440 on every route, with the element responsible. Needs `pnpm dev` running. |
+| `pnpm verify:pages` | Every route in a real browser: HTTP status and redirects, uncaught exceptions and console errors (where React reports hydration mismatches), failed same-origin requests, images that rendered with no pixels, and every internal link followed. Site-wide nav links are always checked; long tails are sampled and the sample size printed. Needs `pnpm dev`. |
 
-Both need `.env.local` exported. Run them after schema changes.
+`verify:selects` and `verify:rls` need `.env.local` exported; run them after
+schema changes. The two browser gates share one route list,
+`scripts/lib/routes.mjs`, covering every `page.tsx` with real ids in the
+dynamic segments — update an id there rather than dropping a route. Signed
+out, the 31 dashboard and admin routes measure the login page, so both take
+`--login=email:password` or `--ephemeral-admin`, which creates an admin with a
+random password for the run and deletes it afterwards (a survivor of a
+crashed run is removed at the start of the next). `verify:pages` fetches
+links two at a time on purpose: the dev server renders concurrent heavy pages
+far slower than in sequence (issue pages: 2–7s alone, 25–32s two at a time,
+timeouts six at a time). Pass `--concurrency=8` against a production build.
+Editing a layout while a sweep runs produces "Hydration failed" noise — the
+server HTML comes from one version of the module and the client bundle from
+the other — so re-run the affected routes before treating it as a bug. After a branch switch,
+restart `pnpm dev` before trusting a "still broken" result: the Turbopack
+watcher has been seen to stop picking up edits.
 
 When probing RLS, note that **DELETE is useless as a test**: an RLS DELETE
 policy acts as a row filter, so a delete matching nothing returns success
@@ -238,6 +260,60 @@ whether or not a policy exists. Sweeping with it reports every table as
 writable. Use INSERT, with foreign keys pointed at a nonexistent uuid so a
 permitted write fails on the FK rather than on a cast — a cast error is raised
 before RLS is consulted and reads as a false negative.
+
+### Page crawl — 2026-09-17
+
+The first `verify:pages` run over 69 routes and 571 links, plus
+`verify:overflow --ephemeral-admin`, found and fixed:
+
+- **/insights** logged a hydration error for every dot in both hemicycles.
+  `ChamberComposition` rendered raw `Math.cos`/`Math.sin` output as SVG
+  attributes; Node and Chrome differ in the last digit. Coordinates are
+  rounded to two decimals. Rule: never render an unrounded float as an
+  attribute.
+- **/states/[state]** summed every `campaign_finance` row and listed "Top
+  Fundraisers" once per row — one row per politician *per cycle*, so a
+  senator with three cycles appeared three times. Now each politician's
+  latest cycle, labelled.
+- **/issues/[slug]** linked "Browse all N politicians" to `/politicians?issue=`,
+  which does not exist. Its HTML was **2.8MB**: all 8,584 politicians shipped
+  as props to the client-side stance groups with ~40 visible. Grouping now
+  lives in `lib/issues/stance-groups.ts`; the page sends the first six
+  entries per bucket with a six-politician preview each, and
+  `/api/issues/[slug]/stances` serves the rest on click (CDN-cacheable for an
+  hour). **118–182KB** now. The page also read cookies (follow state) and
+  awaited `searchParams` it never used — either one makes a page render per
+  request and silently defeats `export const revalidate`. Follow state is
+  resolved in the button on the client. Even then it kept rendering per
+  request, because **a dynamic segment without `generateStaticParams` is
+  never cached**, whatever `revalidate` says — the production build showed
+  `Cache-Control: no-store` and no `x-nextjs-cache` header. An empty
+  `generateStaticParams` fixes it: nothing prerenders at build, each page is
+  cached after its first visitor (MISS 5.3s, then HIT 3ms). Same fix on
+  `/states/[state]`. `/politicians/[slug]` declares `revalidate = 1800` but
+  reads the auth cookie, so it stays per-request by design. Rule: a page
+  with `revalidate` must not touch `cookies()`, `headers()` or
+  `searchParams`, and a dynamic one also needs `generateStaticParams`.
+- **Every admin screen overflowed at 375px** (and the list pages at 768px):
+  `AdminShell` rendered a fixed 224px sidebar and `ml-56` at every width.
+  The sidebar now appears at `lg`; below that the same links are a scrollable
+  strip under a top bar. Admin tables scroll inside `overflow-x-auto`. The
+  sidebar also linked to `/admin/voting-records` and `/admin/finance`, which
+  never existed, and omitted `/admin/polls` and `/admin/inbox`, which did.
+- **579 politician/candidate photos were dead URLs** rendering as
+  broken-image icons (`<Image unoptimized>` has no fallback). Found with
+  `scripts/check-image-urls.mjs`, which judges a URL the way Chrome does
+  (status, non-image body → ORB, CORP header, dead host, bad certificate) and
+  sends the headers Chrome sends for a cross-site `<img>` — Referer and
+  `Sec-Fetch-Dest: image` — because hotlink protection keys on them:
+  akleg.gov serves a bare request the photo and a request with a Referer a
+  403, which is what the voter's browser gets. Nulled with
+  `scripts/clear-dead-image-urls.mjs` so the party mark renders instead.
+  Backups: `dead-images-backup-2026-09-17.json` and
+  `dead-images-hotlink-backup-2026-09-17.json` (gitignored).
+  A first version of the probe reported 1,357 dead: 584 were our own R2
+  bucket rate-limiting a 12-wide sweep and 240 were incomplete-certificate
+  hosts. Per-host concurrency is 2 and 429s retry. Re-run it before acting.
 
 ### Still unverified
 - 2026 primary *outcomes* remain unconfirmed — FEC lists who filed, not who
@@ -314,6 +390,10 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 | `scripts/apply-migrations.mjs` | Applies pending migrations over a direct Postgres connection. Validates and rolls back by default; `--apply` commits. Needs `DATABASE_URL` |
 | `scripts/audit-anon-write-access.mjs` | `pnpm verify:rls` — probes every table for anonymous write access |
 | `scripts/verify-supabase-selects.mjs` | `pnpm verify:selects` — runs every literal query shape against the real schema |
+| `scripts/check-overflow.mjs` | `pnpm verify:overflow` — horizontal overflow per route and width. `--login`, `--ephemeral-admin` for gated pages |
+| `scripts/check-pages.mjs` | `pnpm verify:pages` — status, console errors, broken images, dead links across every route. `--routes-file=` for a DB-generated list, `--links=0` to skip the crawl |
+| `scripts/check-image-urls.mjs` | Probes every `image_url` as a browser would judge it; buckets dead / cert-chain / unreachable; writes rows to `--out` |
+| `scripts/clear-dead-image-urls.mjs` | Nulls the `dead` bucket from that file, each update conditioned on the URL being unchanged, after a backup |
 
 Required keys in `.env.local`: `FEC_API_KEY` ([api.data.gov/signup](https://api.data.gov/signup/), 60/hr)
 and `CONGRESS_API_KEY` ([api.congress.gov/sign-up](https://api.congress.gov/sign-up/), 20,000/hr).

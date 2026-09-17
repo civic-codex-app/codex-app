@@ -11,83 +11,34 @@
  * elements are the widest offenders, so the fix targets a specific node rather
  * than a guess.
  *
- * Drives the system Chrome via puppeteer-core — no browser download.
+ * Drives the system Chrome via puppeteer-core — no browser download. The route
+ * list lives in scripts/lib/routes.mjs and is shared with check-pages.
  *
  * Usage:
  *   pnpm dev            # in another terminal
  *   node scripts/check-overflow.mjs
  *   node scripts/check-overflow.mjs --base=http://localhost:3000 --widths=375,768,1440
  *   node scripts/check-overflow.mjs --routes=/elections/il-senate-2026,/
+ *   node scripts/check-overflow.mjs --login=you@example.com:password   # measure the gated pages signed in
+ *   node scripts/check-overflow.mjs --ephemeral-admin                   # same, with a throwaway admin
  */
-import puppeteer from 'puppeteer-core'
-import { existsSync } from 'node:fs'
+import { arg, has } from './lib/cli.mjs'
+import { launch, isSessionDeath, signIn } from './lib/browser.mjs'
+import { createEphemeralAdmin } from './lib/ephemeral-admin.mjs'
+import { ALL_ROUTES } from './lib/routes.mjs'
 
-// Split on the FIRST '=' only. Using .split('=')[1] truncated any value
-// containing one, which silently cut the route list short at
-// "/compare?a=lisa-murkowski&b=..." and made a 32-route sweep look like it
-// had passed after 5.
-const arg = (n, d) => {
-  const hit = process.argv.find((a) => a.startsWith(`--${n}=`))
-  return hit === undefined ? d : hit.slice(`--${n}=`.length)
-}
 const BASE = arg('base', 'http://localhost:3000')
 const WIDTHS = arg('widths', '375,768,1440').split(',').map(Number)
+const ROUTES = arg('routes', ALL_ROUTES.join(',')).split(',')
 
-// Every public route. Dynamic segments use real ids so the page renders with
-// content rather than a not-found. Auth-gated routes are included too: they
-// redirect, and the report says so, which is itself worth knowing.
-const DEFAULT_ROUTES = [
-  '/',
-  '/directory',
-  '/politicians/lisa-murkowski',
-  '/compare',
-  '/compare?a=lisa-murkowski&b=bernie-sanders',
-  '/issues',
-  '/issues/climate-and-environment',
-  '/issues/map',
-  '/insights',
-  '/insights/money-map',
-  '/elections',
-  '/elections/countdown',
-  '/elections/il-senate-2026', // 20 candidates — the heaviest race
-  '/elections/ny-12-house-2026',
-  '/states',
-  '/bills',
-  '/report-cards',
-  '/polls',
-  '/feed',
-  '/community',
-  '/ballot',
-  '/quiz',
-  '/contribute',
-  '/contribute/suggest',
-  '/contribute/tip',
-  '/contact',
-  '/data-sources',
-  '/privacy',
-  '/terms',
-  '/login',
-  '/signup',
-  '/forgot-password',
-]
-const ROUTES = arg('routes', DEFAULT_ROUTES.join(',')).split(',')
-
-const CHROME = [
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  '/Applications/Chromium.app/Contents/MacOS/Chromium',
-].find((p) => existsSync(p))
-
-if (!CHROME) {
-  console.error('No Chrome or Chromium found in /Applications. Install one, or point puppeteer at a binary.')
-  process.exit(1)
+let LOGIN = arg('login', null)
+let ephemeral = null
+if (has('ephemeral-admin')) {
+  ephemeral = await createEphemeralAdmin()
+  LOGIN = `${ephemeral.email}:${ephemeral.password}`
+  console.log(`created ephemeral admin ${ephemeral.email}`)
 }
-
-const launch = () =>
-  puppeteer.launch({
-    executablePath: CHROME,
-    headless: 'new',
-    args: ['--no-sandbox', '--hide-scrollbars', '--disable-dev-shm-usage'],
-  })
+const cleanup = async () => { if (ephemeral) await ephemeral.cleanup() }
 
 let browser = await launch()
 // One page, reused. Opening and closing a target per measurement killed the
@@ -95,10 +46,26 @@ let browser = await launch()
 // found"), which looks like a page bug but is just target churn.
 let page = await browser.newPage()
 
+// Cookies live on the browser, so a recovery relaunch has to sign in again.
+async function authenticate() {
+  if (!LOGIN) return
+  try {
+    const { email, landed } = await signIn(page, BASE, LOGIN)
+    console.log(`signed in as ${email}; landed on ${landed}\n`)
+  } catch (e) {
+    console.error(e.message)
+    await browser.close()
+    await cleanup()
+    process.exit(1)
+  }
+}
+await authenticate()
+
 async function recover() {
   try { await browser.close() } catch {}
   browser = await launch()
   page = await browser.newPage()
+  await authenticate()
 }
 
 let anyOverflow = false
@@ -113,7 +80,7 @@ for (const route of ROUTES) {
         await page.goto(BASE + route, { waitUntil: 'networkidle2', timeout: 120000 })
         loaded = true
       } catch (e) {
-        if (attempt === 0 && /Session|Target|detached|closed/i.test(e.message)) {
+        if (attempt === 0 && isSessionDeath(e)) {
           await recover()
           continue
         }
@@ -180,6 +147,8 @@ for (const route of ROUTES) {
 }
 
 await browser.close()
+await cleanup()
+if (ephemeral) console.log(`\nephemeral admin ${ephemeral.email} deleted`)
 if (failures) console.log(`\n${failures} route/width combination(s) failed to load`)
 console.log(`${anyOverflow ? 'horizontal overflow found' : 'no horizontal overflow at any tested width'}`)
 process.exit(anyOverflow || failures ? 1 : 0)

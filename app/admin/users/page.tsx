@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { AvatarImage } from '@/components/ui/avatar-image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { DemoUserActions } from '@/components/admin/demo-user-actions'
 
@@ -84,13 +84,11 @@ export default async function AdminUsersPage() {
               <tr key={u.id} className="border-b border-[var(--poli-border)] last:border-b-0 hover:bg-[var(--poli-hover)]">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
-                    {u.avatar_url ? (
-                      <Image src={u.avatar_url} alt={u.display_name || 'User avatar'} width={32} height={32} className="h-8 w-8 rounded-full object-cover" unoptimized />
-                    ) : (
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--poli-border)] text-xs font-medium text-[var(--poli-sub)]">
-                        {(u.display_name || u.email || '?')[0].toUpperCase()}
-                      </div>
-                    )}
+                    {/* AvatarImage falls back to the initial when the URL fails — Google
+                        avatar URLs expire and lh3.googleusercontent.com rate-limits. */}
+                    <div className="h-8 w-8 overflow-hidden rounded-full bg-[var(--poli-border)]">
+                      <AvatarImage src={u.avatar_url} alt={(u.display_name || u.email || '?').toUpperCase()} size={32} />
+                    </div>
                     <span className="font-medium text-[var(--poli-text)]">
                       {u.display_name || 'No name'}
                     </span>

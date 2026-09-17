@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import { AvatarImage } from '@/components/ui/avatar-image'
 import { usePathname, useRouter } from 'next/navigation'
 import { DonkeyIcon, ElephantIcon } from '@/components/icons/party-icons'
 import { createClient } from '@/lib/supabase/client'
@@ -255,20 +255,8 @@ export function Header() {
                 aria-haspopup="true"
               >
                 <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)] transition-colors hover:border-[var(--poli-text)]">
-                  {profile?.avatar_url ? (
-                    <Image
-                      src={profile.avatar_url}
-                      alt={profile.display_name ?? 'Avatar'}
-                      width={28}
-                      height={28}
-                      unoptimized
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-[var(--poli-badge-bg)]">
-                      <span className="text-xs font-semibold text-[var(--poli-sub)]">{userInitial}</span>
-                    </div>
-                  )}
+                  {/* Falls back to the initial when the avatar URL fails to load. */}
+                  <AvatarImage src={profile?.avatar_url} alt={profile?.display_name ?? userInitial} size={28} />
                 </div>
               </button>
 
