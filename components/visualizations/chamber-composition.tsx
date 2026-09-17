@@ -92,8 +92,13 @@ export function ChamberComposition({ seats, chamber, total }: ChamberComposition
 
       for (let i = 0; i < count; i++) {
         const angle = count > 1 ? Math.PI - startAngle - i * step : Math.PI / 2
-        const x = centerX + radius * Math.cos(angle)
-        const y = centerY - radius * Math.sin(angle)
+        // Rounded so the server and the browser serialise the same attribute.
+        // Math.cos/Math.sin differ in the last bit between JS engines, and
+        // React refuses to patch a mismatched SVG attribute at hydration —
+        // every dot on /insights logged a hydration error for x=210.5722363483484
+        // vs x="210.57223634834844".
+        const x = Math.round((centerX + radius * Math.cos(angle)) * 100) / 100
+        const y = Math.round((centerY - radius * Math.sin(angle)) * 100) / 100
         result.push({
           x,
           y,

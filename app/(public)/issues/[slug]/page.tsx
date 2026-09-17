@@ -67,28 +67,44 @@ const CATEGORY_LABELS: Record<string, string> = {
   energy: 'Energy',
 }
 
-/** Fetch all rows with pagination to bypass Supabase 1000-row limit */
+/**
+ * Every stance row for the issue, past Supabase's 1000-row cap.
+ *
+ * One round trip for the count, then every page at once. Paging sequentially
+ * meant nine dependent round trips for ~8,600 rows: about 9s per issue page on
+ * its own, and with six visitors at once the issue pages took two minutes.
+ * The ordering is what makes parallel ranges safe — without it, pages could
+ * overlap or skip rows.
+ */
 async function fetchAllStances(supabase: ReturnType<typeof createServiceRoleClient>, issueId: string) {
   const PAGE = 1000
-  let all: IssueStanceWithPoliticianRow[] = []
-  let from = 0
-  let done = false
-  while (!done) {
-    const { data, error } = await supabase
-      .from('politician_issues')
-      .select('*, politicians:politician_id!inner(id, name, slug, party, chamber, state, title, image_url)')
-      .eq('issue_id', issueId)
-      .order('stance')
-      .order('id')
-      .range(from, from + PAGE - 1)
+  const { count, error: countError } = await supabase
+    .from('politician_issues')
+    .select('id', { count: 'exact', head: true })
+    .eq('issue_id', issueId)
+  if (countError || count === null) {
+    console.error('Failed to count stances:', countError?.message ?? 'no count')
+    return []
+  }
+  const pages = Math.ceil(count / PAGE)
+  const results = await Promise.all(
+    Array.from({ length: pages }, (_, i) =>
+      supabase
+        .from('politician_issues')
+        .select('stance, summary, politician_id, politicians:politician_id!inner(id, name, slug, party, chamber, state, title, image_url)')
+        .eq('issue_id', issueId)
+        .order('stance')
+        .order('id')
+        .range(i * PAGE, i * PAGE + PAGE - 1)
+    )
+  )
+  const all: IssueStanceWithPoliticianRow[] = []
+  for (const { data, error } of results) {
     if (error) {
       console.error('Failed to fetch stances:', error.message)
-      break
+      continue
     }
-    const rows = (data ?? []) as any as IssueStanceWithPoliticianRow[]
-    all = all.concat(rows)
-    if (rows.length < PAGE) done = true
-    else from += PAGE
+    all.push(...((data ?? []) as any as IssueStanceWithPoliticianRow[]))
   }
   return all
 }
@@ -472,17 +488,20 @@ export default async function IssuePage({ params, searchParams }: PageProps) {
           </div>
         )}
 
-        {/* Browse all link */}
+        {/* Directory link. This used to promise "Browse all N politicians" and
+            point at /politicians?issue=…, a page that does not exist — every
+            issue page carried a 404. Everyone is already listed above, grouped
+            and expandable, so send people who want one person to the directory. */}
         {totalAll > 0 && (
           <div className="mb-10 rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] p-5 text-center">
             <p className="mb-3 text-[13px] text-[var(--poli-sub)]">
-              Want to see every politician&apos;s stance on {issue.name}?
+              Looking for a specific official?
             </p>
             <Link
-              href={`/politicians?issue=${slug}`}
+              href="/directory"
               className="inline-flex items-center gap-2 rounded-md border border-[var(--poli-border)] px-5 py-2.5 text-[13px] font-medium text-[var(--poli-text)] no-underline transition-all hover:border-[var(--poli-input-border)] hover:bg-[var(--poli-hover)]"
             >
-              Browse all {totalAll} politicians &rarr;
+              Browse the directory &rarr;
             </Link>
           </div>
         )}

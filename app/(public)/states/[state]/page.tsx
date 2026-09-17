@@ -63,6 +63,7 @@ interface Race {
 
 interface FinanceRecord {
   politician_id: string
+  cycle: string | null
   total_raised: number
   total_spent: number
   politician: { id: string; name: string; slug: string; party: string; image_url: string | null } | null
@@ -138,7 +139,7 @@ export default async function StateDetailPage({ params }: PageProps) {
       while (true) {
         const { data } = await supabase
           .from('campaign_finance')
-          .select('politician_id, total_raised, total_spent, politician:politician_id(id, name, slug, party, image_url)')
+          .select('politician_id, cycle, total_raised, total_spent, politician:politician_id(id, name, slug, party, image_url)')
           .in('politician_id', polIds)
           .order('total_raised', { ascending: false })
           .range(from, from + 499)
@@ -153,7 +154,18 @@ export default async function StateDetailPage({ params }: PageProps) {
 
   const politicians = politiciansResult
   const races = racesResult
-  const finance = financeResult
+
+  // campaign_finance holds one row per politician per FEC cycle. Summing them
+  // all counted a senator with five cycles on file five times against a
+  // freshman with one, and "Top Fundraisers" listed the same person once per
+  // cycle — React logged duplicate keys on /states/ak for exactly that. Keep
+  // each politician's most recent cycle, and say so in the UI.
+  const latestByPolitician = new Map<string, FinanceRecord>()
+  for (const f of financeResult) {
+    const prev = latestByPolitician.get(f.politician_id)
+    if (!prev || (Number(f.cycle) || 0) > (Number(prev.cycle) || 0)) latestByPolitician.set(f.politician_id, f)
+  }
+  const finance = [...latestByPolitician.values()]
 
   // Group politicians by chamber
   const chamberOrder = ['senate', 'governor', 'house', 'state_senate', 'state_house', 'mayor', 'city_council', 'county', 'school_board', 'other_local']
@@ -265,6 +277,10 @@ export default async function StateDetailPage({ params }: PageProps) {
               </div>
             </div>
 
+            <p className="-mt-3 mb-6 text-[11px] text-[var(--poli-faint)]">
+              Each politician's most recent FEC cycle on file. FEC covers federal candidates only.
+            </p>
+
             {topFundraisers.length > 0 && (
               <div className="space-y-3">
                 <div className="text-[11px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">Top Fundraisers</div>
@@ -297,6 +313,7 @@ export default async function StateDetailPage({ params }: PageProps) {
                           </span>
                           <span className="flex-shrink-0 text-[12px] tabular-nums text-[var(--poli-sub)]">
                             {formatCurrency(f.total_raised)}
+                            {f.cycle && <span className="ml-1 text-[var(--poli-faint)]">· {f.cycle}</span>}
                           </span>
                         </div>
                         <div className="h-[4px] w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
