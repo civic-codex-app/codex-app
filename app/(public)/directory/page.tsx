@@ -13,7 +13,17 @@ import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { STATE_NAMES } from '@/lib/constants/us-states'
 
-export const revalidate = 1800
+/**
+ * Per request: this page awaits searchParams (state, party, chamber and page), so it cannot be one
+ * cached document. It declared `revalidate = 1800` alongside that, which
+ * never applied — the same contradiction that cost /politicians/[slug] and /
+ * their caches, except here the page genuinely varies.
+ *
+ * Saying so is the honest state. Making it cacheable means moving the
+ * filtering to the client so the shell can be static, which is worth doing
+ * for the cheap ones and is tracked separately.
+ */
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Browse Politicians | Poli',

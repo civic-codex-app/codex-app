@@ -11,7 +11,17 @@ import { partyColor } from '@/lib/constants/parties'
 import { IssueSortSelect } from '@/components/filters/issue-sort-select'
 import { ISSUE_SUBTITLES } from '@/lib/data/educational-content'
 
-export const revalidate = 3600 // 1 hour
+/**
+ * Per request: this page awaits searchParams (category and sort), so it cannot be one
+ * cached document. It declared `revalidate = 3600` alongside that, which
+ * never applied — the same contradiction that cost /politicians/[slug] and /
+ * their caches, except here the page genuinely varies.
+ *
+ * Saying so is the honest state. Making it cacheable means moving the
+ * filtering to the client so the shell can be static, which is worth doing
+ * for the cheap ones and is tracked separately.
+ */
+export const dynamic = 'force-dynamic'
 
 /**
  * Per-issue stance tallies, aggregated by Postgres.

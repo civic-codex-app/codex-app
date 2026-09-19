@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
 
@@ -18,14 +18,23 @@ interface Suggestion {
 
 export function SearchInput({ size = 'default', basePath }: { size?: 'default' | 'lg'; basePath?: string }) {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const [isPending, startTransition] = useTransition()
   const timerRef = useRef<ReturnType<typeof setTimeout>>(null)
   const autocompleteTimerRef = useRef<ReturnType<typeof setTimeout>>(null)
-  const currentQuery = searchParams.get('q') ?? ''
-  const [value, setValue] = useState(currentQuery)
+  // Seeded after mount from the real URL rather than from useSearchParams.
+  // That hook opts a client component out of static prerendering, and with
+  // the homepage now cacheable it took the hero search box out of the served
+  // HTML entirely — the primary action on the page existed only after
+  // hydration. Reading location.search in an effect keeps ?q= working on
+  // /directory without that cost.
+  const [value, setValue] = useState('')
+
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q')
+    if (q) setValue(q)
+  }, [])
   const [suggestions, setSuggestions] = useState<Suggestion[]>([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -67,7 +76,7 @@ export function SearchInput({ size = 'default', basePath }: { size?: 'default' |
   // Directory filtering (existing behavior)
   function pushSearch(val: string) {
     startTransition(() => {
-      const params = new URLSearchParams(searchParams.toString())
+      const params = new URLSearchParams(window.location.search)
       if (val.trim()) {
         params.set('q', val.trim())
       } else {
@@ -84,11 +93,10 @@ export function SearchInput({ size = 'default', basePath }: { size?: 'default' |
     fetchSuggestions(val)
 
     // No basePath means the homepage, and HomePage() takes no arguments — it
-    // never reads `q`. The condition here was inverted: every keystroke
-    // scheduled router.push(`/?q=…`), re-rendering the entire homepage to
-    // produce byte-identical HTML, while competing with the /api/search
-    // request the user is actually waiting on. The dropdown already handles
-    // search here; Enter routes to /directory (see onKeyDown).
+    // never reads `q`. This used to push `/?q=…` on every keystroke,
+    // re-rendering the whole homepage for byte-identical HTML while competing
+    // with the /api/search request the user is waiting on. The dropdown is
+    // the search UI here; Enter falls through to the directory (below).
     if (!basePath) return
 
     if (timerRef.current) clearTimeout(timerRef.current)
@@ -101,7 +109,10 @@ export function SearchInput({ size = 'default', basePath }: { size?: 'default' |
     setShowDropdown(false)
     setActiveIndex(-1)
     if (inputRef.current) inputRef.current.focus()
-    if (!basePath) pushSearch('')
+    // Inverted until now: this cleared nothing on /directory, where ?q= is
+    // real, and pushed a pointless navigation on the homepage, where it is
+    // not. Clearing the box should clear the filter it set.
+    if (basePath) pushSearch('')
   }
 
   function selectSuggestion(suggestion: Suggestion) {
@@ -113,6 +124,19 @@ export function SearchInput({ size = 'default', basePath }: { size?: 'default' |
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    // Enter with nothing highlighted is a real search, and until now it did
+    // nothing at all: this returned early whenever the dropdown was closed or
+    // empty, so pressing Enter on the homepage was a dead key. Send it to the
+    // directory, which is the page that can actually filter by q.
+    if (e.key === "Enter" && activeIndex < 0) {
+      const q = value.trim()
+      if (!q) return
+      e.preventDefault()
+      setShowDropdown(false)
+      router.push(basePath ? `${basePath}?q=${encodeURIComponent(q)}` : `/directory?q=${encodeURIComponent(q)}`)
+      return
+    }
+
     if (!showDropdown || suggestions.length === 0) return
 
     if (e.key === 'ArrowDown') {

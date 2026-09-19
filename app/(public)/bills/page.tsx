@@ -5,7 +5,17 @@ import Link from 'next/link'
 import type { BillRow, BillStatRow, BillVoteRow } from '@/lib/types/supabase'
 import { BILL_PROCESS_EXPLAINER, BILL_STATUS_EXPLAINERS } from '@/lib/data/educational-content'
 
-export const revalidate = 600 // 10 minutes
+/**
+ * Per request: this page awaits searchParams (status and session filters), so it cannot be one
+ * cached document. It declared `revalidate = 600` alongside that, which
+ * never applied — the same contradiction that cost /politicians/[slug] and /
+ * their caches, except here the page genuinely varies.
+ *
+ * Saying so is the honest state. Making it cacheable means moving the
+ * filtering to the client so the shell can be static, which is worth doing
+ * for the cheap ones and is tracked separately.
+ */
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Bills & Legislation | Poli',

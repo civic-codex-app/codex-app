@@ -6,7 +6,17 @@ import { StateFilterSelect } from '@/components/community/state-filter-select'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
-export const revalidate = 300 // 5 min
+/**
+ * Per request: this page awaits searchParams (state filter and pagination), so it cannot be one
+ * cached document. It declared `revalidate = 300` alongside that, which
+ * never applied — the same contradiction that cost /politicians/[slug] and /
+ * their caches, except here the page genuinely varies.
+ *
+ * Saying so is the honest state. Making it cacheable means moving the
+ * filtering to the client so the shell can be static, which is worth doing
+ * for the cheap ones and is tracked separately.
+ */
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Community | Poli',

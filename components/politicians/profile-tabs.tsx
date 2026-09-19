@@ -322,10 +322,17 @@ function OverviewTab({
 }) {
   // Resolved on the client. This used to arrive as a prop from the server,
   // which meant the page had to read the auth cookie and so could never be
-  // cached. undefined while resolving is treated as signed-out for display:
-  // the branch below renders the same report card either way, blurred behind
-  // a signup prompt, so there is nothing to withhold and nothing to flash.
-  const signedIn = useSessionUser() != null
+  // cached.
+  //
+  // The three states are kept distinct on purpose. An earlier version
+  // collapsed `undefined` (still resolving) into signed-out, which meant a
+  // signed-in visitor was shown "Create Free Account" over a blurred report
+  // card on every profile load until getSession settled — telling an existing
+  // account holder to make an account. Now the card stays blurred with no
+  // prompt until we actually know.
+  const userId = useSessionUser()
+  const signedIn = userId != null
+  const sessionResolved = userId !== undefined
 
   const verifiedCount = stances.filter((s) => s.is_verified).length
 
@@ -371,6 +378,7 @@ function OverviewTab({
                 yearsInOffice={pol.since_year ? new Date().getFullYear() - pol.since_year : undefined}
               />
             </div>
+            {sessionResolved && (
             <div
               className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
               style={{
@@ -402,6 +410,7 @@ function OverviewTab({
                 Free forever. No credit card required.
               </p>
             </div>
+            )}
           </div>
         )}
       </div>

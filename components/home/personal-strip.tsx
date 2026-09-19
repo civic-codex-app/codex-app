@@ -1,25 +1,26 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
-import { StatePoliticianList } from '@/components/states/state-politician-list'
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
+import { StatePoliticianList } from "@/components/states/state-politician-list";
 
 type Rep = {
-  id: string
-  name: string
-  slug: string
-  party: string
-  state: string
-  chamber: string
-  title: string
-  image_url: string | null
-}
+  id: string;
+  name: string;
+  slug: string;
+  party: string;
+  state: string;
+  chamber: string;
+  title: string;
+  image_url: string | null;
+};
 
 type Payload = {
-  signedIn: boolean
-  hasQuizAnswers: boolean
-  representatives: Rep[]
-}
+  signedIn: boolean;
+  hasQuizAnswers: boolean;
+  representatives: Rep[];
+};
 
 /**
  * The signed-in part of the homepage, resolved on the client.
@@ -34,25 +35,39 @@ type Payload = {
  * will never see it. Nothing is reserved for it, so there is no gap either.
  */
 export function PersonalStrip() {
-  const [data, setData] = useState<Payload | null>(null)
+  const [data, setData] = useState<Payload | null>(null);
 
   useEffect(() => {
-    let cancelled = false
-    fetch('/api/me/home', { cache: 'no-store' })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((json: Payload | null) => {
-        if (!cancelled && json?.signedIn) setData(json)
-      })
-      .catch(() => {
-        // Signed out, offline, or the request failed: the homepage is
-        // complete without this, so there is nothing to recover from.
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [])
+    let cancelled = false;
 
-  if (!data) return null
+    // Ask the locally-held JWT first. Without this the homepage fires an
+    // uncacheable origin request on every view — including the signed-out
+    // majority, for whom the answer is always "nothing to show". getSession
+    // reads local storage; it costs no network.
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session || cancelled) return;
+      loadPersonal();
+    });
+
+    function loadPersonal() {
+      fetch("/api/me/home", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((json: Payload | null) => {
+          if (!cancelled && json?.signedIn) setData(json);
+        })
+        .catch(() => {
+          // Offline or the request failed: the homepage is complete without
+          // this, so there is nothing to recover from.
+        });
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!data) return null;
 
   return (
     <div className="mb-10 space-y-4 animate-fade-up">
@@ -61,14 +76,40 @@ export function PersonalStrip() {
           href="/dashboard"
           className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
           Dashboard
         </Link>
         <Link
           href="/ballot"
           className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M9 11l3 3L22 4" />
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+          </svg>
           My Ballot
         </Link>
       </div>
@@ -78,7 +119,11 @@ export function PersonalStrip() {
           <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
             Your Representatives
           </h2>
-          <StatePoliticianList politicians={data.representatives} pageSize={3} size="compact" />
+          <StatePoliticianList
+            politicians={data.representatives}
+            pageSize={3}
+            size="compact"
+          />
         </div>
       )}
 
@@ -88,10 +133,26 @@ export function PersonalStrip() {
           className="flex items-center justify-between rounded-xl border border-blue-500/20 bg-blue-500/5 p-4 no-underline transition-all hover:border-blue-500/40"
         >
           <div>
-            <div className="text-[14px] font-semibold text-[var(--poli-text)]">Your Top Matches</div>
-            <div className="text-[12px] text-[var(--poli-sub)]">See which officials align with your views</div>
+            <div className="text-[14px] font-semibold text-[var(--poli-text)]">
+              Your Top Matches
+            </div>
+            <div className="text-[12px] text-[var(--poli-sub)]">
+              See which officials align with your views
+            </div>
           </div>
-          <svg className="shrink-0 text-blue-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg
+            className="shrink-0 text-blue-400"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
         </Link>
       ) : (
         <Link
@@ -99,12 +160,28 @@ export function PersonalStrip() {
           className="flex items-center justify-between rounded-xl border border-[var(--poli-border)] bg-[var(--poli-hover)] p-4 no-underline transition-all hover:border-[var(--poli-text)]"
         >
           <div>
-            <div className="text-[14px] font-semibold text-[var(--poli-text)]">Take the Quiz</div>
-            <div className="text-[12px] text-[var(--poli-sub)]">Find out which officials match your views</div>
+            <div className="text-[14px] font-semibold text-[var(--poli-text)]">
+              Take the Quiz
+            </div>
+            <div className="text-[12px] text-[var(--poli-sub)]">
+              Find out which officials match your views
+            </div>
           </div>
-          <svg className="shrink-0 text-[var(--poli-faint)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg
+            className="shrink-0 text-[var(--poli-faint)]"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
         </Link>
       )}
     </div>
-  )
+  );
 }

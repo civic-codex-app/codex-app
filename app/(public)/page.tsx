@@ -26,6 +26,20 @@ const FEATURED_SLUGS = [
   'jd-vance-vp',
 ]
 
+/**
+ * NOTE ON TAGS, which applies to every unstable_cache in this app: nothing
+ * calls revalidateTag or revalidatePath anywhere, so the tags below never
+ * fire and these caches expire on time alone. They are not wrong — they are
+ * the correct tag to use once something invalidates — but do not read them as
+ * an existing invalidation path.
+ *
+ * Wiring them up is not a one-liner: politicians are written from client
+ * components straight to Supabase (app/admin/politicians/new/page.tsx,
+ * components/admin/politician-edit-form.tsx), and revalidateTag is
+ * server-only, so it needs an admin-guarded endpoint the write calls
+ * afterwards.
+ */
+
 /** The six featured officials, in display order. Cached: the list is a constant. */
 const getFeatured = unstable_cache(
   async () => {

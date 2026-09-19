@@ -11,7 +11,17 @@ import { FinanceHighlightCard } from '@/components/feed/finance-highlight-card'
 import { getCachedNews } from '@/lib/utils/news'
 import Link from 'next/link'
 
-export const revalidate = 120 // 2 minutes
+/**
+ * Per request: this page awaits searchParams (party, state and pagination), so it cannot be one
+ * cached document. It declared `revalidate = 120` alongside that, which
+ * never applied — the same contradiction that cost /politicians/[slug] and /
+ * their caches, except here the page genuinely varies.
+ *
+ * Saying so is the honest state. Making it cacheable means moving the
+ * filtering to the client so the shell can be static, which is worth doing
+ * for the cheap ones and is tracked separately.
+ */
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title: 'Activity Feed | Poli',
