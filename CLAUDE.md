@@ -253,7 +253,15 @@ far slower than in sequence (issue pages: 2–7s alone, 25–32s two at a time,
 timeouts six at a time). Pass `--concurrency=8` against a production build.
 Editing a layout while a sweep runs produces "Hydration failed" noise — the
 server HTML comes from one version of the module and the client bundle from
-the other — so re-run the affected routes before treating it as a bug. After a branch switch,
+the other — so re-run the affected routes before treating it as a bug.
+`verify:pages` also ignores two things it causes itself, printing the reason
+rather than failing: HTTP 429 from our own API (69 routes in a burst crosses
+a 30-writes-a-minute limit no visitor would), and supabase-js's
+`lock:sb-*-auth-token` being stolen when the sweep navigates mid-hand-off.
+That second one is **not** several browser clients competing —
+`@supabase/ssr` 0.5.2 returns one cached client in the browser, and no
+"Multiple GoTrueClient instances" warning appears; it is one client
+interrupted, on a page that still renders. After a branch switch,
 restart `pnpm dev` before trusting a "still broken" result: the Turbopack
 watcher has been seen to stop picking up edits.
 
