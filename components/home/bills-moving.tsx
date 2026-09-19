@@ -2,7 +2,20 @@ import Link from 'next/link'
 import { Card, Chip, SectionLabel } from '@/components/app/surface'
 
 /**
- * "Bills moving now".
+ * "Latest in Congress".
+ *
+ * NOT "Bills moving now", which is what the design calls it and what this
+ * shipped as for one commit. Measured against the data: exactly ONE of the 175
+ * bills has any recorded action in the last 30 days, three of the four cards
+ * shown here last moved 67 days ago, and 105 of 175 are already signed into
+ * law. A strip headed "moving now" over a bill that last moved in July is a
+ * small lie told confidently, which is the kind this project keeps finding.
+ *
+ * So the heading says what is true, and every card carries the date of its
+ * last action. The reader can then judge the staleness themselves rather than
+ * being told it is fresh. If bill actions are ever re-pulled on a cron, the
+ * honest heading may become "moving now" again — but the heading follows the
+ * data, not the other way round.
  *
  * The design's bill cards lead with a plain-English sentence rather than the
  * official title — "Caps insulin at $35 for people on Medicare" instead of
@@ -36,6 +49,22 @@ export type BillCard = {
   title: string
   summary: string | null
   status: string
+  last_action_date: string | null
+}
+
+/** "Jul 14" — the date is the point, the year only when it is not this one. */
+function actionDate(iso: string | null): string | null {
+  if (!iso) return null
+  const [y, m, d] = iso.split('-').map(Number)
+  if (!y || !m || !d) return null
+  const dt = new Date(Date.UTC(y, m - 1, d))
+  const sameYear = y === new Date().getUTCFullYear()
+  return dt.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: sameYear ? undefined : 'numeric',
+    timeZone: 'UTC',
+  })
 }
 
 /**
@@ -73,7 +102,7 @@ export function BillsMoving({ bills }: { bills: BillCard[] }) {
           </Link>
         }
       >
-        Bills moving now
+        Latest in Congress
       </SectionLabel>
 
       <div className="space-y-3">
@@ -91,6 +120,11 @@ export function BillsMoving({ bills }: { bills: BillCard[] }) {
                 <p className="text-[15px] font-semibold leading-[1.4] text-[var(--poli-text)]">
                   {plainSentence(b)}
                 </p>
+                {actionDate(b.last_action_date) && (
+                  <p className="mt-2 text-[12px] text-[var(--poli-faint)]">
+                    Last action {actionDate(b.last_action_date)}
+                  </p>
+                )}
               </Card>
             </Link>
           )

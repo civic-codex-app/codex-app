@@ -73,17 +73,21 @@ const getNextElection = unstable_cache(
 /**
  * The bills that moved most recently.
  *
- * Ordered by last_action_date, which is what "moving now" means. Only bills
- * carrying a CRS summary are asked for: the card leads with the summary's
- * opening sentence, and one without a summary falls back to its official
- * title, which reads as a different kind of card next to the others.
+ * Ordered by last_action_date. Only bills carrying a CRS summary are asked
+ * for: the card leads with the summary's opening sentence, and one without a
+ * summary falls back to its official title, which reads as a different kind of
+ * card next to the others.
+ *
+ * The date comes back with them because the section is headed "Latest in
+ * Congress" rather than "moving now": one bill in 175 has moved in the last 30
+ * days, so each card shows when it actually last moved.
  */
 const getMovingBills = unstable_cache(
   async (): Promise<BillCard[]> => {
     const supabase = createServiceRoleClient()
     const { data, error } = await supabase
       .from('bills')
-      .select('id, number, title, summary, status')
+      .select('id, number, title, summary, status, last_action_date')
       .not('summary', 'is', null)
       .order('last_action_date', { ascending: false, nullsFirst: false })
       .limit(4)
