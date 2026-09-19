@@ -1,54 +1,151 @@
-import Link from 'next/link'
-import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import Link from "next/link";
+import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { RelativeTime } from "@/components/ui/relative-time";
 
 /** True only for an absolute http(s) URL — anything else would resolve relative to our origin. */
 function isAbsoluteUrl(value: string | null | undefined): boolean {
-  if (!value) return false
+  if (!value) return false;
   try {
-    const u = new URL(value)
-    return u.protocol === 'http:' || u.protocol === 'https:'
+    const u = new URL(value);
+    return u.protocol === "http:" || u.protocol === "https:";
   } catch {
-    return false
+    return false;
   }
 }
 
 // Issue pill colors by category — avoids the all-blue-looks-Democrat problem
-const ISSUE_PILL_COLORS: Record<string, { bg: string; text: string; hover: string }> = {
-  'immigration-and-border-security': { bg: 'bg-orange-500/10', text: 'text-orange-400', hover: 'hover:bg-orange-500/20' },
-  'economy-and-jobs':                { bg: 'bg-emerald-500/10', text: 'text-emerald-400', hover: 'hover:bg-emerald-500/20' },
-  'healthcare-and-medicare':         { bg: 'bg-rose-500/10', text: 'text-rose-400', hover: 'hover:bg-rose-500/20' },
-  'climate-and-environment':         { bg: 'bg-green-500/10', text: 'text-green-400', hover: 'hover:bg-green-500/20' },
-  'gun-policy-and-2nd-amendment':    { bg: 'bg-red-500/10', text: 'text-red-400', hover: 'hover:bg-red-500/20' },
-  'education-and-student-debt':      { bg: 'bg-violet-500/10', text: 'text-violet-400', hover: 'hover:bg-violet-500/20' },
-  'national-defense-and-military':   { bg: 'bg-slate-500/10', text: 'text-slate-400', hover: 'hover:bg-slate-500/20' },
-  'foreign-policy-and-diplomacy':    { bg: 'bg-cyan-500/10', text: 'text-cyan-400', hover: 'hover:bg-cyan-500/20' },
-  'technology-and-ai-regulation':    { bg: 'bg-indigo-500/10', text: 'text-indigo-400', hover: 'hover:bg-indigo-500/20' },
-  'criminal-justice-reform':         { bg: 'bg-amber-500/10', text: 'text-amber-400', hover: 'hover:bg-amber-500/20' },
-  'social-security-and-medicare':    { bg: 'bg-teal-500/10', text: 'text-teal-400', hover: 'hover:bg-teal-500/20' },
-  'infrastructure-and-transportation': { bg: 'bg-yellow-500/10', text: 'text-yellow-400', hover: 'hover:bg-yellow-500/20' },
-  'housing-and-affordability':       { bg: 'bg-lime-500/10', text: 'text-lime-400', hover: 'hover:bg-lime-500/20' },
-  'energy-policy-and-oil-gas':       { bg: 'bg-orange-500/10', text: 'text-orange-400', hover: 'hover:bg-orange-500/20' },
-  'reproductive-rights':             { bg: 'bg-pink-500/10', text: 'text-pink-400', hover: 'hover:bg-pink-500/20' },
-  'lgbtq-rights':                    { bg: 'bg-fuchsia-500/10', text: 'text-fuchsia-400', hover: 'hover:bg-fuchsia-500/20' },
-  'drug-policy':                     { bg: 'bg-purple-500/10', text: 'text-purple-400', hover: 'hover:bg-purple-500/20' },
-  'voting-rights':                   { bg: 'bg-sky-500/10', text: 'text-sky-400', hover: 'hover:bg-sky-500/20' },
-  'taxes-and-spending':              { bg: 'bg-emerald-500/10', text: 'text-emerald-400', hover: 'hover:bg-emerald-500/20' },
-  'labor-and-unions':                { bg: 'bg-amber-500/10', text: 'text-amber-400', hover: 'hover:bg-amber-500/20' },
-  'privacy-and-surveillance':        { bg: 'bg-zinc-500/10', text: 'text-zinc-400', hover: 'hover:bg-zinc-500/20' },
-  'trade-and-tariffs':               { bg: 'bg-yellow-500/10', text: 'text-yellow-400', hover: 'hover:bg-yellow-500/20' },
-}
-const DEFAULT_PILL = { bg: 'bg-zinc-500/10', text: 'text-zinc-400', hover: 'hover:bg-zinc-500/20' }
+const ISSUE_PILL_COLORS: Record<
+  string,
+  { bg: string; text: string; hover: string }
+> = {
+  "immigration-and-border-security": {
+    bg: "bg-orange-500/10",
+    text: "text-orange-400",
+    hover: "hover:bg-orange-500/20",
+  },
+  "economy-and-jobs": {
+    bg: "bg-emerald-500/10",
+    text: "text-emerald-400",
+    hover: "hover:bg-emerald-500/20",
+  },
+  "healthcare-and-medicare": {
+    bg: "bg-rose-500/10",
+    text: "text-rose-400",
+    hover: "hover:bg-rose-500/20",
+  },
+  "climate-and-environment": {
+    bg: "bg-green-500/10",
+    text: "text-green-400",
+    hover: "hover:bg-green-500/20",
+  },
+  "gun-policy-and-2nd-amendment": {
+    bg: "bg-red-500/10",
+    text: "text-red-400",
+    hover: "hover:bg-red-500/20",
+  },
+  "education-and-student-debt": {
+    bg: "bg-violet-500/10",
+    text: "text-violet-400",
+    hover: "hover:bg-violet-500/20",
+  },
+  "national-defense-and-military": {
+    bg: "bg-slate-500/10",
+    text: "text-slate-400",
+    hover: "hover:bg-slate-500/20",
+  },
+  "foreign-policy-and-diplomacy": {
+    bg: "bg-cyan-500/10",
+    text: "text-cyan-400",
+    hover: "hover:bg-cyan-500/20",
+  },
+  "technology-and-ai-regulation": {
+    bg: "bg-indigo-500/10",
+    text: "text-indigo-400",
+    hover: "hover:bg-indigo-500/20",
+  },
+  "criminal-justice-reform": {
+    bg: "bg-amber-500/10",
+    text: "text-amber-400",
+    hover: "hover:bg-amber-500/20",
+  },
+  "social-security-and-medicare": {
+    bg: "bg-teal-500/10",
+    text: "text-teal-400",
+    hover: "hover:bg-teal-500/20",
+  },
+  "infrastructure-and-transportation": {
+    bg: "bg-yellow-500/10",
+    text: "text-yellow-400",
+    hover: "hover:bg-yellow-500/20",
+  },
+  "housing-and-affordability": {
+    bg: "bg-lime-500/10",
+    text: "text-lime-400",
+    hover: "hover:bg-lime-500/20",
+  },
+  "energy-policy-and-oil-gas": {
+    bg: "bg-orange-500/10",
+    text: "text-orange-400",
+    hover: "hover:bg-orange-500/20",
+  },
+  "reproductive-rights": {
+    bg: "bg-pink-500/10",
+    text: "text-pink-400",
+    hover: "hover:bg-pink-500/20",
+  },
+  "lgbtq-rights": {
+    bg: "bg-fuchsia-500/10",
+    text: "text-fuchsia-400",
+    hover: "hover:bg-fuchsia-500/20",
+  },
+  "drug-policy": {
+    bg: "bg-purple-500/10",
+    text: "text-purple-400",
+    hover: "hover:bg-purple-500/20",
+  },
+  "voting-rights": {
+    bg: "bg-sky-500/10",
+    text: "text-sky-400",
+    hover: "hover:bg-sky-500/20",
+  },
+  "taxes-and-spending": {
+    bg: "bg-emerald-500/10",
+    text: "text-emerald-400",
+    hover: "hover:bg-emerald-500/20",
+  },
+  "labor-and-unions": {
+    bg: "bg-amber-500/10",
+    text: "text-amber-400",
+    hover: "hover:bg-amber-500/20",
+  },
+  "privacy-and-surveillance": {
+    bg: "bg-zinc-500/10",
+    text: "text-zinc-400",
+    hover: "hover:bg-zinc-500/20",
+  },
+  "trade-and-tariffs": {
+    bg: "bg-yellow-500/10",
+    text: "text-yellow-400",
+    hover: "hover:bg-yellow-500/20",
+  },
+};
+const DEFAULT_PILL = {
+  bg: "bg-zinc-500/10",
+  text: "text-zinc-400",
+  hover: "hover:bg-zinc-500/20",
+};
 
 interface HotTopicsProps {
-  followedIssueIds?: string[]
+  followedIssueIds?: string[];
 }
 
 export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
-  const supabase = createServiceRoleClient()
+  const supabase = createServiceRoleClient();
 
   const { data: topics } = await supabase
-    .from('daily_topics')
-    .select(`
+    .from("daily_topics")
+    .select(
+      `
       id,
       title,
       summary,
@@ -57,24 +154,29 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
       published_at,
       issue_id,
       issues(name, slug)
-    `)
-    .eq('is_active', true)
-    .order('is_pinned', { ascending: false })
-    .order('published_at', { ascending: false })
-    .limit(8)
+    `,
+    )
+    .eq("is_active", true)
+    .order("is_pinned", { ascending: false })
+    .order("published_at", { ascending: false })
+    .limit(8);
 
-  if (!topics || topics.length === 0) return null
+  if (!topics || topics.length === 0) return null;
 
   // If user follows issues, prioritize those topics
-  let sorted = topics
+  let sorted = topics;
   if (followedIssueIds && followedIssueIds.length > 0) {
-    const followed = topics.filter(t => t.issue_id && followedIssueIds.includes(t.issue_id))
-    const rest = topics.filter(t => !t.issue_id || !followedIssueIds.includes(t.issue_id))
-    sorted = [...followed, ...rest]
+    const followed = topics.filter(
+      (t) => t.issue_id && followedIssueIds.includes(t.issue_id),
+    );
+    const rest = topics.filter(
+      (t) => !t.issue_id || !followedIssueIds.includes(t.issue_id),
+    );
+    sorted = [...followed, ...rest];
   }
 
   // Show top 4
-  const display = sorted.slice(0, 4)
+  const display = sorted.slice(0, 4);
 
   return (
     <div className="mb-12">
@@ -86,9 +188,14 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {display.map((topic) => {
-          const issue = topic.issues as unknown as { name: string; slug: string } | null
-          const timeAgo = getTimeAgo(topic.published_at)
-          const pill = issue ? (ISSUE_PILL_COLORS[issue.slug] ?? DEFAULT_PILL) : DEFAULT_PILL
+          const issue = topic.issues as unknown as {
+            name: string;
+            slug: string;
+          } | null;
+          const timeAgo = getTimeAgo(topic.published_at);
+          const pill = issue
+            ? (ISSUE_PILL_COLORS[issue.slug] ?? DEFAULT_PILL)
+            : DEFAULT_PILL;
 
           return (
             <div
@@ -109,7 +216,9 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
                     {issue.name}
                   </Link>
                 )}
-                <span className="text-[10px] text-[var(--poli-faint)]">{timeAgo}</span>
+                <span className="text-[10px] text-[var(--poli-faint)]">
+                  <RelativeTime iso={topic.published_at} initial={timeAgo} />
+                </span>
               </div>
 
               {/* Headline */}
@@ -117,7 +226,7 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
                 // Defence in depth for the CDATA bug fixed in
                 // lib/utils/news.ts: anything that is not an absolute http(s)
                 // URL would be resolved relative to our own origin and 404.
-                href={isAbsoluteUrl(topic.source_url) ? topic.source_url! : '#'}
+                href={isAbsoluteUrl(topic.source_url) ? topic.source_url! : "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mb-1 block break-words text-[14px] font-semibold leading-snug text-[var(--poli-text)] no-underline hover:underline"
@@ -139,19 +248,19 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
                 </div>
               )}
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 function getTimeAgo(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime()
-  const hours = Math.floor(diff / (1000 * 60 * 60))
-  if (hours < 1) return 'Just now'
-  if (hours < 24) return `${hours}h ago`
-  const days = Math.floor(hours / 24)
-  if (days === 1) return 'Yesterday'
-  return `${days}d ago`
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  if (hours < 1) return "Just now";
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return "Yesterday";
+  return `${days}d ago`;
 }

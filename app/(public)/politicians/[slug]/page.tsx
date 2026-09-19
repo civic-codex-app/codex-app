@@ -47,7 +47,12 @@ const getIssueCatalogSize = unstable_cache(
   { revalidate: 3600, tags: ['issues'] }
 )
 
-export const revalidate = 1800 // 30 minutes
+// 30 minutes is the ceiling, not the actual window. Next takes the SHORTEST
+// revalidate encountered during a render, and getCachedNews (lib/utils/news.ts)
+// caches for 600s — so this page's served Cache-Control is s-maxage=600 and it
+// refreshes every 10 minutes. That is the right behaviour for a page carrying
+// news, but the number here on its own is misleading.
+export const revalidate = 1800
 
 /**
  * On-demand ISR.
