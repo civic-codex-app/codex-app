@@ -54,10 +54,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FFFFFF' },
-    { media: '(prefers-color-scheme: dark)', color: '#0F172A' },
-  ],
+  // One value, matching the light default, because the app no longer follows
+  // the OS. A media-split themeColor would paint the browser chrome dark for
+  // anyone whose phone is in dark mode while the page itself is light.
+  // useTheme rewrites this meta tag after hydration for whoever has chosen
+  // dark, so the split only ever mattered before the first frame anyway.
+  themeColor: '#FAFAF8',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -88,7 +90,19 @@ export default function RootLayout({
           id="theme-init"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('poli-theme');if(t==='dark'){document.documentElement.classList.add('dark')}else if(t==='light'){document.documentElement.classList.add('light')}else{var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;document.documentElement.classList.add(d?'dark':'light')}}catch(e){}})()`,
+            // Light is the product default. A first-time visitor gets light
+            // whatever their phone is set to; only an explicit choice through
+            // the theme toggle, which is what writes poli-theme, turns the app
+            // dark. This used to fall back to prefers-color-scheme, so anyone
+            // whose device was in dark mode saw a dark app they had never asked
+            // for and could not tell was a default.
+            //
+            // Both halves of the decision have to agree. This script runs
+            // before first paint so the class is on <html> when the first
+            // pixels are drawn; lib/hooks/use-theme.ts repeats it after
+            // hydration for the store. If the two ever disagree the page
+            // changes colour a moment after it loads.
+            __html: `(function(){try{var t=localStorage.getItem('poli-theme');document.documentElement.classList.add(t==='dark'?'dark':'light')}catch(e){document.documentElement.classList.add('light')}})()`,
           }}
         />
         <script
