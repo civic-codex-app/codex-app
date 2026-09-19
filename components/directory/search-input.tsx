@@ -82,11 +82,17 @@ export function SearchInput({ size = 'default', basePath }: { size?: 'default' |
   function handleChange(val: string) {
     setValue(val)
     fetchSuggestions(val)
-    // Only push search params on the homepage (no basePath)
-    if (!basePath) {
-      if (timerRef.current) clearTimeout(timerRef.current)
-      timerRef.current = setTimeout(() => pushSearch(val), 300)
-    }
+
+    // No basePath means the homepage, and HomePage() takes no arguments — it
+    // never reads `q`. The condition here was inverted: every keystroke
+    // scheduled router.push(`/?q=…`), re-rendering the entire homepage to
+    // produce byte-identical HTML, while competing with the /api/search
+    // request the user is actually waiting on. The dropdown already handles
+    // search here; Enter routes to /directory (see onKeyDown).
+    if (!basePath) return
+
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => pushSearch(val), 300)
   }
 
   function handleClear() {

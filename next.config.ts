@@ -106,6 +106,14 @@ const nextConfig: NextConfig = {
     ]
   },
   experimental: {
+    // Reuse a route the visitor has already seen for 30s instead of
+    // refetching it. The default for dynamic routes is 0, and almost every
+    // route here is dynamic, so tapping Directory -> Issues -> Directory
+    // refetched Directory from the server the second time. No native tab bar
+    // does that. 30s covers the back-and-forth of a real session without
+    // holding stale civic data: anything a user mutates (follow, like) is
+    // client state anyway.
+    staleTimes: { dynamic: 30, static: 300 },
     serverActions: {
       bodySizeLimit: '2mb',
     },

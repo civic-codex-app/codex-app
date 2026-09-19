@@ -27,7 +27,8 @@
     "verify:rls": "node scripts/audit-anon-write-access.mjs",
     "verify:overflow": "node scripts/check-overflow.mjs",
     "verify:pages": "node scripts/check-pages.mjs",
-    "verify:api": "node scripts/check-api-routes.mjs"
+    "verify:api": "node scripts/check-api-routes.mjs",
+    "verify:routes": "node scripts/check-route-config.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1014.0",

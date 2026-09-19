@@ -1,5 +1,7 @@
 'use client'
 
+import { useSessionUser } from '@/lib/hooks/use-session-user'
+
 import { useState, useRef, useEffect, useCallback } from 'react'
 
 interface Props {
@@ -8,6 +10,11 @@ interface Props {
 }
 
 export function UpdatePoliticianButton({ politicianId, politicianName }: Props) {
+  // The page used to decide this on the server, which cost it its cache.
+  // Returning null while the session is unresolved avoids the button
+  // appearing and then vanishing for signed-out visitors.
+  const signedIn = useSessionUser() != null
+
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -61,6 +68,9 @@ export function UpdatePoliticianButton({ politicianId, politicianName }: Props) 
       setLoading(false)
     }
   }
+
+  // After every hook, so the hook order is stable across renders.
+  if (!signedIn) return null
 
   return (
     <>

@@ -72,7 +72,8 @@ const EXPECTED = {
   'engagement': { POST: 'auth', GET: 'auth' },
   'issue-follow': { GET: 'owner', POST: 'auth' }, // GET answers anonymous with an empty list
   'issues/[slug]/stances': { GET: 'public' },
-  'match': { POST: 'public' }, // computes a match from a posted quiz, writes nothing
+  'match': { POST: 'public' },
+  'me/home': { GET: 'owner' }, // the homepage personal strip; answers anonymous with empty arrays // computes a match from a posted quiz, writes nothing
   'politicians': { GET: 'public' },
   'polls/vote': { POST: 'public' }, // anonymous voting by design; rate-limited and cookie-deduped
   'quiz-answers': { GET: 'auth', POST: 'auth' },
