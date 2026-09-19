@@ -38,6 +38,19 @@ import { fileURLToPath } from 'node:url'
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const APP = join(ROOT, 'app')
 
+/**
+ * Comments stripped before any check reads the source.
+ *
+ * Every rule here is a substring match, so a comment *describing* the thing
+ * trips it. That has now caught me three times — once explaining a fixed
+ * fail-open cron guard, twice explaining why a page does NOT await
+ * searchParams. A checker that flags its own documentation teaches people to
+ * ignore it.
+ */
+function stripComments(src) {
+  return src.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:])\/\/[^\n]*/g, '$1')
+}
+
 function pages(dir) {
   const out = []
   for (const e of readdirSync(dir, { withFileTypes: true })) {
@@ -62,7 +75,7 @@ const noLoading = []
 console.log(`${found.length} page(s) under app/\n`)
 
 for (const file of found) {
-  const src = readFileSync(file, 'utf8')
+  const src = stripComments(readFileSync(file, 'utf8'))
   const rel = relative(ROOT, file)
   const route = routeOf(file)
 
