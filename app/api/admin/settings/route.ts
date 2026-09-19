@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { requireAdmin } from '@/lib/auth/require-admin'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { invalidateSettingsCache } from '@/lib/utils/site-settings'
 import { rateLimit, WRITE_OP } from '@/lib/utils/rate-limit'
@@ -15,26 +15,10 @@ export async function PUT(request: NextRequest) {
   const limited = rateLimit(request, WRITE_OP)
   if (!limited.success) return limited.response
 
-  // Auth check
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const admin = await requireAdmin()
+  if (!admin.ok) return admin.response
 
-  // Admin check
   const serviceClient = createServiceRoleClient()
-  const { data: profile } = await serviceClient
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  if (profile?.role !== 'admin') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-  }
 
   // Parse body
   const body = await request.json()

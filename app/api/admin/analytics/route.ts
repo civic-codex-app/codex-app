@@ -1,28 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-
-async function verifyAdmin(request: NextRequest) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return null
-
-  const service = createServiceRoleClient()
-  const { data: profile } = await service
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-
-  if (profile?.role !== 'admin') return null
-  return user.id
-}
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 export async function GET(request: NextRequest) {
-  const adminId = await verifyAdmin(request)
-  if (!adminId) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const admin = await requireAdmin()
+  if (!admin.ok) return admin.response
 
   const { searchParams } = new URL(request.url)
   const days = parseInt(searchParams.get('days') || '30')

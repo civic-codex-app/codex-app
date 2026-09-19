@@ -1,25 +1,11 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-
-async function isAdmin() {
-  const authClient = await createClient()
-  const { data: { user } } = await authClient.auth.getUser()
-  if (!user) return false
-  const supabase = createServiceRoleClient()
-  const { data } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', user.id)
-    .single()
-  return data?.role === 'admin'
-}
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 // GET: count demo users
 export async function GET() {
-  if (!(await isAdmin())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const admin = await requireAdmin()
+  if (!admin.ok) return admin.response
 
   const supabase = createServiceRoleClient()
   const { count } = await supabase
@@ -32,9 +18,8 @@ export async function GET() {
 
 // DELETE: remove all demo users
 export async function DELETE() {
-  if (!(await isAdmin())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const admin = await requireAdmin()
+  if (!admin.ok) return admin.response
 
   const supabase = createServiceRoleClient()
 

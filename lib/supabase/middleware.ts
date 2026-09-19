@@ -27,6 +27,26 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // The API routes under /api/admin. These are NOT covered by the checks
+  // below: those test `startsWith('/admin')`, and "/api/admin/…" does not
+  // start with "/admin". Each such route also calls requireAdmin() itself —
+  // this is the second layer, and it answers with JSON rather than a redirect,
+  // because a fetch() that follows a 307 to an HTML login page reports a
+  // confusing parse error instead of "you are not signed in".
+  if (request.nextUrl.pathname.startsWith('/api/admin')) {
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle()
+    if (profile?.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+  }
+
   // Protected routes — redirect to login if not authenticated
   if (
     !user &&
