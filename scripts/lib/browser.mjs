@@ -43,5 +43,11 @@ export async function signIn(page, base, login) {
   } catch {
     throw new Error(`login as ${email} did not leave /login within 60s — wrong credentials, or the form changed`)
   }
+  // Let the landing page finish before the caller navigates away. Without
+  // this, the next page's auth calls raced the sign-in for supabase-js's
+  // navigator lock and the first route after signing in intermittently logged
+  // 'Lock ... was released because another request stole it' — a gate that
+  // fails one run in three is worse than no gate.
+  await page.waitForNetworkIdle({ idleTime: 500, timeout: 30000 }).catch(() => {})
   return { email, landed: new URL(page.url()).pathname }
 }

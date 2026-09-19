@@ -10,8 +10,11 @@ const WIKIPEDIA_UA = 'PoliApp/1.0 (civic engagement platform; contact@getpoli.ap
 export const maxDuration = 300 // 5 min max for weekly maintenance
 
 export async function GET(request: Request) {
+  // Refuse when CRON_SECRET is absent rather than running unauthenticated.
+  // The check used to read `if (CRON_SECRET && …)`, so a deployment missing
+  // the variable skipped it entirely and left this route open to anyone.
   const authHeader = request.headers.get('authorization')
-  if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}`) {
+  if (!CRON_SECRET || authHeader !== `Bearer ${CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

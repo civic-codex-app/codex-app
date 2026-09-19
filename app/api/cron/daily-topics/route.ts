@@ -17,8 +17,11 @@ import { refreshDailyTopics } from '@/lib/utils/daily-topics'
 const CRON_SECRET = process.env.CRON_SECRET
 
 export async function GET(request: Request) {
+  // Refuse when CRON_SECRET is absent rather than running unauthenticated.
+  // The check used to read `if (CRON_SECRET && …)`, so a deployment missing
+  // the variable skipped it entirely and left this route open to anyone.
   const authHeader = request.headers.get('authorization')
-  if (CRON_SECRET && authHeader !== `Bearer ${CRON_SECRET}`) {
+  if (!CRON_SECRET || authHeader !== `Bearer ${CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

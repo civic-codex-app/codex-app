@@ -59,6 +59,8 @@ const ROUTES = routesFile
   ? readFileSync(routesFile, 'utf8').split('\n').map((s) => s.trim()).filter((s) => s && !s.startsWith('#'))
   : arg('routes', ALL_ROUTES.join(',')).split(',')
 
+const short = (u) => (u.startsWith(ORIGIN) ? u.slice(ORIGIN.length) : u).slice(0, 110)
+
 // Dev-server chatter that is not a page problem.
 const NOISE = [/Download the React DevTools/, /\[Fast Refresh\]/, /\[HMR\]/, /hot-reloader|hmr/i]
 
@@ -67,7 +69,7 @@ let page = await browser.newPage()
 
 // Everything the listeners see during the current navigation lands here.
 let cur = null
-const fresh = () => ({ console: [], errors: [], failed: [], responses: [] })
+const fresh = () => ({ console: [], errors: [], failed: [], responses: [], rateLimited: [] })
 
 function attach(p) {
   p.on('console', (m) => {
@@ -92,6 +94,11 @@ function attach(p) {
     if (status < 400) return
     const url = res.url()
     const type = res.request().resourceType()
+    // 429 from our own API is almost always this sweep's doing: it loads every
+    // route in a burst and each page fires an analytics beacon, so 69 routes
+    // cross the 30-writes-a-minute limit that one visitor never would.
+    // Reported, not counted — chasing it as a page bug wastes the reader's time.
+    if (status === 429 && url.startsWith(ORIGIN)) { cur.rateLimited.push(short(url)); return }
     // The document's own status is reported separately. Off-origin failures
     // matter only for images (a dead photo URL); the rest is third-party.
     if (type === 'document') return
@@ -122,7 +129,6 @@ if (LOGIN) {
   }
 }
 
-const short = (u) => (u.startsWith(ORIGIN) ? u.slice(ORIGIN.length) : u).slice(0, 110)
 const pathOf = (u) => { const x = new URL(u); return x.pathname + x.search }
 
 /** Group a path so high-cardinality routes can be sampled and reported as such. */
@@ -200,6 +206,7 @@ for (const route of ROUTES) {
   for (const w of warnings) console.log(`        warning: ${w.text}`)
   for (const r of [...new Set(resourceFails)]) console.log(`        ${r}`)
   for (const b of dom.broken) console.log(`        broken image: ${b.src}${b.alt ? `  (alt "${b.alt}")` : ''}`)
+  for (const u of [...new Set(snapshot.rateLimited)]) console.log(`        rate-limited (HTTP 429): ${u} — this sweep's own volume, not a page fault`)
   if (dom.pending) console.log(`        ${dom.pending} of ${dom.images} image(s) still loading after 10s — not checked`)
 
   for (const l of dom.links) {
