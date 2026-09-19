@@ -8,13 +8,13 @@ export function ThemeToggle() {
   const { mode, toggle, setMode } = useThemeStore()
 
   useEffect(() => {
+    // Light unless dark was explicitly chosen — the same rule as the pre-paint
+    // script in app/layout.tsx and lib/hooks/use-theme.ts. This was the third
+    // copy of a prefers-color-scheme fallback, and the one that would have
+    // pulled the app back to the OS setting on any page showing the toggle
+    // even after the other two stopped doing it.
     const saved = localStorage.getItem('poli-theme') as 'dark' | 'light' | null
-    if (saved) {
-      setMode(saved)
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      setMode(prefersDark ? 'dark' : 'light')
-    }
+    setMode(saved === 'dark' ? 'dark' : 'light')
     setMounted(true)
   }, [setMode])
 

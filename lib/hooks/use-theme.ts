@@ -26,24 +26,23 @@ export function useTheme() {
   const { mode, toggle, setMode } = useThemeStore()
 
   useEffect(() => {
-    // Check saved preference first, then fall back to system preference
+    // Light is the product default. Only an explicit choice — the theme
+    // toggle, which is the sole writer of poli-theme — makes the app dark.
+    //
+    // This deliberately does NOT read prefers-color-scheme. It used to, and
+    // together with the same fallback in the pre-paint script in
+    // app/layout.tsx that meant every visitor whose phone was in dark mode got
+    // a dark app on first load, with nothing stored and no way to tell it was
+    // a default rather than the design. The system-preference listener that
+    // sat here went with it: with no OS fallback there is nothing for it to
+    // switch, and leaving it would have let the OS quietly override the
+    // default it no longer feeds.
+    //
+    // Keep this in step with the inline script in app/layout.tsx. That one
+    // decides the first painted frame and this one decides the store; if they
+    // disagree the page visibly changes colour just after it loads.
     const saved = localStorage.getItem('poli-theme') as 'dark' | 'light' | null
-    if (saved) {
-      setMode(saved)
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      setMode(prefersDark ? 'dark' : 'light')
-    }
-
-    // Listen for system preference changes (only if no manual override)
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const handler = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem('poli-theme')) {
-        setMode(e.matches ? 'dark' : 'light')
-      }
-    }
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+    setMode(saved === 'dark' ? 'dark' : 'light')
   }, [setMode])
 
   useEffect(() => {
