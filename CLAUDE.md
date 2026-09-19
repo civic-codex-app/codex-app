@@ -235,6 +235,7 @@ callers ignore `error` — so a broken query renders as an empty section.
 | `pnpm verify:selects` | Any `.select()`, `.order()`, filter or insert/update payload naming a column or relationship that does not exist. Found 4 real outages, incl. the campaign-finance section hidden on every profile and the feed's poll card never rendering. |
 | `pnpm verify:rls` | Tables accepting anonymous writes. |
 | `pnpm verify:overflow` | Horizontal overflow at 375/768/1440 on every route, with the element responsible. Needs `pnpm dev` running. |
+| `pnpm verify:api` | Every API route requires what it claims to. Static pass reads each handler for its guard; dynamic pass calls each one unauthenticated and checks it refuses. A route with no entry in its table fails as unclassified, so adding one forces a decision about who may call it. |
 | `pnpm verify:pages` | Every route in a real browser: HTTP status and redirects, uncaught exceptions and console errors (where React reports hydration mismatches), failed same-origin requests, images that rendered with no pixels, and every internal link followed. Site-wide nav links are always checked; long tails are sampled and the sample size printed. Needs `pnpm dev`. |
 
 `verify:selects` and `verify:rls` need `.env.local` exported; run them after
@@ -315,6 +316,37 @@ The first `verify:pages` run over 69 routes and 571 links, plus
   bucket rate-limiting a 12-wide sweep and 240 were incomplete-certificate
   hosts. Per-host concurrency is 2 and 429s retry. Re-run it before acting.
 
+### API routes — 2026-09-19
+
+`/api/admin/daily-topics` **had no auth check at all.** An anonymous POST
+reached the handler and ran the news ingestion with the service role, which
+bypasses RLS — so migration 029 could not stop it — and spent the GNews quota
+on request. `daily_topics` is the homepage "Today in Politics" strip, the
+same table as the 2026-09-15 RLS hole.
+
+The proxy did not cover it. `updateSession` tests
+`pathname.startsWith('/admin')`, and **"/api/admin/…" does not start with
+"/admin"**, so every route under `/api/admin` has always had to defend
+itself. Four of the five did, in four different copy-pasted shapes; the fifth
+did not. Proof, signed out: `GET /admin` → 307 (proxy), `GET
+/api/admin/analytics` → 401 (its own guard), `GET /api/admin/daily-topics` →
+**405** — the router answered, so the request had reached the route.
+
+Fixed three ways: `lib/auth/require-admin.ts` is now the single guard and all
+five routes call it; `updateSession` refuses `/api/admin` with JSON 401/403
+as a second layer; and `pnpm verify:api` checks the whole surface.
+
+Also found: both `/api/cron` routes read
+`if (CRON_SECRET && authHeader !== …)`, which **skips the check entirely when
+the variable is unset** — a deployment missing it would leave
+`weekly-maintenance` (it writes politicians, profiles, likes,
+politician_issues, elections) open to anyone. Both now refuse when the secret
+is absent.
+
+Rules: a route under `/api/admin` calls `requireAdmin()` as its first
+statement; an auth check is `if (!SECRET || …)`, never `if (SECRET && …)`;
+and the proxy's path tests do not protect `/api/*`.
+
 ### Still unverified
 - 2026 primary *outcomes* remain unconfirmed — FEC lists who filed, not who
   won a primary. No free API covers that; needs state SoS, AP, or Ballotpedia.
@@ -393,6 +425,7 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 | `scripts/check-overflow.mjs` | `pnpm verify:overflow` — horizontal overflow per route and width. `--login`, `--ephemeral-admin` for gated pages |
 | `scripts/check-pages.mjs` | `pnpm verify:pages` — status, console errors, broken images, dead links across every route. `--routes-file=` for a DB-generated list, `--links=0` to skip the crawl |
 | `scripts/check-image-urls.mjs` | Probes every `image_url` as a browser would judge it; buckets dead / cert-chain / unreachable; writes rows to `--out` |
+| `scripts/check-api-routes.mjs` | `pnpm verify:api` — every API route requires what it claims to. `--static-only` skips the requests |
 | `scripts/clear-dead-image-urls.mjs` | Nulls the `dead` bucket from that file, each update conditioned on the URL being unchanged, after a backup |
 
 Required keys in `.env.local`: `FEC_API_KEY` ([api.data.gov/signup](https://api.data.gov/signup/), 60/hr)
@@ -432,7 +465,18 @@ and `CONGRESS_API_KEY` ([api.congress.gov/sign-up](https://api.congress.gov/sign
 
 ## Pending / TODO
 - [ ] Admin CRUD for elections/races/candidates
-- [ ] R2 bucket integration for image storage
+- [ ] R2 bucket integration for image storage — **blocked on credentials.**
+      `.env.local` has `R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com`
+      and `R2_PUBLIC_URL=https://images.yourcodexdomain.com` (NXDOMAIN), while
+      hosted photos actually serve from
+      `https://pub-c78794c371154ba4a897d0c125928acf.r2.dev/codex/…` — so the
+      public URL needs that origin *and* the `/codex` key prefix.
+      `migrate-images-to-r2.mjs` now refuses to run until endpoint, bucket and
+      public URL are proven against a real object: as configured it would have
+      treated all 5,501 photos as external and rewritten every one to a domain
+      that does not resolve. Its upload path has never run and is unverified;
+      use `--limit=20 --apply` first. Worth doing — ~840 photos still sit on
+      state-legislature sites that move files and let certificates lapse.
 - [ ] Capacitor production URL configuration
 - [ ] More House member data (only ~100 of 435 in politicians table)
 - [ ] Replace `<img>` with Next.js `<Image>` component
