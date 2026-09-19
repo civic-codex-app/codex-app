@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 
 const TABS = [
@@ -102,7 +102,7 @@ export function BottomTabs() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => {
+    getLocalUser(supabase).then(({ data }) => {
       setIsLoggedIn(!!data.user)
     })
   }, [])

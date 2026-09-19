@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { usePathname, useRouter } from 'next/navigation'
 import { DonkeyIcon, ElephantIcon } from '@/components/icons/party-icons'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 
 interface UserProfile {
   display_name: string | null
@@ -77,7 +77,7 @@ export function Header() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(async ({ data }) => {
+    getLocalUser(supabase).then(async ({ data }) => {
       setIsLoggedIn(!!data.user)
       if (data.user) {
         const { data: profileData } = await supabase

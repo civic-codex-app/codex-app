@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 
 interface PollOption {
@@ -52,7 +52,7 @@ export function PollVoteForm({
     const { error } = await supabase.from('poll_votes').insert({
       poll_id: pollId,
       option_id: optionId,
-      user_id: (await supabase.auth.getUser()).data.user!.id,
+      user_id: (await getLocalUser(supabase)).data.user!.id,
     })
 
     if (!error) {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { trackEvent } from '@/lib/utils/analytics'
 
@@ -23,7 +23,7 @@ export function FollowBillButton({ billId, initialCount = 0, className }: Follow
     async function check() {
       const {
         data: { user },
-      } = await supabase.auth.getUser()
+      } = await getLocalUser(supabase)
 
       if (user) {
         setUserId(user.id)

@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTheme } from '@/lib/hooks/use-theme'
 import { useAnalytics } from '@/lib/hooks/use-analytics'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 import { DonkeyIcon, ElephantIcon } from '@/components/icons/party-icons'
 import { cn } from '@/lib/utils'
 import { Header } from '@/components/layout/header'
@@ -90,7 +90,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     async function loadProfile() {
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user } } = await getLocalUser(supabase)
       if (!user) return
       const { data } = await supabase
         .from('profiles')
@@ -100,7 +100,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       if (data) setProfile(data)
     }
     loadProfile()
-  }, [pathname])
+
+    // Was [pathname], so the profile was refetched on every navigation within
+    // the dashboard — the one place a persistent layout should make moving
+    // around free. The subscription keeps it current across sign-in/out
+    // without tying it to the router.
+    const supabase = createClient()
+    const { data: sub } = supabase.auth.onAuthStateChange(() => loadProfile())
+    return () => sub.subscription.unsubscribe()
+  }, [])
 
   const userInitial = (profile?.display_name ?? profile?.email ?? 'U').charAt(0).toUpperCase()
 
