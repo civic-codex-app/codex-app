@@ -37,6 +37,9 @@
  *   node scripts/migrate-images-to-r2.mjs                 # dry run
  *   node scripts/migrate-images-to-r2.mjs --limit=20 --apply
  *   node scripts/migrate-images-to-r2.mjs --apply
+ *   node scripts/migrate-images-to-r2.mjs --only-host=cdn.ilga.gov --apply
+ *   node scripts/migrate-images-to-r2.mjs --only-host=cdn.ilga.gov \
+ *     --accept-incomplete-chain --apply     # hosts whose TLS chain Node rejects
  */
 
 import { createClient } from '@supabase/supabase-js'
@@ -47,6 +50,33 @@ import { arg, has } from './lib/cli.mjs'
 
 const APPLY = has('apply')
 const LIMIT = Number(arg('limit', '0')) || Infinity
+const ONLY_HOSTS = arg('only-host', '').split(',').map((h) => h.trim()).filter(Boolean)
+
+/**
+ * Accept a server that omits its intermediate certificate.
+ *
+ * Several state legislatures serve photos over a chain Node rejects and
+ * browsers complete themselves — 207 photos across billstatus.ls.state.ms.us,
+ * legislature.ohio.gov, cdn.ilga.gov, house.mi.gov and cga.ct.gov. They are
+ * real images that real visitors can see, and a strict run skips every one,
+ * leaving them on hosts that will eventually drop them.
+ *
+ * The trade is worth making only narrowly: the file is fetched, checked to be
+ * an image, re-encoded through sharp, and served from our own bucket
+ * afterwards, so a tampered response would have to survive decoding to do
+ * anything, and the exposure ends with this download. It is therefore
+ * refused unless --only-host names the hosts, so it can never be a blanket
+ * relaxation of a full run.
+ */
+const INSECURE = has('accept-incomplete-chain')
+if (INSECURE) {
+  if (!ONLY_HOSTS.length) {
+    console.error('--accept-incomplete-chain requires --only-host=<host,…>, so it cannot relax a whole run.')
+    process.exit(1)
+  }
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+  console.log(`!! certificate verification disabled for this run, limited to: ${ONLY_HOSTS.join(', ')}`)
+}
 
 const sb = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -63,7 +93,17 @@ const R2 = new S3Client({
 })
 
 const BUCKET = process.env.R2_BUCKET_NAME ?? 'codex'
-const R2_PUBLIC = process.env.R2_PUBLIC_URL ?? ''
+const R2_PUBLIC = (process.env.R2_PUBLIC_URL ?? '').replace(/\/$/, '')
+
+/**
+ * Key prefix, derived in preflight from a photo already hosted rather than
+ * configured. The bucket's existing objects are keyed "codex/politicians/…"
+ * while R2_PUBLIC_URL is the bucket root, so a script that built keys as
+ * "politicians/…" would scatter new photos beside the old ones instead of
+ * among them. Reading it off a real object keeps one layout and needs no
+ * fifth environment variable to get wrong.
+ */
+let KEY_PREFIX = ''
 const MAX_DOWNLOAD = 10 * 1024 * 1024 // 10MB max download
 
 // Output sizes (2x for retina — displays at 400x500 but saves at 800x1000)
@@ -191,6 +231,12 @@ async function migrateTable(table, folder) {
     from += 1000
   }
 
+  if (ONLY_HOSTS.length) {
+    const before = all.length
+    all = all.filter((r) => { try { return ONLY_HOSTS.includes(new URL(r.image_url).host) } catch { return false } })
+    console.log(`--only-host: ${all.length} of ${before} row(s) match`)
+  }
+
   if (all.length > LIMIT) {
     console.log(`Found ${all.length} with external images; --limit=${LIMIT} so only the first ${LIMIT} will be handled`)
     all = all.slice(0, LIMIT)
@@ -226,7 +272,7 @@ async function migrateTable(table, folder) {
 
           // 3. Generate clean filename from slug or name
           const filename = row.slug || slugify(row.name)
-          const key = `${folder}/${filename}.webp`
+          const key = KEY_PREFIX ? `${KEY_PREFIX}/${folder}/${filename}.webp` : `${folder}/${filename}.webp`
 
           // 4. Upload to R2
           const r2Url = await uploadToR2(key, webpBuf)
@@ -297,6 +343,9 @@ async function preflight() {
   }
 
   const key = sample[0].image_url.slice(R2_PUBLIC.length).replace(/^\//, '')
+  // "codex/politicians/james-comer.webp" -> "codex"; "politicians/x.webp" -> ""
+  const folderAt = key.search(/(^|\/)(politicians|candidates)\//)
+  KEY_PREFIX = folderAt <= 0 ? '' : key.slice(0, folderAt)
   try {
     await R2.send(new HeadObjectCommand({ Bucket: BUCKET, Key: key }))
   } catch (e) {
@@ -305,6 +354,7 @@ async function preflight() {
   }
   const res = await fetch(`${R2_PUBLIC}/${key}`, { headers: IMG_HEADERS }).catch((e) => ({ ok: false, status: 0, statusText: e.message }))
   if (!res.ok) problems.push(`${R2_PUBLIC}/${key} does not serve (HTTP ${res.status} ${res.statusText ?? ''})`)
+  if (!problems.length) console.log(`preflight: key prefix "${KEY_PREFIX || '(none)'}" derived from ${key}`)
   return problems
 }
 
