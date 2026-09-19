@@ -1,20 +1,52 @@
 /**
- * Migrate all politician & candidate images to R2.
+ * Migrate politician and candidate photos to our own R2 bucket.
  *
- * - Downloads every external image_url
- * - Converts to WebP via sharp (quality 80)
- * - Resizes: 400x500 for politicians (3:4 portrait), 400x500 for candidates
- * - Names: politicians/{slug}.webp, candidates/{slug}.webp
- * - Updates DB with R2 public URL
+ * - Downloads every image_url not already on R2
+ * - Converts to WebP via sharp (quality 80), 800x1000, cover crop from the top
+ * - Uploads as {folder}/{slug}.webp and rewrites image_url to the public URL
+ *
+ * Why it matters: ~840 photos still point at state-legislature sites, which
+ * move files, add hotlink protection, and let certificates lapse. 579 rows had
+ * to be nulled on 2026-09-17 because their URLs had died (see
+ * scripts/check-image-urls.mjs). Re-hosting ends that class of breakage.
+ *
+ * CANNOT RUN AS CONFIGURED. .env.local carries placeholders:
+ *
+ *   R2_ENDPOINT    https://<account-id>.r2.cloudflarestorage.com
+ *   R2_PUBLIC_URL  https://images.yourcodexdomain.com    (NXDOMAIN)
+ *
+ * while every hosted photo is actually served from
+ * https://pub-c78794c371154ba4a897d0c125928acf.r2.dev/codex/... — so the
+ * public URL needs the r2.dev origin AND the /codex key prefix. With those
+ * values the S3 client throws "Invalid URL" on the first upload, and, worse,
+ * the placeholder public URL matches none of the 5,501 rows, so the script
+ * would treat photos already on R2 as external, re-upload them, and rewrite
+ * every one to a domain that does not resolve.
+ *
+ * preflight() therefore refuses to run until the configuration is proven: it
+ * rejects placeholder values, then takes a photo already on R2, derives its
+ * key, and checks the bucket holds that key and that the public URL built from
+ * it actually serves an image. Nothing is written until that passes.
+ *
+ * Dry-run by default; --apply writes, after backing up every URL it will
+ * change. The upload path is UNVERIFIED — it has never run with working
+ * credentials. Do a --limit run first.
  *
  * Usage:
  *   export $(grep -v '^#' .env.local | xargs)
- *   node scripts/migrate-images-to-r2.mjs
+ *   node scripts/migrate-images-to-r2.mjs                 # dry run
+ *   node scripts/migrate-images-to-r2.mjs --limit=20 --apply
+ *   node scripts/migrate-images-to-r2.mjs --apply
  */
 
 import { createClient } from '@supabase/supabase-js'
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3'
 import sharp from 'sharp'
+import { writeFileSync } from 'node:fs'
+import { arg, has } from './lib/cli.mjs'
+
+const APPLY = has('apply')
+const LIMIT = Number(arg('limit', '0')) || Infinity
 
 const sb = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -54,6 +86,18 @@ function slugify(name) {
     .replace(/(^-|-$)/g, '')
 }
 
+// What Chrome sends for a cross-site <img>. Hotlink protection keys on these:
+// akleg.gov serves a bare request the photo and a request carrying a Referer a
+// 403, so a plain fetch here would save files the browser cannot display.
+const IMG_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36',
+  Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+  Referer: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://getpoli.app/',
+  'Sec-Fetch-Dest': 'image',
+  'Sec-Fetch-Mode': 'no-cors',
+  'Sec-Fetch-Site': 'cross-site',
+}
+
 async function downloadImage(url) {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), 15000)
@@ -61,7 +105,7 @@ async function downloadImage(url) {
     const resp = await fetch(url, {
       signal: controller.signal,
       redirect: 'follow',
-      headers: { 'User-Agent': 'PoliApp/1.0 (civic-engagement-tool)' },
+      headers: IMG_HEADERS,
     })
     clearTimeout(timeout)
     if (!resp.ok) return null
@@ -147,7 +191,19 @@ async function migrateTable(table, folder) {
     from += 1000
   }
 
-  console.log(`Found ${all.length} with external images`)
+  if (all.length > LIMIT) {
+    console.log(`Found ${all.length} with external images; --limit=${LIMIT} so only the first ${LIMIT} will be handled`)
+    all = all.slice(0, LIMIT)
+  } else {
+    console.log(`Found ${all.length} with external images`)
+  }
+  if (!APPLY) {
+    const hosts = new Map()
+    for (const r of all) { let h; try { h = new URL(r.image_url).host } catch { h = '(invalid)' } hosts.set(h, (hosts.get(h) ?? 0) + 1) }
+    for (const [h, n] of [...hosts].sort((a, b) => b[1] - a[1]).slice(0, 10)) console.log(`  ${String(n).padStart(5)}  ${h}`)
+    console.log(`  (dry run — nothing downloaded, uploaded or written)`)
+    return { success: 0, failed: 0, skipped: all.length }
+  }
 
   let success = 0
   let failed = 0
@@ -208,13 +264,82 @@ async function migrateTable(table, folder) {
 /*  Main                                                               */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Refuse to run until the R2 configuration is proven to work.
+ *
+ * The failure this exists to prevent is silent and total: with a public URL
+ * that matches no stored row, every photo looks external, so the script
+ * re-uploads all 5,501 and rewrites them to a domain that may not resolve.
+ * Checking a real object first turns that into a refusal.
+ */
+async function preflight() {
+  const problems = []
+  const placeholder = (v) => !v || /<[^>]+>|yourcodexdomain|your-|example\.com|changeme/i.test(v)
+  if (placeholder(process.env.R2_ENDPOINT)) problems.push(`R2_ENDPOINT is a placeholder: ${process.env.R2_ENDPOINT ?? '(unset)'}`)
+  if (placeholder(R2_PUBLIC)) problems.push(`R2_PUBLIC_URL is a placeholder: ${R2_PUBLIC || '(unset)'}`)
+  if (!process.env.R2_ACCESS_KEY_ID) problems.push('R2_ACCESS_KEY_ID is unset')
+  if (!process.env.R2_SECRET_ACCESS_KEY) problems.push('R2_SECRET_ACCESS_KEY is unset')
+  if (problems.length) return problems
+
+  // A photo already hosted on R2 tells us the real key scheme and origin.
+  const { data: sample } = await sb
+    .from('politicians')
+    .select('image_url')
+    .like('image_url', `${R2_PUBLIC}%`)
+    .limit(1)
+  if (!sample?.length) {
+    problems.push(`no stored image_url starts with R2_PUBLIC_URL (${R2_PUBLIC}).`)
+    const { data: any } = await sb.from('politicians').select('image_url').not('image_url', 'is', null).like('image_url', '%r2.dev%').limit(1)
+    if (any?.length) problems.push(`  a hosted photo looks like: ${any[0].image_url}`)
+    problems.push('  R2_PUBLIC_URL must be the origin AND key prefix those URLs actually use,')
+    problems.push('  or every already-hosted photo will be treated as external and rewritten.')
+    return problems
+  }
+
+  const key = sample[0].image_url.slice(R2_PUBLIC.length).replace(/^\//, '')
+  try {
+    await R2.send(new HeadObjectCommand({ Bucket: BUCKET, Key: key }))
+  } catch (e) {
+    problems.push(`the bucket "${BUCKET}" has no object "${key}" (${e.name}) — endpoint, bucket and public URL disagree`)
+    return problems
+  }
+  const res = await fetch(`${R2_PUBLIC}/${key}`, { headers: IMG_HEADERS }).catch((e) => ({ ok: false, status: 0, statusText: e.message }))
+  if (!res.ok) problems.push(`${R2_PUBLIC}/${key} does not serve (HTTP ${res.status} ${res.statusText ?? ''})`)
+  return problems
+}
+
 async function main() {
   console.log('=== R2 Image Migration ===')
+  console.log(APPLY ? '*** APPLYING ***' : '--- DRY RUN (pass --apply to write) ---')
   console.log(`Bucket: ${BUCKET}`)
   console.log(`Public URL: ${R2_PUBLIC}`)
   console.log(`Output: WebP @ quality ${WEBP_QUALITY}`)
   console.log(`Sizes: 800x1000 @2x retina (displays 400x500, cover crop, top-aligned)`)
   console.log()
+
+  const problems = await preflight()
+  if (problems.length) {
+    console.error('REFUSING TO RUN — the R2 configuration is not usable:\n')
+    for (const p of problems) console.error('  ' + p)
+    console.error('\nFix .env.local and re-run. Nothing was read or written.')
+    process.exit(1)
+  }
+  console.log('preflight: endpoint, bucket and public URL agree on a real object\n')
+
+  if (APPLY) {
+    const backup = []
+    for (const table of ['politicians', 'candidates']) {
+      for (let from = 0; ; from += 1000) {
+        const { data } = await sb.from(table).select('id, image_url').not('image_url', 'is', null).not('image_url', 'like', `${R2_PUBLIC}%`).range(from, from + 999)
+        if (!data?.length) break
+        backup.push(...data.map((r) => ({ table, ...r })))
+        if (data.length < 1000) break
+      }
+    }
+    const path = `image-urls-backup-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.json`
+    writeFileSync(path, JSON.stringify(backup, null, 1))
+    console.log(`backed up ${backup.length} image_url value(s) to ${path}\n`)
+  }
 
   const pol = await migrateTable('politicians', 'politicians')
   const can = await migrateTable('candidates', 'candidates')
