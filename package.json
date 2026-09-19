@@ -26,7 +26,8 @@
     "verify:selects": "node scripts/verify-supabase-selects.mjs",
     "verify:rls": "node scripts/audit-anon-write-access.mjs",
     "verify:overflow": "node scripts/check-overflow.mjs",
-    "verify:pages": "node scripts/check-pages.mjs"
+    "verify:pages": "node scripts/check-pages.mjs",
+    "verify:api": "node scripts/check-api-routes.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1014.0",
