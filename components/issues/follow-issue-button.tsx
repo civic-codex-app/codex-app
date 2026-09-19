@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { trackEvent } from '@/lib/utils/analytics'
 
@@ -26,7 +26,7 @@ export function FollowIssueButton({ issueId, initialFollowing = false, initialCo
   useEffect(() => {
     let cancelled = false
     const supabase = createClient()
-    supabase.auth.getUser().then(async ({ data: { user } }) => {
+    getLocalUser(supabase).then(async ({ data: { user } }) => {
       if (!user || cancelled) return
       setUserId(user.id)
       try {

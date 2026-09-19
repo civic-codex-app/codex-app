@@ -1,6 +1,27 @@
 import type { NextConfig } from 'next'
 import withPWAInit from '@ducanh2912/next-pwa'
 
+/**
+ * NOT CURRENTLY IN EFFECT.
+ *
+ * @ducanh2912/next-pwa is a webpack plugin — it imports workbox-webpack-plugin
+ * and installs itself through the `webpack` hook. This project builds with
+ * Turbopack (see `turbopack: {}` below; the build banner reads "Next.js 16.2.1
+ * (Turbopack)"), so that hook never runs and no service worker is emitted.
+ * Verified against a production build: /sw.js and /workbox-default.js both
+ * 404, and no client chunk references `serviceWorker`.
+ *
+ * So everything in runtimeCaching below is dead configuration. It is kept, and
+ * corrected, because reading it as live is worse than not having it: the
+ * navigation rule used to match authenticated routes, which WOULD have cached
+ * /dashboard and /admin HTML for 300s had the plugin ever run.
+ *
+ * Consequences worth knowing: there is no offline support, and Chrome will not
+ * offer to install the app (an installable PWA needs a fetch handler, not just
+ * a manifest — /manifest.json does serve). Restoring it means either moving
+ * the build off Turbopack or switching to a Turbopack-compatible generator
+ * such as Serwist. That is a product decision, not a cleanup.
+ */
 const withPWA = withPWAInit({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
@@ -8,13 +29,35 @@ const withPWA = withPWAInit({
   workboxOptions: {
     runtimeCaching: [
       {
-        // Cache page navigations (HTML) with network-first strategy
-        urlPattern: ({ request }: { request: Request }) => request.mode === 'navigate',
+        // Page navigations, EXCEPT anything behind auth.
+        //
+        // This rule used to match every navigation, so an authenticated
+        // /dashboard or /admin document sat in the cache for 300s. It is
+        // NetworkFirst, so it only surfaced when the network failed or passed
+        // the 3s timeout — but in that window a signed-out person on a shared
+        // device could be served the previous user's page. Personalised HTML
+        // must never enter a shared cache.
+        urlPattern: ({ request, url }: { request: Request; url: URL }) =>
+          request.mode === 'navigate' &&
+          !/^\/(dashboard|account|following|onboarding|admin|ballot-scorecard|api)(\/|$)/.test(url.pathname),
         handler: 'NetworkFirst' as const,
         options: {
           cacheName: 'pages',
           expiration: { maxEntries: 50, maxAgeSeconds: 300 },
           networkTimeoutSeconds: 3,
+        },
+      },
+      {
+        // Next's client-side RSC payloads were matched by nothing: they are
+        // fetches, not navigations. A stale one hydrating into a mismatched
+        // route is a nasty intermittent bug, so this is short-lived and
+        // network-first with a tight timeout.
+        urlPattern: ({ url }: { url: URL }) => url.searchParams.has('_rsc'),
+        handler: 'NetworkFirst' as const,
+        options: {
+          cacheName: 'rsc',
+          expiration: { maxEntries: 100, maxAgeSeconds: 120 },
+          networkTimeoutSeconds: 2,
         },
       },
       {

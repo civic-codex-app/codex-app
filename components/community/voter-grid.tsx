@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { VoterCard } from './voter-card'
 import { loadQuizAnswers } from '@/lib/utils/quiz-storage'
-import { createBrowserClient } from '@supabase/ssr'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 
 interface Voter {
   anonymousId: string
@@ -28,11 +28,11 @@ export function VoterGrid({
     }
 
     // Fetch current user's anonymous_id to hide their own card
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    )
-    supabase.auth.getUser().then(({ data }) => {
+    // The shared client, not a second createBrowserClient: @supabase/ssr
+    // caches one browser instance, and constructing another gives it a rival
+    // auth state machine competing for the same Web Locks entry.
+    const supabase = createClient()
+    getLocalUser(supabase).then(({ data }) => {
       if (data.user) {
         supabase
           .from('profiles')

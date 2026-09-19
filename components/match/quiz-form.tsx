@@ -5,7 +5,7 @@ import { IssueIcon } from '@/components/icons/issue-icon'
 import { MatchResults } from './match-results'
 import { QUIZ_CONTENT, type QuizPosition } from '@/lib/data/quiz-content'
 import { saveQuizAnswers, loadQuizAnswers, saveQuizStep, loadQuizStep, clearQuizProgress, syncQuizToServer, loadQuizFromServer, mergeQuizAnswers, saveQuizResults, loadQuizResults } from '@/lib/utils/quiz-storage'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 import { trackEvent } from '@/lib/utils/analytics'
 
 interface Issue {
@@ -103,7 +103,7 @@ export function QuizForm({ issues }: Props) {
 
       try {
         const supabase = createClient()
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user } } = await getLocalUser(supabase)
         if (user && !cancelled) {
           isLoggedIn.current = true
           userId.current = user.id

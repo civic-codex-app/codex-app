@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, getLocalUser } from '@/lib/supabase/client'
 
 interface SubmitAnnotationProps {
   politicianId: string
@@ -30,7 +30,7 @@ export function SubmitAnnotation({ politicianId, issueId }: SubmitAnnotationProp
     async function checkAuth() {
       const {
         data: { user },
-      } = await supabase.auth.getUser()
+      } = await getLocalUser(supabase)
       setUserId(user?.id ?? null)
       setLoading(false)
     }

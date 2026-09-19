@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useOptimistic, useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { useSessionUser } from '@/lib/hooks/use-session-user'
 import { cn } from '@/lib/utils'
 import { trackEvent } from '@/lib/utils/analytics'
 
@@ -11,25 +12,44 @@ interface LikeButtonProps {
   className?: string
 }
 
+type LikeState = { liked: boolean; count: number }
+
+/**
+ * Like (which also follows).
+ *
+ * Previously this button ignored you twice: it mounted `disabled` while an
+ * auth round-trip resolved, then disabled itself again for the duration of two
+ * Supabase writes. The heart only moved once the network came back. A control
+ * that does nothing when pressed is the single clearest "this is a web page"
+ * signal there is.
+ *
+ * Now the heart flips on the same frame as the tap and the writes happen
+ * behind it. useOptimistic drops the optimistic value automatically if the
+ * transition ends without the real state agreeing, so a failed write rolls
+ * back on its own.
+ */
 export function LikeButton({ politicianId, initialCount = 0, className }: LikeButtonProps) {
-  const [liked, setLiked] = useState(false)
-  const [count, setCount] = useState(initialCount)
-  const [loading, setLoading] = useState(true)
-  const [userId, setUserId] = useState<string | null>(null)
+  const userId = useSessionUser()
+  const [truth, setTruth] = useState<LikeState>({ liked: false, count: initialCount })
+  const [optimistic, applyOptimistic] = useOptimistic(
+    truth,
+    (state, nextLiked: boolean): LikeState => ({
+      liked: nextLiked,
+      count: Math.max(0, state.count + (nextLiked ? 1 : -1)),
+    })
+  )
+  const [, startTransition] = useTransition()
 
   useEffect(() => {
+    let cancelled = false
     const supabase = createClient()
 
-    async function check() {
+    async function load() {
       // Read the total from public_like_counts, not from `likes` itself.
       // Counting the table from the browser requires SELECT on every row,
       // which made the whole per-user like graph readable by anyone holding
       // the anon key. The view exposes the total and nothing else.
-      //
-      // Falls back to counting the table so this keeps working before
-      // 028_like_counts_view.sql has been applied; once it has, the table is
-      // restricted to own-rows and the fallback returns 0, which the view
-      // path has already covered.
+      let count = initialCount
       const { data: agg, error: aggError } = await supabase
         .from('public_like_counts')
         .select('like_count')
@@ -37,89 +57,89 @@ export function LikeButton({ politicianId, initialCount = 0, className }: LikeBu
         .maybeSingle()
 
       if (!aggError) {
-        setCount(agg?.like_count ?? 0)
+        count = agg?.like_count ?? 0
       } else {
         const { count: likeCount } = await supabase
           .from('likes')
           .select('*', { count: 'exact', head: true })
           .eq('politician_id', politicianId)
-        if (likeCount !== null) setCount(likeCount)
+        if (likeCount !== null) count = likeCount
       }
 
-      // Check if user liked
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (user) {
-        setUserId(user.id)
+      let liked = false
+      if (userId) {
         const { data } = await supabase
           .from('likes')
           .select('id')
-          .eq('user_id', user.id)
+          .eq('user_id', userId)
           .eq('politician_id', politicianId)
           .maybeSingle()
-        setLiked(!!data)
+        liked = !!data
       }
 
-      setLoading(false)
+      if (!cancelled) setTruth({ liked, count })
     }
 
-    check()
-  }, [politicianId])
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [politicianId, userId, initialCount])
 
-  async function handleToggle() {
-    if (!userId) {
+  function handleToggle() {
+    if (userId === undefined) return // session not resolved yet
+    if (userId === null) {
       window.location.href = '/login'
       return
     }
 
-    setLoading(true)
+    const next = !optimistic.liked
     const supabase = createClient()
 
-    if (liked) {
-      // Unlike = also unfollow
-      const [{ error: likeErr }, { error: followErr }] = await Promise.all([
-        supabase.from('likes').delete().eq('user_id', userId).eq('politician_id', politicianId),
-        supabase.from('follows').delete().eq('user_id', userId).eq('politician_id', politicianId),
-      ])
-      if (!likeErr) {
-        setLiked(false)
-        setCount((c) => Math.max(0, c - 1))
-      }
-    } else {
-      // Like = also follow
-      const [{ error: likeErr }, { error: followErr }] = await Promise.all([
-        supabase.from('likes').insert({ user_id: userId, politician_id: politicianId }),
-        supabase.from('follows').upsert(
-          { user_id: userId, politician_id: politicianId },
-          { onConflict: 'user_id,politician_id', ignoreDuplicates: true }
-        ),
-      ])
-      if (!likeErr) {
-        setLiked(true)
-        setCount((c) => c + 1)
-        trackEvent('politician_followed', { politicianId })
-      }
-    }
+    startTransition(async () => {
+      applyOptimistic(next)
 
-    setLoading(false)
+      const writes = next
+        ? [
+            supabase.from('likes').insert({ user_id: userId, politician_id: politicianId }),
+            supabase.from('follows').upsert(
+              { user_id: userId, politician_id: politicianId },
+              { onConflict: 'user_id,politician_id', ignoreDuplicates: true }
+            ),
+          ]
+        : [
+            supabase.from('likes').delete().eq('user_id', userId).eq('politician_id', politicianId),
+            supabase.from('follows').delete().eq('user_id', userId).eq('politician_id', politicianId),
+          ]
+
+      const [likeResult] = await Promise.all(writes)
+      // On failure, returning without touching `truth` lets React discard the
+      // optimistic value when the transition ends — the heart springs back.
+      if (likeResult.error) return
+
+      setTruth((t) => ({ liked: next, count: Math.max(0, t.count + (next ? 1 : -1)) }))
+      if (next) trackEvent('politician_followed', { politicianId })
+    })
   }
 
   return (
     <button
       onClick={handleToggle}
-      disabled={loading}
+      aria-pressed={optimistic.liked}
+      aria-label={optimistic.liked ? 'Unlike' : 'Like'}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
-        liked
+        // min-h-[44px] is Apple's minimum touch target; this was ~28px tall.
+        // press-scale supplies the depress (see the press layer in globals.css).
+        'press-scale inline-flex min-h-[44px] items-center gap-1.5 rounded-md border px-3 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)]',
+        optimistic.liked
           ? 'border-red-500/30 bg-red-500/10 text-red-400'
           : 'border-[var(--poli-border)] text-[var(--poli-sub)] hover:border-red-500/30 hover:text-red-400',
         className
       )}
     >
-      <span className="text-sm">{liked ? '♥' : '♡'}</span>
-      {count > 0 && <span>{count}</span>}
+      <span className="text-sm">{optimistic.liked ? '♥' : '♡'}</span>
+      {/* tabular-nums so an optimistic increment cannot reflow the button */}
+      {optimistic.count > 0 && <span className="tabular-nums">{optimistic.count}</span>}
     </button>
   )
 }
