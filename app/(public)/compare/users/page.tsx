@@ -1,7 +1,5 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { createClient as createServerAuthClient } from '@/lib/supabase/server'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { UserCompareView } from '@/components/community/user-compare-view'
 import Link from 'next/link'
 import type { Metadata } from 'next'
@@ -23,7 +21,6 @@ export default async function UserComparePage({ searchParams }: PageProps) {
   if (!themId) {
     return (
       <>
-        <Header />
         <main id="main-content" className="mx-auto max-w-[800px] px-6 pb-16 pt-6 md:px-10">
           <div className="py-20 text-center">
             <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
@@ -39,7 +36,6 @@ export default async function UserComparePage({ searchParams }: PageProps) {
               Browse Community
             </Link>
           </div>
-          <Footer />
         </main>
       </>
     )
@@ -58,7 +54,6 @@ export default async function UserComparePage({ searchParams }: PageProps) {
   if (!themProfile || !themProfile.quiz_answers) {
     return (
       <>
-        <Header />
         <main id="main-content" className="mx-auto max-w-[800px] px-6 pb-16 pt-6 md:px-10">
           <div className="py-20 text-center">
             <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
@@ -74,7 +69,6 @@ export default async function UserComparePage({ searchParams }: PageProps) {
               Browse Community
             </Link>
           </div>
-          <Footer />
         </main>
       </>
     )
@@ -170,7 +164,6 @@ export default async function UserComparePage({ searchParams }: PageProps) {
 
   return (
     <>
-      <Header />
       <main id="main-content" className="mx-auto max-w-[800px] px-6 pb-16 pt-6 md:px-10">
         <div className="mb-6">
           <Link
@@ -202,8 +195,6 @@ export default async function UserComparePage({ searchParams }: PageProps) {
           meIssueFollows={meId ? meIssueFollows.map((f: any) => f.issues).filter(Boolean) : myIssueFollows.map((f: any) => f.issues).filter(Boolean)}
           meLikes={meId ? meLikes.map((f: any) => f.politicians).filter(Boolean) : myLikes.map((f: any) => f.politicians).filter(Boolean)}
         />
-
-        <Footer />
       </main>
     </>
   )

@@ -40,17 +40,25 @@ export async function createEphemeralAdmin() {
   if (!url || !key) throw new Error('NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are needed, in the environment or .env.local')
   const sb = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } })
 
-  // Anything a crashed earlier run left behind goes first.
+  // Clean up what a crashed earlier run left behind — but only accounts old
+  // enough that no live run could still be using them. Two gates run
+  // concurrently share this domain, and deleting on sight meant the second
+  // run destroyed the first run's session mid-sweep and then died on the
+  // failed delete.
+  const STALE_AFTER_MS = 60 * 60 * 1000
   let removedStale = 0
   for (let page = 1; ; page++) {
     const { data, error } = await sb.auth.admin.listUsers({ page, perPage: 500 })
     if (error) throw new Error(`listUsers: ${error.message}`)
     for (const u of data.users) {
-      if (u.email?.endsWith(`@${CHECK_DOMAIN}`)) {
-        const { error: e } = await sb.auth.admin.deleteUser(u.id)
-        if (e) throw new Error(`could not delete stale ${u.email}: ${e.message}`)
-        removedStale++
-      }
+      if (!u.email?.endsWith(`@${CHECK_DOMAIN}`)) continue
+      const age = Date.now() - new Date(u.created_at).getTime()
+      if (age < STALE_AFTER_MS) continue // another run may still hold it
+      const { error: e } = await sb.auth.admin.deleteUser(u.id)
+      // Never fatal: a leftover account is untidy, not a reason to refuse to
+      // run the gate we were asked to run.
+      if (e) console.error(`  note: could not remove stale ${u.email}`)
+      else removedStale++
     }
     if (data.users.length < 500) break
   }

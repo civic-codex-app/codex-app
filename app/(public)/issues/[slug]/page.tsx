@@ -2,8 +2,6 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
@@ -113,7 +111,6 @@ export default async function IssuePage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
           href="/issues"
@@ -290,8 +287,6 @@ export default async function IssuePage({ params }: PageProps) {
             </Link>
           </div>
         )}
-
-        <Footer />
       </div>
     </>
   )

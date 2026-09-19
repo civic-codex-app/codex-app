@@ -4,8 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
@@ -297,8 +295,6 @@ export default async function PoliticianPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
-
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <BackButton />
 
@@ -462,8 +458,6 @@ export default async function PoliticianPage({ params }: PageProps) {
             />
           </div>
         </div>
-
-        <Footer />
       </div>
     </>
   )

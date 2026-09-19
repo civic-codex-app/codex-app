@@ -1,7 +1,5 @@
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
 import { ElectionsMap } from '@/components/elections/elections-map'
 
@@ -29,13 +27,11 @@ export default async function ElectionsPage() {
   if (!elections || elections.length === 0) {
     return (
       <>
-        <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center text-[var(--poli-faint)]">
             <div className="mb-2 text-2xl font-bold">No active elections</div>
             <div className="text-sm">Check back soon for upcoming election coverage</div>
           </div>
-          <Footer />
         </div>
       </>
     )
@@ -97,7 +93,6 @@ export default async function ElectionsPage() {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Voter Registration */}
         <a
@@ -205,8 +200,6 @@ export default async function ElectionsPage() {
             )
           })}
         </div>
-
-        <Footer />
       </div>
     </>
   )

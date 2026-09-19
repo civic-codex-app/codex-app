@@ -3,8 +3,6 @@ import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import type { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { IssueIcon } from '@/components/icons/issue-icon'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
@@ -112,7 +110,6 @@ export default async function CandidateProfilePage({ params }: PageProps) {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[900px] px-6 md:px-10">
         {/* Back link */}
         {race && (
@@ -330,8 +327,6 @@ export default async function CandidateProfilePage({ params }: PageProps) {
             </a>
           </section>
         )}
-
-        <Footer />
       </div>
     </>
   )

@@ -1,7 +1,5 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { createClient as createServerAuthClient } from '@/lib/supabase/server'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { computeReportCard, gradeColor } from '@/lib/utils/report-card'
 import type { ReportCard } from '@/lib/utils/report-card'
 import { partyColor } from '@/lib/constants/parties'
@@ -80,7 +78,6 @@ export default async function ReportCardsPage() {
   if (!isAuthenticated) {
     return (
       <>
-        <Header />
         <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
           <div className="py-20 text-center">
             <div
@@ -109,7 +106,6 @@ export default async function ReportCardsPage() {
               Free forever. No credit card required.
             </p>
           </div>
-          <Footer />
         </main>
       </>
     )
@@ -140,7 +136,6 @@ export default async function ReportCardsPage() {
   if (politicians.length === 0) {
     return (
       <>
-        <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
             <div className="mb-3 text-2xl font-bold text-[var(--poli-text)]">
@@ -150,7 +145,6 @@ export default async function ReportCardsPage() {
               We couldn&apos;t load report cards right now. Please try again later.
             </p>
           </div>
-          <Footer />
         </div>
       </>
     )
@@ -261,7 +255,6 @@ export default async function ReportCardsPage() {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         {/* Page title */}
         <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight text-[var(--poli-text)]">
@@ -276,8 +269,6 @@ export default async function ReportCardsPage() {
         </p>
 
         <ReportCardList politicians={ranked} />
-
-        <Footer />
       </div>
     </>
   )

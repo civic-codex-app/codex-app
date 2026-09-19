@@ -1,10 +1,7 @@
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 
 export default function IssueMapLoading() {
   return (
     <>
-      <Header />
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-6">
         {/* Title skeleton */}
         <div className="mb-6">
@@ -31,7 +28,6 @@ export default function IssueMapLoading() {
           ))}
         </div>
       </main>
-      <Footer />
     </>
   )
 }

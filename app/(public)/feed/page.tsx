@@ -1,7 +1,5 @@
 import { Suspense } from 'react'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { ActivityItem, type ActivityItemProps } from '@/components/feed/activity-item'
 import { FeedFilters } from '@/components/feed/feed-filters'
 import { NewsHighlightCard } from '@/components/feed/news-highlight-card'
@@ -246,7 +244,6 @@ export default async function FeedPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <Header />
       <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
         {/* Page header */}
         <div className="mb-6">
@@ -339,8 +336,6 @@ export default async function FeedPage({ searchParams }: PageProps) {
             </p>
           </div>
         )}
-
-        <Footer />
       </main>
     </>
   )

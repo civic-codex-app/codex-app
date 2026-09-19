@@ -3,8 +3,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { PollVoteClient } from './poll-vote-client'
 
 export const dynamic = 'force-dynamic'
@@ -85,7 +83,6 @@ export default async function PollDetailPage({ params }: PageProps) {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[800px] px-6 md:px-10">
         <Link
           href="/polls"
@@ -148,8 +145,6 @@ export default async function PollDetailPage({ params }: PageProps) {
             })}
           </div>
         )}
-
-        <Footer />
       </div>
     </>
   )

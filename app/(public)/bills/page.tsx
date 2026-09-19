@@ -1,6 +1,4 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import Link from 'next/link'
 import type { BillRow, BillStatRow, BillVoteRow } from '@/lib/types/supabase'
 import { BILL_PROCESS_EXPLAINER, BILL_STATUS_EXPLAINERS } from '@/lib/data/educational-content'
@@ -54,7 +52,6 @@ export default async function BillsPage({ searchParams }: PageProps) {
   if (!bills) {
     return (
       <>
-        <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
             <div className="mb-3 text-2xl font-bold text-[var(--poli-text)]">Something went wrong</div>
@@ -62,7 +59,6 @@ export default async function BillsPage({ searchParams }: PageProps) {
               We couldn&apos;t load bills right now. Please try again later.
             </p>
           </div>
-          <Footer />
         </div>
       </>
     )
@@ -100,7 +96,6 @@ export default async function BillsPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
@@ -227,8 +222,6 @@ export default async function BillsPage({ searchParams }: PageProps) {
             </div>
           )}
         </div>
-
-        <Footer />
       </div>
     </>
   )

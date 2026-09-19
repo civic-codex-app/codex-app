@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { STATE_NAMES, US_STATES } from '@/lib/constants/us-states'
 import { partyColor } from '@/lib/constants/parties'
 
@@ -62,7 +60,6 @@ export default async function StatesIndexPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           States
@@ -134,8 +131,6 @@ export default async function StatesIndexPage() {
             )
           })}
         </div>
-
-        <Footer />
       </div>
     </>
   )

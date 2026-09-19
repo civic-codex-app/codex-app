@@ -1,6 +1,4 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { MoneyMapView } from '@/components/insights/money-map-view'
 
 export const revalidate = 3600 // 1 hour
@@ -117,7 +115,6 @@ export default async function MoneyMapPage() {
 
   return (
     <>
-      <Header />
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-6">
         <MoneyMapView
           stateFinance={stateFinance}
@@ -126,7 +123,6 @@ export default async function MoneyMapPage() {
           topSpent={topSpent}
           stateDominantParty={stateDominantParty}
         />
-        <Footer />
       </main>
     </>
   )

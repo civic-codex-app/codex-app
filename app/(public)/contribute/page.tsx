@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 
 export const metadata: Metadata = {
   title: 'Contribute | Poli',
@@ -32,7 +30,6 @@ const ACTIONS = [
 export default function ContributePage() {
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[800px] px-6 pt-6 pb-16 md:px-10">
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Contribute
@@ -63,8 +60,6 @@ export default function ContributePage() {
             </Link>
           ))}
         </div>
-
-        <Footer />
       </div>
     </>
   )

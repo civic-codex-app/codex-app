@@ -3,8 +3,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { FollowBillButton } from '@/components/bills/follow-bill-button'
@@ -146,7 +144,6 @@ export default async function BillDetailPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
       <div className="mx-auto max-w-[900px] px-6 md:px-10">
         <Link
           href="/bills"
@@ -352,8 +349,6 @@ export default async function BillDetailPage({ params }: PageProps) {
             <div className="text-sm">Voting records will appear as the bill progresses</div>
           </div>
         )}
-
-        <Footer />
       </div>
     </>
   )

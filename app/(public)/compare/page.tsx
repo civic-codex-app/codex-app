@@ -1,6 +1,4 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { CompareSelector } from '@/components/compare/compare-selector'
 import { CompareView } from '@/components/compare/compare-view'
 import type { Metadata } from 'next'
@@ -99,7 +97,6 @@ export default async function ComparePage({ searchParams }: PageProps) {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
           <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
@@ -140,8 +137,6 @@ export default async function ComparePage({ searchParams }: PageProps) {
             <div className="text-sm">Search by name above to find officials</div>
           </div>
         )}
-
-        <Footer />
       </div>
     </>
   )

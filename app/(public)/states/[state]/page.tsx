@@ -2,8 +2,6 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor } from '@/lib/constants/parties'
@@ -215,7 +213,6 @@ export default async function StateDetailPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         {/* Back link */}
         <Link
@@ -406,8 +403,6 @@ export default async function StateDetailPage({ params }: PageProps) {
             <StatePoliticianList politicians={politicians} size="compact" />
           </section>
         )}
-
-        <Footer />
       </div>
     </>
   )

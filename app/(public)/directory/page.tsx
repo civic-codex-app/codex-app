@@ -3,8 +3,6 @@ import { unstable_cache } from 'next/cache'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { SearchInput } from '@/components/directory/search-input'
 import { DirectoryFilters } from '@/components/directory/directory-filters'
 import { AvatarImage } from '@/components/ui/avatar-image'
@@ -139,7 +137,6 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <h1 className="mb-1 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Directory
@@ -227,8 +224,6 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
             </div>
           </div>
         )}
-
-        <Footer />
       </div>
     </>
   )

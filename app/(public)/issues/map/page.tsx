@@ -1,6 +1,4 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { STANCE_NUMERIC } from '@/lib/utils/stances'
 import { IssueMapView } from '@/components/issues/issue-map-view'
 
@@ -101,14 +99,12 @@ export default async function IssueMapPage() {
 
   return (
     <>
-      <Header />
       <main className="mx-auto max-w-6xl px-4 pb-24 pt-6">
         <IssueMapView
           issues={(issues ?? []) as Array<{ id: string; name: string; slug: string; icon: string | null }>}
           stateIssueAverages={stateIssueAverages}
           politiciansByStateIssue={politiciansByStateIssue}
         />
-        <Footer />
       </main>
     </>
   )

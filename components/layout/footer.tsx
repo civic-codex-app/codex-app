@@ -7,6 +7,21 @@ import { useThemeStore } from '@/lib/hooks/use-theme'
 export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } = {}) {
   const { mode, toggle } = useThemeStore()
 
+  // The disclaimer is shown everywhere, including on /data-sources.
+  //
+  // That page used to pass hideDisclaimer when it rendered its own Footer,
+  // because the disclaimer links to and summarises the page you are already
+  // on. When the chrome moved to the layout I tried to preserve that with
+  // `pathname === '/data-sources'`, which produced a hydration mismatch:
+  // usePathname() in a client component does not resolve to the concrete
+  // route while a page is being statically prerendered through a shared
+  // layout, so the server emitted the disclaimer and the client removed it.
+  //
+  // A little redundancy on one page is a better trade than a per-route branch
+  // in shared chrome. The prop is kept for any caller that renders a Footer
+  // directly.
+  const hide = hideDisclaimer
+
   return (
     <footer className="mt-10 border-t border-[var(--poli-border)] py-10 max-lg:hidden">
       <div className="flex items-center justify-between">
@@ -16,7 +31,7 @@ export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } 
           <GreenDiamond size={12} color="var(--poli-faint)" />
         </div>
         <div className="flex items-center gap-4">
-          {!hideDisclaimer && (
+          {!hide && (
             <>
               <Link href="/data-sources" className="text-[12px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-sub)]">
                 Data Sources
@@ -58,7 +73,7 @@ export function Footer({ hideDisclaimer = false }: { hideDisclaimer?: boolean } 
           </button>
         </div>
       </div>
-      {!hideDisclaimer && (
+      {!hide && (
         <p className="mt-4 text-[11px] leading-relaxed text-[var(--poli-faint)]">
           Poli is currently in beta. We are an independent civic education platform, not affiliated with any political party, campaign, or government agency.
           All data is compiled from public sources and may contain errors.{' '}

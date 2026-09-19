@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 
 export const metadata: Metadata = {
   title: 'Data Sources & Disclaimer | Poli',
@@ -193,7 +191,6 @@ const SOURCES = [
 export default function DataSourcesPage() {
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <h1 className="mb-2 text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--poli-text)]">
           Data Sources & Disclaimer
@@ -293,8 +290,6 @@ export default function DataSourcesPage() {
         <p className="mt-8 text-center text-[12px] text-[var(--poli-faint)]">
           Last updated: March 2026
         </p>
-
-        <Footer hideDisclaimer />
       </div>
     </>
   )

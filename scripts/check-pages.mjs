@@ -93,7 +93,7 @@ let page = await browser.newPage()
 
 // Everything the listeners see during the current navigation lands here.
 let cur = null
-const fresh = () => ({ console: [], errors: [], failed: [], responses: [], rateLimited: [] })
+const fresh = () => ({ console: [], errors: [], failed: [], responses: [], rateLimited: [], blockedImages: [] })
 
 function attach(p) {
   p.on('console', (m) => {
@@ -110,6 +110,15 @@ function attach(p) {
     const err = req.failure()?.errorText ?? ''
     // A navigation cancels in-flight fetches; that is not the resource failing.
     if (err === 'net::ERR_ABORTED') return
+    // A cross-origin image the browser refuses to decode is only a fault if
+    // the reader sees a gap, and the broken-image check below measures that
+    // directly. Components like AvatarImage swap in a fallback on error, so
+    // counting the failed request too reports a fault the page has handled.
+    // Google avatar URLs expire and rate-limit, which is what surfaced this.
+    if (req.resourceType() === 'image' && /BLOCKED_BY_ORB|BLOCKED_BY_RESPONSE/.test(err)) {
+      cur.blockedImages.push(short(req.url()))
+      return
+    }
     cur.failed.push({ url: req.url(), type: req.resourceType(), err })
   })
   p.on('response', (res) => {
@@ -233,6 +242,7 @@ for (const route of ROUTES) {
   for (const r of [...new Set(resourceFails)]) console.log(`        ${r}`)
   for (const b of dom.broken) console.log(`        broken image: ${b.src}${b.alt ? `  (alt "${b.alt}")` : ''}`)
   for (const u of [...new Set(snapshot.rateLimited)]) console.log(`        rate-limited (HTTP 429): ${u} — this sweep's own volume, not a page fault`)
+  for (const u of [...new Set(snapshot.blockedImages)]) console.log(`        cross-origin image refused: ${u} — only a fault if it rendered as a gap, checked below`)
   for (const e of benign) console.log(`        ignored: ${selfInflicted(e.text).why}`)
   if (dom.pending) console.log(`        ${dom.pending} of ${dom.images} image(s) still loading after 10s — not checked`)
 
