@@ -1,6 +1,4 @@
 import type { Metadata } from 'next'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { SubmissionForm } from '@/components/forms/submission-form'
 import Link from 'next/link'
 
@@ -12,7 +10,6 @@ export const metadata: Metadata = {
 export default function SubmitTipPage() {
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[600px] px-6 pt-6 pb-16 md:px-10">
         <Link href="/contribute" className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]">
           &larr; Contribute
@@ -34,8 +31,6 @@ export default function SubmitTipPage() {
             { name: 'source_url', label: 'Source URL', type: 'url', placeholder: 'Link to source (optional)' },
           ]}
         />
-
-        <Footer />
       </div>
     </>
   )

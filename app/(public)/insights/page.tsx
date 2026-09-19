@@ -1,8 +1,6 @@
 import { Suspense } from 'react'
 import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { ChamberComposition } from '@/components/visualizations/chamber-composition'
 import { IssueHeatmap } from '@/components/visualizations/issue-heatmap'
 import { PartyAlignmentSpectrum } from '@/components/visualizations/party-alignment-spectrum'
@@ -77,7 +75,6 @@ export default async function InsightsPage() {
   if (!allPoliticians) {
     return (
       <>
-        <Header />
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
           <div className="py-20 text-center">
             <div className="mb-3 text-2xl font-bold text-[var(--poli-text)]">Something went wrong</div>
@@ -85,7 +82,6 @@ export default async function InsightsPage() {
               We couldn&apos;t load insights right now. Please try again later.
             </p>
           </div>
-          <Footer />
         </div>
       </>
     )
@@ -248,7 +244,6 @@ export default async function InsightsPage() {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
         <div className="mb-14 max-w-[650px]">
@@ -400,8 +395,6 @@ export default async function InsightsPage() {
             </a>
           </div>
         </section>
-
-        <Footer />
       </div>
     </>
   )

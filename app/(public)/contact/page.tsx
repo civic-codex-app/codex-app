@@ -1,6 +1,4 @@
 import type { Metadata } from 'next'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { SubmissionForm } from '@/components/forms/submission-form'
 
 export const metadata: Metadata = {
@@ -11,7 +9,6 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
           Contact Us
@@ -29,8 +26,6 @@ export default function ContactPage() {
             { name: 'message', label: 'Message', type: 'textarea', required: true, placeholder: 'Your message...', maxLength: 5000 },
           ]}
         />
-
-        <Footer />
       </div>
     </>
   )

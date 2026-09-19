@@ -1,6 +1,4 @@
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { VoterGrid } from '@/components/community/voter-grid'
 import { StateFilterSelect } from '@/components/community/state-filter-select'
 import Link from 'next/link'
@@ -94,7 +92,6 @@ export default async function CommunityPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <Header />
       <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
         <div className="mb-6">
           <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
@@ -203,8 +200,6 @@ export default async function CommunityPage({ searchParams }: PageProps) {
             )}
           </>
         )}
-
-        <Footer />
       </main>
     </>
   )

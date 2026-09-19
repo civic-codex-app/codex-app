@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createClient, getLocalUser } from '@/lib/supabase/client'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 
@@ -89,14 +89,40 @@ export function BottomTabs() {
   // route that is over a second of the bar insisting you are still where you
   // were. Native tab bars highlight on touch-down.
   const [pendingHref, setPendingHref] = useState<string | null>(null)
+  const pendingTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Reconciliation: clear the optimistic highlight once the real route
-  // catches up. This also covers a tap that never became a navigation (the
-  // touch turned into a scroll), because pathname simply never changes and
-  // the next commit resets it.
-  useEffect(() => {
+  const clearPending = useCallback(() => {
+    if (pendingTimer.current) {
+      clearTimeout(pendingTimer.current)
+      pendingTimer.current = null
+    }
     setPendingHref(null)
-  }, [pathname])
+  }, [])
+
+  // Optimism has to be able to expire, and an earlier version of this had no
+  // way to. It cleared only on a pathname change, with a comment claiming
+  // that also covered a touch that became a scroll — the opposite of what the
+  // code did: if the pathname never changes, an effect keyed on the pathname
+  // never runs. Touching a tab and then dragging left the bar insisting you
+  // were somewhere you had never gone, indefinitely, so the next tap on that
+  // tab looked like it did nothing.
+  //
+  // Three ways out now: the route commits, the browser cancels the gesture
+  // (a touch that turns into a scroll), or the tap simply never became a
+  // navigation and the timer expires.
+  const markPending = useCallback((href: string) => {
+    setPendingHref(href)
+    if (pendingTimer.current) clearTimeout(pendingTimer.current)
+    pendingTimer.current = setTimeout(() => setPendingHref(null), 2000)
+  }, [])
+
+  useEffect(() => {
+    clearPending()
+  }, [pathname, clearPending])
+
+  useEffect(() => () => {
+    if (pendingTimer.current) clearTimeout(pendingTimer.current)
+  }, [])
 
   const activePath = pendingHref ?? pathname
 
@@ -221,7 +247,8 @@ export function BottomTabs() {
                 // pointerdown, not click: it fires roughly 40ms earlier and
                 // still fires when the tap is later cancelled, which the
                 // pathname effect above reconciles.
-                onPointerDown={() => setPendingHref(tab.href)}
+                onPointerDown={() => markPending(tab.href)}
+                onPointerCancel={clearPending}
                 onClick={closeMore}
                 aria-current={isActive ? 'page' : undefined}
                 className="no-underline"

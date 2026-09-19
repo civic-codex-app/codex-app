@@ -1,7 +1,5 @@
 import { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { QuizForm } from '@/components/match/quiz-form'
 
 export const dynamic = 'force-dynamic'
@@ -91,7 +89,6 @@ export default async function MatchPage() {
 
   return (
     <>
-      <Header />
       <main className="mx-auto max-w-2xl px-6 pt-6 pb-20 md:px-10">
         <div className="mb-10 text-center">
           <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight text-[var(--poli-text)]">
@@ -105,7 +102,6 @@ export default async function MatchPage() {
 
         <QuizForm issues={issues ?? []} />
       </main>
-      <Footer />
     </>
   )
 }

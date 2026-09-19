@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { createClient } from '@/lib/supabase/server'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
 import { StateDatePicker } from '@/components/elections/state-date-picker'
 
@@ -75,7 +73,6 @@ export default async function ElectionCountdownPage() {
 
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-8 pb-16 md:px-10">
         {/* Back link */}
         <Link
@@ -173,8 +170,6 @@ export default async function ElectionCountdownPage() {
             </svg>
           </Link>
         </div>
-
-        <Footer />
       </div>
     </>
   )

@@ -1,6 +1,4 @@
 import type { Metadata } from 'next'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Poli',
@@ -10,7 +8,6 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <>
-      <Header />
       <div className="mx-auto max-w-[800px] px-6 pt-6 pb-16 md:px-10">
         <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">Privacy Policy</h1>
         <p className="mb-8 text-[13px] text-[var(--poli-faint)]">Last updated: March 2026</p>
@@ -61,8 +58,6 @@ export default function PrivacyPage() {
             <p>Questions about this policy? <a href="/contact" className="font-medium text-[var(--poli-text)] underline underline-offset-2">Contact us</a>.</p>
           </section>
         </div>
-
-        <Footer />
       </div>
     </>
   )

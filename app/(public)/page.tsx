@@ -3,8 +3,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { SearchInput } from '@/components/directory/search-input'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
@@ -91,7 +89,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <Header />
       <Suspense><SignoutToast /></Suspense>
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
@@ -255,9 +252,6 @@ export default async function HomePage() {
             })}
           </div>
         </div>
-
-        <Footer />
-
         {/* Mobile disclaimer — footer is hidden on mobile */}
         <div className="mt-8 pb-24 sm:hidden">
           <p className="text-[11px] leading-relaxed text-[var(--poli-faint)]">

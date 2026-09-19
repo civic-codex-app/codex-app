@@ -3,8 +3,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { AvatarImage } from '@/components/ui/avatar-image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { Header } from '@/components/layout/header'
-import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { CHAMBER_LABELS } from '@/lib/constants/chambers'
@@ -170,7 +168,6 @@ export default async function RaceDetailPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(raceJsonLd) }}
       />
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
           href="/elections"
@@ -459,8 +456,6 @@ export default async function RaceDetailPage({ params }: PageProps) {
             </div>
           )}
         </section>
-
-        <Footer />
       </div>
     </>
   )
@@ -534,7 +529,6 @@ async function renderStateElection(
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(electionJsonLd) }}
       />
-      <Header />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <Link
           href="/elections"
@@ -615,8 +609,6 @@ async function renderStateElection(
             <div className="text-sm">Candidate announcements for this election haven&apos;t been added yet</div>
           </div>
         )}
-
-        <Footer />
       </div>
     </>
   )
