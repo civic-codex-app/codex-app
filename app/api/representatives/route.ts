@@ -40,6 +40,26 @@ export async function GET(request: NextRequest) {
     const states = [...new Set(districts.map((d) => d.state))]
 
     // ── Fetch House reps matching state + district ──────────────
+    //
+    // is_verified is the filter that makes this endpoint answer "who represents
+    // you" rather than "who has ever held this seat". It is set only by
+    // scripts/import-congress-members.mjs from the Congress.gov member API, so
+    // a true value means Congress.gov listed that person in the seat when we
+    // last reconciled.
+    //
+    // Without it this route returns former members alongside current ones.
+    // Fifteen House seats hold more than one row: CA-14 returns both Aisha
+    // Wahab and Eric Swalwell, GA-13 both Everton Blair and David Scott, GA-03
+    // both Brian Jack and Drew Ferguson. Checked against Congress.gov directly:
+    // Swalwell's and Scott's terms are recorded as ending in 2026, and the
+    // verified row is the sitting member in each case. Three more pairs are the
+    // same person stored twice under two spellings (Mike/Michael Waltz,
+    // Buddy/Earl Carter, Mike/Michael Turner).
+    //
+    // 436 of 472 House rows are verified, covering 434 of the 435 seats, and
+    // 95.9% of the ZIPs in lib/data/zip-to-district.json still resolve with the
+    // filter on. Showing a voter someone who left office as their current
+    // representative is worse than showing nobody.
     const housePromises = districts.map((d) =>
       supabase
         .from('politicians')
@@ -47,19 +67,27 @@ export async function GET(request: NextRequest) {
         .eq('state', d.state)
         .eq('chamber', 'house')
         .eq('district', d.district)
+        .eq('is_verified', true)
         .limit(5)
     )
 
     // ── Fetch Senators for the state(s) ─────────────────────────
+    // Same filter, same reason: 100 of 101 senate rows are verified.
     const senatePromise = supabase
       .from('politicians')
       .select('id, name, slug, party, state, chamber, title, image_url')
       .in('state', states)
       .eq('chamber', 'senate')
+      .eq('is_verified', true)
       .order('name')
       .limit(10)
 
     // ── Fetch Governor(s) for the state(s) ──────────────────────
+    // Deliberately NOT filtered on is_verified. Congress.gov covers Congress,
+    // so it can never verify a governor and all 55 rows are false; filtering
+    // here would return an empty governor for every state in the country.
+    // These rows need their own authoritative check against state sources
+    // before this endpoint can make the same promise about them.
     const govPromise = supabase
       .from('politicians')
       .select('id, name, slug, party, state, chamber, title, image_url')
@@ -117,15 +145,27 @@ async function fallbackByState(zip: string) {
     return NextResponse.json({ representatives: [], source: 'none' })
   }
 
+  // Senators are filtered to currently-serving members, governors cannot be
+  // (see the governor query above), so the two are fetched separately rather
+  // than with one .in() that could only apply the filter to both or neither.
   const supabase = await createClient()
-  const { data } = await supabase
-    .from('politicians')
-    .select('id, name, slug, party, state, chamber, title, image_url')
-    .eq('state', state)
-    .in('chamber', ['senate', 'governor'])
-    .order('chamber')
-    .order('name')
-    .limit(10)
+  const [{ data: senators }, { data: governors }] = await Promise.all([
+    supabase
+      .from('politicians')
+      .select('id, name, slug, party, state, chamber, title, image_url')
+      .eq('state', state)
+      .eq('chamber', 'senate')
+      .eq('is_verified', true)
+      .order('name')
+      .limit(10),
+    supabase
+      .from('politicians')
+      .select('id, name, slug, party, state, chamber, title, image_url')
+      .eq('state', state)
+      .eq('chamber', 'governor')
+      .limit(5),
+  ])
+  const data = [...(senators ?? []), ...(governors ?? [])]
 
   return NextResponse.json(
     { representatives: data ?? [], source: 'state_fallback', state },
