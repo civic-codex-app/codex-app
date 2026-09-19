@@ -17,7 +17,12 @@ export function BackToTop() {
 
   return (
     <button
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={() => {
+        // prefers-reduced-motion in CSS does not govern an imperative
+        // scrollTo, so it has to be checked here as well.
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })
+      }}
       className="touch-feedback fixed bottom-[calc(72px+var(--safe-bottom)+12px)] right-4 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-[var(--poli-border)] bg-[var(--poli-bg)]/90 text-[var(--poli-sub)] shadow-lg backdrop-blur-sm transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] sm:bottom-8 sm:right-8"
       aria-label="Back to top"
     >

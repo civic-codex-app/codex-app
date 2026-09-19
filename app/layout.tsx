@@ -71,7 +71,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
+    // data-scroll-behavior tells Next it may disable the smooth scrolling
+    // declared in globals.css while a route transition runs. Without it Next
+    // cannot, so every navigation's scroll-to-top and every Back restore is
+    // an animated glide rather than an instant placement. Next warns about
+    // this in development.
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${dmSans.variable} ${instrumentSerif.variable}`}
+      suppressHydrationWarning
+    >
       <head />
       <body className="font-sans antialiased" suppressHydrationWarning>
         <Script

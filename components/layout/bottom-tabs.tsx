@@ -83,6 +83,23 @@ export function BottomTabs() {
   const [moreOpen, setMoreOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // The tab you tapped lights up immediately instead of after the server
+  // responds. usePathname only updates when a navigation commits, so with it
+  // alone the old tab stayed lit for the entire round trip — on an uncached
+  // route that is over a second of the bar insisting you are still where you
+  // were. Native tab bars highlight on touch-down.
+  const [pendingHref, setPendingHref] = useState<string | null>(null)
+
+  // Reconciliation: clear the optimistic highlight once the real route
+  // catches up. This also covers a tap that never became a navigation (the
+  // touch turned into a scroll), because pathname simply never changes and
+  // the next commit resets it.
+  useEffect(() => {
+    setPendingHref(null)
+  }, [pathname])
+
+  const activePath = pendingHref ?? pathname
+
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => {
@@ -193,13 +210,18 @@ export function BottomTabs() {
         <div style={{ display: 'flex', height: '56px', alignItems: 'stretch' }}>
           {TABS.map((tab) => {
             const isActive = !moreOpen && tab.match.some((m) =>
-              m === '/' ? pathname === '/' : pathname.startsWith(m)
+              m === '/' ? activePath === '/' : activePath.startsWith(m)
             )
 
             return (
               <Link
                 key={tab.href}
                 href={tab.href}
+                prefetch
+                // pointerdown, not click: it fires roughly 40ms earlier and
+                // still fires when the tap is later cancelled, which the
+                // pathname effect above reconciles.
+                onPointerDown={() => setPendingHref(tab.href)}
                 onClick={closeMore}
                 aria-current={isActive ? 'page' : undefined}
                 className="no-underline"

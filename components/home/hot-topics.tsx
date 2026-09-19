@@ -1,6 +1,17 @@
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
+/** True only for an absolute http(s) URL — anything else would resolve relative to our origin. */
+function isAbsoluteUrl(value: string | null | undefined): boolean {
+  if (!value) return false
+  try {
+    const u = new URL(value)
+    return u.protocol === 'http:' || u.protocol === 'https:'
+  } catch {
+    return false
+  }
+}
+
 // Issue pill colors by category — avoids the all-blue-looks-Democrat problem
 const ISSUE_PILL_COLORS: Record<string, { bg: string; text: string; hover: string }> = {
   'immigration-and-border-security': { bg: 'bg-orange-500/10', text: 'text-orange-400', hover: 'hover:bg-orange-500/20' },
@@ -103,7 +114,10 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
 
               {/* Headline */}
               <a
-                href={topic.source_url ?? '#'}
+                // Defence in depth for the CDATA bug fixed in
+                // lib/utils/news.ts: anything that is not an absolute http(s)
+                // URL would be resolved relative to our own origin and 404.
+                href={isAbsoluteUrl(topic.source_url) ? topic.source_url! : '#'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mb-1 block break-words text-[14px] font-semibold leading-snug text-[var(--poli-text)] no-underline hover:underline"

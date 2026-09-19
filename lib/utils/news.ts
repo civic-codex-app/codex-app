@@ -87,6 +87,33 @@ export function htmlToText(raw: string): string {
   return text.replace(/\s+/g, ' ').trim()
 }
 
+/**
+ * A usable absolute URL out of an RSS field, or ''.
+ *
+ * Every text field in parseRssItems runs through htmlToText, which unwraps
+ * CDATA. `link` did not — it was taken raw with a .trim() — so feeds that
+ * wrap their links (ABC News does) stored the literal
+ * "<![CDATA[https://…]]>" as source_url. Rendered into an href that is not a
+ * valid absolute URL, the browser resolves it as a *relative* path, so the
+ * homepage shipped 49 links that 404'd against our own domain.
+ *
+ * htmlToText is not the right tool here: it collapses whitespace and strips
+ * anything angle-bracketed, which is fine for prose and wrong for a URL. This
+ * unwraps CDATA, decodes entities (&amp; is common in query strings), and
+ * then requires the result to parse as http(s) — so a malformed link becomes
+ * an absent link rather than a broken one.
+ */
+export function extractUrl(raw: string): string {
+  const unwrapped = raw.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1')
+  const decoded = decodeEntities(unwrapped).trim()
+  try {
+    const u = new URL(decoded)
+    return u.protocol === 'http:' || u.protocol === 'https:' ? u.toString() : ''
+  } catch {
+    return ''
+  }
+}
+
 export function parseRssItems(xml: string): RssItem[] {
   const items: RssItem[] = []
 
@@ -98,11 +125,11 @@ export function parseRssItems(xml: string): RssItem[] {
     const block = match[1]
 
     const title = htmlToText(block.match(/<title>([\s\S]*?)<\/title>/)?.[1] ?? '')
-    const link = block.match(/<link>([\s\S]*?)<\/link>/)?.[1]?.trim() ?? ''
+    const link = extractUrl(block.match(/<link>([\s\S]*?)<\/link>/)?.[1] ?? '')
     const pubDate = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/)?.[1]?.trim() ?? ''
     const sourceMatch = block.match(/<source\s+url="([^"]*)"[^>]*>([\s\S]*?)<\/source>/)
     const source = htmlToText(sourceMatch?.[2] ?? '')
-    const sourceUrl = sourceMatch?.[1] ?? ''
+    const sourceUrl = extractUrl(sourceMatch?.[1] ?? '')
     const description = htmlToText(
       block.match(/<description>([\s\S]*?)<\/description>/)?.[1] ?? ''
     )

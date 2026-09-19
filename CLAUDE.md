@@ -9,7 +9,7 @@ Poli is a **civic engagement platform** that tracks U.S. politicians, their stan
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router) + React 19 + TypeScript
 - **Database:** Supabase (PostgreSQL) with Row-Level Security
-- **Styling:** Tailwind CSS v4 — dark-first design, CSS variables (`--poli-*`)
+- **Styling:** Tailwind CSS **v3.4** with `tailwind.config.ts` — dark-first design, CSS variables (`--poli-*`)
 - **Mobile:** Capacitor (iOS/Android shell wrapping the web app)
 - **Package manager:** pnpm
 - **Visualizations:** Pure SVG + CSS (no charting library)
@@ -503,7 +503,19 @@ and `CONGRESS_API_KEY` ([api.congress.gov/sign-up](https://api.congress.gov/sign
 4. **Agent token limits** — single agents choke on very large outputs (>32K tokens). Split into multiple smaller parallel agents
 5. **chamber_type for local** — recently expanded; some UI components may still only handle senate/house/governor
 6. **stance bucketing** — when aggregating for charts, use `stanceBucket()` to collapse intensity into 4 categories
-7. **Tailwind v4** — uses CSS-first config, not `tailwind.config.js`
+7. **Tailwind v3.4, NOT v4** — this entry said the opposite until 2026-09-19.
+   Config is the JS-first `tailwind.config.ts`; `app/globals.css` starts with
+   `@tailwind base/components/utilities`. There is no `@theme` block and no
+   `@import "tailwindcss"`. Anyone following the old note would write
+   CSS-first config that silently never compiles.
+8. **Motion tokens** — durations (`duration-1`..`5`) and easings
+   (`ease-ios`, `ease-spring`, `ease-sheet`, …) resolve to CSS custom
+   properties in `globals.css`. Do not hardcode a `cubic-bezier`.
+9. **Press feedback is automatic** — a global `:active` rule inside
+   `@media (hover: none)` covers every `a`/`button`/`[role=button]`. Add
+   `.press-scale` only for small controls; opt out with `data-no-press`.
+   Hover utilities are wrapped in `@media (hover: hover)` by
+   `future.hoverOnlyWhenSupported`, so hover and press never both apply.
 
 ## Pending / TODO
 - [ ] Admin CRUD for elections/races/candidates

@@ -9,6 +9,36 @@
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --safe-left: env(safe-area-inset-left, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
+
+    /* ── Motion: durations ──
+       Exposed as Tailwind duration-1..5. Before these there was no shared
+       scale: 54 duration-* usages across six values, one of which
+       (duration-400) is not in Tailwind's scale and so never compiled. */
+    --dur-1: 110ms;  /* press-in, micro state */
+    --dur-2: 180ms;  /* press release, colour changes */
+    --dur-3: 260ms;  /* sheets, modals, tab indicators */
+    --dur-4: 340ms;  /* page and hero entrances */
+    --dur-5: 420ms;  /* theme crossfade */
+
+    /* ── Motion: easings ──
+       The repo had exactly one easing constant, cubic-bezier(0.16,1,0.3,1),
+       hardcoded in two places, and 92% of transitions shipped with Tailwind's
+       default ease-in-out. --ease-spring and --ease-sheet are upgraded to
+       CSS linear() further down, behind @supports. */
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in: cubic-bezier(0.32, 0, 0.67, 0);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.26, 0.64, 1);
+    --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+
+    /* ── Press feedback ──
+       brightness(), not opacity: in this theme --poli-card and --poli-bg are
+       both #FFFFFF, so dimming a card against the page is nearly invisible.
+       brightness() acts on rendered pixels regardless of what is behind. */
+    --press-brightness: 0.93;
+    --press-opacity: 0.9;
+    --press-scale: 0.97;
     --background: 40 20% 98%;
     --foreground: 0 0% 7%;
     --card: 0 0% 100%;
@@ -68,7 +98,30 @@
 
   * {
     @apply border-border;
+  }
+
+  /* Suppress WebKit's grey tap box only where we supply our own feedback
+     (see the press layer below). It used to be on *, which removed the
+     browser's only press affordance from the entire app while replacing it
+     on four components.
+
+     touch-action: manipulation also drops the ~300ms double-tap-zoom wait on
+     these elements. Pinch-zoom is untouched — the viewport deliberately
+     allows maximumScale: 5 — and this is not extended to body or *. */
+  a,
+  button,
+  [role='button'],
+  [role='tab'],
+  [role='option'],
+  [role='switch'],
+  [role='menuitem'],
+  summary,
+  label,
+  input,
+  select,
+  textarea {
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   body {
@@ -122,10 +175,32 @@
   --poli-badge-bg: #334155;
   --poli-badge-text: #94A3B8;
   --poli-grid-opacity: 0.025;
+
+  /* Darkening a dark surface does nothing; lift it instead. */
+  --press-brightness: 1.45;
+  --press-opacity: 0.88;
 }
 
 :root.dark ::selection {
   background: rgba(255, 255, 255, 0.15);
+}
+
+/* CSS linear() approximates a real spring far better than any cubic-bezier.
+   It must be gated with @supports and NOT written straight into the custom
+   property: a custom property accepts any token at parse time, so on WebKit
+   before 17.2 the failure would happen at substitution and the timing
+   function would fall back to `ease`, not to the cubic-bezier above. */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --ease-spring: linear(
+      0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%,
+      0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%, 1.001
+    );
+    --ease-sheet: linear(
+      0, 0.126 4.5%, 0.464 12.3%, 0.712 19.1%, 0.858 25.4%, 0.938 31.6%,
+      0.98 38.5%, 0.998 48.8%, 1
+    );
+  }
 }
 
 /* Focus styles for keyboard navigation */
@@ -135,29 +210,96 @@
   border-radius: 4px;
 }
 
-/* Smooth scroll + app-like overscroll */
+/* `contain`, not `none`: none suppresses the rubber-band entirely, which is
+   what makes scrolling feel stiff and un-physical. contain still stops scroll
+   chaining to a parent, which is all that was wanted.
+
+   scroll-behavior is gated because it applies to programmatic scrolls too, so
+   unconditionally it animates every scroll restore. Note <html> also needs
+   data-scroll-behavior="smooth" (set in app/layout.tsx) or Next cannot
+   suppress it during a route transition. */
 html {
-  scroll-behavior: smooth;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: contain;
 }
 
-/* Touch feedback for interactive elements */
-.touch-feedback {
-  transition: transform 120ms ease, opacity 120ms ease;
-}
-.touch-feedback:active {
-  transform: scale(0.97);
-  opacity: 0.85;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-/* Horizontal scroll container (no scrollbar, momentum) */
+/* ────────────────────────────────────────────────────────────────────────
+   Press feedback.
+
+   Scoped to (hover: none) — the exact complement of the media query
+   Tailwind's hoverOnlyWhenSupported now wraps every hover: utility in. So a
+   pointer device gets hover styles and no press styles; a touch device gets
+   press styles and no hover styles. Neither ever sees both.
+
+   Press-in is instantaneous and the release is what eases. An eased press-in
+   is perceived as lag, which is the thing being removed.
+
+   Specificity: :is() takes the specificity of its most specific argument
+   (0,1,0); the :not() chain adds (0,2,0) and :active:active another (0,2,0),
+   landing at 0,5,0 — above any Tailwind utility, which is necessary because
+   transition-colors and transition-all would otherwise win.
+   ──────────────────────────────────────────────────────────────────────── */
+@media (hover: none) {
+  :is(
+    a[href], button, [role='button'], [role='tab'], [role='option'],
+    [role='switch'], [role='menuitem'], summary, label[for]
+  ):not([data-no-press]) {
+    transition-property: filter, opacity, transform, background-color,
+      border-color, color, box-shadow;
+    transition-duration: var(--dur-2);
+    transition-timing-function: var(--ease-out);
+  }
+
+  :is(
+    a[href], button, [role='button'], [role='tab'], [role='option'],
+    [role='switch'], [role='menuitem'], summary, label[for]
+  ):not([disabled]):not([aria-disabled='true']):not([data-no-press]):active:active {
+    filter: brightness(var(--press-brightness));
+    opacity: var(--press-opacity);
+    transition-duration: 0s;
+  }
+
+  /* Opt-in depress, for small and medium controls. Deliberately not applied
+     to full-bleed rows: 0.97 of a 390px-wide card is 11px of travel, which
+     reads as the row detaching rather than being pressed. */
+  .press-scale:active:active,
+  .touch-feedback:active:active {
+    transform: scale(var(--press-scale));
+  }
+}
+
+/* .touch-feedback is kept as an alias so its four existing call sites keep
+   working; .press-scale is the name to use from here. */
+
+/* Horizontal scroll container (no scrollbar, momentum, contained) */
 .scroll-x-momentum {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .scroll-x-momentum::-webkit-scrollbar {
   display: none;
+}
+
+/* Every other scroll container in the app reaches for Tailwind's overflow
+   utilities, so target the emitted class names directly rather than editing
+   21 components. Only one of them previously opted into momentum scrolling,
+   and none contained their overscroll — so a flick inside the profile tab
+   strip, the admin tables or a dropdown list chained to the page behind it. */
+.overflow-x-auto,
+.overflow-y-auto,
+.overflow-auto,
+.overflow-x-scroll,
+.overflow-y-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 /* Scrollbar */
@@ -202,8 +344,7 @@ html {
   footer,
   nav,
   [data-print-hide],
-  [data-bottom-tabs],
-  [data-mobile-nav] {
+  [data-bottom-tabs] {
     display: none !important;
   }
 
@@ -273,9 +414,32 @@ html {
   }
 }
 
-/* Reduced motion: no animation */
+/* ────────────────────────────────────────────────────────────────────────
+   Reduced motion. Must stay last in this file so it wins on source order.
+
+   This previously neutralised exactly one keyframe — the blob avatar — out of
+   roughly sixty animations and transitions, so animate-fade-up (26 sites),
+   animate-pulse (20), animate-spin (4), both requestAnimationFrame chart
+   tweens and the quiz/onboarding slides all ran regardless of the setting.
+
+   0.01ms rather than 0 so transitionend and animationend still fire and any
+   JS awaiting them cannot hang.
+
+   Press feedback deliberately survives: the :active rules set values, not
+   durations, so a press becomes instant-on and instant-off. Press feedback is
+   information about what you just touched, not decoration.
+   ──────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  @keyframes stance-blob-rotate {
-    0%, 100% { transform: none; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
   }
 }

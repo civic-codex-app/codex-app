@@ -158,8 +158,8 @@ export function Header() {
               640px overflowed every page by 82px between 640 and 850 — and the
               bottom tab bar had already hidden itself at the same breakpoint,
               so that range had a sideways-scrolling page and no working
-              navigation. The breakpoint is shared with bottom-tabs.tsx,
-              mobile-nav.tsx and footer.tsx; move all four together. */}
+              navigation. The breakpoint is shared with bottom-tabs.tsx
+              and footer.tsx; move all three together. */}
           <nav ref={navRef} className="ml-4 hidden items-center gap-1 lg:flex" aria-label="Main navigation">
             {NAV_ITEMS.map((item) => {
               const active = isNavActive(item)

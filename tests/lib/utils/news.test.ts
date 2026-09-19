@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { decodeEntities, htmlToText, parseRssItems } from '@/lib/utils/news'
+import { decodeEntities, extractUrl, htmlToText, parseRssItems } from '@/lib/utils/news'
 
 describe('decodeEntities', () => {
   it('decodes named entities', () => {
@@ -92,5 +92,50 @@ describe('parseRssItems', () => {
       '<item><title>Good</title><link>https://example.com/d</link></item>' +
       '</channel></rss>'
     expect(parseRssItems(xml).map((i) => i.title)).toEqual(['Good'])
+  })
+})
+
+describe("extractUrl", () => {
+  it("unwraps a CDATA-wrapped link", () => {
+    // ABC News wraps every <link> this way. Taken raw, the stored value kept
+    // the wrapper, and an href that is not an absolute URL resolves relative
+    // to our own origin — which is how 49 homepage links came to 404.
+    expect(extractUrl("<![CDATA[https://abcnews.com/Politics/story?id=1]]>")).toBe(
+      "https://abcnews.com/Politics/story?id=1"
+    )
+  })
+
+  it("decodes entities in query strings", () => {
+    expect(extractUrl("https://example.com/a?x=1&amp;y=2")).toBe("https://example.com/a?x=1&y=2")
+  })
+
+  it("trims surrounding whitespace and newlines", () => {
+    expect(extractUrl("\n  https://example.com/b  \n")).toBe("https://example.com/b")
+  })
+
+  it("returns empty for anything that is not an absolute http(s) URL", () => {
+    // Each of these would otherwise be rendered as a relative path.
+    expect(extractUrl("")).toBe("")
+    expect(extractUrl("/Politics/wireStory/x")).toBe("")
+    expect(extractUrl("not a url at all")).toBe("")
+    expect(extractUrl("javascript:alert(1)")).toBe("")
+    expect(extractUrl("<![CDATA[]]>")).toBe("")
+  })
+
+  it("parseRssItems yields a clean link for a CDATA feed", () => {
+    const xml =
+      "<rss><channel><item>" +
+      "<title><![CDATA[Headline &amp; more]]></title>" +
+      "<link><![CDATA[https://abcnews.com/Politics/wireStory/x-123]]></link>" +
+      "</item></channel></rss>"
+    const [item] = parseRssItems(xml)
+    expect(item.link).toBe("https://abcnews.com/Politics/wireStory/x-123")
+    expect(item.title).toBe("Headline & more")
+  })
+
+  it("parseRssItems drops an item whose link cannot be used", () => {
+    const xml =
+      "<rss><channel><item><title>Relative</title><link>/not/absolute</link></item></channel></rss>"
+    expect(parseRssItems(xml)).toEqual([])
   })
 })
