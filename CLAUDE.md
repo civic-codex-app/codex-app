@@ -99,11 +99,13 @@ Central stance definitions used everywhere:
 - **0 voting records** — see Data Integrity below
 - **0 election results** — all 271 were deleted 2026-09-10 as fabricated (see below)
 - **22 issues** and **~188,848 `politician_issues` rows** (8,584 politicians × 22 issues)
-- **5,501 politicians with a photo** (4,659 on our R2 bucket, 842 on external
-  sites) after 579 dead `image_url`s were nulled on 2026-09-17 — see the page
-  crawl below. 207 more point at hosts that omit their intermediate TLS
-  certificate; those load in Chrome/Safari but not in Node, so an R2
-  migration would skip them.
+- **5,501 politicians and 268 candidates with a photo.** All but 48 serve
+  from **`cdn.getpoli.app`**, our own R2 bucket behind a custom domain
+  (migrated 2026-09-19; 579 dead URLs were nulled on 2026-09-17 first). The
+  48 keep working external URLs: malegislature.gov was returning 503
+  site-wide (37), camara.pr.gov and njleg.state.nj.us refuse connections (7),
+  one legis.ga.gov portrait will not decode, a few are rate-limited. Re-run
+  the migration to pick them up.
 
 > The figures "3,794 stances across 14 issues" appeared here for a long time and
 > were stale by ~50x. Two live bugs came from trusting them: `/insights` sized its
@@ -347,6 +349,35 @@ Rules: a route under `/api/admin` calls `requireAdmin()` as its first
 statement; an auth check is `if (!SECRET || …)`, never `if (SECRET && …)`;
 and the proxy's path tests do not protect `/api/*`.
 
+### Photos — 2026-09-19
+
+Every photo used to be on somebody else's server. They now serve from
+`cdn.getpoli.app` (R2 bucket `codex`, keys prefixed `codex/`).
+
+- `scripts/migrate-images-to-r2.mjs` downloads, converts to WebP via sharp and
+  uploads. **Dry-run by default**; `--apply` writes after backing up every URL
+  it will change. `preflight()` refuses to run until endpoint, bucket and
+  public URL are proven against a real object — as originally configured it
+  would have treated all 5,501 photos as external and rewritten every one to a
+  domain that does not resolve. It caught exactly that when `R2_PUBLIC_URL`
+  changed mid-session.
+- `--only-host` restricts a run. `--accept-incomplete-chain` relaxes Node's
+  certificate check and **refuses without `--only-host`**: six state
+  legislatures serve over a chain browsers complete and Node rejects, which is
+  215 photos. `--batch`/`--delay` pace a run.
+- `scripts/diagnose-unmigrated-images.mjs` says *which* rows did not move and
+  why, grouped by host. The migration reports one skip count for two failure
+  points (download and decode), which is not enough to act on. It decodes what
+  it downloads — that is what exposed a legis.ga.gov "portrait" that is a
+  1,938-byte octet-stream.
+- `scripts/rewrite-image-origin.mjs` moves stored URLs between origins,
+  keeping the path, and refuses unless a sample serves at the new origin.
+
+Rules: keep photos on our own origin; never point `image_url` at a host we do
+not control if the file can be re-hosted. A `<Image unoptimized>` has no error
+path, so a dead URL draws a broken-image icon — prefer `AvatarImage`, which
+falls back. Add any new image host to `remotePatterns` in `next.config.ts`.
+
 ### Still unverified
 - 2026 primary *outcomes* remain unconfirmed — FEC lists who filed, not who
   won a primary. No free API covers that; needs state SoS, AP, or Ballotpedia.
@@ -424,6 +455,9 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 | `scripts/verify-supabase-selects.mjs` | `pnpm verify:selects` — runs every literal query shape against the real schema |
 | `scripts/check-overflow.mjs` | `pnpm verify:overflow` — horizontal overflow per route and width. `--login`, `--ephemeral-admin` for gated pages |
 | `scripts/check-pages.mjs` | `pnpm verify:pages` — status, console errors, broken images, dead links across every route. `--routes-file=` for a DB-generated list, `--links=0` to skip the crawl |
+| `scripts/migrate-images-to-r2.mjs` | Re-hosts photos on R2. Dry-run by default; `--apply`, `--limit`, `--only-host`, `--accept-incomplete-chain`, `--batch`, `--delay` |
+| `scripts/diagnose-unmigrated-images.mjs` | Which photos a migration run left behind and why, grouped by host |
+| `scripts/rewrite-image-origin.mjs` | Moves stored image URLs between origins, keeping the path; refuses unless a sample serves |
 | `scripts/check-image-urls.mjs` | Probes every `image_url` as a browser would judge it; buckets dead / cert-chain / unreachable; writes rows to `--out` |
 | `scripts/check-api-routes.mjs` | `pnpm verify:api` — every API route requires what it claims to. `--static-only` skips the requests |
 | `scripts/clear-dead-image-urls.mjs` | Nulls the `dead` bucket from that file, each update conditioned on the URL being unchanged, after a backup |
@@ -465,18 +499,8 @@ and `CONGRESS_API_KEY` ([api.congress.gov/sign-up](https://api.congress.gov/sign
 
 ## Pending / TODO
 - [ ] Admin CRUD for elections/races/candidates
-- [ ] R2 bucket integration for image storage — **blocked on credentials.**
-      `.env.local` has `R2_ENDPOINT=https://<account-id>.r2.cloudflarestorage.com`
-      and `R2_PUBLIC_URL=https://images.yourcodexdomain.com` (NXDOMAIN), while
-      hosted photos actually serve from
-      `https://pub-c78794c371154ba4a897d0c125928acf.r2.dev/codex/…` — so the
-      public URL needs that origin *and* the `/codex` key prefix.
-      `migrate-images-to-r2.mjs` now refuses to run until endpoint, bucket and
-      public URL are proven against a real object: as configured it would have
-      treated all 5,501 photos as external and rewritten every one to a domain
-      that does not resolve. Its upload path has never run and is unverified;
-      use `--limit=20 --apply` first. Worth doing — ~840 photos still sit on
-      state-legislature sites that move files and let certificates lapse.
+- [x] R2 bucket integration for image storage — **done 2026-09-19.** 5,721 of
+      5,769 photos serve from `cdn.getpoli.app`; see "Photos" above.
 - [ ] Capacitor production URL configuration
 - [ ] More House member data (only ~100 of 435 in politicians table)
 - [ ] Replace `<img>` with Next.js `<Image>` component
