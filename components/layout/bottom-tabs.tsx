@@ -20,8 +20,8 @@ const TABS = [
   },
   {
     href: '/directory',
-    label: 'Directory',
-    match: ['/directory', '/politicians'],
+    label: 'Reps',
+    match: ['/directory', '/politicians', '/compare', '/states'],
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -32,9 +32,9 @@ const TABS = [
     ),
   },
   {
-    href: '/elections',
-    label: 'Elections',
-    match: ['/elections'],
+    href: '/ballot',
+    label: 'Ballot',
+    match: ['/ballot', '/elections', '/quiz', '/report-cards'],
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
@@ -45,12 +45,25 @@ const TABS = [
   {
     href: '/issues',
     label: 'Issues',
-    match: ['/issues'],
+    match: ['/issues', '/bills'],
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="12 2 2 7 12 12 22 7 12 2" />
         <polyline points="2 17 12 22 22 17" />
         <polyline points="2 12 12 17 22 12" />
+      </svg>
+    ),
+  },
+  {
+    href: '/feed',
+    label: 'Feed',
+    match: ['/feed', '/community', '/insights'],
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16v16H4z" />
+        <line x1="8" y1="9" x2="16" y2="9" />
+        <line x1="8" y1="13" x2="16" y2="13" />
+        <line x1="8" y1="17" x2="13" y2="17" />
       </svg>
     ),
   },
@@ -275,7 +288,14 @@ export function BottomTabs() {
             )
           })}
 
-          {/* More button */}
+          {/* More button.
+              The redesign deletes this: its contents have homes under the five
+              tabs (Community/Insights/Money Map -> Feed, Bills/Issue Map ->
+              Issues, Civic Profiles -> Ballot, Dashboard/Following/Account ->
+              the avatar). None of that absorption is built yet, and on mobile
+              this sheet is the ONLY path to those ten routes, so removing it
+              now would strand them. It stays until each destination actually
+              holds its contents. */}
           <button
             type="button"
             onClick={toggleMore}

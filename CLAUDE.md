@@ -9,7 +9,13 @@ Poli is a **civic engagement platform** that tracks U.S. politicians, their stan
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router) + React 19 + TypeScript
 - **Database:** Supabase (PostgreSQL) with Row-Level Security
-- **Styling:** Tailwind CSS **v3.4** with `tailwind.config.ts` — dark-first design, CSS variables (`--poli-*`)
+- **Styling:** Tailwind CSS **v3.4** with `tailwind.config.ts`, `darkMode: ['class']`,
+  CSS variables (`--poli-*`). **Light is the default theme.** Bare `:root` is the
+  light palette and `:root.dark` overrides it; the app goes dark only when the
+  theme toggle has written `poli-theme` to localStorage. Do not reintroduce a
+  `prefers-color-scheme` fallback — it used to sit in three places at once and
+  gave every visitor with a dark phone a dark app they had never chosen. This
+  line said "dark-first design" for a long time, which is how that survived.
 - **Mobile:** Capacitor (iOS/Android shell wrapping the web app)
 - **Package manager:** pnpm
 - **Visualizations:** Pure SVG + CSS (no charting library)
