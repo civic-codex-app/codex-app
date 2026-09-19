@@ -87,6 +87,13 @@ for (const file of found) {
     fail++
   }
 
+  if (revalidate && readsSearchParams && !forceDynamic) {
+    console.log(`  DECORATIVE REVALIDATE   ${route}`)
+    console.log(`      ${rel}`)
+    console.log(`      awaits searchParams, so it renders per request — the revalidate never applies`)
+    fail++
+  }
+
   if (revalidate && forceDynamic) {
     console.log(`  CONTRADICTORY          ${route}`)
     console.log(`      ${rel}`)

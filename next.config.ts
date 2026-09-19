@@ -149,14 +149,26 @@ const nextConfig: NextConfig = {
     ]
   },
   experimental: {
-    // Reuse a route the visitor has already seen for 30s instead of
-    // refetching it. The default for dynamic routes is 0, and almost every
-    // route here is dynamic, so tapping Directory -> Issues -> Directory
-    // refetched Directory from the server the second time. No native tab bar
-    // does that. 30s covers the back-and-forth of a real session without
-    // holding stale civic data: anything a user mutates (follow, like) is
-    // client state anyway.
-    staleTimes: { dynamic: 30, static: 300 },
+    // staleTimes.dynamic is deliberately NOT set.
+    //
+    // Setting it to 30 looked like a free win — it stops the client refetching
+    // a dynamic route you were just on. It is not free. staleTimes is global,
+    // so it also covers the 5 force-dynamic pages under app/(dashboard) and
+    // the 18 under app/admin, and a client-cached segment is served with NO
+    // server request at all — which means proxy.ts never runs, and proxy.ts is
+    // the only thing enforcing the /dashboard, /account, /following and /admin
+    // redirects.
+    //
+    // Reproduced against Next 16.2.1: with dynamic:30, signing out in one tab
+    // and then clicking a protected link in another produced zero network
+    // requests and re-rendered the previous session's page, byte-identical.
+    // With the default (0) the same click hit the server and redirected to
+    // /login. Next changed this default from 30 to 0 in v15 for exactly this
+    // reason.
+    //
+    // The benefit it was bought for — instant tab-bar switching — comes from
+    // making those routes static instead, which is the right fix and does not
+    // trade away redirect enforcement.
     serverActions: {
       bodySizeLimit: '2mb',
     },
