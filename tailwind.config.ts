@@ -1,6 +1,21 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  future: {
+    // Emit every `hover:` utility inside
+    // `@media (hover: hover) and (pointer: fine)`.
+    //
+    // Without this, a tap on a touch screen leaves :hover stuck on the element
+    // until you tap something else — so the nine `hover:-translate-y-0.5
+    // hover:shadow-md` cards stay lifted after you have already navigated
+    // away and come back. There are 399 hover: usages across 129 files and no
+    // `active:` variants at all, so on a phone the hover styles were the only
+    // press feedback, appearing at the wrong time and never leaving.
+    //
+    // Touchscreen laptops report `hover: hover, pointer: fine` and are
+    // unaffected. Desktop output is byte-identical apart from the wrapper.
+    hoverOnlyWhenSupported: true,
+  },
   darkMode: ['class'],
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
