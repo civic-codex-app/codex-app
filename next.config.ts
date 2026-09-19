@@ -53,6 +53,13 @@ const nextConfig: NextConfig = {
         hostname: 'upload.wikimedia.org',
       },
       {
+        // The R2 bucket behind its custom domain. Photos moved here from
+        // pub-*.r2.dev, which Cloudflare rate-limits and does not intend for
+        // production traffic.
+        protocol: 'https',
+        hostname: 'cdn.getpoli.app',
+      },
+      {
         protocol: 'https',
         hostname: '*.r2.dev',
       },

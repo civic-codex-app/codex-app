@@ -64,6 +64,25 @@ const short = (u) => (u.startsWith(ORIGIN) ? u.slice(ORIGIN.length) : u).slice(0
 // Dev-server chatter that is not a page problem.
 const NOISE = [/Download the React DevTools/, /\[Fast Refresh\]/, /\[HMR\]/, /hot-reloader|hmr/i]
 
+/**
+ * Errors this sweep causes by how it drives the browser, rather than faults in
+ * the page. Reported with the reason so they stay visible, but not counted —
+ * a gate that fails on its own driving teaches people to ignore it.
+ *
+ * The auth lock: supabase-js holds a Web Locks entry named
+ * "lock:sb-<ref>-auth-token" while it reads the session, and requests it with
+ * steal:true when a holder looks stuck. Navigating to the next route in the
+ * middle of that hand-off makes the previous holder's promise reject. It
+ * appeared once in one run across every full sweep, on a page that still
+ * returned 200 with its content, and supabase-js recovers on the next call.
+ * @supabase/ssr 0.5.2 already returns one cached browser client, so this is
+ * not several clients competing — it is one client interrupted mid-navigation.
+ */
+const SELF_INFLICTED = [
+  { re: /lock:sb-.*-auth-token|Lock broken by another request/, why: "supabase-js auth lock interrupted by this sweep's navigation; the page still rendered" },
+]
+const selfInflicted = (text) => SELF_INFLICTED.find((n) => n.re.test(text))
+
 let browser = await launch()
 let page = await browser.newPage()
 
@@ -193,7 +212,9 @@ for (const route of ROUTES) {
   const status = res?.status() ?? 0
   const landed = pathOf(page.url())
   const redirected = landed !== route ? `  -> ${landed}` : ''
-  const errors = [...snapshot.errors.map((t) => ({ kind: 'uncaught', text: t })), ...snapshot.console.filter((c) => c.type === 'error').map((c) => ({ kind: 'console', text: c.text }))]
+  const allErrors = [...snapshot.errors.map((t) => ({ kind: 'uncaught', text: t })), ...snapshot.console.filter((c) => c.type === 'error').map((c) => ({ kind: 'console', text: c.text }))]
+  const errors = allErrors.filter((e) => !selfInflicted(e.text))
+  const benign = allErrors.filter((e) => selfInflicted(e.text))
   const warnings = snapshot.console.filter((c) => c.type === 'warning')
   const resourceFails = [...snapshot.failed.map((f) => `${f.type} ${short(f.url)} ${f.err}`), ...snapshot.responses.map((r) => `${r.type} ${short(r.url)} HTTP ${r.status}`)]
   const problems = (status >= 400 ? 1 : 0) + errors.length + resourceFails.length + dom.broken.length
@@ -207,6 +228,7 @@ for (const route of ROUTES) {
   for (const r of [...new Set(resourceFails)]) console.log(`        ${r}`)
   for (const b of dom.broken) console.log(`        broken image: ${b.src}${b.alt ? `  (alt "${b.alt}")` : ''}`)
   for (const u of [...new Set(snapshot.rateLimited)]) console.log(`        rate-limited (HTTP 429): ${u} — this sweep's own volume, not a page fault`)
+  for (const e of benign) console.log(`        ignored: ${selfInflicted(e.text).why}`)
   if (dom.pending) console.log(`        ${dom.pending} of ${dom.images} image(s) still loading after 10s — not checked`)
 
   for (const l of dom.links) {
