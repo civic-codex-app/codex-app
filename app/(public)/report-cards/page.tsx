@@ -9,7 +9,22 @@ import { ReportCardList } from './report-card-list'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
-export const revalidate = 3600 // 1 hour
+/**
+ * Genuinely per-request: a signed-out visitor gets a different page entirely
+ * (a signup wall, returned before any data is fetched), so this cannot be one
+ * cached document.
+ *
+ * It declared `revalidate = 3600` alongside an auth-cookie read, which is the
+ * same contradiction that cost /politicians/[slug] and / their caches — except
+ * here the page really does vary, so the honest fix is to say so rather than
+ * to make it cacheable. Declaring revalidate on a route that can never use it
+ * reads as an optimisation that is working.
+ *
+ * Making it cacheable would mean shipping the ranked list to everyone and
+ * hiding it on the client, which weakens the wall deliberately; that is a
+ * product decision, not a performance one.
+ */
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Report Cards | Poli',

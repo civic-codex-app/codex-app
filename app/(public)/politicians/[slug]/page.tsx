@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation'
+import { unstable_cache } from 'next/cache'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { createClient as createServerAuthClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { PartyIcon } from '@/components/icons/party-icons'
@@ -12,7 +12,6 @@ import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { LikeButton } from '@/components/directory/like-button'
 import { BackButton } from '@/components/ui/back-button'
 import { ProfileTabs } from '@/components/politicians/profile-tabs'
-export const revalidate = 1800 // 30 minutes
 
 import type { Politician } from '@/lib/types/politician'
 import type {
@@ -31,6 +30,40 @@ import { getCachedNews } from '@/lib/utils/news'
 import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker'
 import { UpdatePoliticianButton } from '@/components/forms/update-politician-modal'
+
+/**
+ * Number of issues in the catalog, cached. It is the denominator for stance
+ * coverage on the report card and changes roughly twice a year, but was being
+ * counted on every render of every profile, as a third sequential round-trip
+ * after the Promise.all below.
+ */
+const getIssueCatalogSize = unstable_cache(
+  async () => {
+    const supabase = createServiceRoleClient()
+    const { count } = await supabase.from('issues').select('*', { count: 'exact', head: true })
+    return count ?? 0
+  },
+  ['issue-catalog-size'],
+  { revalidate: 3600, tags: ['issues'] }
+)
+
+export const revalidate = 1800 // 30 minutes
+
+/**
+ * On-demand ISR.
+ *
+ * A dynamic segment without generateStaticParams is never cached, whatever
+ * `revalidate` says — the production build emits Cache-Control: no-store and
+ * no x-nextjs-cache header. That was established on /issues/[slug] and
+ * /states/[state] (MISS 5.3s, then HIT 3ms); this page kept re-rendering
+ * anyway because the auth cookie read below made the point moot.
+ *
+ * Returning no params prerenders nothing at build time, so the build does not
+ * depend on Supabase, and each profile is cached after its first visitor.
+ */
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return []
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -135,19 +168,14 @@ export default async function PoliticianPage({ params }: PageProps) {
   // Compute party alignment score
   const alignmentScore = computeAlignment(pol.party, politicianStances)
 
-  // Check if user is authenticated (for gating report card)
-  let isAuthenticated = false
-  try {
-    const authClient = await createServerAuthClient()
-    const { data: { user } } = await authClient.auth.getUser()
-    isAuthenticated = !!user
-  } catch {}
+  // Whether the visitor is signed in is resolved on the client now. Reading
+  // the auth cookie here made this page dynamic, so the revalidate above never
+  // applied and every view re-ran every query below. The two things it gated
+  // are both client components that now gate themselves. Note the signed-out
+  // branch of the report card already rendered the same data behind a CSS
+  // blur, so nothing was ever withheld by deciding this on the server.
 
-  // Compute report card. The issue catalog size is the denominator for stance
-  // coverage, so read it rather than assuming -- it has already grown 14 -> 22.
-  const { count: issueCatalogSize } = await supabase
-    .from('issues')
-    .select('*', { count: 'exact', head: true })
+  const issueCatalogSize = await getIssueCatalogSize()
 
   const verifiedCount = politicianStances.filter((s: any) => s.is_verified).length
   const reportCard = computeReportCard({
@@ -345,7 +373,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 Compare
               </Link>
               <ExportPdfButton />
-              {isAuthenticated && <UpdatePoliticianButton politicianId={pol.id} politicianName={pol.name} />}
+              <UpdatePoliticianButton politicianId={pol.id} politicianName={pol.name} />
               {pol.twitter_url && (
                 <a href={pol.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]" aria-label="X (Twitter)">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -416,7 +444,6 @@ export default async function PoliticianPage({ params }: PageProps) {
                 facebook_url: pol.facebook_url,
                 since_year: pol.since_year,
               }}
-              isAuthenticated={isAuthenticated}
               alignmentScore={alignmentScore}
               stances={politicianStances as any}
               stanceHistoryByIssue={Object.fromEntries(stanceHistoryByIssue)}

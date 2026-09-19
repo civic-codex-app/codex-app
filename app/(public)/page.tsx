@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { SearchInput } from '@/components/directory/search-input'
@@ -10,13 +10,55 @@ import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { PartyIcon } from '@/components/icons/party-icons'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
-import { StatePoliticianList } from '@/components/states/state-politician-list'
 import { Trending } from '@/components/directory/trending'
 import { HotTopics } from '@/components/home/hot-topics'
+import { PersonalStrip } from '@/components/home/personal-strip'
 import { SignoutToast } from '@/components/ui/signout-toast'
 import { PARTY_EXPLAINERS } from '@/lib/data/educational-content'
 import { getSiteSettings } from '@/lib/utils/site-settings'
 
+const FEATURED_SLUGS = [
+  'donald-trump',
+  'nancy-pelosi',
+  'ted-cruz',
+  'chuck-schumer',
+  'bernie-sanders',
+  'jd-vance-vp',
+]
+
+/** The six featured officials, in display order. Cached: the list is a constant. */
+const getFeatured = unstable_cache(
+  async () => {
+    const supabase = createServiceRoleClient()
+    const { data } = await supabase
+      .from('politicians')
+      .select('id, name, slug, party, state, chamber, title, image_url')
+      .in('slug', FEATURED_SLUGS)
+    const bySlug = new Map((data ?? []).map((p) => [p.slug, p]))
+    return FEATURED_SLUGS.map((slug) => bySlug.get(slug)).filter(Boolean) as NonNullable<typeof data>
+  },
+  ['home-featured-politicians'],
+  { revalidate: 1800, tags: ['politicians'] }
+)
+
+/**
+ * Party headcounts for the hero. Three count:exact scans over 8,617 rows to
+ * produce three numbers that change when a politician is added, which was
+ * happening on every render. Same idiom as getFacetRows in directory/page.tsx.
+ */
+const getPartyTallies = unstable_cache(
+  async () => {
+    const supabase = createServiceRoleClient()
+    const [demRes, gopRes, indRes] = await Promise.all([
+      supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'democrat'),
+      supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'republican'),
+      supabase.from('politicians').select('id', { count: 'exact', head: true }).not('party', 'in', '("democrat","republican")'),
+    ])
+    return { dem: demRes.count ?? 0, gop: gopRes.count ?? 0, ind: indRes.count ?? 0 }
+  },
+  ['home-party-tallies'],
+  { revalidate: 1800, tags: ['politicians'] }
+)
 export const revalidate = 1800 // 30 minutes
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,74 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage() {
   const supabase = createServiceRoleClient()
 
-  // Check if user is authenticated and fetch personalized data
-  type UserProfile = { state: string | null; quiz_answers: Record<string, string> | null; quiz_results: unknown }
-  let userProfile: UserProfile | null = null
-  let userRepresentatives: { id: string; name: string; slug: string; party: string; state: string; chamber: string; title: string; image_url: string | null }[] = []
-  let followedIssueIds: string[] = []
-  try {
-    const authClient = await createClient()
-    const { data: { user } } = await authClient.auth.getUser()
-    if (user) {
-      const [{ data: profile }, { data: issueFollows }] = await Promise.all([
-        supabase
-          .from('profiles')
-          .select('state, quiz_answers, quiz_results')
-          .eq('id', user.id)
-          .single(),
-        supabase
-          .from('issue_follows')
-          .select('issue_id')
-          .eq('user_id', user.id),
-      ])
-      if (profile) {
-        userProfile = profile as unknown as UserProfile
-        // Fetch representatives for the user's state
-        if (profile.state) {
-          const { data: reps } = await supabase
-            .from('politicians')
-            .select('id, name, slug, party, state, chamber, title, image_url')
-            .eq('state', profile.state)
-            .in('chamber', ['senate', 'house', 'governor'])
-            .order('chamber')
-            .limit(20)
-          userRepresentatives = reps ?? []
-        }
-      }
-      followedIssueIds = (issueFollows ?? []).map(f => f.issue_id)
-    }
-  } catch {
-    // Not authenticated or profile fetch failed — show anonymous view
-  }
-
-  // Featured politicians — most likely searched (top federal officials)
-  const FEATURED_SLUGS = [
-    'donald-trump',
-    'nancy-pelosi',
-    'ted-cruz',
-    'chuck-schumer',
-    'bernie-sanders',
-    'jd-vance-vp',
-  ]
-  const { data: featuredData } = await supabase
-    .from('politicians')
-    .select('id, name, slug, party, state, chamber, title, image_url')
-    .in('slug', FEATURED_SLUGS)
-
-  // Maintain the display order
-  const featuredMap = new Map((featuredData ?? []).map(p => [p.slug, p]))
-  const featured = FEATURED_SLUGS.map(s => featuredMap.get(s)).filter(Boolean) as NonNullable<typeof featuredData>
-
-  // Quick stats
-  const [demRes, gopRes, indRes] = await Promise.all([
-    supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'democrat'),
-    supabase.from('politicians').select('id', { count: 'exact', head: true }).eq('party', 'republican'),
-    supabase.from('politicians').select('id', { count: 'exact', head: true }).not('party', 'in', '("democrat","republican")'),
-  ])
-
-  const dem = demRes.count ?? 0
-  const gop = gopRes.count ?? 0
-  const ind = indRes.count ?? 0
+  const [featured, { dem, gop, ind }] = await Promise.all([getFeatured(), getPartyTallies()])
   const total = dem + gop + ind
 
   return (
@@ -121,64 +96,6 @@ export default async function HomePage() {
             <SearchInput size="lg" />
           </div>
         </Suspense>
-
-        {/* Personalized section for authenticated users */}
-        {userProfile && (
-          <div className="mb-10 space-y-4 animate-fade-up">
-            {/* Quick links */}
-            <div className="flex flex-wrap gap-2">
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                Dashboard
-              </Link>
-              <Link
-                href="/ballot"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-                My Ballot
-              </Link>
-            </div>
-
-            {/* Your Representatives */}
-            {userRepresentatives.length > 0 && (
-              <div>
-                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
-                  Your Representatives
-                </h2>
-                <StatePoliticianList politicians={userRepresentatives} pageSize={3} size="compact" />
-              </div>
-            )}
-
-            {/* Quiz results prompt */}
-            {userProfile.quiz_answers && Object.keys(userProfile.quiz_answers).length > 0 ? (
-              <Link
-                href="/quiz"
-                className="flex items-center justify-between rounded-xl border border-blue-500/20 bg-blue-500/5 p-4 no-underline transition-all hover:border-blue-500/40"
-              >
-                <div>
-                  <div className="text-[14px] font-semibold text-[var(--poli-text)]">Your Top Matches</div>
-                  <div className="text-[12px] text-[var(--poli-sub)]">See which officials align with your views</div>
-                </div>
-                <svg className="shrink-0 text-blue-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </Link>
-            ) : (
-              <Link
-                href="/quiz"
-                className="flex items-center justify-between rounded-xl border border-[var(--poli-border)] bg-[var(--poli-hover)] p-4 no-underline transition-all hover:border-[var(--poli-text)]"
-              >
-                <div>
-                  <div className="text-[14px] font-semibold text-[var(--poli-text)]">Take the Quiz</div>
-                  <div className="text-[12px] text-[var(--poli-sub)]">Find out which officials match your views</div>
-                </div>
-                <svg className="shrink-0 text-[var(--poli-faint)]" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </Link>
-            )}
-          </div>
-        )}
 
         {/* Party stats — 3 colored cards, each filtering the directory by party */}
         <div className="mb-12 grid animate-fade-up grid-cols-3 gap-3">
@@ -219,6 +136,11 @@ export default async function HomePage() {
             <div className="mt-1 text-[12px] font-medium text-[var(--poli-sub)]">Independents</div>
           </Link>
         </div>
+
+        {/* Signed-in extras, fetched on the client. Below the party cards so a
+            post-hydration insert never pushes the fold down for the signed-out
+            majority. See components/home/personal-strip.tsx. */}
+        <PersonalStrip />
 
         {/* Quick Actions — above the fold */}
         <div className="mb-12">
@@ -268,7 +190,10 @@ export default async function HomePage() {
 
         {/* Hot Topics — top issues with politician stances */}
         <Suspense>
-          <HotTopics followedIssueIds={followedIssueIds} />
+          {/* followedIssueIds only re-ordered followed topics to the front. It
+              cost the whole page its cache to know them, which is not a trade
+              worth making for a sort order. */}
+          <HotTopics />
         </Suspense>
 
         {/* Trending — only renders if enough follows */}

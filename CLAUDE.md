@@ -237,6 +237,7 @@ callers ignore `error` — so a broken query renders as an empty section.
 | `pnpm verify:selects` | Any `.select()`, `.order()`, filter or insert/update payload naming a column or relationship that does not exist. Found 4 real outages, incl. the campaign-finance section hidden on every profile and the feed's poll card never rendering. |
 | `pnpm verify:rls` | Tables accepting anonymous writes. |
 | `pnpm verify:overflow` | Horizontal overflow at 375/768/1440 on every route, with the element responsible. Needs `pnpm dev` running. |
+| `pnpm verify:routes` | Every page's caching declaration means what it says: no page both declares `revalidate` and imports the cookie-backed Supabase client; every dynamic segment with `revalidate` has `generateStaticParams`; nothing declares both `revalidate` and `force-dynamic`. Also counts routes with no `loading.tsx` above them, which cannot be usefully prefetched. Needs no env. |
 | `pnpm verify:api` | Every API route requires what it claims to. Static pass reads each handler for its guard; dynamic pass calls each one unauthenticated and checks it refuses. A route with no entry in its table fails as unclassified, so adding one forces a decision about who may call it. |
 | `pnpm verify:pages` | Every route in a real browser: HTTP status and redirects, uncaught exceptions and console errors (where React reports hydration mismatches), failed same-origin requests, images that rendered with no pixels, and every internal link followed. Site-wide nav links are always checked; long tails are sampled and the sample size printed. Needs `pnpm dev`. |
 
@@ -386,6 +387,45 @@ not control if the file can be re-hosted. A `<Image unoptimized>` has no error
 path, so a dead URL draws a broken-image icon — prefer `AvatarImage`, which
 falls back. Add any new image host to `remotePatterns` in `next.config.ts`.
 
+### Caching — 2026-09-19
+
+Three pages declared a cache and then defeated it. The symptom is silent: the
+page still renders, just from scratch every time, and the only way to see it
+is to serve a production build and read `x-nextjs-cache`.
+
+| Route | What was wrong | After |
+|---|---|---|
+| `/politicians/[slug]` | read the auth cookie **and** had no `generateStaticParams` — either alone is fatal | MISS 1.0–4.2s, then **HIT ~2ms** |
+| `/` | read the auth cookie, so dynamic for 100% of traffic including signed-out | **HIT ~1.9ms**, prerendered at build |
+| `/report-cards` | declared `revalidate = 3600` beside an auth read, but genuinely returns a different page to signed-out visitors | now honestly `force-dynamic` |
+
+The rule, now enforced by `pnpm verify:routes`: **a page with `revalidate`
+must not touch `cookies()`, `headers()` or `searchParams`, and a dynamic
+segment also needs `generateStaticParams`.** A page that genuinely varies per
+request should say `force-dynamic` rather than declare a cache it can never
+use.
+
+How the auth reads were removed:
+
+- `/politicians/[slug]` passed `isAuthenticated` to two client components.
+  Both now resolve session themselves through `lib/hooks/use-session-user.ts`,
+  which uses `getSession()` (a local JWT read) rather than `getUser()` (a
+  network round-trip to GoTrue). Note the report card's signed-out branch
+  already rendered the same data behind a CSS blur — it is a signup prompt,
+  not a data boundary, so nothing was ever being withheld server-side.
+- `/` moved its four personalised pieces into
+  `components/home/personal-strip.tsx`, fed by `app/api/me/home`. The
+  featured list and the three party tallies are `unstable_cache`d.
+  `<HotTopics>` lost `followedIssueIds`, which only re-ordered followed
+  topics to the front — not worth the whole page's cache.
+
+**Making a page static can break client components that were fine when it was
+dynamic.** `useSearchParams()` bails out of prerendering, so
+`components/politicians/profile-tabs.tsx` started returning 500s from the
+production build the moment the page became cacheable. Its tab state is now
+local React state with `history.replaceState` for the URL, which also removed
+a server round-trip from every tab tap.
+
 ### Still unverified
 - 2026 primary *outcomes* remain unconfirmed — FEC lists who filed, not who
   won a primary. No free API covers that; needs state SoS, AP, or Ballotpedia.
@@ -467,6 +507,7 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 | `scripts/diagnose-unmigrated-images.mjs` | Which photos a migration run left behind and why, grouped by host |
 | `scripts/rewrite-image-origin.mjs` | Moves stored image URLs between origins, keeping the path; refuses unless a sample serves |
 | `scripts/check-image-urls.mjs` | Probes every `image_url` as a browser would judge it; buckets dead / cert-chain / unreachable; writes rows to `--out` |
+| `scripts/check-route-config.mjs` | `pnpm verify:routes` — asserts every page's caching declaration is honoured |
 | `scripts/check-api-routes.mjs` | `pnpm verify:api` — every API route requires what it claims to. `--static-only` skips the requests |
 | `scripts/clear-dead-image-urls.mjs` | Nulls the `dead` bucket from that file, each update conditioned on the URL being unchanged, after a backup |
 

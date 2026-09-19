@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSessionUser } from '@/lib/hooks/use-session-user'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { partyColor } from '@/lib/constants/parties'
@@ -127,7 +128,6 @@ export interface ProfileTabsProps {
     facebook_url?: string | null
     since_year?: number | null
   }
-  isAuthenticated: boolean
   alignmentScore: number
   stances: PoliticianStance[]
   stanceHistoryByIssue: Record<string, StanceHistoryEntry[]>
@@ -146,7 +146,6 @@ export interface ProfileTabsProps {
 
 export function ProfileTabs({
   politician: pol,
-  isAuthenticated,
   alignmentScore,
   stances,
   stanceHistoryByIssue,
@@ -158,25 +157,35 @@ export function ProfileTabs({
   likeMinded,
   newsArticles = [],
 }: ProfileTabsProps) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [, startTransition] = useTransition()
+  // Tab state is local, and the URL is kept in step with history.replaceState.
+  //
+  // It used to live in the query string and be switched with router.replace,
+  // which meant every tap on a tab was a server round-trip — on a page that
+  // already receives all six tabs of data as props, so the round-trip fetched
+  // nothing it did not already have. The pending flag was discarded too
+  // (`const [, startTransition]`), so the tab bar gave no sign of having been
+  // touched until the response landed.
+  //
+  // It also blocked prerendering: useSearchParams in a client component bails
+  // out of static rendering, so with the page now cacheable the build failed
+  // with BAILOUT_TO_CLIENT_SIDE_RENDERING. Reading the initial tab from
+  // location.search after mount keeps deep links working without that.
+  const [activeTab, setActiveTab] = useState<TabKey>('overview')
 
-  const rawTab = searchParams.get('tab') ?? 'overview'
-  const activeTab: TabKey = (TABS as readonly string[]).includes(rawTab)
-    ? (rawTab as TabKey)
-    : 'overview'
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get('tab') ?? 'overview'
+    if ((TABS as readonly string[]).includes(raw)) setActiveTab(raw as TabKey)
+  }, [])
 
   function switchTab(tab: TabKey) {
-    startTransition(() => {
-      const params = new URLSearchParams(searchParams.toString())
-      if (tab === 'overview') {
-        params.delete('tab')
-      } else {
-        params.set('tab', tab)
-      }
-      router.replace(`?${params.toString()}`, { scroll: false })
-    })
+    setActiveTab(tab)
+    const params = new URLSearchParams(window.location.search)
+    if (tab === 'overview') params.delete('tab')
+    else params.set('tab', tab)
+    const qs = params.toString()
+    // replaceState, not the router: no re-render, no scroll reset, and the
+    // URL stays shareable.
+    window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname)
   }
 
   // Filter tabs: hide tabs with no data
@@ -248,7 +257,6 @@ export function ProfileTabs({
         {activeTab === 'overview' && (
           <OverviewTab
             pol={pol}
-            isAuthenticated={isAuthenticated}
             alignmentScore={alignmentScore}
             stances={stances}
             reportCard={reportCard}
@@ -297,7 +305,6 @@ export function ProfileTabs({
 
 function OverviewTab({
   pol,
-  isAuthenticated,
   alignmentScore,
   stances,
   reportCard,
@@ -306,7 +313,6 @@ function OverviewTab({
   likeMinded,
 }: {
   pol: ProfileTabsProps['politician']
-  isAuthenticated: boolean
   alignmentScore: number
   stances: PoliticianStance[]
   reportCard: ReportCardData
@@ -314,6 +320,13 @@ function OverviewTab({
   committees: Committee[]
   likeMinded: LikeMindedPolitician[]
 }) {
+  // Resolved on the client. This used to arrive as a prop from the server,
+  // which meant the page had to read the auth cookie and so could never be
+  // cached. undefined while resolving is treated as signed-out for display:
+  // the branch below renders the same report card either way, blurred behind
+  // a signup prompt, so there is nothing to withhold and nothing to flash.
+  const signedIn = useSessionUser() != null
+
   const verifiedCount = stances.filter((s) => s.is_verified).length
 
   return (
@@ -339,7 +352,7 @@ function OverviewTab({
 
       {/* Report Card — auth-gated */}
       <div className="mt-8 border-t border-[var(--poli-border)] pt-6">
-        {isAuthenticated ? (
+        {signedIn ? (
           <PoliticianReportCard
             {...(reportCard as any)}
             stanceCount={stances.length}
