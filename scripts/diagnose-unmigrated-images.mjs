@@ -11,11 +11,20 @@
  * move, then re-probes each one and groups the reasons by host, so the
  * follow-up is a decision per host rather than per photo.
  *
+ * It decodes what it downloads, because the migration skips at two different
+ * points and reports one number for both. An earlier version of this checked
+ * only the download and so called three files "fine" that the migration could
+ * not convert: legis.ga.gov serves some portraits as octet-stream bodies of
+ * 1,938 bytes and exactly 1,048,576 bytes — truncated, not images. Saying the
+ * host is flaky when the file is broken sends the next person to the wrong
+ * place.
+ *
  * Usage:
  *   export $(grep -v '^#' .env.local | xargs)
  *   node scripts/diagnose-unmigrated-images.mjs [--backup=image-urls-backup-….json]
  */
 import { createClient } from '@supabase/supabase-js'
+import sharp from 'sharp'
 import { readFileSync, readdirSync } from 'node:fs'
 import { arg } from './lib/cli.mjs'
 
@@ -62,8 +71,16 @@ async function why(url) {
     if (!r.ok) return `HTTP ${r.status}`
     if (/svg|html|text\/plain/.test(ct)) return `not a raster image (${ct})`
     if (buf.length < 100) return `body too small (${buf.length}B)`
-    if (buf.length > 10 * 1024 * 1024) return `body too large (${(buf.length / 1048576).toFixed(1)}MB)`
-    return `downloads fine now (${ct}, ${buf.length}B) — transient at run time`
+    if (buf.length > 25 * 1024 * 1024) return `body too large (${(buf.length / 1048576).toFixed(1)}MB)`
+    // The migration converts before it uploads, so a body that decodes to
+    // nothing is a skip even though the download succeeded.
+    try {
+      const meta = await sharp(buf).metadata()
+      if (!meta.width || !meta.height) throw new Error('no dimensions')
+      return `downloads and decodes fine now (${meta.format} ${meta.width}x${meta.height}) — transient at run time`
+    } catch (e) {
+      return `body is not a decodable image (${ct}, ${buf.length}B: ${String(e.message).slice(0, 40)})`
+    }
   } catch (e) {
     const code = e.name === 'AbortError' ? 'timeout' : (e.cause?.code ?? e.code ?? e.message)
     if (code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') return 'incomplete certificate chain (browsers complete it, Node will not)'

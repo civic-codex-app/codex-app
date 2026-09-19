@@ -38,6 +38,7 @@
  *   node scripts/migrate-images-to-r2.mjs --limit=20 --apply
  *   node scripts/migrate-images-to-r2.mjs --apply
  *   node scripts/migrate-images-to-r2.mjs --only-host=cdn.ilga.gov --apply
+ *   node scripts/migrate-images-to-r2.mjs --batch=2 --delay=2000 --apply   # gently, for hosts that 503
  *   node scripts/migrate-images-to-r2.mjs --only-host=cdn.ilga.gov \
  *     --accept-incomplete-chain --apply     # hosts whose TLS chain Node rejects
  */
@@ -51,6 +52,12 @@ import { arg, has } from './lib/cli.mjs'
 const APPLY = has('apply')
 const LIMIT = Number(arg('limit', '0')) || Infinity
 const ONLY_HOSTS = arg('only-host', '').split(',').map((h) => h.trim()).filter(Boolean)
+// Pacing. The defaults move 800 photos in about half an hour, but they also
+// drew 503s from malegislature.gov and 429s from docs.legis.wisconsin.gov —
+// a sustained eight-at-a-time burst is more than a state legislature's photo
+// server expects. Retry those with --batch=2 --delay=2000.
+const BATCH_SIZE = Math.max(1, Number(arg('batch', '8')))
+const BATCH_DELAY = Math.max(0, Number(arg('delay', '250')))
 
 /**
  * Accept a server that omits its intermediate certificate.
@@ -104,7 +111,11 @@ const R2_PUBLIC = (process.env.R2_PUBLIC_URL ?? '').replace(/\/$/, '')
  * fifth environment variable to get wrong.
  */
 let KEY_PREFIX = ''
-const MAX_DOWNLOAD = 10 * 1024 * 1024 // 10MB max download
+// 25MB. The 10MB cap this replaces rejected 14 legislature portraits that
+// were simply scanned large — 10.0 to 18.4MB — and they are exactly the ones
+// worth re-hosting, since sharp turns each into a ~7KB WebP. The cap exists to
+// stop a runaway download, not to judge source quality.
+const MAX_DOWNLOAD = 25 * 1024 * 1024
 
 // Output sizes (2x for retina — displays at 400x500 but saves at 800x1000)
 const SIZES = {
@@ -254,7 +265,7 @@ async function migrateTable(table, folder) {
   let success = 0
   let failed = 0
   let skipped = 0
-  const BATCH = 8
+  const BATCH = BATCH_SIZE
   const size = SIZES[folder] || SIZES.politicians
 
   for (let i = 0; i < all.length; i += BATCH) {
@@ -299,7 +310,7 @@ async function migrateTable(table, folder) {
     }
 
     // Delay between batches to be nice to source servers
-    await new Promise((r) => setTimeout(r, 250))
+    await new Promise((r) => setTimeout(r, BATCH_DELAY))
   }
 
   console.log(`\n${table} done: ${success} migrated, ${failed} failed, ${skipped} skipped`)
