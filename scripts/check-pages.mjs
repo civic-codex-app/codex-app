@@ -80,6 +80,11 @@ const NOISE = [/Download the React DevTools/, /\[Fast Refresh\]/, /\[HMR\]/, /ho
  */
 const SELF_INFLICTED = [
   { re: /lock:sb-.*-auth-token|Lock broken by another request/, why: "supabase-js auth lock interrupted by this sweep's navigation; the page still rendered" },
+  // The 429 itself is already caught in the response handler, but the browser
+  // also emits a generic console error for it, which was being counted
+  // separately — so a rate-limited beacon showed up as "1 problem(s)" with
+  // nothing but the benign note underneath it.
+  { re: /Failed to load resource.*\b429\b|Too Many Requests/, why: "rate-limited request, counted once already as a 429 note" },
 ]
 const selfInflicted = (text) => SELF_INFLICTED.find((n) => n.re.test(text))
 
