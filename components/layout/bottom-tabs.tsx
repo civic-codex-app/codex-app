@@ -32,7 +32,13 @@ const TABS = [
     ),
   },
   {
-    href: '/ballot',
+    // Lands on /elections, not /ballot. /ballot calls getUser() and redirects
+    // signed-out visitors to /login, so pointing a primary tab at it puts a
+    // login wall behind one of five destinations for everyone who has not
+    // signed in. /elections is the public view of the same thing; /ballot is
+    // still in the match list so the tab stays lit once a signed-in user gets
+    // there.
+    href: '/elections',
     label: 'Ballot',
     match: ['/ballot', '/elections', '/quiz', '/report-cards'],
     icon: (

@@ -61,11 +61,15 @@ export function BallotCountdown({
         <span className="text-[13px] text-white/70">
           {raceCount > 0 ? `${raceCount} races nationwide` : 'Races are still being confirmed'}
         </span>
+        {/* /elections, not /ballot: /ballot is auth-gated and redirects to
+            /login, and this is the most prominent action on the home screen.
+            Sending a first-time visitor from "45 days away" straight to a
+            sign-in form is the wrong first move. */}
         <Link
-          href="/ballot"
+          href="/elections"
           className="shrink-0 text-[13px] font-semibold text-white no-underline"
         >
-          Open ballot
+          See the races
         </Link>
       </div>
     </InkCard>
