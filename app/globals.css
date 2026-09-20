@@ -78,6 +78,25 @@
     --poli-badge-text: #6B7280;
     --poli-grid-opacity: 0.04;
 
+    /* App-shell surfaces — the redesign.
+       The old convention was a white page with outlined cards. This is a grey
+       ground with white cards that carry a shadow instead of a border, which is
+       what makes a web page read as an app. Values are measured off the design
+       canvas rather than eyeballed.
+       Scoped to .app-shell for now: --poli-bg is still white, so the ~356
+       bordered cards across 132 other files keep working until each surface is
+       migrated deliberately. */
+    --poli-app-bg: #E8EAED;
+    --poli-app-card: #FFFFFF;
+    --poli-app-ink: #111827;
+    --poli-app-shadow: 0 1px 2px rgba(17, 24, 39, 0.07);
+    --poli-app-shadow-lg: 0 18px 44px rgba(17, 24, 39, 0.18);
+    --poli-app-good: #10B981;
+    --poli-app-good-bg: #ECFDF5;
+    --poli-app-good-ink: #047857;
+    --poli-app-warn-bg: #FFFBEB;
+    --poli-app-warn-ink: #B45309;
+
     /* Party colors */
     --party-dem: #2563EB;
     --party-gop: #DC2626;
@@ -175,6 +194,19 @@
   --poli-badge-bg: #334155;
   --poli-badge-text: #94A3B8;
   --poli-grid-opacity: 0.025;
+
+  /* App-shell surfaces, dark. The ground goes DARKER than the cards here, the
+     inverse of light mode, so the card still reads as the raised surface. */
+  --poli-app-bg: #0B1220;
+  --poli-app-card: #1E293B;
+  --poli-app-ink: #0B1220;
+  --poli-app-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --poli-app-shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.55);
+  --poli-app-good: #34D399;
+  --poli-app-good-bg: #064E3B;
+  --poli-app-good-ink: #6EE7B7;
+  --poli-app-warn-bg: #452C0B;
+  --poli-app-warn-ink: #FCD34D;
 
   /* Darkening a dark surface does nothing; lift it instead. */
   --press-brightness: 1.45;
