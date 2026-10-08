@@ -2,7 +2,12 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { STANCE_NUMERIC } from '@/lib/utils/stances'
 import { IssueMapView } from '@/components/issues/issue-map-view'
 
-export const revalidate = 3600 // 1 hour
+/**
+ * A day, not an hour — see app/(public)/issues/page.tsx for why. The stance
+ * data behind this is static, and rescanning it hourly was a material share of
+ * the disk IO that exhausted the project's IO budget.
+ */
+export const revalidate = 86400 // 24 hours
 
 export const metadata = {
   title: 'Issue Map | Poli',

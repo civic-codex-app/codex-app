@@ -15,7 +15,12 @@ import type {
   InsightsIssueRow,
 } from '@/lib/types/supabase'
 
-export const revalidate = 3600 // 1 hour
+/**
+ * A day, not an hour — see app/(public)/issues/page.tsx for why. The stance
+ * data behind this is static, and rescanning it hourly was a material share of
+ * the disk IO that exhausted the project's IO budget.
+ */
+export const revalidate = 86400 // 24 hours
 
 /**
  * All stances for politicians in the given chambers, scoped by an inner join so
@@ -52,7 +57,7 @@ const getScopedStances = unstable_cache(
     return all
   },
   ['insights-scoped-stances'],
-  { revalidate: 3600, tags: ['stances'] }
+  { revalidate: 86400, tags: ['stances'] }
 )
 
 export const metadata: Metadata = {

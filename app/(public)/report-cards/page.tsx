@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { createClient as createServerAuthClient } from '@/lib/supabase/server'
 import { computeReportCard, gradeColor } from '@/lib/utils/report-card'
@@ -66,6 +67,168 @@ export interface RankedPolitician {
   reportCard: ReportCard
 }
 
+/**
+ * The ranked list, computed once and shared.
+ *
+ * None of this varies by visitor — every signed-in reader sees the same
+ * politicians, the same stances and the same grades. It used to run on every
+ * single request, because the page is `force-dynamic` for the signup wall and
+ * the whole body sat inside the component. That meant each signed-in page view
+ * paginated politician_issues in batches of 70 ids until exhausted, against a
+ * table that is 73.89 MB and 50.79% of the database, on an instance with no
+ * room to cache it. It was the largest repeated source of disk IO in the
+ * product and it exhausted the project's disk IO budget: the same query
+ * measured 3.6s, then 2.5s, then 124s once the burst allowance was spent, and
+ * an ordinary indexed lookup afterwards took 143s and never returned.
+ *
+ * The wall is untouched. `force-dynamic` stays, the auth check stays, and a
+ * signed-out visitor still gets the wall returned before any of this runs —
+ * what changed is that signed-in requests now share one computation instead of
+ * each paying for their own.
+ *
+ * A day is deliberate rather than cautious. Every row behind this is static:
+ * the stances are template-generated and last changed in September, grades are
+ * derived from them, and voting_records holds 0 rows. Nothing here moves on its
+ * own, so an hourly recompute would buy nothing and cost the same scan 24 times
+ * over. The 'stances' tag is the correct invalidation point if that ever
+ * changes — note nothing in the app calls revalidateTag yet, so today this
+ * expires on time alone.
+ */
+const getRankedReportCards = unstable_cache(
+  async (): Promise<RankedPolitician[]> => {
+    const supabase = createServiceRoleClient()
+
+    const CHAMBERS = ['senate', 'house', 'governor']
+
+    // 1. Fetch politicians (paginated)
+    const politicians = await fetchAllRows<{
+      id: string
+      name: string
+      slug: string
+      party: string
+      state: string
+      chamber: string
+      image_url: string | null
+    }>((from, to) =>
+      supabase
+        .from('politicians')
+        .select('id, name, slug, party, state, chamber, image_url')
+        .in('chamber', CHAMBERS)
+        .order('name')
+        .range(from, to)
+    )
+
+    if (politicians.length === 0) return []
+
+    const polIds = politicians.map((p) => p.id)
+
+    // 2. Fetch stances. Batch by politician id to stay under URL-length limits,
+    // and paginate WITHIN each batch -- Supabase caps every .select() at 1000
+    // rows no matter how many the filter matches. The old sizing comment here
+    // read "70 pols * ~14 issues = ~980 rows", but the issue count grew to 22, so
+    // each batch asked for 1540 and silently got 1000, discarding ~35% of every
+    // batch and quietly deflating the transparency dimension of every grade.
+    // Same failure that hit /insights; see CLAUDE.md.
+    type StanceRow = {
+      politician_id: string
+      stance: string
+      issue_id: string
+      is_verified: boolean
+    }
+    const STANCE_BATCH = 70
+    const stanceBatches: Promise<StanceRow[]>[] = []
+    for (let i = 0; i < polIds.length; i += STANCE_BATCH) {
+      const batch = polIds.slice(i, i + STANCE_BATCH)
+      stanceBatches.push(
+        fetchAllRows<StanceRow>((from, to) =>
+          supabase
+            .from('politician_issues')
+            .select('politician_id, stance, issue_id, is_verified')
+            .in('politician_id', batch)
+            .range(from, to)
+        )
+      )
+    }
+    const allStances: StanceRow[] = (await Promise.all(stanceBatches)).flat()
+
+    // 3. Fetch issues (for slug mapping)
+    const { data: issuesData } = await supabase
+      .from('issues')
+      .select('id, slug')
+    const issueMap = new Map((issuesData ?? []).map((i: any) => [i.id, i.slug]))
+
+    // Build stance map per politician
+    const stancesByPol = new Map<
+      string,
+      { stances: { stance: string; issues: { slug: string } | null }[]; verified: number; total: number }
+    >()
+    for (const s of allStances) {
+      if (!stancesByPol.has(s.politician_id)) {
+        stancesByPol.set(s.politician_id, { stances: [], verified: 0, total: 0 })
+      }
+      const entry = stancesByPol.get(s.politician_id)!
+      const slug = issueMap.get(s.issue_id) ?? null
+      entry.stances.push({ stance: s.stance, issues: slug ? { slug } : null })
+      entry.total++
+      if (s.is_verified) entry.verified++
+    }
+
+    // 4. Fetch voting records (paginated, no .in() filter to avoid URL length limits)
+    const polIdSet = new Set(polIds)
+    const votingRecords = await fetchAllRows<{ politician_id: string; vote: string }>(
+      (from, to) =>
+        supabase
+          .from('voting_records')
+          .select('politician_id, vote')
+          .range(from, to)
+    )
+    const votesByPol = new Map<string, { vote: string }[]>()
+    for (const v of votingRecords) {
+      if (!polIdSet.has(v.politician_id)) continue
+      if (!votesByPol.has(v.politician_id)) votesByPol.set(v.politician_id, [])
+      votesByPol.get(v.politician_id)!.push({ vote: v.vote })
+    }
+
+    // 5. Fetch committees (paginated)
+    const committeeLinks = await fetchAllRows<{ politician_id: string; role: string }>(
+      (from, to) =>
+        supabase
+          .from('politician_committees')
+          .select('politician_id, role')
+          .range(from, to)
+    )
+    const committeesByPol = new Map<string, { role: string }[]>()
+    for (const c of committeeLinks) {
+      if (!committeesByPol.has(c.politician_id))
+        committeesByPol.set(c.politician_id, [])
+      committeesByPol.get(c.politician_id)!.push({ role: c.role })
+    }
+
+    // 6. Compute report cards & rank
+    const ranked: RankedPolitician[] = politicians.map((p) => {
+      const stanceData = stancesByPol.get(p.id)
+      const reportCard = computeReportCard({
+        party: p.party,
+        chamber: p.chamber,
+        stances: stanceData?.stances ?? [],
+        votingRecords: votesByPol.get(p.id) ?? [],
+        committees: committeesByPol.get(p.id) ?? [],
+        verifiedStances: stanceData?.verified ?? 0,
+        totalStances: stanceData?.total ?? 0,
+        // Live catalog size, so coverage keeps discriminating as issues are added
+        issueCount: issueMap.size,
+      })
+      return { ...p, reportCard }
+    })
+
+    ranked.sort((a, b) => b.reportCard.score - a.reportCard.score)
+
+    return ranked
+  },
+  ['report-cards-ranked'],
+  { revalidate: 86400, tags: ['stances'] }
+)
+
 export default async function ReportCardsPage() {
   // Check authentication
   let isAuthenticated = false
@@ -111,29 +274,9 @@ export default async function ReportCardsPage() {
     )
   }
 
-  const supabase = createServiceRoleClient()
+  const ranked = await getRankedReportCards()
 
-  const CHAMBERS = ['senate', 'house', 'governor']
-
-  // 1. Fetch politicians (paginated)
-  const politicians = await fetchAllRows<{
-    id: string
-    name: string
-    slug: string
-    party: string
-    state: string
-    chamber: string
-    image_url: string | null
-  }>((from, to) =>
-    supabase
-      .from('politicians')
-      .select('id, name, slug, party, state, chamber, image_url')
-      .in('chamber', CHAMBERS)
-      .order('name')
-      .range(from, to)
-  )
-
-  if (politicians.length === 0) {
+  if (ranked.length === 0) {
     return (
       <>
         <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
@@ -149,109 +292,6 @@ export default async function ReportCardsPage() {
       </>
     )
   }
-
-  const polIds = politicians.map((p) => p.id)
-
-  // 2. Fetch stances. Batch by politician id to stay under URL-length limits,
-  // and paginate WITHIN each batch -- Supabase caps every .select() at 1000
-  // rows no matter how many the filter matches. The old sizing comment here
-  // read "70 pols * ~14 issues = ~980 rows", but the issue count grew to 22, so
-  // each batch asked for 1540 and silently got 1000, discarding ~35% of every
-  // batch and quietly deflating the transparency dimension of every grade.
-  // Same failure that hit /insights; see CLAUDE.md.
-  type StanceRow = {
-    politician_id: string
-    stance: string
-    issue_id: string
-    is_verified: boolean
-  }
-  const STANCE_BATCH = 70
-  const stanceBatches: Promise<StanceRow[]>[] = []
-  for (let i = 0; i < polIds.length; i += STANCE_BATCH) {
-    const batch = polIds.slice(i, i + STANCE_BATCH)
-    stanceBatches.push(
-      fetchAllRows<StanceRow>((from, to) =>
-        supabase
-          .from('politician_issues')
-          .select('politician_id, stance, issue_id, is_verified')
-          .in('politician_id', batch)
-          .range(from, to)
-      )
-    )
-  }
-  const allStances: StanceRow[] = (await Promise.all(stanceBatches)).flat()
-
-  // 3. Fetch issues (for slug mapping)
-  const { data: issuesData } = await supabase
-    .from('issues')
-    .select('id, slug')
-  const issueMap = new Map((issuesData ?? []).map((i: any) => [i.id, i.slug]))
-
-  // Build stance map per politician
-  const stancesByPol = new Map<
-    string,
-    { stances: { stance: string; issues: { slug: string } | null }[]; verified: number; total: number }
-  >()
-  for (const s of allStances) {
-    if (!stancesByPol.has(s.politician_id)) {
-      stancesByPol.set(s.politician_id, { stances: [], verified: 0, total: 0 })
-    }
-    const entry = stancesByPol.get(s.politician_id)!
-    const slug = issueMap.get(s.issue_id) ?? null
-    entry.stances.push({ stance: s.stance, issues: slug ? { slug } : null })
-    entry.total++
-    if (s.is_verified) entry.verified++
-  }
-
-  // 4. Fetch voting records (paginated, no .in() filter to avoid URL length limits)
-  const polIdSet = new Set(polIds)
-  const votingRecords = await fetchAllRows<{ politician_id: string; vote: string }>(
-    (from, to) =>
-      supabase
-        .from('voting_records')
-        .select('politician_id, vote')
-        .range(from, to)
-  )
-  const votesByPol = new Map<string, { vote: string }[]>()
-  for (const v of votingRecords) {
-    if (!polIdSet.has(v.politician_id)) continue
-    if (!votesByPol.has(v.politician_id)) votesByPol.set(v.politician_id, [])
-    votesByPol.get(v.politician_id)!.push({ vote: v.vote })
-  }
-
-  // 5. Fetch committees (paginated)
-  const committeeLinks = await fetchAllRows<{ politician_id: string; role: string }>(
-    (from, to) =>
-      supabase
-        .from('politician_committees')
-        .select('politician_id, role')
-        .range(from, to)
-  )
-  const committeesByPol = new Map<string, { role: string }[]>()
-  for (const c of committeeLinks) {
-    if (!committeesByPol.has(c.politician_id))
-      committeesByPol.set(c.politician_id, [])
-    committeesByPol.get(c.politician_id)!.push({ role: c.role })
-  }
-
-  // 6. Compute report cards & rank
-  const ranked: RankedPolitician[] = politicians.map((p) => {
-    const stanceData = stancesByPol.get(p.id)
-    const reportCard = computeReportCard({
-      party: p.party,
-      chamber: p.chamber,
-      stances: stanceData?.stances ?? [],
-      votingRecords: votesByPol.get(p.id) ?? [],
-      committees: committeesByPol.get(p.id) ?? [],
-      verifiedStances: stanceData?.verified ?? 0,
-      totalStances: stanceData?.total ?? 0,
-      // Live catalog size, so coverage keeps discriminating as issues are added
-      issueCount: issueMap.size,
-    })
-    return { ...p, reportCard }
-  })
-
-  ranked.sort((a, b) => b.reportCard.score - a.reportCard.score)
 
   return (
     <>

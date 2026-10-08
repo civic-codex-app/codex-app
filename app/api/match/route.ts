@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { computeVoterMatch } from '@/lib/utils/voter-match'
 import { STANCE_NUMERIC } from '@/lib/utils/stances'
 import { rateLimit, EXPENSIVE_OP } from '@/lib/utils/rate-limit'
@@ -7,6 +9,97 @@ import { rateLimit, EXPENSIVE_OP } from '@/lib/utils/rate-limit'
 const PAGE_SIZE = 1000
 const MIN_MATCHING_ISSUES = 3
 const TOP_N = 20
+
+
+/**
+ * Every federal politician's stances, as a compact index.
+ *
+ * Shape matters here. Returning the raw join rows produced a 2.15 MB payload,
+ * and Next refuses to store an unstable_cache entry over 2 MB — it logged
+ * "items over 2MB can not be cached" and silently re-ran the whole fetch on
+ * every request, so the cache was decorative. Interning the 22 slugs and the 9
+ * stance values and storing [slugIdx, stanceIdx, verified] triples brings the
+ * same ~11,800 rows to roughly 120 KB, comfortably inside the limit.
+ *
+ * Service role rather than the request's cookie client: unstable_cache cannot
+ * read cookies, and this is public data that /issues and /insights already read
+ * the same way. Nothing per-user is fetched here; the caller filters and scores.
+ *
+ * A day because politician_issues is template-generated and static — see
+ * app/(public)/issues/page.tsx for the longer version of that argument.
+ */
+type FederalStanceIndex = {
+  slugs: string[]
+  stanceValues: string[]
+  rows: Record<string, Array<[number, number, 0 | 1]>>
+}
+
+const getFederalStances = unstable_cache(
+  async (): Promise<FederalStanceIndex> => {
+    const supabase = createServiceRoleClient()
+    const FEDERAL_CHAMBERS = ['senate', 'house', 'governor', 'presidential']
+
+    let federalIds: string[] = []
+    for (let from = 0; ; from += PAGE_SIZE) {
+      const { data } = await supabase
+        .from('politicians')
+        .select('id')
+        .in('chamber', FEDERAL_CHAMBERS)
+        .range(from, from + PAGE_SIZE - 1)
+      if (!data || data.length === 0) break
+      federalIds = federalIds.concat(data.map((p) => p.id))
+      if (data.length < PAGE_SIZE) break
+    }
+
+    const slugs: string[] = []
+    const stanceValues: string[] = []
+    const slugIdx = new Map<string, number>()
+    const stanceIdx = new Map<string, number>()
+    const intern = (v: string, list: string[], map: Map<string, number>) => {
+      let i = map.get(v)
+      if (i === undefined) {
+        i = list.length
+        list.push(v)
+        map.set(v, i)
+      }
+      return i
+    }
+
+    const rows: FederalStanceIndex['rows'] = {}
+    const CHUNK = 200
+    for (let c = 0; c < federalIds.length; c += CHUNK) {
+      const chunk = federalIds.slice(c, c + CHUNK)
+      for (let from = 0; ; from += PAGE_SIZE) {
+        const { data, error } = await supabase
+          .from('politician_issues')
+          .select('politician_id, stance, is_verified, issues!inner(slug)')
+          .in('politician_id', chunk)
+          .range(from, from + PAGE_SIZE - 1)
+        if (error) {
+          console.error('[match] stance fetch failed:', error.message)
+          break
+        }
+        if (!data || data.length === 0) break
+        for (const row of data as any[]) {
+          // A Supabase !inner join returns the related row as an object or a
+          // one-element array depending on how it infers the relationship.
+          const issue = Array.isArray(row.issues) ? row.issues[0] : row.issues
+          const slug = issue?.slug
+          if (!slug || !row.stance) continue
+          ;(rows[row.politician_id] ??= []).push([
+            intern(slug, slugs, slugIdx),
+            intern(row.stance, stanceValues, stanceIdx),
+            row.is_verified === true ? 1 : 0,
+          ])
+        }
+        if (data.length < PAGE_SIZE) break
+      }
+    }
+    return { slugs, stanceValues, rows }
+  },
+  ['match-federal-stance-index'],
+  { revalidate: 86400, tags: ['stances'] }
+)
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,80 +132,36 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const supabase = await createClient()
     const issueSlugs = Object.keys(stances)
 
-    // First get federal politician IDs only (senate, house, governor, presidential)
-    // This drastically reduces the dataset from 7000+ to ~500
-    const FEDERAL_CHAMBERS = ['senate', 'house', 'governor', 'presidential']
-    let federalIds: string[] = []
-    let from = 0
+    // One shared, pre-indexed fetch of every federal stance; the per-user part
+    // is the scoring, which happens below in memory.
+    //
+    // This used to page the politicians table and then page politician_issues
+    // in chunks of 200 ids on EVERY quiz submission. Only the scoring varies
+    // between users: the rows underneath are the same ~536 federal politicians
+    // and the same 22 issues every time. politician_issues is 73.89 MB, half
+    // the database, on an instance too small to keep it resident, so each
+    // submission paid real disk IO to re-read rows the previous submission had
+    // just read.
+    const index = await getFederalStances()
 
-    while (true) {
-      const { data } = await supabase
-        .from('politicians')
-        .select('id')
-        .in('chamber', FEDERAL_CHAMBERS)
-        .range(from, from + PAGE_SIZE - 1)
-
-      if (!data || data.length === 0) break
-      federalIds = federalIds.concat(data.map(p => p.id))
-      if (data.length < PAGE_SIZE) break
-      from += PAGE_SIZE
-    }
-
-    // Fetch stances only for federal politicians on the user's issues
-    let allRows: Array<{ politician_id: string; stance: string; is_verified: boolean | null; issues: any }> = []
-    from = 0
-
-    // Process in chunks of 200 politician IDs to stay under URL limits
-    const CHUNK = 200
-    for (let c = 0; c < federalIds.length; c += CHUNK) {
-      const chunk = federalIds.slice(c, c + CHUNK)
-      let chunkFrom = 0
-
-      while (true) {
-        const { data, error } = await supabase
-          .from('politician_issues')
-          .select('politician_id, stance, is_verified, issues!inner(slug)')
-          .in('politician_id', chunk)
-          .in('issues.slug', issueSlugs)
-          .range(chunkFrom, chunkFrom + PAGE_SIZE - 1)
-
-        if (error) {
-          console.error('Supabase error fetching politician_issues:', error)
-          return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 })
-        }
-
-        if (!data || data.length === 0) break
-        allRows = allRows.concat(data as any[])
-        if (data.length < PAGE_SIZE) break
-        chunkFrom += PAGE_SIZE
-      }
-    }
-
-    // Group stances and verification status by politician_id
     const byPolitician = new Map<string, Record<string, string>>()
     const verifiedByPolitician = new Map<string, Record<string, boolean>>()
-    for (const row of allRows) {
-      // Supabase !inner join can return issues as object or array
-      const issueData = Array.isArray(row.issues) ? row.issues[0] : row.issues
-      const slug = issueData?.slug
-      if (!slug) continue
-
-      let map = byPolitician.get(row.politician_id)
-      if (!map) {
-        map = {}
-        byPolitician.set(row.politician_id, map)
+    const wanted = new Set(issueSlugs)
+    for (const [politicianId, triples] of Object.entries(index.rows)) {
+      const polStances: Record<string, string> = {}
+      const verified: Record<string, boolean> = {}
+      for (const [slugIdx, stanceIdx, isVerified] of triples) {
+        const slug = index.slugs[slugIdx]
+        if (!wanted.has(slug)) continue
+        polStances[slug] = index.stanceValues[stanceIdx]
+        verified[slug] = isVerified === 1
       }
-      map[slug] = row.stance
-
-      let vmap = verifiedByPolitician.get(row.politician_id)
-      if (!vmap) {
-        vmap = {}
-        verifiedByPolitician.set(row.politician_id, vmap)
+      if (Object.keys(polStances).length > 0) {
+        byPolitician.set(politicianId, polStances)
+        verifiedByPolitician.set(politicianId, verified)
       }
-      vmap[slug] = row.is_verified === true
     }
 
     // Compute match scores
@@ -136,6 +185,11 @@ export async function POST(request: NextRequest) {
         { headers: { 'Cache-Control': 'no-store' } }
       )
     }
+
+    // Details for the ranked politicians, and the signed-in user's state below.
+    // The cookie client, not the cached service-role one: the profile read that
+    // follows is genuinely per-request.
+    const supabase = await createClient()
 
     // Get all politician IDs we need details for
     const allScoredIds = scored.slice(0, 100).map((t) => t.politicianId)
