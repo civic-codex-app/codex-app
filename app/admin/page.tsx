@@ -1,38 +1,71 @@
 import Link from 'next/link'
+import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 
 export const dynamic = 'force-dynamic'
 
+/**
+ * The headline counts.
+ *
+ * `count: 'exact'` makes Postgres count every row, which on politician_issues
+ * means a sequential scan of 188,848 rows across 73.89 MB — half the database —
+ * and it ran on every load of this page, which is `force-dynamic`. The counts
+ * are a dashboard ornament; they do not justify the largest scan in the product
+ * several times an hour.
+ *
+ * `'planned'` reads the planner's estimate from pg_class instead, which costs
+ * nothing. It is approximate between ANALYZE runs, so the page labels these as
+ * approximate rather than implying a census. The small tables stay exact, where
+ * the count is cheap and being off by a few would look like a bug.
+ *
+ * Cached for ten minutes on top, so a refresh does not re-run even the cheap
+ * ones. Counts that move by the minute are not what this page is for.
+ */
+const getAdminCounts = unstable_cache(
+  async () => {
+    const supabase = createServiceRoleClient()
+    const [
+      { count: politicianCount },
+      { count: billCount },
+      { count: voteCount },
+      { count: financeCount },
+      { count: userCount },
+      { count: stanceCount },
+      { count: candidateCount },
+      { count: electionCount },
+      { count: issueCount },
+      { count: imageCount },
+    ] = await Promise.all([
+      supabase.from('politicians').select('*', { count: 'planned', head: true }),
+      supabase.from('bills').select('*', { count: 'exact', head: true }),
+      supabase.from('voting_records').select('*', { count: 'exact', head: true }),
+      supabase.from('campaign_finance').select('*', { count: 'planned', head: true }),
+      supabase.from('profiles').select('*', { count: 'exact', head: true }),
+      supabase.from('politician_issues').select('*', { count: 'planned', head: true }),
+      supabase.from('candidates').select('*', { count: 'planned', head: true }),
+      supabase.from('elections').select('*', { count: 'exact', head: true }),
+      supabase.from('issues').select('*', { count: 'exact', head: true }),
+      supabase
+        .from('politicians')
+        .select('*', { count: 'planned', head: true })
+        .not('image_url', 'is', null),
+    ])
+    return {
+      politicianCount, billCount, voteCount, financeCount, userCount,
+      stanceCount, candidateCount, electionCount, issueCount, imageCount,
+    }
+  },
+  ['admin-overview-counts'],
+  { revalidate: 600 }
+)
+
 export default async function AdminOverviewPage() {
   const supabase = createServiceRoleClient()
 
-  const [
-    { count: politicianCount },
-    { count: billCount },
-    { count: voteCount },
-    { count: financeCount },
-    { count: userCount },
-    { count: stanceCount },
-    { count: candidateCount },
-    { count: electionCount },
-    { count: issueCount },
-  ] = await Promise.all([
-    supabase.from('politicians').select('*', { count: 'exact', head: true }),
-    supabase.from('bills').select('*', { count: 'exact', head: true }),
-    supabase.from('voting_records').select('*', { count: 'exact', head: true }),
-    supabase.from('campaign_finance').select('*', { count: 'exact', head: true }),
-    supabase.from('profiles').select('*', { count: 'exact', head: true }),
-    supabase.from('politician_issues').select('*', { count: 'exact', head: true }),
-    supabase.from('candidates').select('*', { count: 'exact', head: true }),
-    supabase.from('elections').select('*', { count: 'exact', head: true }),
-    supabase.from('issues').select('*', { count: 'exact', head: true }),
-  ])
-
-  // Count politicians with images
-  const { count: imageCount } = await supabase
-    .from('politicians')
-    .select('*', { count: 'exact', head: true })
-    .not('image_url', 'is', null)
+  const {
+    politicianCount, billCount, voteCount, financeCount, userCount,
+    stanceCount, candidateCount, electionCount, issueCount, imageCount,
+  } = await getAdminCounts()
 
   // Recent politicians
   const { data: recentPoliticians } = await supabase
@@ -79,7 +112,14 @@ export default async function AdminOverviewPage() {
   return (
     <div>
       <h1 className="mb-2 text-3xl font-bold">Admin Overview</h1>
-      <p className="mb-6 text-sm text-[var(--poli-sub)]">Manage your political directory data</p>
+      <p className="mb-1 text-sm text-[var(--poli-sub)]">Manage your political directory data</p>
+      {/* Says so because it is true: the large tables report the planner's
+          estimate rather than a counted census, and the whole block is cached
+          for ten minutes. Counting politician_issues exactly meant a sequential
+          scan of half the database on every load of this page. */}
+      <p className="mb-6 text-xs text-[var(--poli-faint)]">
+        Counts are approximate for the large tables and refresh every 10 minutes.
+      </p>
 
       {/* Notifications */}
       {((newUserCount ?? 0) > 0 || (inboxNewCount ?? 0) > 0) && (
