@@ -476,6 +476,26 @@ Each is idempotent. Two ways to run them:
 14. `026_politician_source.sql` — `politicians.source`/`is_verified`/`last_checked` *(applied 2026-09-16)*
 15. `027_public_submissions.sql` — creates the table `app/api/submissions` and `app/admin/inbox` use *(applied 2026-09-16)*
 16. `028_like_counts_view.sql` — `public_like_counts` view; stops `likes` exposing a per-user political-preference graph *(applied 2026-09-16; anon now reads 0 of 11,281 rows)*
+
+    > **Supabase's Advisor flags `public_like_counts` as a CRITICAL "Security
+    > Definer View". Do not act on it.** That property is the security control, not
+    > a mistake. The view runs as its owner precisely so it can read `likes` while
+    > the caller cannot: the table's own policy is own-rows-only, so a
+    > `security_invoker = true` view would match nothing for an anonymous visitor
+    > and every like count on the site would read 0. The Advisor lints the property
+    > without looking at what the view selects.
+    >
+    > Re-verified 2026-10-08 with the anon key that ships in the client bundle:
+    > `likes` returns 0 rows and `content-range: */0`; the view returns 618 rows of
+    > `(politician_id, like_count)` and nothing else; asking it for `user_id` fails
+    > with `42703 column does not exist`. No user dimension is reachable through it.
+    >
+    > It is load-bearing — `components/directory/like-button.tsx:54` reads it from
+    > the browser — so it cannot be dropped either. Leave it alone. Compare
+    > `issue_stance_counts` (025), which legitimately IS `security_invoker = true`
+    > because `politician_issues` is world-readable and the caller's RLS should
+    > apply.
+
 17. **`029_fix_daily_topics_rls.sql` — SECURITY.** *(applied 2026-09-16)* See below.
 
 > **Only 011–015 are in this repo.** 001–010 and 016–024 exist solely in the
