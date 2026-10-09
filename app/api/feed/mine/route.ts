@@ -195,13 +195,17 @@ function money(n: number) {
   return n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(2)}M` : `$${Math.round(n / 1000)}K`
 }
 
-/** "Oct 5", or "today 3:17" for something from the last day. */
+/**
+ * "today 7:28 AM" for something published on today's date in Washington,
+ * else "Oct 8". By calendar date, not by age: a story from 11:17 PM last
+ * night is less than a day old and is still not "today".
+ */
 function when(iso: string): string {
   const d = new Date(iso)
   if (Number.isNaN(d.getTime())) return ''
-  const ageMs = Date.now() - d.getTime()
-  if (ageMs >= 0 && ageMs < 86400000 && iso.length > 10) {
+  const day = (x: Date) => x.toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+  if (iso.length > 10 && day(d) === day(new Date())) {
     return `today ${d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' })}`
   }
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: iso.length > 10 ? 'America/New_York' : 'UTC' })
 }

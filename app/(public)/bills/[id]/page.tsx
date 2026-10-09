@@ -129,7 +129,9 @@ export default async function BillDetailPage({ params }: PageProps) {
     last_action_date: bill.last_action_date,
   })
   const leadIsSummary = lead !== bill.title
-  const summary = (bill.summary ?? '').replace(/&nbsp;/g, ' ').trim()
+  // CRS summaries open by repeating the title; the page already shows it.
+  const rawSummary = (bill.summary ?? '').replace(/&nbsp;/g, ' ').replace(/[ \t]+/g, ' ').trim()
+  const summary = rawSummary.startsWith(bill.title) ? rawSummary.slice(bill.title.length).trim() : rawSummary
   const fullText = congressUrl(bill.number, bill.congress_session)
 
   // Vote tallies
