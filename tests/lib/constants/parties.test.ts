@@ -14,8 +14,16 @@ describe('partyColor', () => {
     expect(partyColor('REPUBLICAN')).toBe('#DC2626')
   })
 
+  it('gives every minor party its own colour, distinct from the four majors', () => {
+    const majors = ['democrat', 'republican', 'green', 'independent'].map(partyColor)
+    for (const p of ['libertarian', 'constitution', 'us_taxpayers', 'natural_law', 'working_class']) {
+      expect(partyColor(p)).toBe(PARTIES[p as keyof typeof PARTIES].color)
+      expect(majors).not.toContain(partyColor(p))
+    }
+  })
+
   it('falls back to independent color for unknown parties', () => {
-    expect(partyColor('libertarian')).toBe(PARTIES.independent.color)
+    expect(partyColor('whig')).toBe(PARTIES.independent.color)
     expect(partyColor('')).toBe(PARTIES.independent.color)
   })
 })
@@ -28,7 +36,13 @@ describe('partyLabel', () => {
     expect(partyLabel('independent')).toBe('Independent')
   })
 
+  it('names the minor parties as they appear on a ballot', () => {
+    expect(partyLabel('libertarian')).toBe('Libertarian')
+    expect(partyLabel('us_taxpayers')).toBe('U.S. Taxpayers')
+    expect(partyLabel('working_class')).toBe('Working Class')
+  })
+
   it('returns the raw string for unknown parties', () => {
-    expect(partyLabel('libertarian')).toBe('libertarian')
+    expect(partyLabel('whig')).toBe('whig')
   })
 })

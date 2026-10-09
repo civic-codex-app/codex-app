@@ -133,7 +133,16 @@ const displayName = (official) => {
   return `${f.trim()} ${l.trim()}`.replace(/\s+/g, ' ').trim()
 }
 const iso = (mdy) => { const [m, d, y] = mdy.split('/'); return `${y}-${m}-${d}` }
-const PARTY = { 'Democratic Party': 'democrat', 'Republican Party': 'republican', 'Green Party': 'green', 'No Party Affiliation': 'independent' }
+const PARTY = {
+  'Democratic Party': 'democrat',
+  'Republican Party': 'republican',
+  'Green Party': 'green',
+  'No Party Affiliation': 'independent',
+  'Libertarian Party': 'libertarian',
+  'U.S. Taxpayers Party': 'us_taxpayers',
+  'Natural Law Party': 'natural_law',
+  'Working Class Party': 'working_class',
+}
 const partyOf = (label) => PARTY[label.replace(/\s*\(I\)\s*$/, '').trim()] ?? null
 const shortParty = (label) => label.replace(/\s*\(I\)\s*$/, '').replace(/ Party$/, '').trim()
 

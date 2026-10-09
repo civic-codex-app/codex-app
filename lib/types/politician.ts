@@ -4,7 +4,16 @@ export interface Politician {
   slug: string
   state: string
   chamber: 'senate' | 'house' | 'governor' | 'presidential'
-  party: 'democrat' | 'republican' | 'green' | 'independent'
+  party:
+    | 'democrat'
+    | 'republican'
+    | 'green'
+    | 'independent'
+    | 'libertarian'
+    | 'constitution'
+    | 'us_taxpayers'
+    | 'natural_law'
+    | 'working_class'
   title: string
   since_year: number | null
   bio: string | null

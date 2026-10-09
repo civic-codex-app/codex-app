@@ -111,8 +111,16 @@ function properName(fecName) {
     .trim()
 }
 
-/** party_type only has four values, so everything else is independent. */
-const PARTY = { DEM: 'democrat', REP: 'republican', GRE: 'green', GRN: 'green' }
+/**
+ * FEC party codes -> party_type. Anything not listed is stored as independent,
+ * which is only right for IND/NPA/NON. Add the value to the enum (031) and here
+ * before a party with real ballot presence is filed under the wrong label.
+ */
+const PARTY = {
+  DEM: 'democrat', REP: 'republican', GRE: 'green', GRN: 'green',
+  LIB: 'libertarian', CON: 'constitution', CST: 'constitution', UST: 'us_taxpayers',
+  NLP: 'natural_law', WCP: 'working_class',
+}
 const toParty = (p) => PARTY[String(p || '').toUpperCase()] ?? 'independent'
 
 const norm = (s) =>
