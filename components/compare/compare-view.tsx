@@ -218,7 +218,7 @@ function ProfileCard({
 
   return (
     <div className="rounded-md border border-[var(--poli-border)] p-4 sm:p-5 bg-[var(--poli-card)]">
-      <div className="mb-4 h-1 w-full rounded-full" style={{ background: `${color}44` }}>
+      <div className="mb-4 h-1 w-full rounded-full bg-[var(--poli-badge-bg)]">
         <div
           className="h-full rounded-full"
           style={{ width: alignment >= 0 ? `${alignment}%` : '100%', background: color }}

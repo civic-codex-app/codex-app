@@ -318,10 +318,10 @@ export default async function CandidateProfilePage({ params }: PageProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-between rounded-md border border-[var(--poli-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-[13px] font-medium no-underline transition-all hover:bg-[var(--poli-hover)]"
-              style={{ color: color, borderColor: `${color}33` }}
+              style={{ color }}
             >
               <span>Campaign Website</span>
-              <span className="text-base font-semibold" style={{ color: `${color}88` }}>
+              <span className="text-base font-semibold" style={{ color }}>
                 &rarr;
               </span>
             </a>

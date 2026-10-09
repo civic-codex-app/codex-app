@@ -37,8 +37,8 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
             >
               {/* Avatar */}
               <div
-                className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--poli-card)]"
-                style={{ border: `1.5px solid ${color}44` }}
+                className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
+                style={{ boxShadow: `0 0 0 2px ${color}` }}
               >
                 <AvatarImage
                   src={p.image_url}

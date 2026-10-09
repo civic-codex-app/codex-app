@@ -137,7 +137,7 @@ export function PoliticianReportCard({
         <div>
           <div
             className="mb-1 inline-block rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em]"
-            style={{ color, background: `${color}15` }}
+            style={{ color, background: 'var(--poli-badge-bg)' }}
           >
             {label}
           </div>

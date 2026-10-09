@@ -308,7 +308,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
                 {/* Party badge */}
                 <span
                   className="flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-full px-2.5 text-[11px] font-semibold uppercase tracking-wide"
-                  style={{ backgroundColor: `${pColor}15`, color: pColor }}
+                  style={{ backgroundColor: 'var(--poli-badge-bg)', color: pColor }}
                 >
                   <PartyIcon party={r.politician.party} size={12} />
                   #{i + 1}

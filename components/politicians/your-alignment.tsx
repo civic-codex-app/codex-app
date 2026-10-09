@@ -113,7 +113,7 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
   return (
     <div className="rounded-xl border border-[var(--poli-border)] overflow-hidden bg-[var(--poli-card)]">
       {/* Header with score */}
-      <div className="flex items-center gap-4 p-4" style={{ backgroundColor: `${color}08` }}>
+      <div className="flex items-center gap-4 p-4">
         <div className="relative flex-shrink-0">
           <svg width="52" height="52" viewBox="0 0 52 52">
             <circle cx="26" cy="26" r="22" fill="none" stroke="var(--poli-border)" strokeWidth="3" />

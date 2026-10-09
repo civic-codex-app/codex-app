@@ -5,6 +5,7 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PartyIcon } from '@/components/icons/party-icons'
+import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { LikeButton } from '@/components/directory/like-button'
@@ -308,14 +309,11 @@ export default async function PoliticianPage({ params }: PageProps) {
                 width={300}
                 height={400}
                 unoptimized
-                className="aspect-[3/4] w-full rounded-xl object-cover object-top"
+                className="aspect-[3/4] w-full rounded-2xl border border-[var(--poli-border)] object-cover object-top"
               />
             ) : (
-              <div
-                className="flex aspect-[3/4] w-full items-center justify-center rounded-xl"
-                style={{ backgroundColor: `${color}08`, border: `2px solid ${color}22` }}
-              >
-                <PartyIcon party={pol.party} size={120} />
+              <div className="aspect-[3/4] w-full overflow-hidden rounded-2xl border border-[var(--poli-border)]">
+                <AvatarImage src={null} alt={pol.name} size={300} />
               </div>
             )}
           </div>
@@ -325,26 +323,15 @@ export default async function PoliticianPage({ params }: PageProps) {
             {/* Mobile: large avatar + name row */}
             <div className="mb-5 flex items-center gap-4 md:hidden">
               <div
-                className="h-40 w-40 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--poli-card)]"
-                style={{ border: `2.5px solid ${color}44` }}
+                className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
+                style={{ boxShadow: `0 0 0 2px ${color}` }}
               >
-                {pol.image_url ? (
-                  <Image
-                    src={pol.image_url}
-                    alt={pol.name}
-                    width={160}
-                    height={160}
-                    unoptimized
-                    className="h-full w-full object-cover object-top"
-                  />
-                ) : (
-                  <div
-                    className="flex h-full w-full items-center justify-center"
-                    style={{ backgroundColor: `${color}08` }}
-                  >
-                    <PartyIcon party={pol.party} size={64} />
-                  </div>
-                )}
+                <AvatarImage
+                  src={pol.image_url}
+                  alt={pol.name}
+                  size={96}
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <div className="min-w-0">
                 {pol.image_url && <PartyIcon party={pol.party} size={32} />}
