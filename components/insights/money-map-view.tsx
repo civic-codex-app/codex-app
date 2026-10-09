@@ -127,7 +127,7 @@ export function MoneyMapView({ stateFinance, partyTotals, topRaised, topSpent, s
         <span>Money Map</span>
       </div>
 
-      <h1 className="mb-2 text-[clamp(24px,4vw,36px)] font-bold leading-[1.1]">
+      <h1 className="mb-2 font-serif text-[clamp(28px,4vw,36px)] font-normal leading-[1.08]">
         Money Map
       </h1>
       <p className="mb-6 text-[14px] leading-relaxed text-[var(--poli-sub)]">
@@ -136,27 +136,27 @@ export function MoneyMapView({ stateFinance, partyTotals, topRaised, topSpent, s
 
       {/* National stats */}
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
           <div className="text-2xl font-bold text-[var(--poli-text)]">{formatMoney(national.raised)}</div>
           <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Total Raised</div>
         </div>
-        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
           <div className="text-2xl font-bold text-[var(--poli-text)]">{formatMoney(national.spent)}</div>
           <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Total Spent</div>
         </div>
-        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
           <div className="text-2xl font-bold text-[var(--poli-text)]">{formatMoney(national.cash)}</div>
           <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Cash on Hand</div>
         </div>
-        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
           <div className="text-2xl font-bold text-[var(--poli-text)]">{national.count}</div>
           <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Politicians</div>
         </div>
       </div>
 
       {/* Party breakdown bars */}
-      <div className="mb-6 rounded-md border border-[var(--poli-border)] p-4">
-        <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+      <div className="mb-6 rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
+        <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
           By Party
         </h2>
         <div className="space-y-3">
@@ -212,7 +212,7 @@ export function MoneyMapView({ stateFinance, partyTotals, topRaised, topSpent, s
       </div>
 
       {/* Map */}
-      <div className="rounded-lg border border-[var(--poli-border)] p-4">
+      <div className="rounded-lg border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
         <USMap
           stateData={stateData}
           onStateClick={(code) => setSelectedState(selectedState === code ? null : code)}
@@ -230,7 +230,7 @@ export function MoneyMapView({ stateFinance, partyTotals, topRaised, topSpent, s
 
       {/* State detail panel */}
       {selectedState && selectedData && (
-        <div className="mt-6 rounded-lg border border-[var(--poli-border)] p-5">
+        <div className="mt-6 rounded-lg border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">
               {STATE_NAMES[selectedState] ?? selectedState}
@@ -342,9 +342,9 @@ export function MoneyMapView({ stateFinance, partyTotals, topRaised, topSpent, s
       )}
 
       {/* National rankings */}
-      <div className="mt-8 rounded-lg border border-[var(--poli-border)] p-5">
+      <div className="mt-8 rounded-lg border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             National Rankings
           </h2>
           <div className="flex gap-1">

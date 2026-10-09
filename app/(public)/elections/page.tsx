@@ -101,7 +101,7 @@ export default async function ElectionsPage() {
           rel="noopener noreferrer"
           className="mb-8 flex items-center gap-4 rounded-xl bg-[var(--poli-badge-bg)] px-5 py-4 no-underline transition-all hover:opacity-80"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[var(--poli-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[var(--poli-sub)]"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
           <div className="min-w-0 flex-1">
             <div className="text-[14px] font-semibold text-[var(--poli-text)]">Are you registered to vote?</div>
             <div className="text-[12px] text-[var(--poli-faint)]">It takes 2 minutes to check · vote.org</div>
@@ -111,7 +111,7 @@ export default async function ElectionsPage() {
 
         {/* Hero */}
         <div className="mb-8">
-          <h1 className="mb-3 text-[clamp(28px,4vw,44px)] font-bold leading-[1.1]">
+          <h1 className="mb-3 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
             2026 Elections
           </h1>
           <p className="mb-4 max-w-lg text-[15px] leading-relaxed text-[var(--poli-sub)]">
@@ -122,19 +122,19 @@ export default async function ElectionsPage() {
 
         {/* Quick stats */}
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center bg-[var(--poli-card)]">
             <div className="text-2xl font-bold text-[var(--poli-text)]">{allRaces.filter(r => r.chamber === 'senate').length}</div>
             <div className="text-[12px] text-[var(--poli-faint)]">Senate Races</div>
           </div>
-          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center bg-[var(--poli-card)]">
             <div className="text-2xl font-bold text-[var(--poli-text)]">435</div>
             <div className="text-[12px] text-[var(--poli-faint)]">House Races</div>
           </div>
-          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center bg-[var(--poli-card)]">
             <div className="text-2xl font-bold text-[var(--poli-text)]">{allRaces.filter(r => r.chamber === 'governor').length}</div>
             <div className="text-[12px] text-[var(--poli-faint)]">Governor Races</div>
           </div>
-          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+          <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center bg-[var(--poli-card)]">
             <div className="text-2xl font-bold text-[var(--poli-text)]">{stateElections.length}</div>
             <div className="text-[12px] text-[var(--poli-faint)]">States Voting</div>
           </div>
@@ -181,7 +181,7 @@ export default async function ElectionsPage() {
               <Link
                 key={election.id}
                 href={`/elections/${election.slug}`}
-                className="group cursor-pointer rounded-lg border border-[var(--poli-border)] p-3 no-underline transition-all duration-200 hover:border-[var(--poli-text)] hover:shadow-md"
+                className="group cursor-pointer rounded-lg border border-[var(--poli-border)] p-3 no-underline transition-all duration-200 hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
               >
                 <div className="mb-1 flex items-center gap-2">
                   <span className="text-[11px] font-bold text-[var(--poli-faint)]">{stateCode}</span>

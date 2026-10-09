@@ -183,7 +183,7 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
         {/* Hover tooltip */}
         {hoveredSegment && (
           <div
-            className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-2.5 py-1.5 shadow-lg"
+            className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-2.5 py-1.5"
             role="tooltip"
           >
             <div className="flex items-center gap-1.5 whitespace-nowrap">

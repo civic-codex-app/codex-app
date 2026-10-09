@@ -163,7 +163,7 @@ export function PoliticianList({
           {currentPage > 1 && (
             <Link
               href={pageUrl(currentPage - 1)}
-              className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[13px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+              className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[13px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
             >
               &larr; Prev
             </Link>
@@ -174,7 +174,7 @@ export function PoliticianList({
           {currentPage < totalPages && (
             <Link
               href={pageUrl(currentPage + 1)}
-              className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[13px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+              className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[13px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
             >
               Next &rarr;
             </Link>

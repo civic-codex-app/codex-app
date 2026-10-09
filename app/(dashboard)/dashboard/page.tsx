@@ -26,7 +26,7 @@ const QUICK_LINKS = [
     title: 'Who Represents You',
     description: 'Find politicians who align with your views',
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
         <path d="m9 12 2 2 4-4" />
       </svg>
@@ -37,7 +37,7 @@ const QUICK_LINKS = [
     title: 'Ballot Scorecard',
     description: 'See how candidates align with you',
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
         <polyline points="22 4 12 14.01 9 11.01" />
       </svg>
@@ -48,7 +48,7 @@ const QUICK_LINKS = [
     title: 'Report Cards',
     description: 'See how politicians score on key issues',
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
         <polyline points="14 2 14 8 20 8" />
         <line x1="16" y1="13" x2="8" y2="13" />
@@ -62,7 +62,7 @@ const QUICK_LINKS = [
     title: 'Election Countdown',
     description: 'Key dates and deadlines for your state',
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <circle cx="12" cy="12" r="10" />
         <polyline points="12 6 12 12 16 14" />
       </svg>
@@ -73,7 +73,7 @@ const QUICK_LINKS = [
     title: 'Issue Map',
     description: 'Explore stances on issues across the country',
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
         <line x1="8" y1="2" x2="8" y2="18" />
         <line x1="16" y1="6" x2="16" y2="22" />
@@ -85,7 +85,7 @@ const QUICK_LINKS = [
     title: 'My Ballot',
     description: 'Preview what\'s on your ballot',
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <path d="M9 11l3 3L22 4" />
         <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
       </svg>
@@ -96,7 +96,7 @@ const QUICK_LINKS = [
     title: 'Money Map',
     description: 'Follow the money in campaign finance',
     icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <line x1="12" y1="1" x2="12" y2="23" />
         <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
       </svg>
@@ -386,7 +386,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="mb-2 text-3xl font-bold">Dashboard</h1>
+      <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Dashboard</h1>
       <p className="mb-10 text-sm text-[var(--poli-sub)]">
         Your personalized civic engagement hub
       </p>
@@ -422,7 +422,7 @@ export default async function DashboardPage() {
 
         {userState ? (
           representatives.length > 0 ? (
-            <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)]">
+            <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
               {representatives.map((pol) => (
                 <Link
                   key={pol.id}
@@ -430,7 +430,7 @@ export default async function DashboardPage() {
                   className="flex items-center gap-3 px-4 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
                 >
                   <div
-                    className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full border border-[var(--poli-border)]"
+                    className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full border border-[var(--poli-border)] bg-[var(--poli-card)]"
                   >
                     <AvatarImage
                       src={pol.image_url}
@@ -461,14 +461,14 @@ export default async function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] py-10 text-center bg-[var(--poli-card)]">
               <p className="text-sm text-[var(--poli-sub)]">
                 No representatives found for {stateName}
               </p>
             </div>
           )
         ) : (
-          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center bg-[var(--poli-card)]">
             <p className="mb-4 text-sm text-[var(--poli-sub)]">
               Set your state in account settings to see your representatives
             </p>
@@ -536,7 +536,7 @@ export default async function DashboardPage() {
           <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
             Recent Activity
           </h2>
-          <div className="rounded-md border border-[var(--poli-border)] px-4 py-3">
+          <div className="rounded-md border border-[var(--poli-border)] px-4 py-3 bg-[var(--poli-card)]">
             <RecentActivityFeed items={activityFeed} />
           </div>
         </section>
@@ -557,7 +557,7 @@ export default async function DashboardPage() {
         </div>
 
         {followedBills.length > 0 ? (
-          <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
             {followedBills.map((bill) => {
               const statusConfig: Record<string, { label: string; color: string; bg: string }> = {
                 signed_into_law: { label: 'Signed', color: '#22C55E', bg: '#22C55E18' },
@@ -601,7 +601,7 @@ export default async function DashboardPage() {
             })}
           </div>
         ) : (
-          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center bg-[var(--poli-card)]">
             <p className="mb-2 text-sm text-[var(--poli-sub)]">
               No saved bills yet
             </p>
@@ -643,7 +643,7 @@ export default async function DashboardPage() {
         </div>
 
         {followedIssues.length > 0 ? (
-          <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)]">
+          <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
             {followedIssues.map((issue) => (
               <Link
                 key={issue.id}
@@ -665,7 +665,7 @@ export default async function DashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+          <div className="rounded-md border border-[var(--poli-border)] py-10 text-center bg-[var(--poli-card)]">
             <p className="mb-2 text-sm text-[var(--poli-sub)]">
               No followed issues yet
             </p>
@@ -697,7 +697,7 @@ export default async function DashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+          <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
             <div className="mb-2 text-xl font-semibold text-[var(--poli-faint)]">
               Not following anyone yet
             </div>

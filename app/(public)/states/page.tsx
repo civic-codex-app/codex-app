@@ -61,7 +61,7 @@ export default async function StatesIndexPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
-        <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
           States
         </h1>
         <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
@@ -84,7 +84,7 @@ export default async function StatesIndexPage() {
               <Link
                 key={abbr}
                 href={`/states/${abbr.toLowerCase()}`}
-                className="group flex flex-col gap-2.5 rounded-lg border border-[var(--poli-border)] p-3 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
+                className="group flex flex-col gap-2.5 rounded-lg border border-[var(--poli-border)] p-3 no-underline transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
               >
                 <div className="flex items-center gap-2.5">
                   <Image
@@ -92,7 +92,7 @@ export default async function StatesIndexPage() {
                     alt={`${name} flag`}
                     width={32}
                     height={24}
-                    className="rounded-sm shadow-sm"
+                    className="rounded-sm"
                     unoptimized
                   />
                   <div className="min-w-0">

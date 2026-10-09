@@ -50,7 +50,7 @@ export function StateDatePicker({
       <div className="mb-6">
         <label
           htmlFor="state-select"
-          className="mb-2 block text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]"
+          className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]"
         >
           Select your state
         </label>
@@ -73,7 +73,7 @@ export function StateDatePicker({
       {selectedState ? (
         timelineDates.length > 0 ? (
           <div>
-            <h3 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <h3 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Key Dates for {STATE_NAMES[selectedState] || selectedState}
             </h3>
             <KeyDatesTimeline dates={timelineDates} electionDate={electionDate} />

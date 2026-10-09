@@ -138,7 +138,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   return (
     <>
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <h1 className="mb-1 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-1 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
           Directory
         </h1>
         <p className="mb-6 text-[14px] text-[var(--poli-sub)]">
@@ -161,20 +161,19 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
               <Link
                 key={pol.id}
                 href={`/politicians/${pol.slug}`}
-                className="group flex overflow-hidden rounded-xl no-underline transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                style={{ backgroundColor: `${color}08`, border: `1.5px solid ${color}22` }}
+                className="group flex items-center gap-3 rounded-2xl border border-[var(--poli-border)] bg-[var(--poli-card)] py-3 pl-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
               >
-                <div className="w-[68px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--poli-card)]">
+                <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full" style={{ boxShadow: `0 0 0 2px ${color}` }}>
                   <AvatarImage
                     src={pol.image_url}
                     alt={pol.name}
-                    size={136}
+                    size={48}
                     party={pol.party}
                     fallbackColor={color}
                     className="h-full w-full object-cover object-top"
                   />
                 </div>
-                <div className="min-w-0 flex-1 px-4 py-3">
+                <div className="min-w-0 flex-1 pr-4">
                   <div className="truncate text-[15px] font-semibold text-[var(--poli-text)]">
                     {pol.name}
                   </div>

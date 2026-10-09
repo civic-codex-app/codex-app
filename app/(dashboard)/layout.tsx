@@ -33,7 +33,7 @@ const ACCOUNT_TABS = [
     label: 'Dashboard',
     match: ['/dashboard'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="7" height="7" />
         <rect x="14" y="3" width="7" height="7" />
         <rect x="14" y="14" width="7" height="7" />
@@ -46,7 +46,7 @@ const ACCOUNT_TABS = [
     label: 'Following',
     match: ['/following'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
       </svg>
     ),
@@ -56,7 +56,7 @@ const ACCOUNT_TABS = [
     label: 'Account',
     match: ['/account'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
         <circle cx="12" cy="7" r="4" />
       </svg>
@@ -134,7 +134,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-3">
             {profile && (
               <Link href="/account" className="no-underline">
-                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)]">
+                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)] bg-[var(--poli-card)]">
                   {/* Falls back to the initial when the avatar URL fails to load. */}
                   <AvatarImage src={profile.avatar_url} alt={profile.display_name ?? userInitial} size={28} />
                 </div>
@@ -297,7 +297,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.8"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >

@@ -18,7 +18,7 @@ function ElectionColumn({ elections, name }: { elections: any[]; name: string })
         <div className="mb-2 text-[12px] font-medium text-[var(--poli-text)]">
           {name}
         </div>
-        <div className="rounded-md border border-[var(--poli-border)] px-4 py-6 text-center text-[12px] text-[var(--poli-faint)]">
+        <div className="rounded-md border border-[var(--poli-border)] px-4 py-6 text-center text-[12px] text-[var(--poli-faint)] bg-[var(--poli-card)]">
           No election history on record
         </div>
       </div>
@@ -69,7 +69,7 @@ function ElectionColumn({ elections, name }: { elections: any[]; name: string })
           return (
             <div
               key={i}
-              className="flex items-center gap-2 rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[12px]"
+              className="flex items-center gap-2 rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-[12px] bg-[var(--poli-card)]"
             >
               <span className="w-10 tabular-nums text-[var(--poli-sub)]">
                 {e.election_year ?? '—'}

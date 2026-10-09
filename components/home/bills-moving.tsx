@@ -96,7 +96,7 @@ export function BillsMoving({ bills }: { bills: BillCard[] }) {
         right={
           <Link
             href="/bills"
-            className="text-[12px] font-semibold text-[var(--poli-input-focus)] no-underline"
+            className="text-[12px] font-semibold text-[var(--poli-text)] no-underline"
           >
             All bills
           </Link>

@@ -128,7 +128,7 @@ export function InTheNews({ articles, politicianName, party }: InTheNewsProps) {
                     className="inline-block h-2 w-2 rounded-full"
                     style={{ backgroundColor: colors.dot }}
                   />
-                  <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-sub)]">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
                     {BIAS_GROUP_LABELS[g]}
                   </span>
                 </div>
@@ -189,7 +189,7 @@ function ArticleCard({ article }: { article: NewsArticle }) {
           {timeAgo(article.publishedAt)}
         </span>
       </div>
-      <p className="line-clamp-2 text-[13px] font-medium leading-[1.4] text-[var(--poli-text)] group-hover:text-blue-400">
+      <p className="line-clamp-2 text-[13px] font-medium leading-[1.4] text-[var(--poli-text)] group-hover:underline">
         {article.title}
       </p>
     </a>

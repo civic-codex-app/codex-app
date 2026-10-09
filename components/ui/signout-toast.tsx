@@ -28,7 +28,7 @@ export function SignoutToast() {
 
   return (
     <div
-      className="fixed top-20 left-1/2 z-50 -translate-x-1/2 animate-fade-up rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] px-5 py-3 shadow-lg"
+      className="fixed top-20 left-1/2 z-50 -translate-x-1/2 animate-fade-up rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] px-5 py-3"
     >
       <div className="flex items-center gap-2.5">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--poli-sub)]">

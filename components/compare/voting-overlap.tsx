@@ -68,7 +68,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
         <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
           Voting Record Overlap
         </h2>
-        <div className="rounded-md border border-[var(--poli-border)] px-6 py-8 text-center text-[13px] text-[var(--poli-faint)]">
+        <div className="rounded-md border border-[var(--poli-border)] px-6 py-8 text-center text-[13px] text-[var(--poli-faint)] bg-[var(--poli-card)]">
           No shared voting records found
         </div>
       </div>
@@ -85,7 +85,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
 
       {/* Agreement bar */}
       {total > 0 && (
-        <div className="mb-4 rounded-md border border-[var(--poli-border)] p-4">
+        <div className="mb-4 rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[12px] text-[var(--poli-sub)]">Voting Agreement</span>
             <span className="text-lg font-semibold">{agreePct}%</span>
@@ -130,7 +130,7 @@ export function VotingOverlap({ votingA, votingB, polA, polB }: VotingOverlapPro
             return (
               <div
                 key={i}
-                className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-md border border-[var(--poli-border)] px-4 py-2 sm:grid-cols-[1fr_80px_80px]"
+                className="grid grid-cols-[1fr_auto_auto] items-center gap-2 rounded-md border border-[var(--poli-border)] px-4 py-2 sm:grid-cols-[1fr_80px_80px] bg-[var(--poli-card)]"
               >
                 <span className="truncate text-[13px] text-[var(--poli-text)]">
                   {s.label}

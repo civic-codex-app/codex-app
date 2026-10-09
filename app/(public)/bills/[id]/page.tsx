@@ -172,7 +172,7 @@ export default async function BillDetailPage({ params }: PageProps) {
           <FollowBillButton billId={bill.id} initialCount={followCountResult.count ?? 0} className="ml-auto" />
         </div>
 
-        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-3 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
           {bill.title}
         </h1>
 
@@ -198,7 +198,7 @@ export default async function BillDetailPage({ params }: PageProps) {
 
         {/* Vote summary */}
         {total > 0 && (
-          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
             <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
               Vote Tally
             </h2>
@@ -312,11 +312,11 @@ export default async function BillDetailPage({ params }: PageProps) {
                         <Link
                           key={v.id}
                           href={`/politicians/${pol.slug}`}
-                          className="flex items-center gap-2.5 rounded-md border border-[var(--poli-border)] px-3 py-2 no-underline transition-all hover:border-[var(--poli-input-border)]"
+                          className="flex items-center gap-2.5 rounded-md border border-[var(--poli-border)] px-3 py-2 no-underline transition-all hover:border-[var(--poli-input-border)] bg-[var(--poli-card)]"
                         >
                           <div
-                            className="h-7 w-7 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--poli-card)]"
-                            style={{ border: `1.5px solid ${partyColor(pol.party)}44` }}
+                            className="h-7 w-7 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
+                            style={{ boxShadow: `0 0 0 2px ${partyColor(pol.party)}` }}
                           >
                             <AvatarImage
                               src={pol.image_url}

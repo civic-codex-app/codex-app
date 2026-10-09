@@ -161,7 +161,7 @@ export function YourReps() {
             />
             <button
               type="submit"
-              className="h-11 shrink-0 rounded-xl bg-[var(--poli-app-ink)] px-5 text-[14px] font-semibold text-white"
+              className="h-11 shrink-0 rounded-xl bg-[var(--poli-text)] px-5 text-[14px] font-semibold text-[var(--poli-card)]"
             >
               Show me
             </button>
@@ -217,7 +217,7 @@ export function YourReps() {
               setReps(null)
               setDraft('')
             }}
-            className="text-[12px] font-semibold text-[var(--poli-input-focus)]"
+            className="text-[12px] font-semibold text-[var(--poli-text)]"
           >
             Change
           </button>
@@ -241,7 +241,10 @@ export function YourReps() {
               i < list.length - 1 ? 'border-b border-[var(--poli-border)]' : ''
             }`}
           >
-            <span className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-[var(--poli-hover)]">
+            <span
+              className="h-11 w-11 shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
+              style={{ boxShadow: `0 0 0 2px ${partyColor(r.party ?? '')}` }}
+            >
               <AvatarImage
                 src={r.image_url}
                 alt={r.name}
@@ -267,7 +270,7 @@ export function YourReps() {
               aria-hidden="true"
               className="shrink-0 text-[var(--poli-faint)]"
             >
-              <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </Link>
         ))}

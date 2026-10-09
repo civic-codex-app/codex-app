@@ -104,7 +104,7 @@ export default function PoliticianProfileLoading() {
 
             {/* Overview body: alignment gauge, then the report card */}
             <div className="mt-6">
-              <div className="rounded-md border border-[var(--poli-border)] p-4">
+              <div className="rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
                 <div className="mb-3 flex items-center justify-between">
                   <SkeletonText w="w-40" h="h-5" />
                   <SkeletonBlock className="h-5 w-24 rounded-sm" />

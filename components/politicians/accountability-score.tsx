@@ -123,7 +123,7 @@ export function AccountabilityScore({ votes, stances, party }: AccountabilitySco
               {uniqueContradictions.slice(0, 5).map((c, i) => {
                 const badge = stanceDisplayBadge(c.stance, party)
                 return (
-                  <div key={i} className="rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px]">
+                  <div key={i} className="rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] bg-[var(--poli-card)]">
                     <div className="flex items-center justify-between gap-2">
                       <span className="truncate text-[var(--poli-text)]">
                         {c.billNumber && c.billNumber !== c.billName ? `${c.billName} (${c.billNumber})` : c.billName}

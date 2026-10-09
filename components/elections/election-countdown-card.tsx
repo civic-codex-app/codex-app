@@ -27,7 +27,7 @@ export function ElectionCountdownCard({
   userState,
 }: ElectionCountdownCardProps) {
   return (
-    <div className="rounded-md border border-[var(--poli-border)] p-5">
+    <div className="rounded-md border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
       {/* Title */}
       <h2 className="mb-1 text-xl font-bold text-[var(--poli-text)]">
         {electionName}
@@ -45,14 +45,14 @@ export function ElectionCountdownCard({
       {userState ? (
         keyDates.length > 0 ? (
           <div className="mb-4">
-            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Key Dates {userState ? `for ${userState}` : ''}
             </div>
             <KeyDatesTimeline dates={keyDates} electionDate={electionDate} />
           </div>
         ) : (
           <div className="mb-4">
-            <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Key Dates
             </div>
             <p className="text-sm text-[var(--poli-faint)]">
@@ -81,7 +81,7 @@ export function ElectionCountdownCard({
       {/* Link */}
       <Link
         href="/elections"
-        className="inline-flex items-center gap-1.5 text-[13px] font-medium text-blue-400 hover:underline"
+        className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--poli-text)] underline underline-offset-2"
       >
         View all races
         <svg

@@ -180,9 +180,9 @@ export function UserCompareView({
 
       {/* Agreement meter */}
       {total > 0 && (
-        <div className="rounded-lg border border-[var(--poli-border)] p-5">
+        <div className="rounded-lg border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">Overall Agreement</span>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">Overall Agreement</span>
             <span className="text-2xl font-bold" style={{ color: agreePct >= 60 ? '#34d399' : agreePct >= 40 ? '#fbbf24' : '#f87171' }}>
               {agreePct}%
             </span>
@@ -201,7 +201,7 @@ export function UserCompareView({
       {/* Biggest Agreements */}
       {biggestAgreements.length > 0 && (
         <div>
-          <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Where You Agree
           </h2>
           <div className="space-y-2">
@@ -219,7 +219,7 @@ export function UserCompareView({
       {/* Biggest Disagreements */}
       {biggestDisagreements.length > 0 && (
         <div>
-          <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Where You Differ
           </h2>
           <div className="space-y-2">
@@ -241,7 +241,7 @@ export function UserCompareView({
       {/* Shared Politicians */}
       {sharedLikes.length > 0 && (
         <div>
-          <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Politicians You Both Like
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -267,7 +267,7 @@ export function UserCompareView({
 
       {sharedFollows.length > 0 && sharedLikes.length === 0 && (
         <div>
-          <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Politicians You Both Follow
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -287,7 +287,7 @@ export function UserCompareView({
       {/* Shared Issues */}
       {sharedIssueFollows.length > 0 && (
         <div>
-          <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Issues You Both Follow
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -308,7 +308,7 @@ export function UserCompareView({
       {/* Their follows (if no shared data) */}
       {sharedLikes.length === 0 && sharedFollows.length === 0 && themLikes.length > 0 && (
         <div>
-          <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             #{displayIdThem} Likes
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -335,7 +335,7 @@ export function UserCompareView({
       {/* Their issue follows */}
       {sharedIssueFollows.length === 0 && themIssueFollows.length > 0 && (
         <div>
-          <h2 className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             #{displayIdThem} Follows These Issues
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -371,7 +371,7 @@ function FullStanceList({ issues, displayIdMe, displayIdThem, hasMeProp }: {
     <div>
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between rounded-lg border border-[var(--poli-border)] px-4 py-3 text-left text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)] transition-colors hover:bg-[var(--poli-hover)]"
+        className="flex w-full items-center justify-between rounded-lg border border-[var(--poli-border)] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)] transition-colors hover:bg-[var(--poli-hover)]"
       >
         <span>All {issues.length} Issue Positions</span>
         <svg
@@ -435,7 +435,7 @@ function ProfileCard({
   const stateName = state ? STATE_NAMES[state as keyof typeof STATE_NAMES] ?? state : null
 
   return (
-    <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+    <div className="rounded-lg border border-[var(--poli-border)] p-4 text-center bg-[var(--poli-card)]">
       <div className="mx-auto mb-2 flex justify-center">
         <StanceAvatar supports={supports} opposes={opposes} neutral={neutral} total={total} size={48} seed={seed} />
       </div>

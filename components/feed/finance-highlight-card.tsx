@@ -68,7 +68,7 @@ export function FinanceHighlightCard({ records, label = 'Top Fundraisers' }: Pro
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
                   <PartyIcon party={r.politician.party} size={10} />
-                  <span className="truncate text-[13px] font-medium text-[var(--poli-text)] group-hover:text-blue-400">
+                  <span className="truncate text-[13px] font-medium text-[var(--poli-text)] group-hover:underline">
                     {r.politician.name}
                   </span>
                 </div>

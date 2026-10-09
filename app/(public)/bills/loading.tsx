@@ -83,7 +83,7 @@ export default function BillsLoading() {
         {/* Bill list */}
         <div className="space-y-3">
           {CARDS.map((c, i) => (
-            <div key={i} className="overflow-hidden rounded-md border border-[var(--poli-border)]">
+            <div key={i} className="overflow-hidden rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
               <div className="p-5">
                 {/* Number + status + congress badges */}
                 <div className="mb-2 flex flex-wrap items-center gap-2">

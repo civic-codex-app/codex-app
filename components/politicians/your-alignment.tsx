@@ -111,7 +111,7 @@ export function YourAlignment({ politicianName, politicianStances, politicianPar
   const lastName = politicianName.split(' ').pop()
 
   return (
-    <div className="rounded-xl border border-[var(--poli-border)] overflow-hidden">
+    <div className="rounded-xl border border-[var(--poli-border)] overflow-hidden bg-[var(--poli-card)]">
       {/* Header with score */}
       <div className="flex items-center gap-4 p-4" style={{ backgroundColor: `${color}08` }}>
         <div className="relative flex-shrink-0">

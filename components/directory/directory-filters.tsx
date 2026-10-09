@@ -92,7 +92,7 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
     >
       {/* Party filter */}
       <div>
-        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-faint)]">
+        <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
           Party
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -133,7 +133,7 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
 
       {/* Chamber filter */}
       <div>
-        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-faint)]">
+        <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
           Level
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -176,7 +176,7 @@ export function DirectoryFilters({ counts, stateNames }: Props) {
 
       {/* State filter */}
       <div>
-        <div className="mb-2 text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--poli-faint)]">
+        <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
           State
         </div>
         <select

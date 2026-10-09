@@ -48,7 +48,7 @@ export function BackgroundComparison({ polA, polB }: BackgroundComparisonProps) 
       <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
         Background
       </h2>
-      <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
+      <div className="overflow-hidden rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
         {rows.map((row, i) => (
           <div
             key={row.label}

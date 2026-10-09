@@ -41,19 +41,19 @@ export default async function BallotScorecardPage() {
   if (!hasQuizAnswers) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-        <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
+        <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Your Ballot Scorecard</h1>
         <p className="mb-8 text-sm text-[var(--poli-sub)]">
           See how each candidate aligns with your views
         </p>
 
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
           <div className="mb-3">
             <svg
               className="mx-auto h-10 w-10 text-[var(--poli-faint)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -82,19 +82,19 @@ export default async function BallotScorecardPage() {
   if (!userState) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-        <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
+        <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Your Ballot Scorecard</h1>
         <p className="mb-8 text-sm text-[var(--poli-sub)]">
           See how each candidate aligns with your views
         </p>
 
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
           <div className="mb-3">
             <svg
               className="mx-auto h-10 w-10 text-[var(--poli-faint)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -263,7 +263,7 @@ export default async function BallotScorecardPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-      <h1 className="mb-2 text-3xl font-bold">Your Ballot Scorecard</h1>
+      <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Your Ballot Scorecard</h1>
       <p className="mb-1 text-sm text-[var(--poli-sub)]">
         See how each candidate aligns with your views
       </p>
@@ -276,7 +276,7 @@ export default async function BallotScorecardPage() {
       </p>
 
       {totalRacesWithCandidates === 0 ? (
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
           <p className="mb-2 text-sm font-medium text-[var(--poli-text)]">
             No upcoming races found
           </p>
@@ -292,7 +292,7 @@ export default async function BallotScorecardPage() {
 
             return (
               <section key={groupName}>
-                <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+                <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
                   {groupName} Races
                   <span className="ml-2 text-[var(--poli-faint)]">({groupRaces.length})</span>
                 </h2>

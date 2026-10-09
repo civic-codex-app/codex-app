@@ -123,7 +123,7 @@ export function IssueGrid({
           <Link
             key={issue.id}
             href={`/issues/${issue.slug}`}
-            className="group block cursor-pointer rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-5 no-underline transition-all duration-200 hover:border-[var(--poli-input-border)] hover:shadow-md"
+            className="group block cursor-pointer rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] p-5 no-underline transition-all duration-200 hover:border-[var(--poli-input-border)]"
           >
             <div className="mb-2 flex items-center gap-2">
               <IssueIcon icon={issue.icon} size={18} className="text-[var(--poli-sub)]" />

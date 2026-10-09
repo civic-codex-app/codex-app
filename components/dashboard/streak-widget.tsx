@@ -67,7 +67,7 @@ export function StreakWidget({ initialStreak, longestStreak }: StreakWidgetProps
   }, [streak])
 
   return (
-    <div className="rounded-lg border border-[var(--poli-border)] p-5 transition-all hover:border-[var(--poli-text)] hover:shadow-md">
+    <div className="rounded-lg border border-[var(--poli-border)] p-5 transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]">
       <div className="flex items-center gap-3">
         <div
           className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"

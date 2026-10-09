@@ -134,7 +134,7 @@ export function KeyDatesTimeline({ dates, electionDate }: KeyDatesTimelineProps)
                     href={d.source_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-0.5 inline-block text-[11px] text-blue-400 hover:underline"
+                    className="mt-0.5 inline-block text-[11px] text-[var(--poli-text)] underline underline-offset-2"
                   >
                     Source
                   </a>

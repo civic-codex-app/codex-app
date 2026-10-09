@@ -22,7 +22,7 @@ export default async function EditBillPage({ params }: PageProps) {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-8 text-3xl font-bold">Edit Bill</h1>
+      <h1 className="mb-8 font-serif text-[32px] font-normal leading-[1.08]">Edit Bill</h1>
       <BillForm bill={bill as any} />
     </div>
   )

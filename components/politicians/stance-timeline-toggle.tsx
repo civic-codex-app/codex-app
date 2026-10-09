@@ -29,7 +29,7 @@ export function StanceTimelineToggle({ hasHistory, children }: StanceTimelineTog
           <path
             d="M4.5 2.5L8 6L4.5 9.5"
             stroke="currentColor"
-            strokeWidth="1.5"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />

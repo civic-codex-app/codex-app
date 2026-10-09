@@ -14,7 +14,7 @@ export default function SuggestPoliticianPage() {
         <Link href="/contribute" className="mb-6 inline-flex items-center gap-1.5 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]">
           &larr; Contribute
         </Link>
-        <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
           Suggest a Politician
         </h1>
         <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">

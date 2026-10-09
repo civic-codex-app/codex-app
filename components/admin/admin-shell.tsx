@@ -45,7 +45,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="flex h-[26px] w-[26px] items-center justify-center border border-[var(--poli-text)] text-[13px] font-semibold text-[var(--poli-text)]">
         C
       </div>
-      <span className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
         Admin
       </span>
     </Link>

@@ -149,7 +149,7 @@ export function IssueMapView({
           <span>/</span>
           <span>Map</span>
         </div>
-        <h1 className="text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--poli-text)]">
+        <h1 className="font-serif text-[clamp(28px,4vw,40px)] font-normal leading-[1.08] text-[var(--poli-text)]">
           Issue Explorer Map
         </h1>
         <p className="mt-1 text-[var(--poli-sub)] text-sm max-w-2xl">
@@ -181,7 +181,7 @@ export function IssueMapView({
         </button>
 
         {dropdownOpen && (
-          <div className="absolute top-full left-0 z-40 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1 shadow-lg">
+          <div className="absolute top-full left-0 z-40 mt-1 max-h-72 w-full overflow-auto rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1">
             {issues.map((issue) => (
               <button
                 key={issue.slug}
@@ -223,11 +223,11 @@ export function IssueMapView({
         if (!content) return null
         return (
           <div className="mt-4 rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-4 sm:p-5">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               What do the colors mean?
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="flex gap-3 rounded-lg border border-[var(--poli-border)] p-3">
+              <div className="flex gap-3 rounded-lg border border-[var(--poli-border)] p-3 bg-[var(--poli-card)]">
                 <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#2E5984' }} />
                 <div>
                   <p className="text-[13px] font-medium text-[var(--poli-text)]">Dark states (supports)</p>
@@ -236,7 +236,7 @@ export function IssueMapView({
                   </p>
                 </div>
               </div>
-              <div className="flex gap-3 rounded-lg border border-[var(--poli-border)] p-3">
+              <div className="flex gap-3 rounded-lg border border-[var(--poli-border)] p-3 bg-[var(--poli-card)]">
                 <div className="mt-0.5 h-4 w-4 shrink-0 rounded-full" style={{ background: '#B8734A' }} />
                 <div>
                   <p className="text-[13px] font-medium text-[var(--poli-text)]">Warm states (opposes)</p>

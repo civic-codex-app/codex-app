@@ -125,8 +125,8 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         <div className="mb-8 flex items-start gap-5">
           {/* Avatar */}
           <div
-            className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-[var(--poli-card)] md:h-28 md:w-28"
-            style={{ border: `3px solid ${color}44` }}
+            className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)] md:h-28 md:w-28"
+            style={{ boxShadow: `0 0 0 2px ${color}` }}
           >
             <AvatarImage
               src={candidate.image_url || ''}
@@ -138,7 +138,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
 
           {/* Name + meta */}
           <div className="min-w-0 flex-1 pt-1">
-            <h1 className="mb-2 text-[clamp(24px,4vw,42px)] font-bold leading-[1.1]">
+            <h1 className="mb-2 font-serif text-[clamp(28px,4vw,42px)] font-normal leading-[1.08]">
               {candidate.name}
             </h1>
             <div className="flex flex-wrap items-center gap-2">
@@ -162,7 +162,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
 
         {/* Alignment + stance summary */}
         {totalStances > 0 && (
-          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
             <div className="mb-3 flex items-center justify-between">
               <span className="text-sm font-semibold text-[var(--poli-sub)]">
                 Party Alignment
@@ -224,7 +224,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
             <div className="mb-2 text-sm font-semibold text-[var(--poli-sub)]">
               Race
             </div>
-            <div className="rounded-md border border-[var(--poli-border)] p-4">
+            <div className="rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
               <Link
                 href={`/elections/${race.slug}`}
                 className="text-lg font-semibold transition-colors hover:text-[var(--poli-text)]"
@@ -273,7 +273,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
                 return (
                   <div
                     key={s.id}
-                    className="rounded-md border border-[var(--poli-border)] px-4 py-3"
+                    className="rounded-md border border-[var(--poli-border)] px-4 py-3 bg-[var(--poli-card)]"
                   >
                     <div className="flex items-center justify-between">
                       <Link
@@ -300,7 +300,7 @@ export default async function CandidateProfilePage({ params }: PageProps) {
         {/* In the News */}
         {newsArticles.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               In the News
             </h2>
             <InTheNews articles={newsArticles} politicianName={candidate.name} party={candidate.party} />

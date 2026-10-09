@@ -118,7 +118,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
   // No saved issues
   if (!loading && topIssues.length === 0) {
     return (
-      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center">
+      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center bg-[var(--poli-card)]">
         <p className="mb-2 text-sm text-[var(--poli-sub)]">
           No priority issues set
         </p>
@@ -138,7 +138,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
   // No zip code
   if (!loading && !zip) {
     return (
-      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center">
+      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center bg-[var(--poli-card)]">
         <p className="mb-2 text-sm text-[var(--poli-sub)]">
           Set your zip code to see how your reps stand on your issues
         </p>
@@ -154,7 +154,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
 
   if (loading) {
     return (
-      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center">
+      <div className="rounded-md border border-[var(--poli-border)] py-8 text-center bg-[var(--poli-card)]">
         <p className="text-sm text-[var(--poli-faint)]">Loading issue priorities...</p>
       </div>
     )
@@ -186,7 +186,7 @@ export function IssuePriorities({ zip }: IssuePrioritiesProps) {
         return (
           <div
             key={slug}
-            className="rounded-md border border-[var(--poli-border)] px-4 py-3"
+            className="rounded-md border border-[var(--poli-border)] px-4 py-3 bg-[var(--poli-card)]"
           >
             {/* Issue header */}
             <div className="mb-2 flex items-center gap-2">

@@ -13,8 +13,8 @@ export function BadgesDisplay({ earnedBadges }: BadgesDisplayProps) {
   const [hoveredBadge, setHoveredBadge] = useState<string | null>(null)
 
   return (
-    <div className="rounded-lg border border-[var(--poli-border)] p-5">
-      <h3 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+    <div className="rounded-lg border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
+      <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
         Badges
       </h3>
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
@@ -65,7 +65,7 @@ export function BadgesDisplay({ earnedBadges }: BadgesDisplayProps) {
               {/* Tooltip */}
               {hoveredBadge === badge.id && (
                 <div
-                  className="absolute -top-2 left-1/2 z-10 w-48 -translate-x-1/2 -translate-y-full rounded-lg border border-[var(--poli-border)] px-3 py-2 text-center shadow-lg"
+                  className="absolute -top-2 left-1/2 z-10 w-48 -translate-x-1/2 -translate-y-full rounded-lg border border-[var(--poli-border)] px-3 py-2 text-center bg-[var(--poli-card)]"
                   style={{ background: 'var(--poli-card)' }}
                 >
                   <p className="text-[12px] font-medium text-[var(--poli-text)]">

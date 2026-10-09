@@ -48,7 +48,7 @@ export function CampaignFinance({ records, party }: CampaignFinanceProps) {
           return (
             <div
               key={r.id}
-              className="rounded-md border border-[var(--poli-border)] p-4"
+              className="rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]"
             >
               <div className="mb-3 flex items-center justify-between">
                 <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">

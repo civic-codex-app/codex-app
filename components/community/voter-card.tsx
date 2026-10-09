@@ -183,7 +183,7 @@ export function VoterCard({ anonymousId, state, stances, issues, myStances }: Vo
       )}
       <Link
         href={`/compare/users?them=${anonymousId}`}
-        className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-blue-500/50 hover:text-blue-400"
+        className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-blue-500/50 hover:text-blue-400 bg-[var(--poli-card)]"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <line x1="18" y1="20" x2="18" y2="10" />

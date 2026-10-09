@@ -96,7 +96,7 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
               party === t.key
                 ? 'border border-[var(--poli-text)] text-[var(--poli-text)]'
                 : 'border border-[var(--poli-border)] text-[var(--poli-faint)] hover:text-[var(--poli-sub)]'
-            }`}
+            } bg-[var(--poli-card)]`}
           >
             {t.label}
           </button>
@@ -124,8 +124,8 @@ export function ReportCardList({ politicians }: { politicians: RankedPolitician[
                 {rank}
               </span>
               <div
-                className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border"
-                style={{ borderColor: `${pColor}30` }}
+                className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full"
+                style={{ boxShadow: `0 0 0 2px ${pColor}` }}
               >
                 <AvatarImage
                   src={p.image_url}

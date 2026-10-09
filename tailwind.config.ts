@@ -88,10 +88,17 @@ const config: Config = {
         serif: ['Instrument Serif', 'Georgia', 'serif'],
         sans: ['DM Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
+      // Four radii: chips 6, controls 12, cards 16, sheets 24. The named
+      // steps are mapped so the classes already in the codebase (rounded-sm
+      // on chips, rounded-md on controls and small boxes, rounded-lg and
+      // rounded-2xl on cards) land on the scale without a rename.
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        sm: '6px',
+        md: '12px',
+        lg: '16px',
+        xl: '12px',
+        '2xl': '16px',
+        '3xl': '24px',
       },
       // Durations and easings resolve to the CSS custom properties defined in
       // app/globals.css, so a token changes in one place. `400` is listed

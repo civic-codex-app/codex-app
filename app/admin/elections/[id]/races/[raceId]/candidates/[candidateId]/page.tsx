@@ -27,7 +27,7 @@ export default async function EditCandidatePage({ params }: PageProps) {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-8 text-3xl font-bold">Edit Candidate</h1>
+      <h1 className="mb-8 font-serif text-[32px] font-normal leading-[1.08]">Edit Candidate</h1>
       <CandidateForm
         race_id={raceId}
         election_id={id}

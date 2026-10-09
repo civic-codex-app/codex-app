@@ -129,7 +129,7 @@ export default async function IssuePage({ params }: PageProps) {
         </div>
 
         <div className="mb-3 flex items-start justify-between gap-3">
-          <h1 className="text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+          <h1 className="font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
             {issue.icon && <IssueIcon icon={issue.icon} size={28} className="mr-1 inline-block text-[var(--poli-sub)]" />}
             {issue.name}
           </h1>
@@ -165,19 +165,19 @@ export default async function IssuePage({ params }: PageProps) {
         {/* Summary stats */}
         {totalAll > 0 && (
           <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
               <div className="text-2xl font-bold" style={{ color: '#2563EB' }}>{supportsAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Favors</div>
             </div>
-            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
               <div className="text-2xl font-bold" style={{ color: '#DC2626' }}>{opposesAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Opposes</div>
             </div>
-            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
               <div className="text-2xl font-bold" style={{ color: '#8B5CF6' }}>{mixedAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Mixed / Neutral</div>
             </div>
-            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center">
+            <div className="rounded-md border border-[var(--poli-border)] p-3 text-center bg-[var(--poli-card)]">
               <div className="text-2xl font-bold text-[var(--poli-text)]">{totalAll}</div>
               <div className="text-[11px] uppercase tracking-[0.08em] text-[var(--poli-faint)]">Total</div>
             </div>
@@ -186,7 +186,7 @@ export default async function IssuePage({ params }: PageProps) {
 
         {/* Party breakdown */}
         {Object.keys(partyStats).length > 0 && (
-          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
             <div className="mb-3 text-[10px] font-medium uppercase tracking-[0.1em] text-[var(--poli-faint)]">
               Party Breakdown
             </div>
@@ -234,7 +234,7 @@ export default async function IssuePage({ params }: PageProps) {
         )}
 
         {/* Section header for notable stances */}
-        <div className="mb-1 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+        <div className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
           Where Officials Stand
         </div>
         <p className="mb-3 text-[11px] text-[var(--poli-faint)]">

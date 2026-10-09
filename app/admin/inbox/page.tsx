@@ -58,7 +58,7 @@ export default async function AdminInboxPage({
 
   return (
     <div>
-      <h1 className="mb-2 text-2xl font-bold">Inbox</h1>
+      <h1 className="mb-2 font-serif text-[28px] font-normal leading-[1.12]">Inbox</h1>
       <p className="mb-6 text-sm text-gray-500">
         All public submissions — contact messages, suggestions, error reports, and tips.
       </p>

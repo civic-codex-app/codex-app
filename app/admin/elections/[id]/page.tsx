@@ -32,7 +32,7 @@ export default async function EditElectionPage({ params }: PageProps) {
   return (
     <div>
       <div className="max-w-2xl">
-        <h1 className="mb-8 text-3xl font-bold">Edit Election</h1>
+        <h1 className="mb-8 font-serif text-[32px] font-normal leading-[1.08]">Edit Election</h1>
         <ElectionForm election={election as any} />
       </div>
 
@@ -47,7 +47,7 @@ export default async function EditElectionPage({ params }: PageProps) {
           </Link>
         </div>
 
-        <div className="overflow-x-auto rounded-md border border-[var(--poli-border)]">
+        <div className="overflow-x-auto rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
           <table className="w-full">
             <thead>
               <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">

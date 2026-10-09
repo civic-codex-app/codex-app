@@ -33,7 +33,7 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
             <Link
               key={p.id}
               href={`/politicians/${p.slug}`}
-              className="group flex items-center gap-3 rounded-md border border-[var(--poli-border)] px-4 py-2.5 no-underline transition-all hover:border-[var(--poli-input-border)]"
+              className="group flex items-center gap-3 rounded-md border border-[var(--poli-border)] px-4 py-2.5 no-underline transition-all hover:border-[var(--poli-input-border)] bg-[var(--poli-card)]"
             >
               {/* Avatar */}
               <div

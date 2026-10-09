@@ -21,7 +21,7 @@ export default async function AccountPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="mb-2 text-3xl font-bold">Account</h1>
+      <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Account</h1>
       <p className="mb-10 text-sm text-[var(--poli-sub)]">
         Manage your profile and settings
       </p>

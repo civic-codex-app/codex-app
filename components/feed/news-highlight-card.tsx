@@ -28,7 +28,7 @@ export function NewsHighlightCard({ articles, label = 'Trending in Politics' }: 
           <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
           <path d="M18 14h-8" /><path d="M15 18h-5" /><path d="M10 6h8v4h-8V6Z" />
         </svg>
-        <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-[var(--poli-sub)]">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
           {label}
         </span>
       </div>
@@ -49,7 +49,7 @@ export function NewsHighlightCard({ articles, label = 'Trending in Politics' }: 
                 style={{ backgroundColor: colors.dot }}
               />
               <div className="min-w-0 flex-1">
-                <p className="line-clamp-2 text-[13px] font-medium leading-[1.4] text-[var(--poli-text)] group-hover:text-blue-400">
+                <p className="line-clamp-2 text-[13px] font-medium leading-[1.4] text-[var(--poli-text)] group-hover:underline">
                   {a.title}
                 </p>
                 <div className="mt-0.5 flex items-center gap-2 text-[11px] text-[var(--poli-faint)]">

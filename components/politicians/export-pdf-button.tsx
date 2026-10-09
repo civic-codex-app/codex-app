@@ -4,7 +4,7 @@ export function ExportPdfButton() {
   return (
     <button
       onClick={() => window.print()}
-      className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] print:hidden"
+      className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] print:hidden bg-[var(--poli-card)]"
       aria-label="Export as PDF"
       title="Export as PDF"
     >

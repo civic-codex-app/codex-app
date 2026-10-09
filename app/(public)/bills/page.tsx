@@ -98,7 +98,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
     <>
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         <div className="mb-10 max-w-[600px]">
-          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
+          <h1 className="mb-4 animate-fade-up font-serif text-[clamp(36px,4.5vw,52px)] font-normal leading-[1.08]">
             Bills & Legislation
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
@@ -148,7 +148,7 @@ export default async function BillsPage({ searchParams }: PageProps) {
               <Link
                 key={bill.id}
                 href={`/bills/${bill.id}`}
-                className="group block cursor-pointer overflow-hidden rounded-md border border-[var(--poli-border)] no-underline transition-all duration-200 hover:border-[var(--poli-input-border)] hover:shadow-md"
+                className="group block cursor-pointer overflow-hidden rounded-md border border-[var(--poli-border)] no-underline transition-all duration-200 hover:border-[var(--poli-input-border)] bg-[var(--poli-card)]"
               >
                 {/* Vote bar at top */}
                 {vc && vc.total > 0 && (

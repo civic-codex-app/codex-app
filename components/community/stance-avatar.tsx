@@ -74,7 +74,7 @@ export function StanceAvatar({
 
   return (
     <div
-      className="relative shrink-0 overflow-hidden rounded-full border border-[var(--poli-border)]"
+      className="relative shrink-0 overflow-hidden rounded-full border border-[var(--poli-border)] bg-[var(--poli-card)]"
       style={{ width: size, height: size, background: '#fff' }}
     >
       {supports > 0 && (

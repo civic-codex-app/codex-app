@@ -74,7 +74,7 @@ export function PersonalStrip() {
       <div className="flex flex-wrap gap-2">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
         >
           <svg
             width="14"
@@ -95,7 +95,7 @@ export function PersonalStrip() {
         </Link>
         <Link
           href="/ballot"
-          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-4 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
         >
           <svg
             width="14"
@@ -116,7 +116,7 @@ export function PersonalStrip() {
 
       {data.representatives.length > 0 && (
         <div>
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Your Representatives
           </h2>
           <StatePoliticianList

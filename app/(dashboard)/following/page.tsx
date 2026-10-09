@@ -23,7 +23,7 @@ export default async function FollowingPage() {
 
   return (
     <div>
-      <h1 className="mb-2 text-3xl font-bold">Following</h1>
+      <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Following</h1>
       <p className="mb-10 text-sm text-[var(--poli-sub)]">
         Politicians you&apos;re tracking
       </p>
@@ -35,7 +35,7 @@ export default async function FollowingPage() {
           ))}
         </div>
       ) : (
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
           <div className="mb-2 text-xl font-semibold text-[var(--poli-faint)]">
             Not following anyone yet
           </div>

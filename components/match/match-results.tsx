@@ -73,7 +73,7 @@ function IssueBreakdown({ issues, politicianParty }: { issues: IssueComparison[]
       {agree.length > 0 && (
         <div>
           <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-emerald-400">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>
             Agree ({agree.length})
           </div>
           {agree.map(i => (
@@ -84,7 +84,7 @@ function IssueBreakdown({ issues, politicianParty }: { issues: IssueComparison[]
       {close.length > 0 && (
         <div>
           <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-amber-400">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Close ({close.length})
           </div>
           {close.map(i => (
@@ -95,7 +95,7 @@ function IssueBreakdown({ issues, politicianParty }: { issues: IssueComparison[]
       {differ.length > 0 && (
         <div>
           <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.1em] text-red-400">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             Differ ({differ.length})
           </div>
           {differ.map(i => (
@@ -284,7 +284,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
           <div
             key={party}
             className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12px] font-medium"
-            style={{ backgroundColor: `${partyColor(party)}15`, color: partyColor(party) }}
+            style={{ backgroundColor: 'var(--poli-badge-bg)', color: partyColor(party) }}
           >
             <PartyIcon party={party} size={12} />
             <span>{count}</span>
@@ -431,9 +431,9 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
 
       {/* Sign-up CTA — prominent placement after top 3 */}
       {!isLoggedIn && (
-        <div className="mb-10 overflow-hidden rounded-xl border border-[var(--poli-border)]" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06))' }}>
+        <div className="mb-10 overflow-hidden rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)]" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06))' }}>
           <div className="px-6 py-8 text-center">
-            <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Don&apos;t lose your results
             </p>
             <p className="mt-2 text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--poli-text)]">
@@ -633,7 +633,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
       </div>
 
       {/* Community sharing prompt */}
-      <div className="mt-10 rounded-lg border border-[var(--poli-border)] p-5 text-center">
+      <div className="mt-10 rounded-lg border border-[var(--poli-border)] p-5 text-center bg-[var(--poli-card)]">
         <div className="mb-2 text-[14px] font-semibold text-[var(--poli-text)]">
           Want to compare with other voters?
         </div>
@@ -644,7 +644,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
         <div className="flex items-center justify-center gap-3">
           <Link
             href="/community"
-            className="rounded-full border border-[var(--poli-border)] px-5 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+            className="rounded-full border border-[var(--poli-border)] px-5 py-2 text-[13px] font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
           >
             Browse Community
           </Link>

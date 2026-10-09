@@ -112,7 +112,7 @@ export function CompareView({
 
       {/* Agreement meter */}
       {total > 0 && (
-        <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5">
+        <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-sm font-semibold text-[var(--poli-sub)]">
               Issue Agreement
@@ -156,7 +156,7 @@ export function CompareView({
 
       {/* No comparable stances */}
       {comparableIssues.length === 0 && (
-        <div className="mb-8 rounded-md border border-[var(--poli-border)] px-6 py-10 text-center">
+        <div className="mb-8 rounded-md border border-[var(--poli-border)] px-6 py-10 text-center bg-[var(--poli-card)]">
           <div className="mb-2 text-lg font-semibold text-[var(--poli-faint)]">No stance data to compare</div>
           <p className="text-[13px] text-[var(--poli-faint)]">
             Neither official has verified stances on record yet.
@@ -186,7 +186,7 @@ export function CompareView({
             {sharedCommittees.map((cm: any, i: number) => (
               <div
                 key={i}
-                className="rounded-md border border-[var(--poli-border)] px-4 py-2.5 text-[13px] text-[var(--poli-text)]"
+                className="rounded-md border border-[var(--poli-border)] px-4 py-2.5 text-[13px] text-[var(--poli-text)] bg-[var(--poli-card)]"
               >
                 {cm.committees?.name}
               </div>
@@ -217,7 +217,7 @@ function ProfileCard({
   const total = supports + opposes + mixed
 
   return (
-    <div className="rounded-md border border-[var(--poli-border)] p-4 sm:p-5">
+    <div className="rounded-md border border-[var(--poli-border)] p-4 sm:p-5 bg-[var(--poli-card)]">
       <div className="mb-4 h-1 w-full rounded-full" style={{ background: `${color}44` }}>
         <div
           className="h-full rounded-full"
