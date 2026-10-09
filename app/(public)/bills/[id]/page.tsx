@@ -1,12 +1,14 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AvatarImage } from '@/components/ui/avatar-image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { PartyIcon } from '@/components/icons/party-icons'
-import { partyColor, partyLabel } from '@/lib/constants/parties'
+import { AppShell, Card, Chip } from '@/components/app/surface'
+import { Disclosure } from '@/components/app/disclosure'
+import { Face } from '@/components/app/face'
 import { FollowBillButton } from '@/components/bills/follow-bill-button'
-import { BILL_STATUS_EXPLAINERS, BILL_PROCESS_EXPLAINER, VOTE_EXPLAINERS } from '@/lib/data/educational-content'
+import { YourPeopleVoted } from '@/components/bills/your-people-voted'
+import { plainSentence } from '@/components/home/bills-moving'
+import { BILL_STATUS_EXPLAINERS } from '@/lib/data/educational-content'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,28 +16,45 @@ interface PageProps {
   params: Promise<{ id: string }>
 }
 
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  signed_into_law: { label: 'Signed into Law', color: '#22C55E', bg: '#22C55E18' },
-  passed_house: { label: 'Passed House', color: '#3B82F6', bg: '#3B82F618' },
-  passed_senate: { label: 'Passed Senate', color: '#3B82F6', bg: '#3B82F618' },
-  in_committee: { label: 'In Committee', color: '#EAB308', bg: '#EAB30818' },
-  failed: { label: 'Failed', color: '#EF4444', bg: '#EF444418' },
-  vetoed: { label: 'Vetoed', color: '#F97316', bg: '#F9731618' },
-}
-
-const VOTE_CONFIG: Record<string, { label: string; color: string }> = {
-  yea: { label: 'Yea', color: '#22C55E' },
-  nay: { label: 'Nay', color: '#EF4444' },
-  abstain: { label: 'Abstain', color: '#EAB308' },
-  not_voting: { label: 'Not Voting', color: '#6B7280' },
+const STATUS: Record<string, { label: string; tone: 'ink' | 'good' | 'warn' | 'neutral' }> = {
+  signed_into_law: { label: 'Law', tone: 'ink' },
+  passed_house: { label: 'Passed House', tone: 'good' },
+  passed_senate: { label: 'Passed Senate', tone: 'good' },
+  in_committee: { label: 'In committee', tone: 'neutral' },
+  failed: { label: 'Failed', tone: 'warn' },
+  vetoed: { label: 'Vetoed', tone: 'warn' },
 }
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US', {
-    month: 'long',
+  const [y, m, d] = dateStr.split('-').map(Number)
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('en-US', {
+    month: 'short',
     day: 'numeric',
     year: 'numeric',
+    timeZone: 'UTC',
   })
+}
+
+/**
+ * The bill's page on Congress.gov, built from its number and session, or
+ * null when the number is not in a form we can map. "H.R.6500" + "119th" →
+ * …/bill/119th-congress/house-bill/6500.
+ */
+function congressUrl(number: string, session: string | null): string | null {
+  const m = number.replace(/\s+/g, '').match(/^([A-Za-z.]+?)\.?(\d+)$/)
+  const s = session?.match(/^(\d+)(st|nd|rd|th)?/)
+  if (!m || !s) return null
+  const TYPES: Record<string, string> = {
+    'H.R': 'house-bill', 'S': 'senate-bill',
+    'H.J.RES': 'house-joint-resolution', 'S.J.RES': 'senate-joint-resolution',
+    'H.CON.RES': 'house-concurrent-resolution', 'S.CON.RES': 'senate-concurrent-resolution',
+    'H.RES': 'house-resolution', 'S.RES': 'senate-resolution',
+  }
+  const type = TYPES[m[1].toUpperCase().replace(/\.$/, '')]
+  if (!type) return null
+  const n = parseInt(s[1], 10)
+  const suffix = n % 10 === 1 && n % 100 !== 11 ? 'st' : n % 10 === 2 && n % 100 !== 12 ? 'nd' : n % 10 === 3 && n % 100 !== 13 ? 'rd' : 'th'
+  return `https://www.congress.gov/bill/${n}${suffix}-congress/${type}/${m[2]}`
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -50,7 +69,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!data) return { title: 'Not Found | Poli' }
 
   const description = data.summary?.slice(0, 160) || `Track votes and details for ${data.number}`
-  const statusLabel = STATUS_CONFIG[data.status]?.label ?? data.status
+  const statusLabel = STATUS[data.status]?.label ?? data.status
   const ogUrl = `/api/og?title=${encodeURIComponent(data.number)}&subtitle=${encodeURIComponent(data.title)}&type=bill`
 
   return {
@@ -72,11 +91,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
+/**
+ * A bill in English: the Congressional Research Service's first sentence as
+ * the headline, the official title beneath it, and three rows that open —
+ * what it does (the full summary), how it got here (the dates we hold), and
+ * how your people voted (your own members, resolved on the client).
+ *
+ * The summary is the CRS text verbatim. The only thing written here is the
+ * chrome; nothing paraphrases live legislation.
+ */
 export default async function BillDetailPage({ params }: PageProps) {
   const { id } = await params
   const supabase = createServiceRoleClient()
 
-  // Run queries in parallel
   const [billResult, votesResult, followCountResult] = await Promise.all([
     supabase.from('bills').select('*').eq('id', id).single(),
     supabase
@@ -91,38 +118,31 @@ export default async function BillDetailPage({ params }: PageProps) {
   const bill = billResult.data
   if (!bill) notFound()
 
-  const voteList = votesResult.data ?? []
-  const sc = STATUS_CONFIG[bill.status] ?? { label: bill.status, color: '#6B7280', bg: '#6B728018' }
+  const voteList = (votesResult.data ?? []) as any[]
+  const sc = STATUS[bill.status] ?? { label: String(bill.status).replace(/_/g, ' '), tone: 'neutral' as const }
+  const lead = plainSentence({
+    id: bill.id,
+    number: bill.number,
+    title: bill.title,
+    summary: bill.summary,
+    status: bill.status,
+    last_action_date: bill.last_action_date,
+  })
+  const leadIsSummary = lead !== bill.title
+  const summary = (bill.summary ?? '').replace(/&nbsp;/g, ' ').trim()
+  const fullText = congressUrl(bill.number, bill.congress_session)
 
   // Vote tallies
-  const yea = voteList.filter((v: any) => v.vote === 'yea').length
-  const nay = voteList.filter((v: any) => v.vote === 'nay').length
-  const abstain = voteList.filter((v: any) => v.vote === 'abstain').length
-  const notVoting = voteList.filter((v: any) => v.vote === 'not_voting').length
+  const yea = voteList.filter((v) => v.vote === 'yea').length
+  const nay = voteList.filter((v) => v.vote === 'nay').length
   const total = voteList.length
-  const yeaPct = total > 0 ? Math.round((yea / total) * 100) : 0
-  const nayPct = total > 0 ? Math.round((nay / total) * 100) : 0
+  const votesByPolitician: Record<string, string> = {}
+  for (const v of voteList) if (v.politician?.id) votesByPolitician[v.politician.id] = v.vote
 
-  // Party breakdown
-  const partyOrder = ['democrat', 'republican', 'independent', 'green']
-  const partyVotes: Record<string, { yea: number; nay: number; other: number }> = {}
-  for (const v of voteList as any[]) {
-    const party = v.politician?.party ?? 'unknown'
-    if (!partyVotes[party]) partyVotes[party] = { yea: 0, nay: 0, other: 0 }
-    if (v.vote === 'yea') partyVotes[party].yea++
-    else if (v.vote === 'nay') partyVotes[party].nay++
-    else partyVotes[party].other++
-  }
-
-  // Sort parties in canonical order
-  const sortedParties = Object.keys(partyVotes).sort((a, b) => {
-    const ai = partyOrder.indexOf(a)
-    const bi = partyOrder.indexOf(b)
-    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
-  })
-
-  // Group votes by type for display
-  const voteGroups = ['yea', 'nay', 'abstain', 'not_voting']
+  const steps = [
+    bill.introduced_date && { date: bill.introduced_date, text: 'Introduced' },
+    bill.last_action_date && bill.last_action_date !== bill.introduced_date && { date: bill.last_action_date, text: sc.label === 'Law' ? 'Signed into law' : `Last action · ${sc.label}` },
+  ].filter(Boolean) as Array<{ date: string; text: string }>
 
   // JSON-LD structured data
   const jsonLd = {
@@ -139,217 +159,127 @@ export default async function BillDetailPage({ params }: PageProps) {
   }
 
   return (
-    <>
+    <AppShell>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mx-auto max-w-[900px] px-6 md:px-10">
+      <div className="mx-auto max-w-[560px] px-4 pt-3">
         <Link
           href="/bills"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
+          className="mb-2 inline-flex h-11 items-center gap-1 text-[14px] font-semibold text-[var(--poli-sub)] no-underline"
         >
-          &larr; Back to bills
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          Bills
         </Link>
 
-        {/* Badges */}
-        <div className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2.5 py-0.5 text-[11px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
-            {bill.number}
-          </span>
-          <span
-            className="rounded-sm px-2.5 py-0.5 text-[11px] uppercase tracking-[0.06em]"
-            style={{ color: sc.color, background: sc.bg }}
-            title={BILL_STATUS_EXPLAINERS[bill.status] ?? ''}
-          >
-            {sc.label}
-          </span>
-          {bill.congress_session && (
-            <span className="text-[11px] text-[var(--poli-faint)]">
-              {bill.congress_session} Congress
-            </span>
+        <header className="mb-4 px-1">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {sc.tone === 'ink' ? (
+              <span className="inline-flex items-center rounded-sm bg-[var(--poli-text)] px-2 py-[3px] text-[11.5px] font-semibold text-[var(--poli-card)]">{sc.label}</span>
+            ) : (
+              <Chip tone={sc.tone}>{sc.label}</Chip>
+            )}
+            <Chip>{bill.number}</Chip>
+            {bill.congress_session && <Chip>{bill.congress_session} Congress</Chip>}
+          </div>
+          {/* The CRS sentence is the headline when it is headline-length;
+              a long one becomes the lead paragraph under the official title
+              rather than eight lines of serif. */}
+          {leadIsSummary && lead.length <= 90 ? (
+            <>
+              <h1 className="mt-3 font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">{lead}</h1>
+              <p className="mt-2 text-[13.5px] text-[var(--poli-sub)]">{bill.title}</p>
+            </>
+          ) : (
+            <>
+              <h1 className="mt-3 font-serif text-[32px] font-normal leading-[1.1] text-[var(--poli-text)]">{bill.title}</h1>
+              {leadIsSummary && <p className="mt-2.5 text-[15.5px] leading-[1.45] text-[var(--poli-text)]">{lead}</p>}
+            </>
           )}
-          <FollowBillButton billId={bill.id} initialCount={followCountResult.count ?? 0} className="ml-auto" />
-        </div>
+        </header>
 
-        <h1 className="mb-3 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
-          {bill.title}
-        </h1>
-
-        {BILL_STATUS_EXPLAINERS[bill.status] && (
-          <p className="mb-3 text-[12px] leading-[1.5] text-[var(--poli-faint)]">
-            {BILL_STATUS_EXPLAINERS[bill.status]}
-          </p>
-        )}
-
-        {bill.summary && (
-          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--poli-sub)]">{bill.summary}</p>
-        )}
-
-        {/* Dates */}
-        <div className="mb-8 flex flex-wrap gap-6 text-[13px] text-[var(--poli-faint)]">
-          {bill.introduced_date && (
-            <span>Introduced: {formatDate(bill.introduced_date)}</span>
+        <Card className="mb-3">
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl bg-[var(--poli-badge-bg)] px-3 py-2.5">
+              <div className="text-[12px] font-semibold text-[var(--poli-sub)]">Introduced</div>
+              <div className="mt-0.5 text-[16px] font-bold tabular-nums text-[var(--poli-text)]">{bill.introduced_date ? formatDate(bill.introduced_date) : '—'}</div>
+            </div>
+            <div className="rounded-xl bg-[var(--poli-badge-bg)] px-3 py-2.5">
+              <div className="text-[12px] font-semibold text-[var(--poli-sub)]">Last action</div>
+              <div className="mt-0.5 text-[16px] font-bold tabular-nums text-[var(--poli-text)]">{bill.last_action_date ? formatDate(bill.last_action_date) : '—'}</div>
+            </div>
+          </div>
+          {BILL_STATUS_EXPLAINERS[bill.status] && (
+            <p className="mt-3 text-[13px] leading-[1.5] text-[var(--poli-sub)]">{BILL_STATUS_EXPLAINERS[bill.status]}</p>
           )}
-          {bill.last_action_date && (
-            <span>Last Action: {formatDate(bill.last_action_date)}</span>
+          <FollowBillButton billId={bill.id} initialCount={followCountResult.count ?? 0} className="mt-3 flex h-11 w-full items-center justify-center rounded-xl text-[14px] font-semibold" />
+        </Card>
+
+        <Card flush className="mb-3 px-4">
+          {summary && (
+            <Disclosure title="What it does" meta="The Congressional Research Service summary">
+              {summary.split(/\n{2,}/).map((p: string, i: number) => (
+                <p key={i} className="mb-3 text-[15px] leading-[1.55] text-[var(--poli-text)] last:mb-0">{p}</p>
+              ))}
+            </Disclosure>
           )}
-        </div>
-
-        {/* Vote summary */}
-        {total > 0 && (
-          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
-            <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
-              Vote Tally
-            </h2>
-
-            {/* Big vote bar */}
-            <div className="mb-3 flex h-4 overflow-hidden rounded-full">
-              {yea > 0 && (
-                <div
-                  className="transition-all"
-                  style={{ width: `${(yea / total) * 100}%`, background: '#22C55ECC' }}
-                />
-              )}
-              {nay > 0 && (
-                <div
-                  className="transition-all"
-                  style={{ width: `${(nay / total) * 100}%`, background: '#EF4444CC' }}
-                />
-              )}
-              {(abstain + notVoting) > 0 && (
-                <div
-                  className="transition-all"
-                  style={{ width: `${((abstain + notVoting) / total) * 100}%`, background: 'var(--poli-border)' }}
-                />
-              )}
-            </div>
-
-            {/* Yea vs Nay percentage labels */}
-            <div className="mb-4 flex items-center justify-between text-[12px]">
-              <span className="text-green-400">{yeaPct}% Yea</span>
-              <span className="text-red-400">{nayPct}% Nay</span>
-            </div>
-
-            <div className="mb-5 grid grid-cols-4 gap-4">
-              <div title={VOTE_EXPLAINERS.yea}>
-                <div className="text-2xl font-bold text-green-400">{yea}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Yea</div>
+          {steps.length > 0 && (
+            <Disclosure title="How it got here" meta={`${steps.length} action${steps.length === 1 ? '' : 's'} on record`}>
+              <ol className="m-0 list-none p-0">
+                {steps.map((s, i) => {
+                  const last = i === steps.length - 1
+                  return (
+                    <li key={i} className={`relative pl-6 ${last ? '' : 'pb-4'}`}>
+                      {!last && <span className="absolute bottom-0 left-[4px] top-3 w-0.5 bg-[var(--poli-border)]" />}
+                      <span className={`absolute left-0 top-1 rounded-full bg-[var(--poli-text)] ${last ? '-left-0.5 h-3.5 w-3.5' : 'h-2.5 w-2.5'}`} />
+                      <div className="text-[12px] font-semibold text-[var(--poli-sub)]">{formatDate(s.date)}</div>
+                      <div className={`mt-0.5 text-[14.5px] leading-[1.45] text-[var(--poli-text)] ${last ? 'font-semibold' : ''}`}>{s.text}</div>
+                    </li>
+                  )
+                })}
+              </ol>
+              <p className="mt-3 text-[12px] text-[var(--poli-sub)]">Dates from Congress.gov. Poli holds the introduction and the latest action, not every step between.</p>
+            </Disclosure>
+          )}
+          <Disclosure title="How your people voted" last={total === 0}>
+            <YourPeopleVoted votes={votesByPolitician} />
+          </Disclosure>
+          {total > 0 && (
+            <Disclosure title="Every recorded vote" meta={`${yea} yea · ${nay} nay · ${total} total`} last>
+              <div className="mb-3 flex h-2.5 overflow-hidden rounded-full bg-[var(--poli-badge-bg)]">
+                {yea > 0 && <div style={{ width: `${(yea / total) * 100}%`, background: 'var(--stance-for)' }} />}
+                {nay > 0 && <div style={{ width: `${(nay / total) * 100}%`, background: 'var(--stance-against)' }} />}
               </div>
-              <div title={VOTE_EXPLAINERS.nay}>
-                <div className="text-2xl font-bold text-red-400">{nay}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Nay</div>
-              </div>
-              <div title={VOTE_EXPLAINERS.abstain}>
-                <div className="text-2xl font-bold text-yellow-400">{abstain}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Abstain</div>
-              </div>
-              <div title={VOTE_EXPLAINERS.not_voting}>
-                <div className="text-2xl font-bold text-[var(--poli-faint)]">{notVoting}</div>
-                <div className="text-[11px] uppercase tracking-[0.06em] text-[var(--poli-faint)]">Not Voting</div>
-              </div>
-            </div>
-
-            {/* Party breakdown bars */}
-            <h3 className="mb-3 text-sm font-semibold text-[var(--poli-sub)]">
-              By Party
-            </h3>
-            <div className="space-y-2.5">
-              {sortedParties.map((party) => {
-                const counts = partyVotes[party]
-                const partyTotal = counts.yea + counts.nay + counts.other
-                const partyYeaPct = Math.round((counts.yea / partyTotal) * 100)
+              {voteList.map((v, i) => {
+                const pol = v.politician
+                if (!pol) return null
+                const vc = v.vote === 'yea' ? { label: 'Yea', tone: 'good' as const } : v.vote === 'nay' ? { label: 'Nay', tone: 'warn' as const } : { label: String(v.vote).replace(/_/g, ' '), tone: 'neutral' as const }
                 return (
-                  <div key={party} className="flex items-center gap-3">
-                    <div className="flex w-28 items-center gap-1.5">
-                      <PartyIcon party={party} size={12} />
-                    </div>
-                    <div className="flex h-2.5 flex-1 overflow-hidden rounded-full bg-[var(--poli-border)]">
-                      {counts.yea > 0 && (
-                        <div style={{ width: `${(counts.yea / partyTotal) * 100}%`, background: '#22C55E99' }} />
-                      )}
-                      {counts.nay > 0 && (
-                        <div style={{ width: `${(counts.nay / partyTotal) * 100}%`, background: '#EF444499' }} />
-                      )}
-                    </div>
-                    <span className="w-20 text-right text-[11px] tabular-nums text-[var(--poli-faint)]">
-                      {counts.yea}Y / {counts.nay}N
-                      <span className="ml-1 text-[var(--poli-faint)] opacity-50">({partyYeaPct}%)</span>
+                  <Link key={v.id} href={`/politicians/${pol.slug}`} className={`flex min-h-[48px] items-center gap-3 no-underline ${i < voteList.length - 1 ? 'border-b border-[var(--poli-border)]' : ''}`}>
+                    <Face src={pol.image_url} alt={pol.name} size={32} party={pol.party} />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[14px] font-semibold text-[var(--poli-text)]">{pol.name}</span>
+                      <span className="block text-[12px] text-[var(--poli-sub)]">{pol.state}</span>
                     </span>
-                  </div>
+                    <Chip tone={vc.tone}>{vc.label}</Chip>
+                  </Link>
                 )
               })}
-            </div>
-          </div>
-        )}
+            </Disclosure>
+          )}
+        </Card>
 
-        {/* Individual votes grouped by vote type */}
-        {total > 0 && (
-          <section className="mb-10">
-            <h2 className="mb-5 text-sm font-semibold text-[var(--poli-sub)]">
-              Individual Votes
-            </h2>
-            {voteGroups.map((voteType) => {
-              const groupVotes = voteList.filter((v: any) => v.vote === voteType)
-              if (groupVotes.length === 0) return null
-              const vc = VOTE_CONFIG[voteType] ?? { label: voteType, color: '#6B7280' }
-
-              return (
-                <div key={voteType} className="mb-6">
-                  <h3 className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
-                    <span
-                      className="h-2.5 w-2.5 rounded-full"
-                      style={{ background: vc.color }}
-                    />
-                    {vc.label}
-                    <span className="text-[var(--poli-faint)]">{groupVotes.length}</span>
-                  </h3>
-                  <div className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3">
-                    {groupVotes.map((v: any) => {
-                      const pol = v.politician
-                      if (!pol) return null
-                      return (
-                        <Link
-                          key={v.id}
-                          href={`/politicians/${pol.slug}`}
-                          className="flex items-center gap-2.5 rounded-md border border-[var(--poli-border)] px-3 py-2 no-underline transition-all hover:border-[var(--poli-input-border)] bg-[var(--poli-card)]"
-                        >
-                          <div
-                            className="h-7 w-7 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
-                            style={{ boxShadow: `0 0 0 2px ${partyColor(pol.party)}` }}
-                          >
-                            <AvatarImage
-                              src={pol.image_url}
-                              alt={pol.name}
-                              size={28}
-                              party={pol.party}
-                              fallbackColor={partyColor(pol.party)}
-                            />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <div className="truncate text-[13px] font-medium">{pol.name}</div>
-                            <div className="flex items-center gap-1 text-[11px] text-[var(--poli-faint)]">
-                              <PartyIcon party={pol.party} size={8} />
-                              <span>{pol.state}</span>
-                            </div>
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
-                </div>
-              )
-            })}
-          </section>
-        )}
-
-        {total === 0 && (
-          <div className="mb-10 py-12 text-center text-[var(--poli-faint)]">
-            <div className="mb-2 text-lg font-semibold">No recorded votes yet</div>
-            <div className="text-sm">Voting records will appear as the bill progresses</div>
-          </div>
-        )}
+        <div className="mb-6 flex items-center justify-between gap-3 px-1">
+          <span className="text-[12px] leading-[1.45] text-[var(--poli-sub)]">Source: Congress.gov; summary by the Congressional Research Service</span>
+          {fullText && (
+            <a href={fullText} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] shrink-0 items-center gap-1 text-[13px] font-semibold text-[var(--poli-text)] no-underline">
+              Full text
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17L17 7" /><path d="M8 7h9v9" /></svg>
+            </a>
+          )}
+        </div>
       </div>
-    </>
+    </AppShell>
   )
 }

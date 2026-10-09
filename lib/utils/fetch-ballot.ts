@@ -41,7 +41,7 @@ export interface Race {
 }
 
 /* ── Data fetching ────────────────────────────────────────────────── */
-export async function fetchBallotRaces(state: string, userDistrict?: string | null, userCity?: string | null): Promise<Race[]> {
+export async function fetchBallotRaces(state: string, userDistrict?: string | string[] | null, userCity?: string | null): Promise<Race[]> {
   const supabase = createServiceRoleClient()
   const todayStr = new Date().toISOString().split('T')[0]
 
@@ -96,10 +96,13 @@ export async function fetchBallotRaces(state: string, userDistrict?: string | nu
       if (!cityLower) return false // no city info, skip local races
       return r.name.toLowerCase().includes(cityLower)
     }
-    // District races: match user's district
+    // District races: match user's district. A ZIP that straddles districts
+    // passes every one it touches, so none of its House races is dropped.
     if (r.district) {
-      if (!userDistrict) return true // no district info, show all
-      return r.district === userDistrict
+      if (!userDistrict || (Array.isArray(userDistrict) && userDistrict.length === 0)) return true // no district info, show all
+      return Array.isArray(userDistrict)
+        ? userDistrict.includes(String(r.district))
+        : String(r.district) === String(userDistrict)
     }
     // Statewide races (no district): always show
     return true

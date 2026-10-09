@@ -35,7 +35,7 @@ const NAV_ITEMS: NavItem[] = [
       { href: '/report-cards', label: 'Civic Profiles' },
     ],
   },
-  { href: '/elections', label: 'Elections' },
+  { href: '/ballot', label: 'Ballot' },
   { href: '/states', label: 'States' },
   {
     href: '/issues',

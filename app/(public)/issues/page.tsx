@@ -1,7 +1,7 @@
 import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { IssueGrid, type IssueCard } from '@/components/issues/issue-grid'
-import { stanceBucket } from '@/lib/utils/stances'
+import { AppShell } from '@/components/app/surface'
+import { IssuesView, type IssueCard } from '@/components/issues/issues-view'
 
 /**
  * A day, not an hour.
@@ -48,86 +48,63 @@ export const metadata = {
   description: 'See where every U.S. politician stands on 22 key issues — from healthcare to immigration. Filter by party and compare stances across the aisle.',
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  economy: 'Economy', healthcare: 'Healthcare', immigration: 'Immigration',
-  education: 'Education', defense: 'Defense', environment: 'Environment',
-  justice: 'Justice', foreign_policy: 'Foreign Policy', technology: 'Technology',
-  social: 'Social', gun_policy: 'Gun Policy', infrastructure: 'Infrastructure',
-  housing: 'Housing', energy: 'Energy',
-}
-
-type SortKey = 'name' | 'most_stances' | 'most_controversial'
-
+/**
+ * The page is prerendered with the national picture; who the visitor's own
+ * officials are, and where they stand, resolves on the client
+ * (components/issues/issues-view.tsx), so the route stays cached.
+ */
 export default async function IssuesPage() {
   const supabase = createServiceRoleClient()
 
-  const { data: issues } = await supabase.from('issues').select('*').order('name')
+  const { data: issues } = await supabase.from('issues').select('id, slug, name').order('name')
   if (!issues) {
     return (
-      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <div className="py-20 text-center">
-          <div className="mb-3 text-2xl font-bold">Something went wrong</div>
+      <AppShell>
+        <div className="mx-auto max-w-[560px] px-4 pt-5">
+          <h1 className="font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">Issues</h1>
+          <p className="mt-2 text-[14.5px] text-[var(--poli-sub)]">The issue list is unavailable right now.</p>
         </div>
-      </div>
+      </AppShell>
     )
   }
 
-  // Stance types grouped by bucket
   const supportStances = new Set(['strongly_supports', 'supports', 'leans_support'])
   const opposeStances = new Set(['strongly_opposes', 'opposes', 'leans_oppose'])
 
-  // Postgres does the counting (see getStanceCounts) — one request returning
-  // ~200 grouped rows, instead of 66 count round-trips (5.4s) or paginating
-  // 189k rows into the app (>20s).
-  // No party split here on purpose: issue_stance_counts is grouped by
-  // (issue_id, stance) only — it has no party column. The old code carried
-  // demTotal/gopTotal fields and a <PartyBar> branch guarded on them being
-  // above zero, which they never were, so those bars have never rendered on
-  // this page. Dropped rather than left looking like a feature.
-  type IssueAgg = { total: number; supports: number; opposes: number; mixed: number }
-  const issueStats = new Map<string, IssueAgg>()
-  for (const i of issues) {
-    issueStats.set(i.id, { total: 0, supports: 0, opposes: 0, mixed: 0 })
-  }
+  // Postgres does the counting (see getStanceCounts). The view is grouped by
+  // (issue_id, stance) only — it has no party column — so there is no party
+  // split here, and nothing pretends there is.
+  const agg = new Map<string, { total: number; supports: number; opposes: number }>()
+  for (const i of issues) agg.set(i.id, { total: 0, supports: 0, opposes: 0 })
   for (const row of await getStanceCounts()) {
-    const agg = issueStats.get(row.issue_id)
-    if (!agg) continue
-    agg.total += row.n
-    if (supportStances.has(row.stance)) agg.supports += row.n
-    else if (opposeStances.has(row.stance)) agg.opposes += row.n
+    const a = agg.get(row.issue_id)
+    if (!a) continue
+    a.total += row.n
+    if (supportStances.has(row.stance)) a.supports += row.n
+    else if (opposeStances.has(row.stance)) a.opposes += row.n
   }
 
-  const totalStances = issues.reduce((n, issue) => n + (issueStats.get(issue.id)?.total ?? 0), 0)
   const cards: IssueCard[] = issues.map((issue) => {
-    const a = issueStats.get(issue.id)!
-    a.mixed = a.total - a.supports - a.opposes
+    const a = agg.get(issue.id)!
     return {
       id: issue.id,
       slug: issue.slug,
       name: issue.name,
-      icon: issue.icon ?? null,
-      description: issue.description ?? null,
-      category: issue.category ?? null,
-      ...a,
-      officials: a.total,
+      total: a.total,
+      supports: a.supports,
+      opposes: a.opposes,
+      mixed: a.total - a.supports - a.opposes,
     }
   })
+  // Every politician holds one row per issue, so the largest per-issue total
+  // is the number of officials with stances.
+  const officials = Math.max(0, ...cards.map((c) => c.total))
 
   return (
-    <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-      <div className="mb-10 max-w-[600px]">
-        <h1 className="mb-4 animate-fade-up font-serif text-[clamp(36px,4.5vw,52px)] font-normal leading-[1.08]">
-          Political Issues
-        </h1>
-        <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
-          Explore where politicians stand on the issues that matter most.
-        </p>
+    <AppShell>
+      <div className="mx-auto max-w-[560px] px-4 pt-5">
+        <IssuesView issues={cards} officials={officials} />
       </div>
-
-      {/* Filtering and sorting happen in the browser: 22 issues do not need a
-          server round trip, and awaiting searchParams here would make the
-          whole page dynamic. */}
-      <IssueGrid issues={cards} categoryLabels={CATEGORY_LABELS} totalStances={totalStances} />
-    </div>
+    </AppShell>
   )
 }

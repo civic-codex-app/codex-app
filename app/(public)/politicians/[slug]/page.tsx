@@ -1,16 +1,15 @@
 import { notFound } from 'next/navigation'
 import { unstable_cache } from 'next/cache'
-import Link from 'next/link'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { PartyIcon } from '@/components/icons/party-icons'
-import { AvatarImage } from '@/components/ui/avatar-image'
-import { partyColor } from '@/lib/constants/parties'
-import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
-import { LikeButton } from '@/components/directory/like-button'
+import { AppShell } from '@/components/app/surface'
 import { BackButton } from '@/components/ui/back-button'
-import { ProfileTabs } from '@/components/politicians/profile-tabs'
+import { ProfileHero } from '@/components/politicians/profile-hero'
+import { ElectionCard, type Opponent } from '@/components/politicians/election-card'
+import { MoneyCard } from '@/components/politicians/money-card'
+import { StancesCard } from '@/components/politicians/stances-card'
+import { VotesCard } from '@/components/politicians/votes-card'
+import { MoreSection } from '@/components/politicians/more-section'
 
 import type { Politician } from '@/lib/types/politician'
 import type {
@@ -26,15 +25,23 @@ import { computeAlignment } from '@/lib/utils/alignment'
 import { type LikeMindedPolitician } from '@/components/politicians/like-minded'
 import { computeReportCard } from '@/lib/utils/report-card'
 import { getCachedNews } from '@/lib/utils/news'
-import { ExportPdfButton } from '@/components/politicians/export-pdf-button'
+import { candidacyFor } from '@/lib/utils/candidacy'
+import { countdown } from '@/lib/utils/next-election'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker'
-import { UpdatePoliticianButton } from '@/components/forms/update-politician-modal'
+
+/**
+ * A profile: one face, then four cards — Election, Money, Stances, Votes —
+ * and everything else behind a row that opens in place. The composition is
+ * the "Rep" screen of the Quiet Screens canvas.
+ *
+ * Caching is unchanged from before: revalidate with an empty
+ * generateStaticParams, no cookie reads (the Follow button and the civic
+ * profile's sign-in gate resolve the session on the client).
+ */
 
 /**
  * Number of issues in the catalog, cached. It is the denominator for stance
- * coverage on the report card and changes roughly twice a year, but was being
- * counted on every render of every profile, as a third sequential round-trip
- * after the Promise.all below.
+ * coverage on the report card and changes roughly twice a year.
  */
 const getIssueCatalogSize = unstable_cache(
   async () => {
@@ -58,12 +65,9 @@ export const revalidate = 1800
  *
  * A dynamic segment without generateStaticParams is never cached, whatever
  * `revalidate` says — the production build emits Cache-Control: no-store and
- * no x-nextjs-cache header. That was established on /issues/[slug] and
- * /states/[state] (MISS 5.3s, then HIT 3ms); this page kept re-rendering
- * anyway because the auth cookie read below made the point moot.
- *
- * Returning no params prerenders nothing at build time, so the build does not
- * depend on Supabase, and each profile is cached after its first visitor.
+ * no x-nextjs-cache header. Returning no params prerenders nothing at build
+ * time, so the build does not depend on Supabase, and each profile is cached
+ * after its first visitor.
  */
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return []
@@ -103,33 +107,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-function LinkButton({
-  href,
-  label,
-  icon,
-  accent,
-}: {
-  href: string
-  label: string
-  icon: string
-  accent?: string
-}) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-between rounded-md border border-[var(--poli-border)] bg-[var(--poli-input-bg)] px-4 py-3 text-[13px] font-medium no-underline transition-all hover:bg-[var(--poli-hover)]"
-      style={{ color: accent || 'var(--poli-sub)', borderColor: accent ? `${accent}33` : undefined }}
-    >
-      <span>{label}</span>
-      <span className="text-base font-semibold" style={{ color: accent || 'var(--poli-faint)' }}>
-        {icon}
-      </span>
-    </a>
-  )
-}
-
 export default async function PoliticianPage({ params }: PageProps) {
   const { slug } = await params
   const supabase = createServiceRoleClient()
@@ -141,14 +118,14 @@ export default async function PoliticianPage({ params }: PageProps) {
   const pol = data as Politician
 
   // Run all queries in parallel for performance
-  const [stancesResult, committeeResult, votingResult, financeResult, electionResult, stanceHistoryResult, newsArticles] = await Promise.all([
+  const [stancesResult, committeeResult, votingResult, financeResult, electionResult, newsArticles, candidacies] = await Promise.all([
     supabase.from('politician_issues').select('politician_id, issue_id, stance, is_verified, summary, source_url, issues:issue_id(id, name, slug, icon, category)').eq('politician_id', pol.id).order('created_at'),
     supabase.from('politician_committees').select('role, committees:committee_id(id, name, slug, chamber)').eq('politician_id', pol.id),
     supabase.from('voting_records').select('id, bill_name, bill_number, bill_id, vote, vote_date').eq('politician_id', pol.id).order('vote_date', { ascending: false }),
     supabase.from('campaign_finance').select('id, politician_id, cycle, total_raised, total_spent, cash_on_hand, source, last_updated').eq('politician_id', pol.id).order('cycle', { ascending: false }).limit(10),
     supabase.from('election_results').select('id, politician_id, election_year, state, chamber, district, race_name, party, result, vote_percentage, total_votes, opponent_name, opponent_party, opponent_vote_percentage').eq('politician_id', pol.id).order('election_year', { ascending: false }).limit(20),
-    supabase.from('stance_history').select('id, issue_id, stance, effective_date, source_url, source_description').eq('politician_id', pol.id).order('effective_date', { ascending: false }).limit(50),
     getCachedNews(pol.name),
+    candidacyFor(supabase, [{ id: pol.id, state: pol.state, chamber: pol.chamber, district: pol.district ?? null }]),
   ])
 
   const politicianStances = (stancesResult.data ?? []) as any as PoliticianStanceRow[]
@@ -156,28 +133,27 @@ export default async function PoliticianPage({ params }: PageProps) {
   const votingRecords = (votingResult.data ?? []) as any as VotingRecordRow[]
   const financeRecords = (financeResult.data ?? []) as any as CampaignFinanceRow[]
   const electionResults = (electionResult.data ?? []) as any as ElectionResultRow[]
-  const stanceHistory = (stanceHistoryResult.data ?? []) as Array<{
-    id: string; issue_id: string; stance: string; effective_date: string | null;
-    source_url: string | null; source_description: string | null
-  }>
+  const candidacy = candidacies.get(pol.id) ?? null
 
-  // Build stance history map: issue_id -> entries[]
-  const stanceHistoryByIssue = new Map<string, typeof stanceHistory>()
-  for (const h of stanceHistory) {
-    const list = stanceHistoryByIssue.get(h.issue_id) ?? []
-    list.push(h)
-    stanceHistoryByIssue.set(h.issue_id, list)
+  // The race the candidacy refers to: who else is running in it, and when.
+  let opponents: Opponent[] = []
+  let electionDate: string | null = null
+  if (candidacy?.raceSlug) {
+    const { data: race } = await supabase
+      .from('races')
+      .select('id, elections:election_id(election_date), candidates(name, party, status, politician_id)')
+      .eq('slug', candidacy.raceSlug)
+      .maybeSingle()
+    const r = race as any
+    electionDate = r?.elections?.election_date ?? null
+    opponents = ((r?.candidates ?? []) as Array<{ name: string; party: string; status: string; politician_id: string | null }>)
+      .filter((c) => c.status === 'running' && c.politician_id !== pol.id)
+      .map((c) => ({ name: c.name, party: c.party }))
   }
+  const c = electionDate ? countdown(electionDate) : null
 
   // Compute party alignment score
   const alignmentScore = computeAlignment(pol.party, politicianStances)
-
-  // Whether the visitor is signed in is resolved on the client now. Reading
-  // the auth cookie here made this page dynamic, so the revalidate above never
-  // applied and every view re-ran every query below. The two things it gated
-  // are both client components that now gate themselves. Note the signed-out
-  // branch of the report card already rendered the same data behind a CSS
-  // blur, so nothing was ever withheld by deciding this on the server.
 
   const issueCatalogSize = await getIssueCatalogSize()
 
@@ -187,7 +163,7 @@ export default async function PoliticianPage({ params }: PageProps) {
     chamber: pol.chamber,
     stances: politicianStances,
     votingRecords: votingRecords.map((v: any) => ({ vote: v.vote })),
-    committees: committees.map((c: any) => ({ role: c.role })),
+    committees: committees.map((cm: any) => ({ role: cm.role })),
     verifiedStances: verifiedCount,
     totalStances: politicianStances.length,
     issueCount: issueCatalogSize ?? undefined,
@@ -261,8 +237,6 @@ export default async function PoliticianPage({ params }: PageProps) {
     }
   }
 
-  const color = partyColor(pol.party)
-
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -289,163 +263,85 @@ export default async function PoliticianPage({ params }: PageProps) {
     ].filter(Boolean),
   }
 
+  const lastName = pol.name.trim().split(/\s+/).pop() ?? pol.name
+
   return (
-    <>
+    <AppShell>
       <PageViewTracker event="politician_viewed" data={{ slug, party: pol.party, chamber: pol.chamber, state: pol.state }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <BackButton />
-
-        <div className="grid gap-10 md:grid-cols-[340px_1fr]">
-          {/* Image -- large on desktop, hidden on mobile */}
-          <div className="relative hidden md:block">
-            {pol.image_url ? (
-              <Image
-                src={pol.image_url}
-                alt={pol.name}
-                width={300}
-                height={400}
-                unoptimized
-                className="aspect-[3/4] w-full rounded-2xl border border-[var(--poli-border)] object-cover object-top"
-              />
-            ) : (
-              <div className="aspect-[3/4] w-full overflow-hidden rounded-2xl border border-[var(--poli-border)]">
-                <AvatarImage src={null} alt={pol.name} size={300} />
-              </div>
-            )}
-          </div>
-
-          {/* Info */}
-          <div className="min-w-0">
-            {/* Mobile: large avatar + name row */}
-            <div className="mb-5 flex items-center gap-4 md:hidden">
-              <div
-                className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
-                style={{ boxShadow: `0 0 0 2px ${color}` }}
-              >
-                <AvatarImage
-                  src={pol.image_url}
-                  alt={pol.name}
-                  size={96}
-                  className="h-full w-full object-cover object-top"
-                />
-              </div>
-              <div className="min-w-0">
-                {pol.image_url && <PartyIcon party={pol.party} size={32} />}
-                <h1 className={`font-serif text-[32px] font-normal leading-[1.08]${pol.image_url ? ' mt-1.5' : ''}`}>
-                  {pol.name}
-                </h1>
-              </div>
-            </div>
-
-            {/* Desktop: party icon + name (only show icon if has photo) */}
-            {pol.image_url && (
-              <div className="mb-3 hidden md:block">
-                <PartyIcon party={pol.party} size={40} />
-              </div>
-            )}
-            <h1 className="mb-4 hidden font-serif text-[40px] font-normal leading-[1.08] md:block">
-              {pol.name}
-            </h1>
-
-            <div className="mb-7 flex flex-wrap items-center gap-3 print:hidden">
-              <LikeButton politicianId={pol.id} />
-              <Link
-                href={`/compare?a=${pol.slug}`}
-                className="flex h-9 items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-3.5 text-[12px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
-              >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                Compare
-              </Link>
-              <ExportPdfButton />
-              <UpdatePoliticianButton politicianId={pol.id} politicianName={pol.name} />
-              {pol.twitter_url && (
-                <a href={pol.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="X (Twitter)">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
-              )}
-              {pol.facebook_url && (
-                <a href={pol.facebook_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="Facebook">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                </a>
-              )}
-              {pol.instagram_url && (
-                <a href={pol.instagram_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="Instagram">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                </a>
-              )}
-              {pol.youtube_url && (
-                <a href={pol.youtube_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="YouTube">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                </a>
-              )}
-            </div>
-
-            {/* Links */}
-            <div className="mb-9 grid grid-cols-2 gap-2.5 print:hidden">
-              {pol.website_url && <LinkButton href={pol.website_url} label="Official Website" icon="→" />}
-              {pol.wiki_url && <LinkButton href={pol.wiki_url} label="Wikipedia" icon="W" />}
-              {pol.donate_url && (
-                <LinkButton href={pol.donate_url} label="Donate" icon="$" accent={color} />
-              )}
-            </div>
-
-            {/* Appointed disclaimer for cabinet members */}
-            {pol.chamber === 'presidential' &&
-              pol.title !== 'President of the United States' &&
-              pol.title !== 'Vice President of the United States' && (
-              <div className="mb-6 rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3 text-[13px] text-[var(--poli-sub)]">
-                <span className="mr-1.5 font-medium text-amber-600">Appointed Official</span>
-                — This position is not elected. {pol.name} was appointed to serve as {pol.title}.
-              </div>
-            )}
-
-            {/* Title */}
-            <p className="mb-1 text-[15px] font-medium text-[var(--poli-text)]">
-              {pol.title}
-            </p>
-
-            {/* Metadata line */}
-            <div className="text-sm text-[var(--poli-sub)]">
-              {[
-                CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber,
-                pol.state,
-                pol.since_year ? `Since ${pol.since_year}` : null,
-              ].filter(Boolean).join(' \u00b7 ')}
-            </div>
-
-            <ProfileTabs
-              politician={{
-                id: pol.id,
-                name: pol.name,
-                slug: pol.slug,
-                party: pol.party,
-                state: pol.state,
-                chamber: pol.chamber,
-                title: pol.title,
-                image_url: pol.image_url,
-                website_url: pol.website_url,
-                twitter_url: pol.twitter_url,
-                facebook_url: pol.facebook_url,
-                since_year: pol.since_year,
-              }}
-              alignmentScore={alignmentScore}
-              stances={politicianStances as any}
-              stanceHistoryByIssue={Object.fromEntries(stanceHistoryByIssue)}
-              committees={committees as any}
-              votingRecords={votingRecords as any}
-              financeRecords={financeRecords as any}
-              electionResults={electionResults as any}
-              reportCard={reportCard as any}
-              likeMinded={likeMinded}
-              newsArticles={newsArticles}
-            />
-          </div>
+      <div className="mx-auto max-w-[560px] px-4 pt-3">
+        <div className="-mb-4">
+          <BackButton />
         </div>
+
+        <ProfileHero
+          pol={{
+            id: pol.id,
+            name: pol.name,
+            slug: pol.slug,
+            party: pol.party,
+            state: pol.state,
+            chamber: pol.chamber,
+            district: pol.district ?? null,
+            title: pol.title,
+            image_url: pol.image_url,
+            website_url: pol.website_url,
+          }}
+          candidacy={candidacy}
+          electionDate={c?.bare ?? null}
+        />
+
+        {/* Appointed disclaimer for cabinet members */}
+        {pol.chamber === 'presidential' &&
+          pol.title !== 'President of the United States' &&
+          pol.title !== 'Vice President of the United States' && (
+          <p className="mb-3 rounded-2xl border border-[var(--poli-border)] bg-[var(--poli-card)] px-4 py-3 text-[13px] leading-[1.5] text-[var(--poli-sub)]">
+            <span className="font-semibold text-[var(--poli-text)]">Appointed, not elected.</span> {pol.name} was appointed to serve as {pol.title}.
+          </p>
+        )}
+
+        <ElectionCard
+          name={pol.name}
+          candidacy={candidacy}
+          days={c?.days ?? null}
+          when={c?.short ?? null}
+          opponents={opponents}
+        />
+
+        <MoneyCard records={financeRecords as any} name={pol.name} />
+
+        <StancesCard stances={politicianStances as any} />
+
+        <VotesCard votes={votingRecords as any} pronoun={`${lastName}’s`} />
+
+        <MoreSection
+          pol={{
+            id: pol.id,
+            name: pol.name,
+            slug: pol.slug,
+            party: pol.party,
+            since_year: pol.since_year,
+            website_url: pol.website_url,
+            wiki_url: pol.wiki_url,
+            donate_url: pol.donate_url,
+            twitter_url: pol.twitter_url,
+            facebook_url: pol.facebook_url,
+            instagram_url: pol.instagram_url,
+            youtube_url: pol.youtube_url,
+          }}
+          alignmentScore={alignmentScore}
+          stances={politicianStances as any}
+          committees={committees as any}
+          votingRecords={votingRecords as any}
+          electionResults={electionResults as any}
+          reportCard={reportCard as any}
+          likeMinded={likeMinded}
+          newsArticles={newsArticles}
+        />
       </div>
-    </>
+    </AppShell>
   )
 }

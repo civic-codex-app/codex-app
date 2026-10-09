@@ -3,33 +3,36 @@ import { unstable_cache } from 'next/cache'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
+import { AppShell, Card } from '@/components/app/surface'
+import { Face } from '@/components/app/face'
 import { SearchInput } from '@/components/directory/search-input'
 import { DirectoryFilters } from '@/components/directory/directory-filters'
-import { AvatarImage } from '@/components/ui/avatar-image'
-import { partyColor, partyLabel } from '@/lib/constants/parties'
-import { PartyIcon } from '@/components/icons/party-icons'
+import { DirectoryView } from '@/components/directory/directory-view'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { STATE_NAMES } from '@/lib/constants/us-states'
 
 /**
- * Per request: this page awaits searchParams (state, party, chamber and page), so it cannot be one
- * cached document. It declared `revalidate = 1800` alongside that, which
- * never applied — the same contradiction that cost /politicians/[slug] and /
- * their caches, except here the page genuinely varies.
+ * Two directories in one route.
  *
- * Saying so is the honest state. Making it cacheable means moving the
- * filtering to the client so the shell can be static, which is worth doing
- * for the cheap ones and is tracked separately.
+ * The default is the quiet one: one state's Congress members and governor,
+ * grouped, with the visitor's own marked (components/directory/directory-view.tsx).
+ * It resolves the state on the client from the ZIP, so with no query string
+ * this route could be static; it stays dynamic because the second directory
+ * — every one of the 8,600 officials, faceted by state, party and level, 50
+ * a page — still reads searchParams, and one route cannot be both.
+ *
+ * The full list is reached with ?all=1 or any facet, and from the quiet
+ * view's footer.
  */
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Browse Politicians | Poli',
-  description: 'Search and filter 8,000+ U.S. elected officials by state, party, and level of government — from Congress to your local school board.',
+  title: 'Reps | Poli',
+  description: 'Your senators, representative and governor, and every other elected official in Poli — searchable by state, party and level of government.',
 }
 
 interface PageProps {
-  searchParams: Promise<{ state?: string; party?: string; chamber?: string; page?: string }>
+  searchParams: Promise<{ state?: string; party?: string; chamber?: string; page?: string; all?: string; q?: string }>
 }
 
 const PAGE_SIZE = 50
@@ -42,8 +45,7 @@ interface FacetRow {
 
 /**
  * Every politician's facet dimensions, fetched once and cached. The roster
- * changes rarely, so this survives across requests and page-number changes
- * (which are what made the old per-request refetching so expensive).
+ * changes rarely, so this survives across requests and page-number changes.
  */
 const getFacetRows = unstable_cache(
   async (): Promise<FacetRow[]> => {
@@ -68,15 +70,25 @@ const getFacetRows = unstable_cache(
 
 export default async function DirectoryPage({ searchParams }: PageProps) {
   const params = await searchParams
+  const browse = params.all === '1' || !!params.party || !!params.chamber || !!params.page || !!params.q
+
+  if (!browse) {
+    const initialState = params.state && STATE_NAMES[params.state.toUpperCase()] ? params.state.toUpperCase() : null
+    return (
+      <AppShell>
+        <div className="mx-auto max-w-[560px] px-4 pt-5">
+          <DirectoryView initialState={initialState} />
+        </div>
+      </AppShell>
+    )
+  }
+
   const supabase = createServiceRoleClient()
   const page = Math.max(1, parseInt(params.page ?? '1', 10) || 1)
   const offset = (page - 1) * PAGE_SIZE
 
   // One cached projection of every politician's (party, chamber, state) serves all
-  // three cascading facet counts. This page previously ran FOUR full-table
-  // pagination loops over 8,584 rows (~36 round-trips, ~34k rows) to produce three
-  // small tallies, and the first loop's result was never even read — that was the
-  // 9.5s TTFB. Counting in memory over one projection is the same answer.
+  // three cascading facet counts.
   const [facetRows, pageResult] = await Promise.all([
     getFacetRows(),
     (async () => {
@@ -109,23 +121,19 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   const matchParty = (r: FacetRow) => !params.party || r.party === params.party
   const matchChamber = (r: FacetRow) => !params.chamber || r.chamber === params.chamber
 
-  const partyFacet = tally('party', (r) => matchState(r) && matchChamber(r))
-  const chamberFacet = tally('chamber', (r) => matchState(r) && matchParty(r))
-  const stateFacet = tally('state', (r) => matchParty(r) && matchChamber(r))
+  const filterCounts = {
+    parties: tally('party', (r) => matchState(r) && matchChamber(r)),
+    chambers: tally('chamber', (r) => matchState(r) && matchParty(r)),
+    states: tally('state', (r) => matchParty(r) && matchChamber(r)),
+  }
 
   const politicians = pageResult.data ?? []
   const totalCount = pageResult.count ?? 0
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
 
-  const filterCounts = {
-    parties: partyFacet,
-    chambers: chamberFacet,
-    states: stateFacet,
-  }
-
   function buildUrl(overrides: Record<string, string>) {
-    const p: Record<string, string> = {}
+    const p: Record<string, string> = { all: '1' }
     if (params.state) p.state = params.state
     if (params.party) p.party = params.party
     if (params.chamber) p.chamber = params.chamber
@@ -136,12 +144,14 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   }
 
   return (
-    <>
-      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <h1 className="mb-1 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
-          Directory
-        </h1>
-        <p className="mb-6 text-[14px] text-[var(--poli-sub)]">
+    <AppShell>
+      <div className="mx-auto max-w-[1200px] px-4 pt-5 md:px-10">
+        <Link href="/directory" className="mb-2 inline-flex h-11 items-center gap-1 text-[14px] font-semibold text-[var(--poli-sub)] no-underline">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          Reps
+        </Link>
+        <h1 className="font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">Everyone</h1>
+        <p className="mb-4 mt-1 text-[14px] text-[var(--poli-sub)]">
           {totalCount.toLocaleString()} official{totalCount !== 1 ? 's' : ''}
         </p>
 
@@ -153,41 +163,20 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           <DirectoryFilters counts={filterCounts} stateNames={STATE_NAMES} />
         </Suspense>
 
-        {/* Results */}
-        <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {politicians.map((pol) => {
-            const color = partyColor(pol.party)
-            return (
-              <Link
-                key={pol.id}
-                href={`/politicians/${pol.slug}`}
-                className="group flex items-center gap-3 rounded-2xl border border-[var(--poli-border)] bg-[var(--poli-card)] py-3 pl-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
-              >
-                <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full" style={{ boxShadow: `0 0 0 2px ${color}` }}>
-                  <AvatarImage
-                    src={pol.image_url}
-                    alt={pol.name}
-                    size={48}
-                    party={pol.party}
-                    fallbackColor={color}
-                    className="h-full w-full object-cover object-top"
-                  />
-                </div>
-                <div className="min-w-0 flex-1 pr-4">
-                  <div className="truncate text-[15px] font-semibold text-[var(--poli-text)]">
-                    {pol.name}
-                  </div>
-                  <div className="mt-1 flex items-center gap-1.5">
-                    {pol.image_url && <PartyIcon party={pol.party} size={12} />}
-                    <span className="text-[12px] text-[var(--poli-sub)]">{pol.state}</span>
-                  </div>
-                  <div className="mt-1 truncate text-[12px] text-[var(--poli-faint)]">
-                    {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)}
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
+        <div className="mb-6 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          {politicians.map((pol) => (
+            <Link key={pol.id} href={`/politicians/${pol.slug}`} className="no-underline">
+              <Card flush className="flex items-center gap-3 px-3.5 py-3">
+                <Face src={pol.image_url} alt={pol.name} size={44} party={pol.party} />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[15px] font-semibold text-[var(--poli-text)]">{pol.name}</span>
+                  <span className="block truncate text-[12.5px] text-[var(--poli-sub)]">
+                    {pol.title ?? (CHAMBER_LABELS[pol.chamber as ChamberKey] ?? pol.chamber)} · {pol.state}
+                  </span>
+                </span>
+              </Card>
+            </Link>
+          ))}
 
           {politicians.length === 0 && (
             <div className="py-16 text-center text-[var(--poli-faint)]">
@@ -197,26 +186,19 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           )}
         </div>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="mb-10 flex items-center justify-between">
-            <span className="text-[11px] text-[var(--poli-faint)]">
+            <span className="text-[12px] text-[var(--poli-sub)]">
               Page {safePage} of {totalPages}
             </span>
             <div className="flex gap-2">
               {safePage > 1 && (
-                <Link
-                  href={buildUrl({ page: String(safePage - 1) })}
-                  className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] no-underline hover:bg-[var(--poli-hover)]"
-                >
+                <Link href={buildUrl({ page: String(safePage - 1) })} className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] px-3.5 py-2 text-sm font-semibold text-[var(--poli-text)] no-underline">
                   Previous
                 </Link>
               )}
               {safePage < totalPages && (
-                <Link
-                  href={buildUrl({ page: String(safePage + 1) })}
-                  className="rounded-md border border-[var(--poli-border)] px-3 py-1.5 text-sm text-[var(--poli-sub)] no-underline hover:bg-[var(--poli-hover)]"
-                >
+                <Link href={buildUrl({ page: String(safePage + 1) })} className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] px-3.5 py-2 text-sm font-semibold text-[var(--poli-text)] no-underline">
                   Next
                 </Link>
               )}
@@ -224,6 +206,6 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           </div>
         )}
       </div>
-    </>
+    </AppShell>
   )
 }

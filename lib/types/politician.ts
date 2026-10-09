@@ -15,6 +15,8 @@ export interface Politician {
     | 'natural_law'
     | 'working_class'
   title: string
+  /** House seat number as stored ("6"); null for senators, governors and the rest. */
+  district?: string | null
   since_year: number | null
   bio: string | null
   website_url: string | null

@@ -3,33 +3,35 @@ import type { Metadata } from 'next'
 import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { AppShell } from '@/components/app/surface'
-import { YourReps } from '@/components/home/your-reps'
-import { BallotCountdown } from '@/components/home/ballot-countdown'
+import { HomeTop } from '@/components/home/home-top'
+import { BallotCard } from '@/components/home/ballot-card'
+import { DeadlineRow } from '@/components/home/deadline-row'
 import { BillsMoving, type BillCard } from '@/components/home/bills-moving'
+import type { WallFace } from '@/components/home/arrival'
 import { SignoutToast } from '@/components/ui/signout-toast'
 import { getSiteSettings } from '@/lib/utils/site-settings'
+import { getNextElection, countdown } from '@/lib/utils/next-election'
 
 /**
  * Home — "Your government".
  *
  * Reads nothing per-request: no cookies, no headers, no searchParams, so the
- * whole page prerenders and is served from cache. The one part that varies by
- * visitor, the representatives list, is a client island that resolves after
- * hydration (components/home/your-reps.tsx). That is what keeps this route at
- * a cache HIT instead of a full render per view, which is what it used to be
- * before the auth cookie was removed from it.
+ * whole page prerenders and is served from cache. The parts that vary by
+ * visitor — who represents them, which races are theirs — are client islands
+ * that resolve after hydration from a ZIP held in the profile or in
+ * localStorage (lib/hooks/use-location.ts). That is what keeps this route at
+ * a cache HIT instead of a full render per view.
  *
- * Everything on this screen is a real value from the database. Three things
- * the design drew are deliberately absent, because nothing behind them exists:
+ * Before a ZIP is known the top of the page is the Arrival screen: a wall of
+ * real faces and one field. After, it is the four officials with what each is
+ * doing in the next election, the countdown with the visitor's own races, the
+ * next deadline in Congress (stated by an admin in Site Settings, since no
+ * table records one), and the latest bills.
  *
- *   - the per-rep activity chip ("Voted YEA · 2h ago", "Missed 3 votes").
- *     voting_records holds 0 rows. Every vote-derived element in the mockup
- *     waits on a real roll-call import.
- *   - "Registered ✓ Confirmed". There is no voter-registration source here.
- *   - "3 of 7 races decided". There is no per-user record of ballot choices.
- *
- * They are listed here rather than quietly dropped so the next person knows
- * they were considered, and what would unblock each.
+ * Everything on this screen is a real value from the database. Things the
+ * design drew that are deliberately absent, because nothing behind them
+ * exists: per-rep vote chips (voting_records holds 0 rows), "Registered ✓"
+ * (no registration source), "3 of 7 races decided" (no per-user record).
  */
 
 export const revalidate = 1800
@@ -42,45 +44,13 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-/** The next election with a date, and how many races sit on it. */
-const getNextElection = unstable_cache(
-  async () => {
-    const supabase = createServiceRoleClient()
-    const today = new Date().toISOString().slice(0, 10)
-    // The soonest date across all active elections, and every race falling on
-    // it. Not "the first election row": the 52 rows are per-state and share one
-    // date, so taking row zero attached Alaska's name and Alaska's race count
-    // to every visitor's ballot.
-    const { data: elections } = await supabase
-      .from('elections')
-      .select('id, election_date')
-      .eq('is_active', true)
-      .gte('election_date', today)
-      .order('election_date')
-    if (!elections?.length) return null
-    const date = elections[0].election_date as string
-    const sameDay = elections.filter((e) => e.election_date === date).map((e) => e.id)
-    const { count } = await supabase
-      .from('races')
-      .select('*', { count: 'exact', head: true })
-      .in('election_id', sameDay)
-    return { date, raceCount: count ?? 0 }
-  },
-  ['home-next-election'],
-  { revalidate: 1800, tags: ['elections'] }
-)
-
 /**
  * The bills that moved most recently.
  *
  * Ordered by last_action_date. Only bills carrying a CRS summary are asked
- * for: the card leads with the summary's opening sentence, and one without a
+ * for: the row leads with the summary's opening sentence, and one without a
  * summary falls back to its official title, which reads as a different kind of
- * card next to the others.
- *
- * The date comes back with them because the section is headed "Latest in
- * Congress" rather than "moving now": one bill in 175 has moved in the last 30
- * days, so each card shows when it actually last moved.
+ * row next to the others.
  */
 const getMovingBills = unstable_cache(
   async (): Promise<BillCard[]> => {
@@ -101,18 +71,57 @@ const getMovingBills = unstable_cache(
   { revalidate: 1800, tags: ['bills'] }
 )
 
+/**
+ * Faces for the Arrival wall: sitting senators with a photo on file, which
+ * Congress.gov has verified as serving. Eighteen, spread across the alphabet
+ * so the wall is not a run of one state, and the same eighteen for everyone
+ * so the prerendered HTML is stable.
+ */
+const getWallFaces = unstable_cache(
+  async (): Promise<WallFace[]> => {
+    const supabase = createServiceRoleClient()
+    const { data } = await supabase
+      .from('politicians')
+      .select('name, image_url')
+      .eq('chamber', 'senate')
+      .eq('is_verified', true)
+      .not('image_url', 'is', null)
+      .order('name')
+      .limit(90)
+    const rows = (data ?? []) as Array<{ name: string; image_url: string }>
+    if (rows.length <= 18) return rows.map((r) => ({ src: r.image_url, alt: r.name }))
+    const step = rows.length / 18
+    return Array.from({ length: 18 }, (_, i) => rows[Math.floor(i * step)]).map((r) => ({ src: r.image_url, alt: r.name }))
+  },
+  ['home-wall-faces'],
+  { revalidate: 86400, tags: ['politicians'] }
+)
+
 export default async function HomePage() {
-  const [election, bills] = await Promise.all([getNextElection(), getMovingBills()])
+  const [election, bills, faces, settings] = await Promise.all([
+    getNextElection(),
+    getMovingBills(),
+    getWallFaces(),
+    getSiteSettings(),
+  ])
 
   // Rendered on the server, so it is the deploy's date rather than the
   // viewer's. With revalidate at 30 minutes it is never more than that stale,
   // and it avoids a hydration mismatch against a client-side clock.
-  const today = new Date().toLocaleDateString('en-US', {
+  const now = new Date()
+  const today = now.toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'short',
     day: 'numeric',
     timeZone: 'UTC',
   })
+
+  // Whole days to the election, in UTC, computed once here so every island
+  // shows the same number.
+  const c = election ? countdown(election.date) : null
+  const days = c?.days ?? 0
+  const when = c?.short ?? ''
+  const electionLine = c ? `Election Day · ${c.bare} · ${c.days} day${c.days === 1 ? '' : 's'}` : null
 
   return (
     <AppShell>
@@ -123,18 +132,11 @@ export default async function HomePage() {
         <SignoutToast />
       </Suspense>
       <div className="mx-auto max-w-[560px] px-4 pt-5">
-        <header className="mb-5 px-1">
-          <p className="mb-1 text-[13px] font-medium text-[var(--poli-sub)]">{today}</p>
-          <h1 className="font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">
-            Your government
-          </h1>
-        </header>
+        <HomeTop today={today} faces={faces} electionLine={electionLine} />
 
-        <YourReps />
+        {election && <BallotCard days={days} when={when} raceCount={election.raceCount} />}
 
-        {election && (
-          <BallotCountdown date={election.date} raceCount={election.raceCount} />
-        )}
+        <DeadlineRow settings={settings} />
 
         <BillsMoving bills={bills} />
       </div>

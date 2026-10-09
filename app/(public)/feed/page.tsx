@@ -1,342 +1,59 @@
-import { Suspense } from 'react'
+import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { ActivityItem, type ActivityItemProps } from '@/components/feed/activity-item'
-import { FeedFilters } from '@/components/feed/feed-filters'
-import { NewsHighlightCard } from '@/components/feed/news-highlight-card'
-import { PollCard } from '@/components/feed/poll-card'
-import { ElectionCountdownCard } from '@/components/feed/election-countdown-card'
-import { FinanceHighlightCard } from '@/components/feed/finance-highlight-card'
-import { getCachedNews } from '@/lib/utils/news'
-import Link from 'next/link'
+import { AppShell } from '@/components/app/surface'
+import { FeedView, type NationalStory } from '@/components/feed/feed-view'
 
 /**
- * Per request: this page awaits searchParams (party, state and pagination), so it cannot be one
- * cached document. It declared `revalidate = 120` alongside that, which
- * never applied — the same contradiction that cost /politicians/[slug] and /
- * their caches, except here the page genuinely varies.
+ * The feed.
  *
- * Saying so is the honest state. Making it cacheable means moving the
- * filtering to the client so the shell can be static, which is worth doing
- * for the cheap ones and is tracked separately.
+ * Prerendered and refreshed every ten minutes: it reads no cookies and no
+ * searchParams. It used to await party/state/page filters over a votes table
+ * that holds zero rows, so every view was a full render of an empty list.
+ * The personal half — the visitor's race and people — resolves on the client
+ * from /api/feed/mine; this page carries today's national headlines from
+ * `daily_topics`, which the daily cron keeps current.
  */
-export const dynamic = 'force-dynamic'
+export const revalidate = 600
 
 export const metadata = {
-  title: 'Activity Feed | Poli',
-  description:
-    'Live feed of political activity — news headlines, votes, stance changes, polls, elections, and campaign finance. Filter by party and state.',
+  title: 'Feed | Poli',
+  description: 'Your race, your officials, and today’s political headlines, newest first.',
 }
 
-interface PageProps {
-  searchParams: Promise<{ party?: string; state?: string; page?: string }>
-}
-
-/* ------------------------------------------------------------------ */
-/*  Data Types                                                         */
-/* ------------------------------------------------------------------ */
-
-interface FeedItem {
-  type: 'vote'
-  date: string
-  politician: {
-    name: string
-    slug: string
-    party: string
-    image_url: string | null
-    state: string | null
-  }
-  details: ActivityItemProps['details']
-}
-
-interface VoteRow {
-  id: string
-  bill_name: string | null
-  bill_number: string | null
-  bill_id: string | null
-  vote: string
-  vote_date: string | null
-  politicians: {
-    name: string; slug: string; party: string; image_url: string | null; state: string | null
-  } | null
-}
-
-/* ------------------------------------------------------------------ */
-/*  Data Fetching                                                      */
-/* ------------------------------------------------------------------ */
-
-async function fetchActivityItems(
-  party?: string,
-  state?: string,
-  page = 1,
-): Promise<{ items: FeedItem[]; hasMore: boolean }> {
-  const supabase = createServiceRoleClient()
-  const PAGE_SIZE = 8
-  const from = (page - 1) * PAGE_SIZE
-
-  let voteQuery = supabase
-    .from('voting_records')
-    .select('id, bill_name, bill_number, bill_id, vote, vote_date, politicians:politician_id(name, slug, party, image_url, state)')
-    .not('vote_date', 'is', null)
-    .order('vote_date', { ascending: false })
-    .limit(PAGE_SIZE)
-
-  if (party) voteQuery = voteQuery.eq('politicians.party', party)
-
-  const { data: voteData } = await voteQuery
-
-  const items: FeedItem[] = []
-
-  for (const v of (voteData ?? []) as unknown as VoteRow[]) {
-    if (!v.politicians) continue
-    if (state && v.politicians.state !== state) continue
-    items.push({
-      type: 'vote',
-      date: v.vote_date ?? '',
-      politician: v.politicians,
-      details: { kind: 'vote', billName: v.bill_name, billNumber: v.bill_number, billId: v.bill_id, vote: v.vote },
-    })
-  }
-
-  items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
-  const pageItems = items.slice(from, from + PAGE_SIZE + 1)
-  const hasMore = pageItems.length > PAGE_SIZE
-  return { items: pageItems.slice(0, PAGE_SIZE), hasMore }
-}
-
-async function fetchActivePolls() {
-  const supabase = createServiceRoleClient()
-
-  // Every column this function used to name was wrong, so it always returned
-  // [] and the feed's poll card never rendered. polls stores the prompt as
-  // `title` (not `question`) and is filtered by `status` (there is no
-  // is_active); poll_options stores `label` (not `text`) and has no
-  // vote_count at all -- votes are rows in poll_votes. PostgREST rejects a
-  // select naming a missing column outright, so the failure was silent.
-  const { data: polls } = await supabase
-    .from('polls')
-    .select(`
-      id,
-      title,
-      created_at,
-      poll_options (id, label),
-      poll_votes (id, option_id)
-    `)
-    .eq('status', 'active')
-    .order('created_at', { ascending: false })
-    .limit(3)
-
-  if (!polls || polls.length === 0) return []
-
-  // PollCard's contract is { question, options: [{ text, vote_count }],
-  // total_votes }, so map the storage shape onto it here rather than
-  // reshaping the component.
-  return polls.map((p: any) => {
-    const votes = p.poll_votes ?? []
-    const counts = new Map<string, number>()
-    for (const v of votes) counts.set(v.option_id, (counts.get(v.option_id) ?? 0) + 1)
-
-    const options = (p.poll_options ?? [])
-      .map((o: any) => ({ id: o.id, text: o.label, vote_count: counts.get(o.id) ?? 0 }))
-      .sort((a: { vote_count: number }, b: { vote_count: number }) => b.vote_count - a.vote_count)
-
-    return { id: p.id, question: p.title, options, total_votes: votes.length }
-  })
-}
-
-async function fetchUpcomingRaces() {
-  const supabase = createServiceRoleClient()
-  const today = new Date().toISOString().split('T')[0]
-
-  const { data: races } = await supabase
-    .from('races')
-    .select(`
-      id, name, slug, state, chamber,
-      elections:election_id (slug, election_date)
-    `)
-    .limit(100)
-
-  if (!races) return []
-
-  // Filter to future elections and get candidates
-  const upcoming = races
-    .filter((r: any) => r.elections?.election_date && r.elections.election_date >= today)
-    .sort((a: any, b: any) => a.elections.election_date.localeCompare(b.elections.election_date))
-    .slice(0, 4)
-
-  if (upcoming.length === 0) return []
-
-  const raceIds = upcoming.map((r: any) => r.id)
-  const { data: candidates } = await supabase
-    .from('candidates')
-    .select('race_id, name, party, image_url')
-    .in('race_id', raceIds)
-    .eq('status', 'running')
-    .limit(50)
-
-  return upcoming.map((r: any) => ({
-    id: r.id,
-    name: r.name,
-    slug: r.slug,
-    state: r.state,
-    chamber: r.chamber,
-    election_slug: r.elections.slug,
-    election_date: r.elections.election_date,
-    candidates: (candidates ?? []).filter((c: any) => c.race_id === r.id),
-  }))
-}
-
-async function fetchTopFundraisers() {
-  const supabase = createServiceRoleClient()
-  const { data } = await supabase
-    .from('campaign_finance')
-    .select('cycle, total_raised, total_spent, cash_on_hand, politicians:politician_id(name, slug, party, image_url)')
-    .not('total_raised', 'is', null)
-    .order('total_raised', { ascending: false })
-    .limit(5)
-
-  if (!data) return []
-
-  return data
-    .filter((r: any) => r.politicians)
-    .map((r: any) => ({
-      politician: r.politicians,
-      cycle: r.cycle,
-      total_raised: r.total_raised ?? 0,
-      total_spent: r.total_spent ?? 0,
-      cash_on_hand: r.cash_on_hand ?? 0,
+const getNational = unstable_cache(
+  async (): Promise<{ stories: NationalStory[]; count: number }> => {
+    const supabase = createServiceRoleClient()
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const { data, count } = await supabase
+      .from('daily_topics')
+      .select('title, summary, source_name, source_url, published_at, issues:issue_id(name)', { count: 'exact' })
+      .eq('is_active', true)
+      .gte('published_at', since)
+      .order('published_at', { ascending: false })
+      .limit(6)
+    const stories = ((data ?? []) as any[]).map((r) => ({
+      title: r.title,
+      summary: r.summary ?? null,
+      source: r.source_name ?? null,
+      url: r.source_url ?? null,
+      time: new Date(r.published_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York' }),
+      issue: r.issues?.name ? String(r.issues.name).split(/ & | and /)[0] : null,
     }))
-}
+    return { stories, count: count ?? stories.length }
+  },
+  ['feed-national'],
+  { revalidate: 600, tags: ['daily-topics'] }
+)
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                               */
-/* ------------------------------------------------------------------ */
-
-export default async function FeedPage({ searchParams }: PageProps) {
-  const params = await searchParams
-  const party = params.party ?? ''
-  const state = params.state ?? ''
-  const page = Math.max(1, parseInt(params.page ?? '1', 10))
-
-  // Fetch all data in parallel
-  const [
-    { items, hasMore },
-    polls,
-    races,
-    fundraisers,
-    newsArticles,
-  ] = await Promise.all([
-    fetchActivityItems(party || undefined, state || undefined, page),
-    fetchActivePolls(),
-    fetchUpcomingRaces(),
-    fetchTopFundraisers(),
-    getCachedNews('US Congress'),
-  ])
-
-  function buildPageUrl(p: number): string {
-    const sp = new URLSearchParams()
-    if (party) sp.set('party', party)
-    if (state) sp.set('state', state)
-    if (p > 1) sp.set('page', String(p))
-    const qs = sp.toString()
-    return `/feed${qs ? `?${qs}` : ''}`
-  }
+export default async function FeedPage() {
+  const { stories, count } = await getNational()
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/New_York' })
 
   return (
-    <>
-      <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
-        {/* Page header */}
-        <div className="mb-6">
-          <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
-            Feed
-          </h1>
-          <p className="text-[15px] leading-[1.7] text-[var(--poli-sub)]">
-            The latest in politics — news, votes, elections, and more.
-          </p>
-        </div>
-
-        {/* Filters */}
-        <div className="mb-6">
-          <Suspense fallback={null}>
-            <FeedFilters />
-          </Suspense>
-        </div>
-
-        {/* Top row: News + Sidebar */}
-        {page === 1 && (
-          <div className="mb-8 grid gap-5 lg:grid-cols-[1fr_340px]">
-            <NewsHighlightCard articles={newsArticles} />
-            <div className="flex flex-col gap-5">
-              {polls.length > 0 && <PollCard poll={polls[0]} />}
-              {races.length > 0 && <ElectionCountdownCard race={races[0]} />}
-            </div>
-          </div>
-        )}
-
-        {/* Middle row: Finance + Extra widgets */}
-        {page === 1 && (fundraisers.length > 0 || races.length > 1) && (
-          <div className="mb-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {fundraisers.length > 0 && <FinanceHighlightCard records={fundraisers} />}
-            {races.slice(1, 3).map((r) => (
-              <ElectionCountdownCard key={r.id} race={r} />
-            ))}
-          </div>
-        )}
-
-        {/* Activity feed — compact, max 6 per page */}
-        {items.length > 0 && (
-          <>
-            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
-              {page > 1 ? `Page ${page}` : 'Latest Activity'}
-            </div>
-
-            <div className="flex flex-col gap-2.5">
-              {items.map((item, i) => (
-                <ActivityItem
-                  key={`${item.type}-${i}`}
-                  type={item.type}
-                  politician={item.politician}
-                  date={item.date}
-                  details={item.details}
-                />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            {(hasMore || page > 1) && (
-              <div className="mt-6 flex items-center justify-center gap-4">
-                {page > 1 && (
-                  <Link
-                    href={buildPageUrl(page - 1)}
-                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
-                  >
-                    Previous
-                  </Link>
-                )}
-                {hasMore && (
-                  <Link
-                    href={buildPageUrl(page + 1)}
-                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
-                  >
-                    Load More
-                  </Link>
-                )}
-              </div>
-            )}
-          </>
-        )}
-
-        {items.length === 0 && page > 1 && (
-          <div className="py-20 text-center">
-            <div className="mb-2 text-lg font-medium text-[var(--poli-text)]">
-              No more activity
-            </div>
-            <p className="text-sm text-[var(--poli-sub)]">
-              You&apos;ve reached the end.
-            </p>
-          </div>
-        )}
-      </main>
-    </>
+    <AppShell>
+      <div className="mx-auto max-w-[560px] px-4 pt-5">
+        <FeedView national={stories} nationalCount={count} today={today} />
+      </div>
+    </AppShell>
   )
 }
