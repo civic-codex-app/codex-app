@@ -97,8 +97,10 @@ attaches each official's next-election status from `lib/utils/candidacy.ts`.
 `incumbent_id` is them — matching on (state, chamber) alone made every
 Michigan senator read "Seat open" the year one retired. Senate races with no
 `incumbent_id` match nobody. A running `is_incumbent` row that is unlinked to
-any politician counts as that person running ("John Bergman" vs the roster's
-"Jack Bergman"). The vocabulary is what the rows support: Running again,
+any politician counts as that person running — the reconcile stores names as
+the state prints them ("John Bergman" for the roster's "Jack Bergman"), and
+such rows are linked by hand with `scripts/link-candidate-rows.mjs`. A ballot
+row with no photo of its own borrows the linked profile's. The vocabulary is what the rows support: Running again,
 Running for {office}, Lost primary, Seat open, Not up this year — never
 "Retiring" or "Term-limited", which claim a reason no table holds.
 
@@ -637,6 +639,7 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 |---|---|
 | `scripts/destale-2026.mjs` | Derivable-only fixes: race incumbents via `(state, chamber, district)`, candidate→politician links, expired polls, status vocabulary, known retirements |
 | `scripts/reconcile-michigan-candidates.mjs` | Michigan candidates against the state's Official Candidate Listings: nominees verified, primary losers `lost`, non-qualifiers `withdrawn`, seed inventions deleted, missing nominees inserted. Re-running is a no-op once applied |
+| `scripts/link-candidate-rows.mjs` | Explicit candidate→politician links the name matcher cannot make (a nickname on the ballot, a member running for another office). Each link names the candidate id, race, stored name, politician slug and reason; every one is checked against the live row; writes only where `politician_id` is NULL. Applied 2026-10-09 for Bergman (MI-1, "John" on the listing) and Stevens (Senate primary) |
 | `scripts/import-fec-finance.mjs` | Real FEC finance. `--cycle=2026 --office=S,H,P`. Caches responses to `.fec-cache/` |
 | `scripts/rebuild-bills-from-congress.mjs` | Real 119th-Congress bills from Congress.gov (`--scan`, `--active`) |
 | `scripts/import-fec-candidates.mjs` | Real FEC 2026 candidate filings. Needs migration 025; refuses to `--apply` without it |

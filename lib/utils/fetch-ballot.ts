@@ -119,7 +119,7 @@ export async function fetchBallotRaces(state: string, userDistrict?: string | st
   while (hasMore) {
     const { data } = await supabase
       .from('candidates')
-      .select('id, race_id, name, party, is_incumbent, status, image_url, politician_id, bio, politicians:politician_id(slug)')
+      .select('id, race_id, name, party, is_incumbent, status, image_url, politician_id, bio, politicians:politician_id(slug, image_url)')
       .in('race_id', raceIds)
       .range(from, from + PAGE - 1)
 
@@ -172,7 +172,9 @@ export async function fetchBallotRaces(state: string, userDistrict?: string | st
       party: c.party,
       is_incumbent: c.is_incumbent,
       status: c.status,
-      image_url: c.image_url,
+      // A candidate row rarely carries its own photo; the person's profile
+      // usually does. Linked rows borrow it so the ballot shows a face.
+      image_url: c.image_url ?? (c.politicians as any)?.image_url ?? null,
       politician_id: c.politician_id,
       politician_slug: (c.politicians as any)?.slug ?? null,
       bio: c.bio,
