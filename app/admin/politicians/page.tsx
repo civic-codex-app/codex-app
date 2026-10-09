@@ -99,6 +99,11 @@ export default async function AdminPoliticiansPage({ searchParams }: PageProps) 
             <option value="republican">Republican</option>
             <option value="independent">Independent</option>
             <option value="green">Green</option>
+            <option value="libertarian">Libertarian</option>
+            <option value="constitution">Constitution</option>
+            <option value="us_taxpayers">U.S. Taxpayers</option>
+            <option value="natural_law">Natural Law</option>
+            <option value="working_class">Working Class</option>
           </select>
         </div>
         <div>

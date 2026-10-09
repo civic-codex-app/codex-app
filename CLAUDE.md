@@ -444,16 +444,19 @@ a server round-trip from every tab tap.
   cover every federal and legislative seat:
   `scripts/reconcile-michigan-candidates.mjs`. 64 nominees verified, 23
   primary losers marked `lost`, 22 who never reached the ballot `withdrawn`,
-  36 missing nominees inserted. It found the seed had invented Tudor Dixon as
+  65 missing nominees inserted. It found the seed had invented Tudor Dixon as
   a governor candidate and two races not on the 2026 ballot at all (Detroit
   Mayor, elected 2025; Oakland County Executive, elected 2024), plus duplicate
   rows for State House 56 and 62 whose descriptions put each seat in the wrong
   county. Other states publish similar listings; this is the model to copy.
-- **29 Michigan nominees are missing because `party_type` cannot name their
-  party** (Libertarian 10, Working Class 9, U.S. Taxpayers 8, Natural Law 2).
-  The FEC importer files every such candidate as `independent`, which prints
-  a false party on the ballot; the reconcile script refuses to. Widening the
-  enum (and `partyColor`/`partyLabel`) is what lets them in.
+- **Minor parties are real parties now.** 29 of those 65 nominees are
+  Libertarian, Working Class, U.S. Taxpayers or Natural Law. Until migration
+  031 `party_type` could not name them, and the FEC importer filed every such
+  candidate as `independent` — a false party label on a voter-facing ballot.
+  The enum, `lib/constants/parties.ts`, the FEC importer's code map and the
+  reconcile script all carry the five new values; `partyColor`/`partyLabel`
+  still fall back to Independent for anything unlisted, so add a party to
+  all four places at once.
 - 152 races have no `incumbent_id` (was 196; 44 were derived on 2026-09-10 —
   38 mayors and county executives matched by place name + office, 6 at-large
   House seats). The rest are genuinely underivable from what we hold.
@@ -512,6 +515,17 @@ Each is idempotent. Two ways to run them:
     > apply.
 
 17. **`029_fix_daily_topics_rls.sql` — SECURITY.** *(applied 2026-09-16)* See below.
+18. `030_candidate_fec_id.sql` — `candidates.fec_candidate_id`, unique per race; makes the FEC import idempotent
+19. `031_more_parties.sql` — adds `libertarian`, `constitution`, `us_taxpayers`, `natural_law`, `working_class` to `party_type`, so minor-party nominees stop being filed as Independent *(applied 2026-10-09 over the IPv4 pooler — see below)*
+
+> **`DATABASE_URL` in `.env.local` points at `db.<ref>.supabase.co`, which has
+> only an AAAA record.** On a network without IPv6 it fails with `ENOTFOUND`
+> before any password is tried. Supabase's session pooler is reachable over
+> IPv4 at `aws-1-us-east-1.pooler.supabase.com:5432` with user
+> `postgres.jzxgkvwbhdagqwvisxkt` and the same password (`aws-0-…` and other
+> regions answer "tenant not found"). `scripts/apply-migrations.mjs` reads
+> `DATABASE_URL` from the environment before `.env.local`, so export the
+> pooler URL for the run rather than editing the file.
 
 > **Only 011–015 are in this repo.** 001–010 and 016–024 exist solely in the
 > live Supabase project, so the schema cannot be rebuilt from source control.

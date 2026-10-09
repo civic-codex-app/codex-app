@@ -148,6 +148,11 @@ export const PARTY_BADGE_COLORS: Record<string, { className: string; color: stri
   republican:  { className: 'text-red-700 bg-red-50 border border-red-200', color: '#B91C1C' },
   independent: { className: 'text-purple-700 bg-purple-50 border border-purple-200', color: '#6D28D9' },
   green:       { className: 'text-green-700 bg-green-50 border border-green-200', color: '#15803D' },
+  libertarian:   { className: 'text-yellow-700 bg-yellow-50 border border-yellow-200', color: '#A16207' },
+  constitution:  { className: 'text-amber-800 bg-amber-50 border border-amber-200', color: '#92400E' },
+  us_taxpayers:  { className: 'text-amber-900 bg-amber-50 border border-amber-200', color: '#78350F' },
+  natural_law:   { className: 'text-teal-700 bg-teal-50 border border-teal-200', color: '#0F766E' },
+  working_class: { className: 'text-pink-700 bg-pink-50 border border-pink-200', color: '#BE185D' },
 }
 
 /**
