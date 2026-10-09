@@ -434,11 +434,26 @@ local React state with `history.replaceState` for the URL, which also removed
 a server round-trip from every tab tap.
 
 ### Still unverified
-- 2026 primary *outcomes* remain unconfirmed — FEC lists who filed, not who
-  won a primary. No free API covers that; needs state SoS, AP, or Ballotpedia.
-  The 319 candidates still `is_verified = false` are the original seed rows for
-  non-federal races; FEC cannot verify those at all, since state and local
-  candidates file with state agencies.
+- 2026 primary *outcomes* remain unconfirmed **outside Michigan** — FEC lists
+  who filed, not who won a primary. No free API covers that; needs state SoS,
+  AP, or Ballotpedia. The 319 candidates still `is_verified = false` are the
+  original seed rows for non-federal races; FEC cannot verify those at all,
+  since state and local candidates file with state agencies.
+- **Michigan is reconciled (2026-10-09)** against the Department of State's
+  Official Candidate Listings for the Aug 4 primary and Nov 3 general, which
+  cover every federal and legislative seat:
+  `scripts/reconcile-michigan-candidates.mjs`. 64 nominees verified, 23
+  primary losers marked `lost`, 22 who never reached the ballot `withdrawn`,
+  36 missing nominees inserted. It found the seed had invented Tudor Dixon as
+  a governor candidate and two races not on the 2026 ballot at all (Detroit
+  Mayor, elected 2025; Oakland County Executive, elected 2024), plus duplicate
+  rows for State House 56 and 62 whose descriptions put each seat in the wrong
+  county. Other states publish similar listings; this is the model to copy.
+- **29 Michigan nominees are missing because `party_type` cannot name their
+  party** (Libertarian 10, Working Class 9, U.S. Taxpayers 8, Natural Law 2).
+  The FEC importer files every such candidate as `independent`, which prints
+  a false party on the ballot; the reconcile script refuses to. Widening the
+  enum (and `partyColor`/`partyLabel`) is what lets them in.
 - 152 races have no `incumbent_id` (was 196; 44 were derived on 2026-09-10 —
   38 mayors and county executives matched by place name + office, 6 at-large
   House seats). The rest are genuinely underivable from what we hold.
@@ -516,6 +531,7 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 | Script | Purpose |
 |---|---|
 | `scripts/destale-2026.mjs` | Derivable-only fixes: race incumbents via `(state, chamber, district)`, candidate→politician links, expired polls, status vocabulary, known retirements |
+| `scripts/reconcile-michigan-candidates.mjs` | Michigan candidates against the state's Official Candidate Listings: nominees verified, primary losers `lost`, non-qualifiers `withdrawn`, seed inventions deleted, missing nominees inserted. Re-running is a no-op once applied |
 | `scripts/import-fec-finance.mjs` | Real FEC finance. `--cycle=2026 --office=S,H,P`. Caches responses to `.fec-cache/` |
 | `scripts/rebuild-bills-from-congress.mjs` | Real 119th-Congress bills from Congress.gov (`--scan`, `--active`) |
 | `scripts/import-fec-candidates.mjs` | Real FEC 2026 candidate filings. Needs migration 025; refuses to `--apply` without it |
