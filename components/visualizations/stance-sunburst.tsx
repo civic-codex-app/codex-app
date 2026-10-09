@@ -87,15 +87,21 @@ export function StanceSunburst({ stances, size = 160 }: StanceSunburstProps) {
   const strokeWidth = outerR - innerR
   const midR = (outerR + innerR) / 2
 
+  // A loop rather than map-with-closure: reassigning currentAngle inside a
+  // callback is what react-hooks/immutability flags, since the callback could
+  // outlive the render.
+  const segmentArcs: Array<
+    (typeof SEGMENTS)[number] & { value: number; startAngle: number; endAngle: number; angle: number }
+  > = []
   let currentAngle = 0
-  const segmentArcs = SEGMENTS.map((seg) => {
+  for (const seg of SEGMENTS) {
     const value = collapsedRecord[seg.key] ?? 0
     const angle = (value / total) * 360 * animationProgress
     const startAngle = currentAngle
     const endAngle = currentAngle + angle
     currentAngle = endAngle
-    return { ...seg, value, startAngle, endAngle, angle }
-  }).filter((s) => s.value > 0)
+    if (value > 0) segmentArcs.push({ ...seg, value, startAngle, endAngle, angle })
+  }
 
   return (
     <div className="inline-flex flex-col items-center gap-2">

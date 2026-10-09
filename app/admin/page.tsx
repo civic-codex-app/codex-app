@@ -88,6 +88,7 @@ export default async function AdminOverviewPage() {
   ]
 
   // New registrations in last 24h
+  // eslint-disable-next-line react-hooks/purity -- request-time clock in a server component; no client render exists to disagree with it
   const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
   const { count: newUserCount } = await supabase
     .from('profiles')

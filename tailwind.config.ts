@@ -1,4 +1,7 @@
 import type { Config } from 'tailwindcss'
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
+import animate from 'tailwindcss-animate'
 
 const config: Config = {
   future: {
@@ -145,9 +148,9 @@ const config: Config = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('tailwindcss-animate'),
+    forms,
+    typography,
+    animate,
   ],
 }
 

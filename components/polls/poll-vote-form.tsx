@@ -40,7 +40,7 @@ export function PollVoteForm({
 
   async function handleVote(optionId: string) {
     if (!isLoggedIn) {
-      window.location.href = '/login?redirectTo=/polls/' + pollId
+      window.location.assign('/login?redirectTo=/polls/' + pollId)
       return
     }
 

@@ -434,7 +434,7 @@ export function MatchResults({ results, stateResults = [], acrossTheAisle = [], 
         <div className="mb-10 overflow-hidden rounded-xl border border-[var(--poli-border)]" style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06))' }}>
           <div className="px-6 py-8 text-center">
             <p className="text-[11px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
-              Don't lose your results
+              Don&apos;t lose your results
             </p>
             <p className="mt-2 text-[clamp(1.1rem,2.5vw,1.4rem)] font-bold text-[var(--poli-text)]">
               Create an account to save your matches

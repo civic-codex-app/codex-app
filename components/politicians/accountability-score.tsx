@@ -37,7 +37,7 @@ export function AccountabilityScore({ votes, stances, party }: AccountabilitySco
   }
 
   let aligned = 0
-  let contradictions: Contradiction[] = []
+  const contradictions: Contradiction[] = []
   let total = 0
 
   for (const vote of votes) {

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Suspense } from 'react'
 import { unstable_cache } from 'next/cache'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
@@ -386,10 +387,10 @@ export default async function InsightsPage() {
             Explore More
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            <a href="/issues/map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
+            <Link href="/issues/map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
               <div className="mb-2 text-lg font-semibold">Issue Map</div>
               <p className="text-[13px] text-[var(--poli-sub)]">See how each state&apos;s delegation leans on key issues</p>
-            </a>
+            </Link>
             <a href="/insights/money-map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
               <div className="mb-2 text-lg font-semibold">Money Map</div>
               <p className="text-[13px] text-[var(--poli-sub)]">Campaign finance totals by state</p>

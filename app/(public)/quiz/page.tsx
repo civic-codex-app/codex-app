@@ -95,7 +95,7 @@ export default async function MatchPage() {
             Who Represents You?
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-[var(--poli-sub)]">
-            Share your stance on key issues and we'll show you which politicians
+            Share your stance on key issues and we&apos;ll show you which politicians
             align most closely with your views.
           </p>
         </div>

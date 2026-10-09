@@ -15,7 +15,7 @@
     "dev:ios": "cap run ios",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
     "type-check": "tsc --noEmit",

@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
   // ── 1. Refresh missing politician images ──
   try {
-    let missing: { id: string; name: string; state: string; chamber: string }[] = []
+    const missing: { id: string; name: string; state: string; chamber: string }[] = []
     let from = 0
     while (true) {
       const { data } = await supabase

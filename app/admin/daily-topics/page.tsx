@@ -23,6 +23,20 @@ interface DailyTopic {
   }[]
 }
 
+/**
+ * Module-level on purpose: reading the clock during render is what
+ * react-hooks/purity flags, and a helper outside the component makes it
+ * explicit this is display formatting at call time, not render state.
+ */
+function timeAgo(dateStr: string) {
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  if (hours < 1) return 'Just now'
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  return `${days}d ago`
+}
+
 export default function DailyTopicsPage() {
   const [topics, setTopics] = useState<DailyTopic[]>([])
   const [loading, setLoading] = useState(true)
@@ -87,15 +101,6 @@ export default function DailyTopicsPage() {
     await supabase.from('daily_topic_politicians').delete().eq('topic_id', id)
     await supabase.from('daily_topics').delete().eq('id', id)
     setTopics(prev => prev.filter(t => t.id !== id))
-  }
-
-  const timeAgo = (dateStr: string) => {
-    const diff = Date.now() - new Date(dateStr).getTime()
-    const hours = Math.floor(diff / (1000 * 60 * 60))
-    if (hours < 1) return 'Just now'
-    if (hours < 24) return `${hours}h ago`
-    const days = Math.floor(hours / 24)
-    return `${days}d ago`
   }
 
   return (
