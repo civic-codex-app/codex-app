@@ -500,20 +500,21 @@ a server round-trip from every tab tap.
   local seats with no free authoritative source.
 - The retirement list in `scripts/destale-2026.mjs` is hand-verified but **not
   exhaustive**.
-- **37 `house`/`senate` rows are `is_verified = false`** — the Congress.gov
-  current-member import did not match them — yet every one is still titled
-  "U.S. Representative"/"U.S. Senator". They are three different things:
-  duplicates of a verified row under another spelling (merge; the
-  Waltz/Turner/Carter pairs in `merge-duplicate-politicians.mjs` were never
-  applied), former members (retitle "Former …", keep), and people who never
-  served (retitle as the candidate they were). Michigan's three were fixed
-  2026-10-09 and set the pattern: "Scholten Hillary" merged into the verified
-  row with the script's new `keep: 'official'` override and `--only=MI`;
-  Paul Junge and Curtis Hertel retitled "Candidate for U.S. House, 2024
-  (MI-8/MI-7)" with their FEC ids as `source`. The other 34 still present
-  non-members as sitting. Also found that day: John James's "portrait" on
-  the CDN was a 1 KB "JJ" initials placeholder; replaced with his official
-  photo (bioguide J000307).
+- **No federal row presents a non-member as sitting (2026-10-09).** 37
+  `house`/`senate` rows the Congress.gov import could not verify were still
+  titled "U.S. Representative"/"U.S. Senator". `scripts/reconcile-unverified-federal.mjs`
+  resolved each against Congress.gov and the FEC: 3 were sitting members the
+  import had missed (stamped verified with bioguide id; the duplicate-spelling
+  pairs merged first with `merge-duplicate-politicians.mjs --only=`), 24 are
+  former members, retitled "Former U.S. Representative (ST-DD, years)" with
+  a one-line bio from their terms and `is_verified` left false because
+  `/api/representatives` reads it as "serving now", 5 never served and are
+  retitled as the FEC candidate they were, and 3 were seed inventions known
+  to neither source and deleted (one after repointing a WA-5 race's
+  `incumbent_id` to the real member). Re-running the script is a no-op.
+  Gotcha it found: Congress.gov's `currentMember=false` list *includes*
+  sitting members, so a one-match rule rejects them unless the two lists are
+  deduped by bioguide id.
 
 ## SQL Migrations (in order)
 
