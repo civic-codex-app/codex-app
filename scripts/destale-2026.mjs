@@ -75,25 +75,41 @@ if (APPLY && drift.length) {
 }
 
 /* ---------- 2b. incumbents who are not seeking reelection ----------
- * Hand-verified against public retirement announcements, all of which predate
- * the 2026-03-21 seed. The seed generated a candidate row for every incumbent
- * regardless, so these five appear as active candidates in their own open-seat
- * races. NOT AN EXHAUSTIVE LIST -- it only covers retirements confirmed by hand.
- * Anything announced after mid-2026 still needs an authoritative source. */
+ * Hand-verified, each against an authoritative source named in `why`. The
+ * seed generated a candidate row for every incumbent regardless, so these
+ * appear as active candidates in their own open-seat races. NOT AN EXHAUSTIVE
+ * LIST -- it only covers cases confirmed by hand. Anything announced after
+ * mid-2026 still needs an authoritative source.
+ *
+ * Each entry names the race it applies to, not just the person: Haley Stevens
+ * is in two races, the House seat she is leaving and the Senate seat she is
+ * running for, and matching on name alone withdrew her from both. */
 const NOT_SEEKING_REELECTION = [
-  { name: 'Mitch McConnell', state: 'KY', announced: '2025-02-20' },
-  { name: 'Dick Durbin', state: 'IL', announced: '2025-04-23' },
-  { name: 'Tina Smith', state: 'MN', announced: '2025-02-13' },
-  { name: 'Gary Peters', state: 'MI', announced: '2025-01-28' },
-  { name: 'Jeanne Shaheen', state: 'NH', announced: '2025-03-12' },
+  { name: 'Mitch McConnell', state: 'KY', chamber: 'senate', why: 'retirement announced 2025-02-20' },
+  { name: 'Dick Durbin', state: 'IL', chamber: 'senate', why: 'retirement announced 2025-04-23' },
+  { name: 'Tina Smith', state: 'MN', chamber: 'senate', why: 'retirement announced 2025-02-13' },
+  { name: 'Gary Peters', state: 'MI', chamber: 'senate', why: 'retirement announced 2025-01-28' },
+  { name: 'Jeanne Shaheen', state: 'NH', chamber: 'senate', why: 'retirement announced 2025-03-12' },
+  { name: 'Gretchen Whitmer', state: 'MI', chamber: 'governor', why: 'term-limited: Mich. Const. art. V §30 allows two terms; elected 2018 and 2022' },
+  { name: 'Haley Stevens', state: 'MI', chamber: 'house', district: '11', why: 'FEC: House candidacy H8MI11254 inactive for 2026; running for Senate as S6MI00426' },
+  { name: 'John James', state: 'MI', chamber: 'house', district: '10', why: 'FEC: House candidacy H2MI10150 inactive for 2026' },
 ]
-const retiring = cands.filter(
-  (c) => c.status !== 'withdrawn' && NOT_SEEKING_REELECTION.some((r) => norm(r.name) === norm(c.name))
-)
-console.log(`\n2b. INCUMBENTS listed as running but retiring: ${retiring.length} -> 'withdrawn'`)
+const raceOf = new Map((await page('races', 'id,state,chamber,district')).map((r) => [r.id, r]))
+const notSeeking = (c) => {
+  const race = raceOf.get(c.race_id)
+  return NOT_SEEKING_REELECTION.find(
+    (r) =>
+      norm(r.name) === norm(c.name) &&
+      race?.state === r.state &&
+      race?.chamber === r.chamber &&
+      (r.district == null || String(race?.district) === r.district)
+  )
+}
+const retiring = cands.filter((c) => c.status !== 'withdrawn' && notSeeking(c))
+console.log(`\n2b. INCUMBENTS listed as running but not seeking reelection: ${retiring.length} -> 'withdrawn'`)
 for (const c of retiring) {
-  const r = NOT_SEEKING_REELECTION.find((x) => norm(x.name) === norm(c.name))
-  console.log(`   - ${c.name} (${r.state}) retirement announced ${r.announced}`)
+  const r = notSeeking(c)
+  console.log(`   - ${c.name} (${r.state} ${r.chamber}${r.district ? '-' + r.district : ''}): ${r.why}`)
 }
 if (APPLY && retiring.length) {
   let ok = 0
@@ -111,10 +127,8 @@ if (colErr) {
   console.log(`\n2c. VERIFICATION columns absent — run supabase/024_candidate_verification.sql, then re-run.`)
 } else {
   // Stamp everything on the hand-verified list, not just rows that still need changing —
-  // the five retirements stay verified across re-runs once already withdrawn.
-  const handVerified = cands.filter((c) =>
-    NOT_SEEKING_REELECTION.some((r) => norm(r.name) === norm(c.name))
-  )
+  // these stay verified across re-runs once already withdrawn.
+  const handVerified = cands.filter((c) => notSeeking(c))
   console.log(`\n2c. VERIFICATION stamp: ${handVerified.length} hand-verified, rest left is_verified=false`)
   if (APPLY && handVerified.length) {
     const now = new Date().toISOString()
