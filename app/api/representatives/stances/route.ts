@@ -29,9 +29,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ stances: [] })
     }
 
-    // Cap to prevent abuse
+    // Cap to prevent abuse. The issue cap is the size of the catalogue plus
+    // room to grow: at 20 it silently dropped the last two of 22 issues, so
+    // the Issues screen could never show a complete picture.
     const polIds = politician_ids.slice(0, 20)
-    const slugs = issue_slugs.slice(0, 20)
+    const slugs = issue_slugs.slice(0, 40)
 
     const supabase = await createClient()
 

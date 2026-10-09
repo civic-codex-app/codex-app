@@ -77,6 +77,47 @@ Color tokens: `--poli-text`, `--poli-sub`, `--poli-faint`, `--poli-border`,
 `--poli-input-border`, `--poli-marker`, `--poli-marker-ink`. Party colors via
 `partyColor()` from `lib/constants/parties.ts`.
 
+### The quiet screens — 2026-10-09
+
+The canvas "Poli — Quiet Screens" is the composition every public screen
+follows: one job per screen, the one thing that matters first, faces wherever
+we have them, and everything else behind a tap. The shared pieces live in
+`components/app/`: `Face`/`FaceStack` (the one avatar, party as a ring),
+`BottomSheet` (sources, "why estimated", a story), `Disclosure` (a row that
+opens in place), `ZipForm`. Every screen is a single column at `max-w-[560px]`.
+
+**Location is one hook.** `lib/hooks/use-location.ts` holds the visitor's ZIP
+in a module-level store that every mounted instance subscribes to (Home has
+two islands; with separate copies, typing a ZIP into one left the other on
+the national count until a reload). Profile ZIP wins over the typed one; the
+hook never guesses. It resolves reps through `/api/representatives`, which now
+attaches each official's next-election status from `lib/utils/candidacy.ts`.
+
+**Candidacy is read, not guessed.** "Their seat" is the race whose
+`incumbent_id` is them — matching on (state, chamber) alone made every
+Michigan senator read "Seat open" the year one retired. Senate races with no
+`incumbent_id` match nobody. A running `is_incumbent` row that is unlinked to
+any politician counts as that person running ("John Bergman" vs the roster's
+"Jack Bergman"). The vocabulary is what the rows support: Running again,
+Running for {office}, Lost primary, Seat open, Not up this year — never
+"Retiring" or "Term-limited", which claim a reason no table holds.
+
+**What each screen refuses to invent.** `/ballot` is public and shows only
+federal and governor races, because a ZIP maps to a congressional district
+and to nothing below it (state House districts share numbers with House
+districts). A race's money head-to-head appears only when both leads hold a
+`campaign_finance` row for this cycle *and* already hold the office on the
+ballot — the table is keyed by politician, so a House member running for
+Senate carries House-committee totals. Home's "next deadline in Congress" is
+stated by an admin in Site Settings (`deadline_*`), since no table records a
+statutory deadline. `/feed`'s "your people" matches stored `daily_topics`
+titles by full name, or by a distinctive surname plus the state name
+(`daily_topic_politicians` is empty); titles and summaries are shown as
+stored. Votes everywhere are the honest empty state until roll calls exist.
+
+New public routes: `/api/ballot`, `/api/directory`, `/api/feed/mine` — all
+reads, all in the `verify:api` table.
+
 ## Database Schema (Key Tables)
 
 ### Core

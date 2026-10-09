@@ -43,6 +43,26 @@ const FIELDS: { key: string; label: string; description: string; multiline?: boo
     description: 'Meta description for the homepage.',
     multiline: true,
   },
+  {
+    key: 'deadline_label',
+    label: 'Next deadline in Congress',
+    description: 'What runs out, as a phrase that follows "N days until". (e.g. "federal funding runs out"). Leave empty to hide the row on Home.',
+  },
+  {
+    key: 'deadline_date',
+    label: 'Deadline date',
+    description: 'YYYY-MM-DD. The row counts down to this date and disappears once it passes.',
+  },
+  {
+    key: 'deadline_note',
+    label: 'Deadline context',
+    description: 'One sentence shown when the row is opened. (e.g. "A stopgap law signed Sep 2 keeps the government open until Dec 11.")',
+  },
+  {
+    key: 'deadline_href',
+    label: 'Deadline link',
+    description: 'Where "Read the bill" goes, usually /bills/<id>.',
+  },
 ]
 
 interface Props {

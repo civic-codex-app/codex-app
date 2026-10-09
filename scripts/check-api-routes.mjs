@@ -69,6 +69,9 @@ const EXPECTED = {
   'annotations': { POST: 'auth', GET: 'public' },
   'auth/delete-account': { POST: 'auth' },
   'auth/signout': { POST: 'public' }, // signing out without a session is harmless
+  'ballot': { GET: 'public' }, // the races a ZIP votes in; the ballot is public information
+  'directory': { GET: 'public' }, // one state's delegation and governor, with next-election status
+  'feed/mine': { GET: 'public' }, // stored headlines naming a ZIP's officials; reads only
   'engagement': { POST: 'auth', GET: 'auth' },
   'issue-follow': { GET: 'owner', POST: 'auth' }, // GET answers anonymous with an empty list
   'issues/[slug]/stances': { GET: 'public' },

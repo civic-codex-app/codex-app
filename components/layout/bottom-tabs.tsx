@@ -32,19 +32,17 @@ const TABS = [
     ),
   },
   {
-    // Lands on /elections, not /ballot. /ballot calls getUser() and redirects
-    // signed-out visitors to /login, so pointing a primary tab at it puts a
-    // login wall behind one of five destinations for everyone who has not
-    // signed in. /elections is the public view of the same thing; /ballot is
-    // still in the match list so the tab stays lit once a signed-in user gets
-    // there.
-    href: '/elections',
+    // /ballot is public now — it resolves the visitor's ZIP on the client
+    // instead of calling getUser() and bouncing the signed-out to /login — so
+    // the tab can land on it. /elections stays in the match list for the
+    // national and per-race pages underneath.
+    href: '/ballot',
     label: 'Ballot',
     match: ['/ballot', '/elections', '/quiz', '/report-cards'],
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-        <circle cx="12" cy="12" r="3" />
+        <rect x="4" y="3" width="16" height="18" rx="2" />
+        <path d="M8.5 12l2.5 2.5L16 9.5" />
       </svg>
     ),
   },

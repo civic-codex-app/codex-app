@@ -7,6 +7,10 @@ import { rateLimit, WRITE_OP } from '@/lib/utils/rate-limit'
 const ALLOWED_KEYS = new Set([
   'site_name', 'site_tagline', 'site_description',
   'og_title', 'og_description', 'homepage_title', 'homepage_description',
+  // The home screen's "next deadline in Congress" row. Nothing in the schema
+  // records a statutory deadline, so an admin states it: what runs out, when
+  // (YYYY-MM-DD), one sentence of context, and the bill it comes from.
+  'deadline_label', 'deadline_date', 'deadline_note', 'deadline_href',
 ])
 
 const MAX_VALUE_LENGTH = 500

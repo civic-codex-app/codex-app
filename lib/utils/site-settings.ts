@@ -8,6 +8,11 @@ export interface SiteSettings {
   og_description: string
   homepage_title: string
   homepage_description: string
+  /** Home's "next deadline in Congress" row; empty strings hide it. */
+  deadline_label: string
+  deadline_date: string
+  deadline_note: string
+  deadline_href: string
 }
 
 const DEFAULTS: SiteSettings = {
@@ -21,6 +26,10 @@ const DEFAULTS: SiteSettings = {
   homepage_title: 'Poli — Know Your Politicians',
   homepage_description:
     'A nonpartisan civic transparency platform tracking 8,000+ U.S. officials. See where they stand on the issues, how they vote, who funds them, and what races are coming up.',
+  deadline_label: '',
+  deadline_date: '',
+  deadline_note: '',
+  deadline_href: '',
 }
 
 let cache: { settings: SiteSettings; fetchedAt: number } | null = null
@@ -57,6 +66,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       og_description: map.get('og_description') ?? DEFAULTS.og_description,
       homepage_title: map.get('homepage_title') ?? DEFAULTS.homepage_title,
       homepage_description: map.get('homepage_description') ?? DEFAULTS.homepage_description,
+      deadline_label: map.get('deadline_label') ?? '',
+      deadline_date: map.get('deadline_date') ?? '',
+      deadline_note: map.get('deadline_note') ?? '',
+      deadline_href: map.get('deadline_href') ?? '',
     }
 
     cache = { settings, fetchedAt: Date.now() }

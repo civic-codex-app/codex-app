@@ -1,274 +1,39 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
-import { STATE_NAMES } from '@/lib/constants/us-states'
-import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
-import { partyColor, partyLabel } from '@/lib/constants/parties'
-import { PartyIcon } from '@/components/icons/party-icons'
-import { AvatarImage } from '@/components/ui/avatar-image'
-import { fetchBallotRaces, raceGroup, type Race, type RaceGroup, type Candidate } from '@/lib/utils/fetch-ballot'
-import Link from 'next/link'
+import { AppShell } from '@/components/app/surface'
+import { BallotView } from '@/components/ballot/ballot-view'
+import { getNextElection, countdown } from '@/lib/utils/next-election'
 
-export const dynamic = 'force-dynamic'
+/**
+ * Your ballot.
+ *
+ * Prerendered: the page reads no cookies and no searchParams. The visitor's
+ * ZIP, and the races it votes in, resolve on the client (ballot-view.tsx),
+ * which is also what makes the page public — it used to call getUser() and
+ * redirect the signed-out to /login.
+ */
+export const revalidate = 1800
 
 export const metadata = {
-  title: 'Your Ballot Preview | Poli',
-  description: 'Preview your personal ballot — see every race and candidate based on your location, with stance comparisons and party info.',
+  title: 'Your Ballot | Poli',
+  description:
+    'The federal and governor races on your ballot, with the candidates confirmed against official filings.',
 }
 
-/* ── Page ─────────────────────────────────────────────────────────── */
-export default async function BallotPreviewPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect(`/login?redirectTo=${encodeURIComponent('/ballot')}`)
-  }
-
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('state, zip_code, city')
-    .eq('id', user.id)
-    .single()
-
-  const userState = profile?.state as string | null
-  const userZip = profile?.zip_code as string | null
-  const userCity = profile?.city as string | null
-  const stateName = userState ? STATE_NAMES[userState] ?? userState : null
-
-  // If no state set, show prompt
-  if (!userState) {
-    return (
-      <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-        <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Your Ballot Preview</h1>
-        <p className="mb-8 text-sm text-[var(--poli-sub)]">
-          See the races and candidates that will appear on your ballot.
-        </p>
-
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
-          <div className="mb-3">
-            <svg
-              className="mx-auto h-10 w-10 text-[var(--poli-faint)]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-          </div>
-          <p className="mb-2 text-sm font-medium text-[var(--poli-text)]">
-            Location needed
-          </p>
-          <p className="mb-6 text-sm text-[var(--poli-sub)]">
-            Set your state and zip code to see your personalized ballot.
-          </p>
-          <Link
-            href="/account"
-            className="rounded-md bg-[var(--poli-badge-bg)] px-5 py-2.5 text-sm font-medium text-[var(--poli-text)] no-underline transition-colors hover:bg-[var(--poli-hover)]"
-          >
-            Update Profile
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
-  // Look up user's congressional district from zip
-  let userDistrict: string | null = null
-  if (userZip) {
-    try {
-      const zipMap = (await import('@/lib/data/zip-to-district.json')).default as Record<string, { state: string; district: string }[]>
-      const entries = zipMap[userZip]
-      if (entries && entries.length > 0) {
-        userDistrict = entries[0].district
-      }
-    } catch {
-      // zip-to-district.json may not exist
-    }
-  }
-
-  const races = await fetchBallotRaces(userState, userDistrict, userCity)
-
-  // Group races by category
-  const grouped: Record<RaceGroup, Race[]> = {
-    Federal: [],
-    State: [],
-    Local: [],
-  }
-
-  for (const race of races) {
-    const group = raceGroup(race.chamber)
-    grouped[group].push(race)
-  }
-
-  const groups: RaceGroup[] = ['Federal', 'State', 'Local']
+export default async function BallotPage() {
+  const election = await getNextElection()
+  const c = election ? countdown(election.date) : null
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-      <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Your Ballot Preview</h1>
-      <p className="mb-1 text-sm text-[var(--poli-sub)]">
-        Races and candidates for {stateName}
-        {userZip ? ` (${userZip})` : ''}
-      </p>
-      <p className="mb-8 text-xs text-[var(--poli-faint)]">
-        Based on your profile location. <Link href="/account" className="underline hover:text-[var(--poli-text)]">Update</Link>
-      </p>
-
-      {races.length === 0 ? (
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
-          <p className="mb-2 text-sm font-medium text-[var(--poli-text)]">
-            No upcoming races found
-          </p>
-          <p className="text-sm text-[var(--poli-sub)]">
-            There are no active elections with races in {stateName} right now.
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-10">
-          {groups.map((groupName) => {
-            const groupRaces = grouped[groupName]
-            if (groupRaces.length === 0) return null
-
-            return (
-              <section key={groupName}>
-                <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
-                  {groupName} Races
-                  <span className="ml-2 text-[var(--poli-faint)]">({groupRaces.length})</span>
-                </h2>
-
-                <div className="space-y-3">
-                  {groupRaces.map((race) => (
-                    <BallotRaceCard key={race.id} race={race} />
-                  ))}
-                </div>
-              </section>
-            )
-          })}
-        </div>
-      )}
-    </div>
-  )
-}
-
-/* ── Race Card ────────────────────────────────────────────────────── */
-function BallotRaceCard({ race }: { race: Race }) {
-  const chamberLabel =
-    CHAMBER_LABELS[race.chamber as ChamberKey] ?? race.chamber
-
-  return (
-    <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
-      {/* Header */}
-      <div className="border-b border-[var(--poli-border)] px-5 py-3">
-        <div className="mb-1 flex items-center gap-2">
-          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[11px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
-            {chamberLabel}
-          </span>
-          {race.district && (
-            <span className="text-[11px] text-[var(--poli-faint)]">
-              District {race.district}
-            </span>
-          )}
-        </div>
-        <h3 className="text-base font-semibold text-[var(--poli-text)]">
-          {race.name}
-        </h3>
-        {race.election_date && (
-          <p className="mt-0.5 text-[11px] text-[var(--poli-faint)]">
-            {race.election_name} &middot;{' '}
-            {new Date(race.election_date + 'T00:00:00').toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            })}
-          </p>
+    <AppShell>
+      <div className="mx-auto max-w-[560px] px-4 pt-5">
+        {c ? (
+          <BallotView days={c.days} when={c.long} />
+        ) : (
+          <>
+            <h1 className="font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">Your ballot</h1>
+            <p className="mt-2 text-[14.5px] text-[var(--poli-sub)]">No upcoming election is on record yet.</p>
+          </>
         )}
       </div>
-
-      {/* Candidates */}
-      {race.candidates.length > 0 ? (
-        <div className="divide-y divide-[var(--poli-border)]">
-          {race.candidates.map((candidate) => (
-            <CandidateRow key={candidate.id} candidate={candidate} />
-          ))}
-        </div>
-      ) : (
-        <div className="px-5 py-6 text-center text-sm text-[var(--poli-faint)]">
-          {/* "Filed" is a legal act with a deadline. We only know our own
-              table is empty, so say that instead. */}
-          No candidates on record for this race yet
-        </div>
-      )}
-    </div>
-  )
-}
-
-/* ── Candidate Row ────────────────────────────────────────────────── */
-function CandidateRow({ candidate }: { candidate: Candidate }) {
-  const href = candidate.politician_slug
-    ? `/politicians/${candidate.politician_slug}`
-    : `/candidates/${candidate.id}`
-
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-3 px-5 py-3 no-underline transition-colors hover:bg-[var(--poli-hover)]"
-    >
-      {/* Avatar */}
-      <div
-        className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full"
-        style={{ boxShadow: `0 0 0 2px ${partyColor(candidate.party)}` }}
-      >
-        <AvatarImage
-          src={candidate.image_url}
-          alt={candidate.name}
-          size={36}
-          fallbackColor={partyColor(candidate.party)}
-          party={candidate.party}
-        />
-      </div>
-
-      {/* Info */}
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <span className="truncate text-sm font-medium text-[var(--poli-text)]">
-            {candidate.name}
-          </span>
-          {candidate.is_incumbent && (
-            <span className="rounded-sm bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
-              Incumbent
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-2 text-xs text-[var(--poli-sub)]">
-          <PartyIcon party={candidate.party} size={10} />
-          {candidate.stance_count > 0 && (
-            <>
-              <span className="text-[var(--poli-faint)]">&middot;</span>
-              <span className="text-[var(--poli-faint)]">
-                {candidate.stance_count} stance{candidate.stance_count !== 1 ? 's' : ''} on record
-              </span>
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* Arrow */}
-      <svg
-        className="h-4 w-4 flex-shrink-0 text-[var(--poli-faint)]"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <polyline points="9 18 15 12 9 6" />
-      </svg>
-    </Link>
+    </AppShell>
   )
 }

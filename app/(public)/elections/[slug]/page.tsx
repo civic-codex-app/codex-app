@@ -1,15 +1,11 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { AvatarImage } from '@/components/ui/avatar-image'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
-import { PartyIcon } from '@/components/icons/party-icons'
-import { partyColor, partyLabel } from '@/lib/constants/parties'
-import { CHAMBER_LABELS } from '@/lib/constants/chambers'
-import { computeAlignment, alignmentMeta } from '@/lib/utils/alignment'
+import { AppShell } from '@/components/app/surface'
+import { partyColor } from '@/lib/constants/parties'
 import { RaceComparison } from '@/components/elections/race-comparison'
-
-export const dynamic = 'force-dynamic'
+import { RaceView, type RaceCandidate, type RaceFinance } from '@/components/elections/race-view'
 import { ElectionCountdown } from '@/components/elections/election-countdown'
 import type {
   RaceDetailRow,
@@ -17,17 +13,11 @@ import type {
   ElectionJoin,
   ElectionStanceRow,
 } from '@/lib/types/supabase'
-import { CHAMBER_EXPLAINERS } from '@/lib/data/educational-content'
+
+export const dynamic = 'force-dynamic'
 
 interface PageProps {
   params: Promise<{ slug: string }>
-}
-
-const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
-  running: { bg: 'bg-green-500/20', text: 'text-green-500', label: 'Running' },
-  withdrawn: { bg: 'bg-yellow-500/20', text: 'text-yellow-500', label: 'Withdrawn' },
-  won: { bg: 'bg-blue-500/20', text: 'text-blue-500', label: 'Won' },
-  lost: { bg: 'bg-red-500/20', text: 'text-red-500', label: 'Lost' },
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -117,7 +107,6 @@ export default async function RaceDetailPage({ params }: PageProps) {
 
   const candidateList = (candidates ?? []) as any as CandidateRow[]
   const election = race.elections as ElectionJoin | null
-  const chamberLabel = CHAMBER_LABELS[race.chamber as keyof typeof CHAMBER_LABELS] ?? race.chamber
 
   // Fetch stances for candidates that have politician profiles
   const polIds = candidateList
@@ -138,19 +127,48 @@ export default async function RaceDetailPage({ params }: PageProps) {
     }
   }
 
-  const electionDate = election?.election_date
-    ? new Date(election.election_date + 'T00:00:00').toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
-    : null
-
-  // Party breakdown
-  const partyGroups: Record<string, number> = {}
-  for (const c of candidateList) {
-    partyGroups[c.party] = (partyGroups[c.party] || 0) + 1
+  // Money for the head-to-head: only politicians whose current office is the
+  // office on the ballot, only this election's cycle. See RaceView for why.
+  const electionYear = election?.election_date?.slice(0, 4) ?? null
+  const sameOfficeIds = candidateList
+    .filter((c) => c.politician && (c.politician as any).chamber === race.chamber)
+    .map((c) => c.politician!.id)
+  const finance: Record<string, RaceFinance> = {}
+  if (electionYear && sameOfficeIds.length > 0) {
+    const { data: rows } = await supabase
+      .from('campaign_finance')
+      .select('politician_id, cycle, total_raised, cash_on_hand, source')
+      .in('politician_id', sameOfficeIds)
+      .eq('cycle', electionYear)
+    for (const r of (rows ?? []) as Array<{ politician_id: string; cycle: string; total_raised: number | null; cash_on_hand: number | null; source: string | null }>) {
+      finance[r.politician_id] = { cycle: r.cycle, total_raised: r.total_raised, cash_on_hand: r.cash_on_hand, source: r.source }
+    }
   }
+
+  // Side-by-side issue comparison for linked candidates with stances
+  const stancesByCandidate = new Map<string, Array<{ stance: string; issues: { slug: string; name: string; icon?: string } }>>()
+  for (const c of candidateList) {
+    if (c.politician?.id) {
+      const polStances = stancesByPol.get(c.politician.id) ?? []
+      if (polStances.length) {
+        stancesByCandidate.set(c.id, polStances.map((s: any) => ({
+          stance: s.stance,
+          issues: s.issues ?? { slug: '', name: '' },
+        })))
+      }
+    }
+  }
+  const compCandidates = candidateList
+    .filter((c) => c.status === 'running' && stancesByCandidate.has(c.id))
+    .map((c) => ({
+      id: c.id,
+      name: c.name,
+      party: c.party,
+      politician: c.politician ? { id: c.politician.id, slug: c.politician.slug } : null,
+    }))
+  const comparison = compCandidates.length >= 2
+    ? <RaceComparison candidates={compCandidates} stancesByCandidate={stancesByCandidate} />
+    : null
 
   // JSON-LD structured data for individual race
   const raceJsonLd = {
@@ -162,302 +180,53 @@ export default async function RaceDetailPage({ params }: PageProps) {
     url: `https://getpoli.app/elections/${slug}`,
   }
 
+  const incumbent = race.incumbent
+    ? {
+        id: (race.incumbent as any).id as string,
+        name: race.incumbent.name,
+        slug: race.incumbent.slug,
+        party: (race.incumbent as any).party as string,
+        image_url: race.incumbent.image_url,
+      }
+    : null
+
+  const viewCandidates: RaceCandidate[] = candidateList.map((c) => ({
+    id: c.id,
+    name: c.name,
+    party: c.party,
+    status: c.status,
+    is_incumbent: !!c.is_incumbent,
+    image_url: c.image_url,
+    politician: c.politician
+      ? { id: c.politician.id, slug: c.politician.slug, image_url: c.politician.image_url, chamber: (c.politician as any).chamber }
+      : null,
+  }))
+
   return (
-    <>
+    <AppShell>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(raceJsonLd) }}
       />
-      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
+      <div className="mx-auto max-w-[560px] px-4 pt-3">
         <Link
-          href="/elections"
-          className="mb-8 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
+          href="/ballot"
+          className="mb-2 inline-flex h-11 items-center gap-1 text-[14px] font-semibold text-[var(--poli-sub)] no-underline"
         >
-          &larr; Back to elections
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          Your ballot
         </Link>
-
-        {/* Badges */}
-        <div className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
-            {chamberLabel}
-          </span>
-          <span className="rounded-sm bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] uppercase tracking-[0.08em] text-[var(--poli-badge-text)]">
-            {race.state}
-            {race.district ? ` - District ${race.district}` : ''}
-          </span>
-          {electionDate && (
-            <span className="text-[11px] text-[var(--poli-faint)]">{electionDate}</span>
-          )}
-        </div>
-
-        <h1 className="mb-3 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
-          {race.name}
-        </h1>
-
-        {CHAMBER_EXPLAINERS[race.chamber] && (
-          <p className="mb-4 text-[12px] leading-[1.5] text-[var(--poli-faint)]">
-            {CHAMBER_EXPLAINERS[race.chamber]}
-          </p>
-        )}
-
-        {election?.election_date && (
-          <div className="mb-4">
-            <ElectionCountdown electionDate={election.election_date} />
-          </div>
-        )}
-
-        {race.description && (
-          <p className="mb-6 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
-            {race.description}
-          </p>
-        )}
-
-        {/* Party breakdown bar */}
-        {candidateList.length > 1 && (
-          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
-            <div className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">
-              Party Breakdown
-            </div>
-            <div className="mb-2 flex h-3 overflow-hidden rounded-full">
-              {Object.entries(partyGroups).map(([party, count]) => (
-                <div
-                  key={party}
-                  className="transition-all"
-                  style={{
-                    width: `${(count / candidateList.length) * 100}%`,
-                    background: partyColor(party),
-                    opacity: 0.7,
-                  }}
-                />
-              ))}
-            </div>
-            <div className="flex gap-4">
-              {Object.entries(partyGroups).map(([party, count]) => (
-                <div key={party} className="flex items-center gap-1.5">
-                  <PartyIcon party={party} size={10} />
-                  <span className="text-[11px]" style={{ color: partyColor(party) }}>
-                    {count}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Side-by-side issue comparison */}
-        {candidateList.length >= 2 && (() => {
-          // Build stances by candidate ID (using politician stances for linked candidates)
-          const stancesByCandidate = new Map<string, Array<{ stance: string; issues: { slug: string; name: string; icon?: string } }>>()
-          for (const c of candidateList) {
-            if (c.politician?.id) {
-              const polStances = stancesByPol.get(c.politician.id) ?? []
-              stancesByCandidate.set(c.id, polStances.map((s: any) => ({
-                stance: s.stance,
-                issues: s.issues ?? { slug: '', name: '' },
-              })))
-            }
-          }
-          const compCandidates = candidateList
-            .filter((c) => stancesByCandidate.has(c.id) && (stancesByCandidate.get(c.id)?.length ?? 0) > 0)
-            .map((c) => ({
-              id: c.id,
-              name: c.name,
-              party: c.party,
-              politician: c.politician ? { id: c.politician.id, slug: c.politician.slug } : null,
-            }))
-          return compCandidates.length >= 2 ? (
-            <RaceComparison candidates={compCandidates} stancesByCandidate={stancesByCandidate} />
-          ) : null
-        })()}
-
-        {/* Candidates */}
-        <section className="mb-10">
-          <h2 className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
-            Candidates
-            <span className="text-[var(--poli-faint)]">{candidateList.length}</span>
-          </h2>
-
-          {/* Provenance. 526 of 531 candidate rows are seed-generated with
-              is_verified = false, produced by assuming every incumbent seeks
-              reelection -- so a list showing only the incumbent means "we have
-              not confirmed the field", not "the incumbent is unopposed". Say
-              which one it is rather than letting the reader assume. */}
-          {candidateList.length > 0 && candidateList.every((c) => !c.is_verified) && (
-            <p className="mb-4 rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] leading-relaxed text-[var(--poli-faint)] bg-[var(--poli-card)]">
-              This candidate list is unconfirmed and may be incomplete. It has
-              not been checked against state filing records, so challengers may
-              be missing.
-            </p>
-          )}
-
-          {candidateList.length > 0 ? (
-            <div className="space-y-4">
-              {candidateList.map((candidate) => {
-                const pol = candidate.politician
-                const status = STATUS_CONFIG[candidate.status] ?? STATUS_CONFIG.running
-                const color = partyColor(candidate.party)
-                const polStances = pol ? (stancesByPol.get(pol.id) ?? []) : []
-                const alignment = pol && polStances.length > 0
-                  ? computeAlignment(candidate.party, polStances)
-                  : -1
-                const meta = alignment >= 0 ? alignmentMeta(alignment, candidate.party) : null
-
-                const supports = polStances.filter((s) => ['strongly_supports', 'supports', 'leans_support'].includes(s.stance)).length
-                const opposes = polStances.filter((s) => ['strongly_opposes', 'opposes', 'leans_oppose'].includes(s.stance)).length
-                const mixed = polStances.filter((s) => ['mixed', 'neutral'].includes(s.stance)).length
-                const totalStances = supports + opposes + mixed
-
-                return (
-                  <div
-                    key={candidate.id}
-                    className="overflow-hidden rounded-xl border border-[var(--poli-border)] transition-all duration-200 bg-[var(--poli-card)]"
-                    style={{ backgroundColor: `${color}06` }}
-                  >
-                    <div className="p-5">
-                      <div className="flex items-start gap-4">
-                        {/* Avatar */}
-                        <div
-                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
-                          style={{ boxShadow: `0 0 0 2px ${color}` }}
-                        >
-                          <AvatarImage
-                            src={candidate.image_url || pol?.image_url || null}
-                            alt={candidate.name}
-                            size={64}
-                            party={candidate.party}
-                            fallbackColor={color}
-                          />
-                        </div>
-
-                        {/* Info */}
-                        <div className="flex-1">
-                          <div className="mb-1 flex flex-wrap items-center gap-2">
-                            {pol ? (
-                              <Link
-                                href={`/politicians/${pol.slug}`}
-                                className="text-lg font-semibold transition-colors hover:text-[var(--poli-text)]"
-                              >
-                                {candidate.name}
-                              </Link>
-                            ) : (
-                              <Link
-                                href={`/candidates/${candidate.id}`}
-                                className="text-lg font-semibold transition-colors hover:text-[var(--poli-text)]"
-                              >
-                                {candidate.name}
-                              </Link>
-                            )}
-                            <PartyIcon party={candidate.party} size={14} />
-                            {candidate.is_incumbent && (
-                              <span className="rounded-sm bg-[var(--poli-badge-bg)] px-1.5 py-0.5 text-[9px] uppercase tracking-[0.06em] text-[var(--poli-badge-text)]">
-                                Incumbent
-                              </span>
-                            )}
-                            <span
-                              className={`rounded-sm px-1.5 py-0.5 text-[9px] uppercase tracking-[0.06em] ${status.bg} ${status.text}`}
-                            >
-                              {status.label}
-                            </span>
-                          </div>
-
-                          {pol?.title && (
-                            <div className="mb-2 text-[12px] text-[var(--poli-faint)]">
-                              {pol.title} &middot; {pol.state}
-                            </div>
-                          )}
-
-                          {(candidate.bio || pol?.bio) && (
-                            <p className="mb-3 line-clamp-2 text-[12px] leading-[1.6] text-[var(--poli-sub)]">
-                              {candidate.bio || pol?.bio}
-                            </p>
-                          )}
-
-                          {/* Stance bar + alignment for linked politicians */}
-                          {totalStances > 0 && (
-                            <div className="mb-2 flex items-center gap-3">
-                              <div className="flex h-[5px] w-24 overflow-hidden rounded-full bg-[var(--poli-border)]">
-                                {supports > 0 && (
-                                  <div style={{ width: `${(supports / totalStances) * 100}%`, background: '#3B82F6', opacity: 0.7 }} />
-                                )}
-                                {mixed > 0 && (
-                                  <div style={{ width: `${(mixed / totalStances) * 100}%`, background: '#A855F7', opacity: 0.7 }} />
-                                )}
-                                {opposes > 0 && (
-                                  <div style={{ width: `${(opposes / totalStances) * 100}%`, background: '#EF4444', opacity: 0.7 }} />
-                                )}
-                              </div>
-                              <span className="text-[10px] tabular-nums text-[var(--poli-faint)]">
-                                {totalStances} issues
-                              </span>
-                              {alignment >= 0 && meta && (
-                                <>
-                                  <span className="text-[var(--poli-border)]">&middot;</span>
-                                  <span
-                                    className="rounded-sm px-1.5 py-0.5 text-[10px] uppercase tracking-[0.06em]"
-                                    style={{ color: meta.color, background: meta.bgColor }}
-                                  >
-                                    {alignment}% aligned
-                                  </span>
-                                </>
-                              )}
-                            </div>
-                          )}
-
-                          <div className="flex items-center gap-3">
-                            {pol ? (
-                              <Link
-                                href={`/politicians/${pol.slug}`}
-                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
-                              >
-                                View full profile &rarr;
-                              </Link>
-                            ) : (
-                              <Link
-                                href={`/candidates/${candidate.id}`}
-                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
-                              >
-                                View profile &rarr;
-                              </Link>
-                            )}
-                            {candidate.website_url && (
-                              <a
-                                href={candidate.website_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
-                              >
-                                Campaign website &rarr;
-                              </a>
-                            )}
-                            {pol && candidateList.length > 1 && (
-                              <Link
-                                href={`/compare?a=${pol.slug}&b=${candidateList.find((c) => c.politician?.slug && c.politician.slug !== pol.slug)?.politician?.slug ?? ''}`}
-                                className="text-[11px] text-[var(--poli-faint)] transition-colors hover:text-[var(--poli-text)]"
-                              >
-                                Compare &rarr;
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          ) : (
-            <div className="py-12 text-center text-[var(--poli-faint)]">
-              {/* Describes our data, not the world's. 172 races carry no
-                  candidate rows, and the seed never generated challengers --
-                  asserting nobody has announced would be a claim we cannot
-                  support, especially where filing deadlines have passed. */}
-              <div className="mb-2 text-lg font-semibold">No candidates on record yet</div>
-              <div className="text-sm">We don&rsquo;t have a candidate list for this race</div>
-            </div>
-          )}
-        </section>
+        <RaceView
+          race={{ name: race.name, slug: race.slug, state: race.state, chamber: race.chamber, district: race.district ?? null, description: race.description ?? null }}
+          electionDate={election?.election_date ?? null}
+          incumbent={incumbent}
+          candidates={viewCandidates}
+          finance={finance}
+          comparison={comparison}
+          unverified={candidateList.length > 0 && candidateList.every((c) => !c.is_verified)}
+        />
       </div>
-    </>
+    </AppShell>
   )
 }
 
@@ -508,7 +277,6 @@ async function renderStateElection(
 
   const racesWithCandidates = Object.values(grouped).reduce((sum, arr) => sum + arr.length, 0)
 
-  const stateCode = election.slug.split('-')[0]?.toUpperCase()
   const electionDate = new Date(election.election_date + 'T00:00:00').toLocaleDateString('en-US', {
     month: 'long', day: 'numeric', year: 'numeric',
   })
@@ -524,27 +292,28 @@ async function renderStateElection(
   }
 
   return (
-    <>
+    <AppShell>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(electionJsonLd) }}
       />
-      <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
+      <div className="mx-auto max-w-[560px] px-4 pt-3">
         <Link
           href="/elections"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-[var(--poli-sub)] transition-colors hover:text-[var(--poli-text)]"
+          className="mb-2 inline-flex h-11 items-center gap-1 text-[14px] font-semibold text-[var(--poli-sub)] no-underline"
         >
-          &larr; All states
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+          All states
         </Link>
 
-        <h1 className="mb-2 font-serif text-[clamp(30px,4vw,40px)] font-normal leading-[1.08]">
+        <h1 className="font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">
           {election.name}
         </h1>
-        <p className="mb-4 text-[14px] text-[var(--poli-sub)]">
+        <p className="mb-4 mt-1 text-[14px] text-[var(--poli-sub)]">
           {electionDate} · {racesWithCandidates} race{racesWithCandidates !== 1 ? 's' : ''}
         </p>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <ElectionCountdown electionDate={election.election_date} />
         </div>
 
@@ -556,24 +325,24 @@ async function renderStateElection(
             const label = CHAMBER_DISPLAY[chamber] || chamber
 
             return (
-              <section key={chamber} className="mb-10">
-                <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
+              <section key={chamber} className="mb-6">
+                <h2 className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
                   {label} · {races.length} race{races.length !== 1 ? 's' : ''}
                 </h2>
-                <div className="space-y-2">
-                  {races.map((race: any) => {
+                <div className="rounded-2xl border border-[var(--poli-border)] bg-[var(--poli-card)] px-4">
+                  {races.map((race: any, i: number) => {
                     const candidates = race.candidates ?? []
                     return (
                       <Link
                         key={race.id}
                         href={`/elections/${race.slug}`}
-                        className="flex items-center justify-between rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
+                        className={`flex min-h-[60px] items-center justify-between gap-3 no-underline ${i < races.length - 1 ? 'border-b border-[var(--poli-border)]' : ''}`}
                       >
-                        <div>
-                          <div className="text-[14px] font-medium text-[var(--poli-text)]">
+                        <div className="min-w-0">
+                          <div className="text-[15px] font-semibold text-[var(--poli-text)]">
                             {race.name}
                           </div>
-                          <div className="mt-1 flex items-center gap-2 text-[12px] text-[var(--poli-faint)]">
+                          <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12.5px] text-[var(--poli-sub)]">
                             {candidates.slice(0, 3).map((c: any) => (
                               <span key={c.id} className="flex items-center gap-1">
                                 <span
@@ -584,18 +353,13 @@ async function renderStateElection(
                               </span>
                             ))}
                             {candidates.length > 3 && (
-                              <span className="text-[var(--poli-faint)]">+{candidates.length - 3} more</span>
+                              <span>+{candidates.length - 3} more</span>
                             )}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="rounded bg-[var(--poli-badge-bg)] px-2 py-0.5 text-[10px] text-[var(--poli-faint)]">
-                            {candidates.length} candidate{candidates.length !== 1 ? 's' : ''}
-                          </span>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--poli-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="9 18 15 12 9 6" />
-                          </svg>
-                        </div>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--poli-faint)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0">
+                          <path d="M9 6l6 6-6 6" />
+                        </svg>
                       </Link>
                     )
                   })}
@@ -610,6 +374,6 @@ async function renderStateElection(
           </div>
         )}
       </div>
-    </>
+    </AppShell>
   )
 }

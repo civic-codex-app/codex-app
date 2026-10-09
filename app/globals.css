@@ -471,3 +471,16 @@ html {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Quiet-screen motion ──
+   The bottom sheet, its scrim, and the Arrival wall of faces. Durations and
+   easings are the tokens above; reduced-motion turns all three off. */
+@keyframes poli-sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes poli-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes poli-wall { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+.poli-sheet { animation: poli-sheet-up var(--dur-4) var(--ease-sheet) both; }
+.poli-fade { animation: poli-fade-in var(--dur-3) ease-out both; }
+.poli-wall-col { animation-name: poli-wall; animation-timing-function: linear; animation-iteration-count: infinite; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .poli-sheet, .poli-fade, .poli-wall-col { animation: none; }
+}
