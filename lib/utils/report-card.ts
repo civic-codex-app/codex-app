@@ -116,7 +116,7 @@ export function computeReportCard(input: ReportCardInput): ReportCard {
   } else {
     effectiveness = 50
     if (committees.length > 0) {
-      let base = Math.min(committees.length * 15, 60)
+      const base = Math.min(committees.length * 15, 60)
       let bonus = 0
       for (const c of committees) {
         const role = (c.role ?? '').toLowerCase()

@@ -191,7 +191,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function gatherStats(
   supabase: ReturnType<typeof createServiceRoleClient>,
   userId: string,

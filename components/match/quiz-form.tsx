@@ -348,7 +348,7 @@ export function QuizForm({ issues }: Props) {
       {/* Progress */}
       <div className="mb-2 flex items-center justify-between text-[12px] font-medium text-[var(--poli-sub)]">
         <span className="uppercase tracking-[0.1em]">Question {currentStep + 1} of {total}</span>
-        <span>{answeredCount} answered · skip any you're unsure about</span>
+        <span>{answeredCount} answered · skip any you&apos;re unsure about</span>
       </div>
       <div className="mb-6 h-1 w-full overflow-hidden rounded-full bg-[var(--poli-border)]">
         <div

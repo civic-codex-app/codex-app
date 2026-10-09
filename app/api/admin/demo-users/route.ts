@@ -24,7 +24,7 @@ export async function DELETE() {
   const supabase = createServiceRoleClient()
 
   // Find all demo profiles
-  let allDemos: { id: string }[] = []
+  const allDemos: { id: string }[] = []
   let from = 0
   while (true) {
     const { data } = await supabase

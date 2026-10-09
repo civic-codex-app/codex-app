@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { MESSAGE_TEMPLATES, type MessageTemplate } from '@/lib/data/message-templates'
 
 interface AskYourRepProps {
@@ -32,7 +32,9 @@ export function AskYourRep({
   const templates = selectedIssue ? (MESSAGE_TEMPLATES[selectedIssue] ?? []) : []
   const activeTemplate: MessageTemplate | null = templates[selectedTemplateIdx] ?? null
 
-  const handleCopy = useCallback(async () => {
+  // No useCallback: the React Compiler could not preserve the manual memo
+  // (activeTemplate is derived each render) and memoizes this itself.
+  const handleCopy = async () => {
     if (!activeTemplate) return
     const subject = fillTemplate(activeTemplate.subject, politicianName, state)
     const body = fillTemplate(activeTemplate.body, politicianName, state)
@@ -54,7 +56,7 @@ export function AskYourRep({
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
-  }, [activeTemplate, politicianName, state])
+  }
 
   const hasContactLinks = websiteUrl || twitterUrl || facebookUrl
 

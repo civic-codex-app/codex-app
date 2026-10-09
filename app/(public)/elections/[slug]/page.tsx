@@ -124,7 +124,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
     .map((c) => c.politician?.id)
     .filter(Boolean) as string[]
 
-  let stancesByPol = new Map<string, ElectionStanceRow[]>()
+  const stancesByPol = new Map<string, ElectionStanceRow[]>()
   if (polIds.length > 0) {
     const { data: stances, error: stancesError } = await supabase
       .from('politician_issues')

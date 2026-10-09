@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { partyColor } from '@/lib/constants/parties'
 import { STANCE_NUMERIC, MAX_STANCE_VALUE, stanceStyle, stanceDisplayBadge } from '@/lib/utils/stances'
 import { IssueIcon } from '@/components/icons/issue-icon'
@@ -79,8 +79,10 @@ export function IssueRadar({ politician1, politician2, issues }: IssueRadarProps
   const color1 = partyColor(politician1.party)
   const color2 = partyColor(politician2.party)
 
-  const polygon1 = useMemo(() => buildPolygonPoints(politician1.stances), [politician1.stances, issues])
-  const polygon2 = useMemo(() => buildPolygonPoints(politician2.stances), [politician2.stances, issues])
+  // Plain calls: the useMemo here omitted buildPolygonPoints from its deps,
+  // and the React Compiler memoizes derived values without being asked.
+  const polygon1 = buildPolygonPoints(politician1.stances)
+  const polygon2 = buildPolygonPoints(politician2.stances)
 
   return (
     <div className="w-full">

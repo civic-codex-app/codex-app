@@ -97,11 +97,10 @@ export default async function IssuesPage() {
     else if (opposeStances.has(row.stance)) agg.opposes += row.n
   }
 
-  let totalStances = 0
+  const totalStances = issues.reduce((n, issue) => n + (issueStats.get(issue.id)?.total ?? 0), 0)
   const cards: IssueCard[] = issues.map((issue) => {
     const a = issueStats.get(issue.id)!
     a.mixed = a.total - a.supports - a.opposes
-    totalStances += a.total
     return {
       id: issue.id,
       slug: issue.slug,

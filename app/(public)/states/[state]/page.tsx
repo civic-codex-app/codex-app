@@ -286,7 +286,7 @@ export default async function StateDetailPage({ params }: PageProps) {
             </div>
 
             <p className="-mt-3 mb-6 text-[11px] text-[var(--poli-faint)]">
-              Each politician's most recent FEC cycle on file. FEC covers federal candidates only.
+              Each politician&apos;s most recent FEC cycle on file. FEC covers federal candidates only.
             </p>
 
             {topFundraisers.length > 0 && (
