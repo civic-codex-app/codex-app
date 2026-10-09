@@ -233,7 +233,7 @@ for (const { row, m, start, end } of plan.former) {
 for (const { row, c } of plan.candidate) {
   const year = Math.max(...c.election_years)
   const office = c.office === 'S' ? 'U.S. Senate' : (TERRITORY[row.state] ? TERRITORY[row.state] : 'U.S. House')
-  const d = c.office === 'S' ? row.state : seat(row.state, c.district)
+  const d = c.office === 'S' ? row.state : seat(row.state, Number(c.district))
   await write(row, {
     title: `Candidate for ${office}, ${year} (${d})`,
     bio: `${c.party === 'DEM' ? 'Democratic' : c.party === 'REP' ? 'Republican' : c.party} candidate for ${office}${c.office === 'H' ? ` in ${d}` : ''}, ${c.election_years.join(', ')}. Not a member of Congress.`,
