@@ -145,7 +145,7 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
           {step === 1 && (
             <div className="space-y-6">
               <div className="text-center">
-                <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
+                <h1 className="mb-2 font-serif text-[28px] font-normal leading-[1.12] text-[var(--poli-text)]">
                   Where do you live?
                 </h1>
                 <p className="text-sm text-[var(--poli-sub)]">
@@ -193,7 +193,7 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
           {step === 2 && (
             <div className="space-y-6">
               <div className="text-center">
-                <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
+                <h1 className="mb-2 font-serif text-[28px] font-normal leading-[1.12] text-[var(--poli-text)]">
                   What issues matter to you?
                 </h1>
                 <p className="text-sm text-[var(--poli-sub)]">
@@ -259,7 +259,7 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
           {step === 3 && (
             <div className="space-y-6">
               <div className="text-center">
-                <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
+                <h1 className="mb-2 font-serif text-[28px] font-normal leading-[1.12] text-[var(--poli-text)]">
                   See who represents you
                 </h1>
                 <p className="mx-auto max-w-sm text-sm leading-relaxed text-[var(--poli-sub)]">
@@ -278,7 +278,7 @@ export function OnboardingWizard({ profileId }: { profileId: string }) {
                 <button
                   type="button"
                   onClick={() => router.push('/dashboard')}
-                  className="w-full rounded-md border border-[var(--poli-border)] px-4 py-2 text-sm text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+                  className="w-full rounded-md border border-[var(--poli-border)] px-4 py-2 text-sm text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
                 >
                   Skip for now
                 </button>

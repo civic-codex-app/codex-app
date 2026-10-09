@@ -23,7 +23,7 @@ export default async function UserComparePage({ searchParams }: PageProps) {
       <>
         <main id="main-content" className="mx-auto max-w-[800px] px-6 pb-16 pt-6 md:px-10">
           <div className="py-20 text-center">
-            <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
+            <h1 className="mb-2 font-serif text-[28px] font-normal leading-[1.12] text-[var(--poli-text)]">
               Compare Voters
             </h1>
             <p className="mb-4 text-[14px] text-[var(--poli-sub)]">
@@ -56,7 +56,7 @@ export default async function UserComparePage({ searchParams }: PageProps) {
       <>
         <main id="main-content" className="mx-auto max-w-[800px] px-6 pb-16 pt-6 md:px-10">
           <div className="py-20 text-center">
-            <h1 className="mb-2 text-2xl font-bold text-[var(--poli-text)]">
+            <h1 className="mb-2 font-serif text-[28px] font-normal leading-[1.12] text-[var(--poli-text)]">
               Voter not found
             </h1>
             <p className="mb-4 text-[14px] text-[var(--poli-sub)]">
@@ -175,7 +175,7 @@ export default async function UserComparePage({ searchParams }: PageProps) {
             </svg>
             Community
           </Link>
-          <h1 className="mb-2 text-[clamp(24px,3vw,36px)] font-bold leading-[1.1]">
+          <h1 className="mb-2 font-serif text-[clamp(28px,3vw,36px)] font-normal leading-[1.08]">
             Voter Comparison
           </h1>
           <p className="text-[14px] text-[var(--poli-sub)]">

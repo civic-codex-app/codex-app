@@ -50,7 +50,7 @@ export function SurpriseMatches({ matches }: SurpriseMatchesProps) {
           </div>
         </button>
       ) : (
-        <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)]">
+        <div className="divide-y divide-[var(--poli-border)] rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
           {matches.map((m) => (
             <Link
               key={m.id}
@@ -59,7 +59,7 @@ export function SurpriseMatches({ matches }: SurpriseMatchesProps) {
             >
               <div
                 className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full"
-                style={{ border: `2px solid ${partyColor(m.party)}33` }}
+                style={{ boxShadow: `0 0 0 2px ${partyColor(m.party)}` }}
               >
                 <AvatarImage
                   src={m.image_url}

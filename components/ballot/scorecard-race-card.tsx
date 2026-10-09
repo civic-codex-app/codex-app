@@ -104,7 +104,7 @@ function ScorecardCandidateRow({
         {/* Avatar */}
         <div
           className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full"
-          style={{ border: `2px solid ${partyColor(candidate.party)}33` }}
+          style={{ boxShadow: `0 0 0 2px ${partyColor(candidate.party)}` }}
         >
           <AvatarImage
             src={candidate.image_url}

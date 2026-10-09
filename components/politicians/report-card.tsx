@@ -137,7 +137,7 @@ export function PoliticianReportCard({
         <div>
           <div
             className="mb-1 inline-block rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em]"
-            style={{ color, background: `${color}15` }}
+            style={{ color, background: 'var(--poli-badge-bg)' }}
           >
             {label}
           </div>
@@ -186,7 +186,7 @@ export function PoliticianReportCard({
           const dimColor = tierColor(value)
 
           return (
-            <div key={dim.key} className="rounded-md border border-[var(--poli-border)] px-4 py-3">
+            <div key={dim.key} className="rounded-md border border-[var(--poli-border)] px-4 py-3 bg-[var(--poli-card)]">
               <div className="mb-2 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <DimIcon name={dim.key} />

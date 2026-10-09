@@ -31,7 +31,7 @@ export default function ContributePage() {
   return (
     <>
       <div className="mx-auto max-w-[800px] px-6 pt-6 pb-16 md:px-10">
-        <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
           Contribute
         </h1>
         <p className="mb-8 text-[15px] leading-[1.7] text-[var(--poli-sub)]">
@@ -43,10 +43,10 @@ export default function ContributePage() {
             <Link
               key={action.href}
               href={action.href}
-              className="group flex items-center gap-4 rounded-xl border border-[var(--poli-border)] p-5 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
+              className="group flex items-center gap-4 rounded-xl border border-[var(--poli-border)] p-5 no-underline transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
             >
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[var(--poli-badge-bg)]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--poli-sub)]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--poli-sub)]">
                   <path d={action.icon} />
                 </svg>
               </div>

@@ -1,36 +1,44 @@
 'use client'
 
 import { useState } from 'react'
-import { PartyIcon } from '@/components/icons/party-icons'
 
 interface AvatarImageProps {
   src: string | null | undefined
   alt: string
   size: number
+  className?: string
+  /** Accepted for the call sites that still pass them; the fallback no longer
+   *  colours itself by party. The party is the ring the caller draws. */
   fallbackColor?: string
   party?: string
-  className?: string
 }
 
-export function AvatarImage({ src, alt, size, fallbackColor, party, className }: AvatarImageProps) {
+/** "Debbie Dingell" → "DD"; a single word gives one letter. */
+function initials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (!parts.length) return '?'
+  const first = parts[0][0] ?? ''
+  const last = parts.length > 1 ? (parts[parts.length - 1][0] ?? '') : ''
+  return (first + last).toUpperCase()
+}
+
+/**
+ * A photo, or initials when there is none or the URL is dead. The fallback is
+ * ink on the card colour in both themes: a face that is missing never becomes
+ * a coloured block, and the party stays where it always is, in the ring.
+ */
+export function AvatarImage({ src, alt, size, className }: AvatarImageProps) {
   const [error, setError] = useState(false)
 
   if (!src || error) {
     return (
       <div
-        className="flex h-full w-full items-center justify-center"
-        style={{ background: `${fallbackColor ?? '#666'}08` }}
+        role="img"
+        aria-label={alt}
+        className="flex h-full w-full items-center justify-center bg-[var(--poli-card)] font-semibold text-[var(--poli-text)]"
+        style={{ fontSize: Math.max(10, Math.round(size * 0.36)) }}
       >
-        {party ? (
-          <PartyIcon party={party} size={Math.max(12, Math.round(size * 0.35))} />
-        ) : (
-          <span
-            className="font-medium opacity-30"
-            style={{ fontSize: Math.max(9, Math.round(size * 0.35)), color: fallbackColor ?? 'var(--poli-faint)' }}
-          >
-            {alt.charAt(0)}
-          </span>
-        )}
+        {initials(alt)}
       </div>
     )
   }

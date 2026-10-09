@@ -39,9 +39,9 @@ const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABA
 
 /** Pairs confirmed by hand against Congress.gov. Not derived -- do not guess. */
 const PAIRS = [
-  { a: 'Mike Waltz',   b: 'Michael Waltz',   state: 'FL', official: 'Michael Waltz' },
-  { a: 'Mike Turner',  b: 'Michael Turner',  state: 'OH', official: 'Michael Turner' },
-  { a: 'Buddy Carter', b: 'Earl Carter',     state: 'GA', official: 'Earl Carter' },
+  { a: 'Mike Waltz',   b: 'Michael Waltz',   state: 'FL', official: 'Michael Waltz',  keep: 'official' },
+  { a: 'Mike Turner',  b: 'Michael Turner',  state: 'OH', official: 'Michael Turner', keep: 'official' },
+  { a: 'Buddy Carter', b: 'Earl Carter',     state: 'GA', official: 'Earl Carter',    keep: 'official' },
   // The seed stored her surname-first with no district; the Congress.gov
   // import then added the real row. The seed row holds all the likes, follows
   // and stances, so by reference count it would survive — `keep` pins the

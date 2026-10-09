@@ -35,7 +35,7 @@ export function VotingHistory({ votes }: VotingHistoryProps) {
       </p>
 
       {/* Summary bar */}
-      <div className="mb-4 rounded-md border border-[var(--poli-border)] p-3">
+      <div className="mb-4 rounded-md border border-[var(--poli-border)] p-3 bg-[var(--poli-card)]">
         <div className="mb-2 flex h-2 overflow-hidden rounded-full">
           {yea > 0 && <div style={{ width: `${(yea / votes.length) * 100}%`, background: '#22C55E99' }} />}
           {nay > 0 && <div style={{ width: `${(nay / votes.length) * 100}%`, background: '#EF444499' }} />}
@@ -54,7 +54,7 @@ export function VotingHistory({ votes }: VotingHistoryProps) {
         {votes.slice(0, 10).map((v) => {
           const vc = VOTE_CONFIG[v.vote] ?? VOTE_CONFIG.not_voting
           const inner = (
-            <div className="flex items-center justify-between rounded-md border border-[var(--poli-border)] px-4 py-2.5">
+            <div className="flex items-center justify-between rounded-md border border-[var(--poli-border)] px-4 py-2.5 bg-[var(--poli-card)]">
               <div className="min-w-0 flex-1">
                 <div className="truncate text-[13px] text-[var(--poli-text)]">
                   {v.bill_name ?? v.bill_number ?? 'Unknown Bill'}

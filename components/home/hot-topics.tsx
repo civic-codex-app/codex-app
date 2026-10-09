@@ -181,7 +181,7 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
   return (
     <div className="mb-12">
       <div className="mb-5 flex items-center justify-between">
-        <h2 className="text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+        <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
           Today in Politics
         </h2>
       </div>
@@ -204,7 +204,7 @@ export async function HotTopics({ followedIssueIds }: HotTopicsProps) {
               // its min-content width, so one long unbreakable token in a
               // headline or summary would otherwise widen the track past the
               // viewport and scroll the whole page sideways on mobile.
-              className="group min-w-0 rounded-xl border border-[var(--poli-border)] p-4 transition-all hover:border-[var(--poli-text)]/30"
+              className="group min-w-0 rounded-xl border border-[var(--poli-border)] p-4 transition-all hover:border-[var(--poli-text)]/30 bg-[var(--poli-card)]"
             >
               {/* Issue tag + time */}
               <div className="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1">

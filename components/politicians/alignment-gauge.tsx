@@ -15,7 +15,7 @@ export function AlignmentGauge({ score, party }: AlignmentGaugeProps) {
   const color = partyColor(party)
 
   return (
-    <div className="rounded-md border border-[var(--poli-border)] p-4">
+    <div className="rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
       <div className="mb-3 flex items-center justify-between">
         <span className="text-sm font-semibold text-[var(--poli-sub)]">
           Party Alignment

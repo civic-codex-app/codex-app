@@ -91,7 +91,7 @@ export default async function MatchPage() {
     <>
       <main className="mx-auto max-w-2xl px-6 pt-6 pb-20 md:px-10">
         <div className="mb-10 text-center">
-          <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight text-[var(--poli-text)]">
+          <h1 className="font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08] text-[var(--poli-text)]">
             Who Represents You?
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-[var(--poli-sub)]">

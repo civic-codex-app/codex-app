@@ -53,7 +53,7 @@ export default function DashboardLoading() {
       {/* One neutral panel. Every page in the group opens with a bordered
           block; none of them opens with the same one, so this reserves a
           modest amount of room rather than pretending to know which. */}
-      <div className="rounded-lg border border-[var(--poli-border)] p-5">
+      <div className="rounded-lg border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
         <SkeletonBlock className="mb-4 h-5 w-[150px]" />
         <SkeletonBlock className="mb-3 h-4 w-full" />
         <SkeletonBlock className="mb-3 h-4 w-11/12" />

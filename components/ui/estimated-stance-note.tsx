@@ -13,7 +13,7 @@
 export function EstimatedStanceNote({ className = '' }: { className?: string }) {
   return (
     <p
-      className={`rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] leading-relaxed text-[var(--poli-faint)] ${className}`}
+      className={`rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] leading-relaxed text-[var(--poli-faint)] ${className} bg-[var(--poli-card)]`}
     >
       Stances are estimated, not sourced to each official&rsquo;s public record.
       Treat them as a starting point and check a politician&rsquo;s own

@@ -192,7 +192,7 @@ export default function DataSourcesPage() {
   return (
     <>
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
-        <h1 className="mb-2 text-[clamp(1.5rem,4vw,2.25rem)] font-bold leading-tight text-[var(--poli-text)]">
+        <h1 className="mb-2 font-serif text-[clamp(28px,4vw,40px)] font-normal leading-[1.08] text-[var(--poli-text)]">
           Data Sources & Disclaimer
         </h1>
         <p className="mb-10 max-w-2xl text-[14px] leading-relaxed text-[var(--poli-sub)]">
@@ -205,14 +205,14 @@ export default function DataSourcesPage() {
         <div className="space-y-10">
           {SOURCES.map((section) => (
             <div key={section.category}>
-              <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+              <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
                 {section.category}
               </h2>
               <div className="space-y-3">
                 {section.items.map((item) => (
                   <div
                     key={item.name}
-                    className="rounded-lg border border-[var(--poli-border)] p-4"
+                    className="rounded-lg border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]"
                   >
                     <div className="flex items-center gap-2">
                       <h3 className="text-[14px] font-semibold text-[var(--poli-text)]">
@@ -223,7 +223,7 @@ export default function DataSourcesPage() {
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-[11px] text-blue-500 hover:underline"
+                          className="text-[11px] text-[var(--poli-text)] underline underline-offset-2"
                         >
                           ↗
                         </a>
@@ -241,7 +241,7 @@ export default function DataSourcesPage() {
 
         {/* Legal Disclaimer */}
         <div className="mt-14 rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-6">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Legal Disclaimer
           </h2>
           <div className="space-y-4 text-[13px] leading-relaxed text-[var(--poli-sub)]">

@@ -33,12 +33,12 @@ export function LikeMinded({ politicians }: LikeMindedProps) {
             <Link
               key={p.id}
               href={`/politicians/${p.slug}`}
-              className="group flex items-center gap-3 rounded-md border border-[var(--poli-border)] px-4 py-2.5 no-underline transition-all hover:border-[var(--poli-input-border)]"
+              className="group flex items-center gap-3 rounded-md border border-[var(--poli-border)] px-4 py-2.5 no-underline transition-all hover:border-[var(--poli-input-border)] bg-[var(--poli-card)]"
             >
               {/* Avatar */}
               <div
-                className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-lg bg-[var(--poli-card)]"
-                style={{ border: `1.5px solid ${color}44` }}
+                className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
+                style={{ boxShadow: `0 0 0 2px ${color}` }}
               >
                 <AvatarImage
                   src={p.image_url}

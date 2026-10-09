@@ -9,7 +9,7 @@ export default function PrivacyPage() {
   return (
     <>
       <div className="mx-auto max-w-[800px] px-6 pt-6 pb-16 md:px-10">
-        <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">Privacy Policy</h1>
+        <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">Privacy Policy</h1>
         <p className="mb-8 text-[13px] text-[var(--poli-faint)]">Last updated: March 2026</p>
 
         <div className="prose-sm space-y-6 text-[14px] leading-[1.8] text-[var(--poli-sub)]">

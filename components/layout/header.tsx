@@ -132,12 +132,12 @@ export function Header() {
 
   return (
     <header
-      className="sticky z-40 border-b border-[var(--poli-border)] bg-[var(--poli-bg)]"
+      className="sticky z-40 border-b border-[var(--poli-border)] bg-[var(--poli-card)]"
       style={{ top: 'env(safe-area-inset-top, 0px)' }}
     >
       {/* Fixed background behind iOS status bar */}
       <div
-        className="fixed left-0 right-0 top-0 -z-10 bg-[var(--poli-bg)]"
+        className="fixed left-0 right-0 top-0 -z-10 bg-[var(--poli-card)]"
         style={{ height: 'env(safe-area-inset-top, 0px)' }}
       />
       <a
@@ -208,7 +208,7 @@ export function Header() {
 
                   {/* Dropdown */}
                   {hasDropdown && isOpen && (
-                    <div className="absolute left-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1 shadow-lg">
+                    <div className="absolute left-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1">
                       {item.dropdown!.map((dropItem) => (
                         <Link
                           key={dropItem.href}
@@ -254,7 +254,7 @@ export function Header() {
                 aria-expanded={userMenuOpen}
                 aria-haspopup="true"
               >
-                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)] transition-colors hover:border-[var(--poli-text)]">
+                <div className="h-7 w-7 overflow-hidden rounded-full border border-[var(--poli-border)] transition-colors hover:border-[var(--poli-text)] bg-[var(--poli-card)]">
                   {/* Falls back to the initial when the avatar URL fails to load. */}
                   <AvatarImage src={profile?.avatar_url} alt={profile?.display_name ?? userInitial} size={28} />
                 </div>
@@ -262,7 +262,7 @@ export function Header() {
 
               {/* User dropdown */}
               {userMenuOpen && (
-                <div className="absolute right-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1 shadow-lg">
+                <div className="absolute right-0 top-full z-50 mt-1 min-w-[180px] rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] py-1">
                   {USER_MENU_ITEMS.map((item) => (
                     <Link
                       key={item.href}

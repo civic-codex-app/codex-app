@@ -53,14 +53,14 @@ export function SharingToggle() {
 
   if (loading) {
     return (
-      <div className="rounded-md border border-[var(--poli-border)] p-6">
+      <div className="rounded-md border border-[var(--poli-border)] p-6 bg-[var(--poli-card)]">
         <div className="h-4 w-48 animate-pulse rounded bg-[var(--poli-border)]" />
       </div>
     )
   }
 
   return (
-    <div className="rounded-md border border-[var(--poli-border)] p-6">
+    <div className="rounded-md border border-[var(--poli-border)] p-6 bg-[var(--poli-card)]">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="text-[15px] font-semibold text-[var(--poli-text)]">
@@ -82,7 +82,7 @@ export function SharingToggle() {
           aria-label={enabled ? 'Disable sharing' : 'Enable sharing'}
         >
           <span
-            className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"
+            className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform"
             style={{ transform: enabled ? 'translateX(20px)' : 'translateX(0)' }}
           />
         </button>
@@ -112,7 +112,7 @@ export function SharingToggle() {
           {/* Copy compare link */}
           <button
             onClick={copyLink}
-            className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--poli-border)] px-4 py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-input-border)] hover:text-[var(--poli-text)]"
+            className="flex w-full items-center justify-center gap-2 rounded-md border border-[var(--poli-border)] px-4 py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-input-border)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />

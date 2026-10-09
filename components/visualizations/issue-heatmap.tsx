@@ -198,7 +198,7 @@ export function IssueHeatmap({ stanceData }: IssueHeatmapProps) {
                       {/* Tooltip */}
                       {isActive && total > 0 && (
                         <div
-                          className="absolute -top-2 left-1/2 z-20 -translate-x-1/2 -translate-y-full rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-3 py-2 shadow-lg"
+                          className="absolute -top-2 left-1/2 z-20 -translate-x-1/2 -translate-y-full rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-3 py-2"
                           role="tooltip"
                         >
                           <div className="whitespace-nowrap text-center">

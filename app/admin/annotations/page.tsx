@@ -93,7 +93,7 @@ export default function AdminAnnotationsPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--poli-text)]">Community Annotations</h1>
+          <h1 className="font-serif text-[28px] font-normal leading-[1.12] text-[var(--poli-text)]">Community Annotations</h1>
           <p className="mt-1 text-sm text-[var(--poli-sub)]">
             Review user-submitted corrections, sources, and context
           </p>
@@ -176,7 +176,7 @@ export default function AdminAnnotationsPage() {
                   href={a.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mb-2 block text-xs text-blue-500 hover:underline"
+                  className="mb-2 block text-xs text-[var(--poli-text)] underline underline-offset-2"
                 >
                   {a.source_url}
                 </a>

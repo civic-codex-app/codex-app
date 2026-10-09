@@ -50,7 +50,7 @@ export function ElectionHistory({ results, party }: ElectionHistoryProps) {
           const oppColor = r.opponent_party ? partyColor(r.opponent_party) : 'var(--poli-faint)'
 
           return (
-            <div key={r.id} className="rounded-md border border-[var(--poli-border)] px-4 py-3">
+            <div key={r.id} className="rounded-md border border-[var(--poli-border)] px-4 py-3 bg-[var(--poli-card)]">
               {/* Top row: year, race name, result */}
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">

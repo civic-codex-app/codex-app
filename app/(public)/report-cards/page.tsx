@@ -252,7 +252,7 @@ export default async function ReportCardsPage() {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
             </div>
-            <h1 className="mb-2 text-[clamp(24px,3vw,36px)] font-bold text-[var(--poli-text)]">
+            <h1 className="mb-2 font-serif text-[clamp(28px,3vw,36px)] font-normal leading-[1.08] text-[var(--poli-text)]">
               Civic Report Cards
             </h1>
             <p className="mx-auto mb-6 max-w-[400px] text-[14px] leading-[1.7] text-[var(--poli-sub)]">
@@ -261,7 +261,7 @@ export default async function ReportCardsPage() {
             </p>
             <Link
               href="/signup"
-              className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-[14px] font-semibold text-white no-underline shadow-lg transition-all hover:scale-[1.02] hover:bg-blue-700 hover:shadow-xl"
+              className="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 text-[14px] font-semibold text-white no-underline transition-all hover:scale-[1.02] hover:bg-blue-700"
             >
               Create Free Account
             </Link>
@@ -297,7 +297,7 @@ export default async function ReportCardsPage() {
     <>
       <div className="mx-auto max-w-[1200px] px-6 pt-6 pb-16 md:px-10">
         {/* Page title */}
-        <h1 className="mb-2 text-[clamp(1.8rem,4vw,2.8rem)] font-bold leading-tight text-[var(--poli-text)]">
+        <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08] text-[var(--poli-text)]">
           Civic Profiles
         </h1>
         <p className="mb-8 max-w-2xl text-sm leading-relaxed text-[var(--poli-sub)]">

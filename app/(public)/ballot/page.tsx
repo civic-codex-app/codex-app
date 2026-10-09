@@ -41,19 +41,19 @@ export default async function BallotPreviewPage() {
   if (!userState) {
     return (
       <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-        <h1 className="mb-2 text-3xl font-bold">Your Ballot Preview</h1>
+        <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Your Ballot Preview</h1>
         <p className="mb-8 text-sm text-[var(--poli-sub)]">
           See the races and candidates that will appear on your ballot.
         </p>
 
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
           <div className="mb-3">
             <svg
               className="mx-auto h-10 w-10 text-[var(--poli-faint)]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -110,7 +110,7 @@ export default async function BallotPreviewPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-12 md:px-10">
-      <h1 className="mb-2 text-3xl font-bold">Your Ballot Preview</h1>
+      <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Your Ballot Preview</h1>
       <p className="mb-1 text-sm text-[var(--poli-sub)]">
         Races and candidates for {stateName}
         {userZip ? ` (${userZip})` : ''}
@@ -120,7 +120,7 @@ export default async function BallotPreviewPage() {
       </p>
 
       {races.length === 0 ? (
-        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center">
+        <div className="rounded-md border border-[var(--poli-border)] py-16 text-center bg-[var(--poli-card)]">
           <p className="mb-2 text-sm font-medium text-[var(--poli-text)]">
             No upcoming races found
           </p>
@@ -221,7 +221,7 @@ function CandidateRow({ candidate }: { candidate: Candidate }) {
       {/* Avatar */}
       <div
         className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full"
-        style={{ border: `2px solid ${partyColor(candidate.party)}33` }}
+        style={{ boxShadow: `0 0 0 2px ${partyColor(candidate.party)}` }}
       >
         <AvatarImage
           src={candidate.image_url}

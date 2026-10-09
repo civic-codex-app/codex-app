@@ -113,14 +113,14 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
                     <path
                       d="M2 7L5 3L8 7"
                       stroke="var(--poli-text)"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
                     <path
                       d="M2 3L5 7L8 3"
                       stroke="var(--poli-text)"
-                      strokeWidth="1.5"
+                      strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       opacity="0.4"
@@ -167,7 +167,7 @@ export function StanceTimeline({ entries, currentStance, issueName, party }: Sta
                     href={node.source_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-0.5 inline-block text-[11px] text-blue-400 hover:underline"
+                    className="mt-0.5 inline-block text-[11px] text-[var(--poli-text)] underline underline-offset-2"
                   >
                     Source
                   </a>

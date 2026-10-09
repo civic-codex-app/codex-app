@@ -92,14 +92,14 @@ export function NotificationPreferences({ profileId }: { profileId: string }) {
 
   if (loading) {
     return (
-      <div className="rounded-md border border-[var(--poli-border)] px-6 py-6">
+      <div className="rounded-md border border-[var(--poli-border)] px-6 py-6 bg-[var(--poli-card)]">
         <p className="text-sm text-[var(--poli-faint)]">Loading preferences...</p>
       </div>
     )
   }
 
   return (
-    <div className="rounded-md border border-[var(--poli-border)]">
+    <div className="rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
       {error && (
         <div className="border-b border-red-500/20 bg-red-500/5 px-4 py-2 text-sm text-red-400">
           {error}
@@ -137,7 +137,7 @@ export function NotificationPreferences({ profileId }: { profileId: string }) {
               }}
             >
               <span
-                className="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                className="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white ring-0 transition duration-200 ease-in-out"
                 style={{
                   transform: prefs[opt.key]
                     ? 'translateX(20px)'

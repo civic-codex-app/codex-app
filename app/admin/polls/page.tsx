@@ -17,7 +17,7 @@ export default async function AdminPollsPage() {
     <div>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="mb-1 text-3xl font-bold">Polls</h1>
+          <h1 className="mb-1 font-serif text-[32px] font-normal leading-[1.08]">Polls</h1>
           <p className="text-sm text-[var(--poli-sub)]">{polls.length} polls</p>
         </div>
         <Link
@@ -45,7 +45,7 @@ export default async function AdminPollsPage() {
         })}
       </div>
 
-      <div className="overflow-x-auto rounded-md border border-[var(--poli-border)]">
+      <div className="overflow-x-auto rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
         <table className="w-full">
           <thead>
             <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">

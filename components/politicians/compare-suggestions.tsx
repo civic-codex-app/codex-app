@@ -237,7 +237,7 @@ export async function CompareSuggestions({
               {/* Avatar */}
               <div
                 className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full"
-                style={{ border: `2px solid ${color}44` }}
+                style={{ boxShadow: `0 0 0 2px ${color}` }}
               >
                 <AvatarImage
                   src={s.image_url}

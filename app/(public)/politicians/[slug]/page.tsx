@@ -5,6 +5,7 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { PartyIcon } from '@/components/icons/party-icons'
+import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import { LikeButton } from '@/components/directory/like-button'
@@ -308,14 +309,11 @@ export default async function PoliticianPage({ params }: PageProps) {
                 width={300}
                 height={400}
                 unoptimized
-                className="aspect-[3/4] w-full rounded-xl object-cover object-top"
+                className="aspect-[3/4] w-full rounded-2xl border border-[var(--poli-border)] object-cover object-top"
               />
             ) : (
-              <div
-                className="flex aspect-[3/4] w-full items-center justify-center rounded-xl"
-                style={{ backgroundColor: `${color}08`, border: `2px solid ${color}22` }}
-              >
-                <PartyIcon party={pol.party} size={120} />
+              <div className="aspect-[3/4] w-full overflow-hidden rounded-2xl border border-[var(--poli-border)]">
+                <AvatarImage src={null} alt={pol.name} size={300} />
               </div>
             )}
           </div>
@@ -325,30 +323,19 @@ export default async function PoliticianPage({ params }: PageProps) {
             {/* Mobile: large avatar + name row */}
             <div className="mb-5 flex items-center gap-4 md:hidden">
               <div
-                className="h-40 w-40 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--poli-card)]"
-                style={{ border: `2.5px solid ${color}44` }}
+                className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
+                style={{ boxShadow: `0 0 0 2px ${color}` }}
               >
-                {pol.image_url ? (
-                  <Image
-                    src={pol.image_url}
-                    alt={pol.name}
-                    width={160}
-                    height={160}
-                    unoptimized
-                    className="h-full w-full object-cover object-top"
-                  />
-                ) : (
-                  <div
-                    className="flex h-full w-full items-center justify-center"
-                    style={{ backgroundColor: `${color}08` }}
-                  >
-                    <PartyIcon party={pol.party} size={64} />
-                  </div>
-                )}
+                <AvatarImage
+                  src={pol.image_url}
+                  alt={pol.name}
+                  size={96}
+                  className="h-full w-full object-cover object-top"
+                />
               </div>
               <div className="min-w-0">
                 {pol.image_url && <PartyIcon party={pol.party} size={32} />}
-                <h1 className={`text-[28px] font-bold leading-[1.05]${pol.image_url ? ' mt-1.5' : ''}`}>
+                <h1 className={`font-serif text-[32px] font-normal leading-[1.08]${pol.image_url ? ' mt-1.5' : ''}`}>
                   {pol.name}
                 </h1>
               </div>
@@ -360,7 +347,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 <PartyIcon party={pol.party} size={40} />
               </div>
             )}
-            <h1 className="mb-4 hidden text-[38px] font-bold leading-[1.05] md:block">
+            <h1 className="mb-4 hidden font-serif text-[40px] font-normal leading-[1.08] md:block">
               {pol.name}
             </h1>
 
@@ -368,7 +355,7 @@ export default async function PoliticianPage({ params }: PageProps) {
               <LikeButton politicianId={pol.id} />
               <Link
                 href={`/compare?a=${pol.slug}`}
-                className="flex h-9 items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-3.5 text-[12px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]"
+                className="flex h-9 items-center gap-1.5 rounded-full border border-[var(--poli-border)] px-3.5 text-[12px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
               >
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
                 Compare
@@ -376,22 +363,22 @@ export default async function PoliticianPage({ params }: PageProps) {
               <ExportPdfButton />
               <UpdatePoliticianButton politicianId={pol.id} politicianName={pol.name} />
               {pol.twitter_url && (
-                <a href={pol.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]" aria-label="X (Twitter)">
+                <a href={pol.twitter_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="X (Twitter)">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
               )}
               {pol.facebook_url && (
-                <a href={pol.facebook_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]" aria-label="Facebook">
+                <a href={pol.facebook_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="Facebook">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 </a>
               )}
               {pol.instagram_url && (
-                <a href={pol.instagram_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]" aria-label="Instagram">
+                <a href={pol.instagram_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="Instagram">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                 </a>
               )}
               {pol.youtube_url && (
-                <a href={pol.youtube_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)]" aria-label="YouTube">
+                <a href={pol.youtube_url} target="_blank" rel="noopener noreferrer" className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--poli-border)] text-[var(--poli-sub)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]" aria-label="YouTube">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                 </a>
               )}

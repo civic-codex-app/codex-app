@@ -190,7 +190,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
           )}
         </div>
 
-        <h1 className="mb-3 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+        <h1 className="mb-3 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
           {race.name}
         </h1>
 
@@ -214,7 +214,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
 
         {/* Party breakdown bar */}
         {candidateList.length > 1 && (
-          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4">
+          <div className="mb-8 rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
             <div className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--poli-faint)]">
               Party Breakdown
             </div>
@@ -283,7 +283,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
               not confirmed the field", not "the incumbent is unopposed". Say
               which one it is rather than letting the reader assume. */}
           {candidateList.length > 0 && candidateList.every((c) => !c.is_verified) && (
-            <p className="mb-4 rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] leading-relaxed text-[var(--poli-faint)]">
+            <p className="mb-4 rounded-md border border-[var(--poli-border)] px-3 py-2 text-[12px] leading-relaxed text-[var(--poli-faint)] bg-[var(--poli-card)]">
               This candidate list is unconfirmed and may be incomplete. It has
               not been checked against state filing records, so challengers may
               be missing.
@@ -310,15 +310,15 @@ export default async function RaceDetailPage({ params }: PageProps) {
                 return (
                   <div
                     key={candidate.id}
-                    className="overflow-hidden rounded-xl border border-[var(--poli-border)] transition-all duration-200 hover:shadow-sm"
+                    className="overflow-hidden rounded-xl border border-[var(--poli-border)] transition-all duration-200 bg-[var(--poli-card)]"
                     style={{ backgroundColor: `${color}06` }}
                   >
                     <div className="p-5">
                       <div className="flex items-start gap-4">
                         {/* Avatar */}
                         <div
-                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl bg-[var(--poli-card)]"
-                          style={{ border: `2px solid ${color}44` }}
+                          className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
+                          style={{ boxShadow: `0 0 0 2px ${color}` }}
                         >
                           <AvatarImage
                             src={candidate.image_url || pol?.image_url || null}
@@ -537,7 +537,7 @@ async function renderStateElection(
           &larr; All states
         </Link>
 
-        <h1 className="mb-2 text-[clamp(26px,4vw,40px)] font-bold leading-[1.1]">
+        <h1 className="mb-2 font-serif text-[clamp(30px,4vw,40px)] font-normal leading-[1.08]">
           {election.name}
         </h1>
         <p className="mb-4 text-[14px] text-[var(--poli-sub)]">
@@ -567,7 +567,7 @@ async function renderStateElection(
                       <Link
                         key={race.id}
                         href={`/elections/${race.slug}`}
-                        className="flex items-center justify-between rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
+                        className="flex items-center justify-between rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
                       >
                         <div>
                           <div className="text-[14px] font-medium text-[var(--poli-text)]">

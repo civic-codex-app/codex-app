@@ -54,21 +54,18 @@ export function ActivityItem({ type, politician, date, details, isFollowed }: Ac
 
   return (
     <div
-      className="flex overflow-hidden rounded-xl transition-colors"
-      style={{
-        border: `1.5px solid ${pColor}22`,
-        backgroundColor: `${pColor}08`,
-      }}
+      className="flex overflow-hidden rounded-2xl border border-[var(--poli-border)] bg-[var(--poli-card)] transition-colors"
     >
       {/* Avatar */}
       <Link
         href={`/politicians/${politician.slug}`}
-        className="w-[52px] flex-shrink-0 self-stretch overflow-hidden bg-[var(--poli-card)]"
+        className="ml-3 h-10 w-10 flex-shrink-0 self-center overflow-hidden rounded-full bg-[var(--poli-card)]"
+        style={{ boxShadow: `0 0 0 2px ${pColor}` }}
       >
         <AvatarImage
           src={politician.image_url}
           alt={politician.name}
-          size={104}
+          size={40}
           fallbackColor={pColor}
           party={politician.party}
           className="h-full w-full object-cover object-top"

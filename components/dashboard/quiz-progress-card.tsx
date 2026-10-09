@@ -18,10 +18,10 @@ export function QuizProgressCard() {
   return (
     <Link
       href="/quiz"
-      className="group relative rounded-lg border border-[var(--poli-border)] p-5 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-md"
+      className="group relative rounded-lg border border-[var(--poli-border)] p-5 no-underline transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
     >
       <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
           <circle cx="12" cy="7" r="4" />
           <path d="M16 3.13a4 4 0 010 7.75" />

@@ -70,7 +70,7 @@ export function StanceGroup({ issueSlug, bucket, label, color, bgClass, textClas
           const hasSummary = entry.summary && entry.summary.trim().length > 0
 
           return (
-            <div key={entry.key} className="rounded-md border border-[var(--poli-border)] p-4">
+            <div key={entry.key} className="rounded-md border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
               {/* Representative politician */}
               <Link
                 href={`/politicians/${rep.slug}`}
@@ -125,7 +125,7 @@ export function StanceGroup({ issueSlug, bucket, label, color, bgClass, textClas
         <button
           onClick={loadMore}
           disabled={loading}
-          className="mt-3 w-full rounded-lg border border-[var(--poli-border)] py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] disabled:opacity-60"
+          className="mt-3 w-full rounded-lg border border-[var(--poli-border)] py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] disabled:opacity-60 bg-[var(--poli-card)]"
         >
           {loading ? 'Loading…' : `Show ${Math.min(remaining, pageSize)} more of ${entryCount}`}
         </button>
@@ -175,7 +175,7 @@ function OthersRow({ issueSlug, bucket, entryKey, preview, count }: {
           <Link
             key={pol.id}
             href={`/politicians/${pol.slug}`}
-            className="inline-flex items-center gap-1 rounded-full border border-[var(--poli-border)] px-2 py-0.5 text-[11px] no-underline transition-colors hover:border-[var(--poli-input-border)]"
+            className="inline-flex items-center gap-1 rounded-full border border-[var(--poli-border)] px-2 py-0.5 text-[11px] no-underline transition-colors hover:border-[var(--poli-input-border)] bg-[var(--poli-card)]"
             title={`${pol.name} (${partyLabel(pol.party)}, ${pol.state})`}
           >
             <div className="h-4 w-4 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]">

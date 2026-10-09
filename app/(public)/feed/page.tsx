@@ -247,7 +247,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
       <main id="main-content" className="mx-auto max-w-[1200px] px-6 pb-16 pt-6 md:px-10">
         {/* Page header */}
         <div className="mb-6">
-          <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+          <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
             Feed
           </h1>
           <p className="text-[15px] leading-[1.7] text-[var(--poli-sub)]">
@@ -286,7 +286,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
         {/* Activity feed — compact, max 6 per page */}
         {items.length > 0 && (
           <>
-            <div className="mb-3 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <div className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               {page > 1 ? `Page ${page}` : 'Latest Activity'}
             </div>
 
@@ -308,7 +308,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
                 {page > 1 && (
                   <Link
                     href={buildPageUrl(page - 1)}
-                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
                   >
                     Previous
                   </Link>
@@ -316,7 +316,7 @@ export default async function FeedPage({ searchParams }: PageProps) {
                 {hasMore && (
                   <Link
                     href={buildPageUrl(page + 1)}
-                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+                    className="rounded-lg border border-[var(--poli-border)] px-4 py-2 text-sm font-medium text-[var(--poli-sub)] no-underline transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
                   >
                     Load More
                   </Link>

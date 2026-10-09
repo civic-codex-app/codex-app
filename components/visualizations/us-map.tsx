@@ -92,7 +92,7 @@ export function USMap({ stateData, onStateClick, colorScale, legend }: USMapProp
       {/* Tooltip — follows mouse on desktop, fixed bar on mobile */}
       {hovered && tooltipPos && (
         <div
-          className="pointer-events-none absolute z-10 hidden rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-3 py-1.5 shadow-lg sm:block"
+          className="pointer-events-none absolute z-10 hidden rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)] px-3 py-1.5 sm:block"
           style={{
             left: tooltipPos.x + 12,
             top: tooltipPos.y - 30,

@@ -149,7 +149,7 @@ export function RaceComparison({ candidates, stancesByCandidate }: RaceCompariso
           <div className="mt-4 text-center">
             <Link
               href={`/compare?a=${candidates[0].politician.slug}&b=${candidates[1].politician.slug}`}
-              className="inline-flex items-center gap-1.5 rounded-md border border-[var(--poli-border)] px-4 py-2 text-[12px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+              className="inline-flex items-center gap-1.5 rounded-md border border-[var(--poli-border)] px-4 py-2 text-[12px] text-[var(--poli-sub)] transition-colors hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
             >
               Full Comparison →
             </Link>

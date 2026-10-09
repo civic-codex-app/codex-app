@@ -1,0 +1,497 @@
+{
+ "rows": [
+  {
+   "id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+   "name": "Daniel Davis",
+   "slug": "daniel-davis-fl",
+   "state": "FL",
+   "chamber": "house",
+   "party": "republican",
+   "title": "U.S. Representative",
+   "since_year": 2025,
+   "bio": "U.S. Representative for Florida's 11th congressional district. Conservative Republican representing central Florida.",
+   "website_url": null,
+   "donate_url": null,
+   "wiki_url": null,
+   "image_url": "https://cdn.getpoli.app/codex/politicians/daniel-davis-fl.webp",
+   "created_at": "2026-03-21T13:35:15.993431+00:00",
+   "updated_at": "2026-09-19T12:43:15.692177+00:00",
+   "fts": "'11th':11 'central':17 'congression':12 'conserv':14 'daniel':1 'davi':2 'district':13 'fl':3 'florida':9,18 'repres':5,7,16 'republican':15 'u.s':4,6",
+   "twitter_url": null,
+   "facebook_url": null,
+   "instagram_url": null,
+   "youtube_url": null,
+   "threads_url": null,
+   "tiktok_url": null,
+   "linkedin_url": null,
+   "district": null,
+   "source": "seed (generated 2026-03-21, unverified)",
+   "is_verified": false,
+   "last_checked": null
+  }
+ ],
+ "dependents": {
+  "816272a6-6bfb-4184-8927-a4ffc7969038": {
+   "politician_issues": [
+    {
+     "id": "c76e3979-b4e2-4409-aaff-d48ce6e1ab61",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "a987ef40-7491-4f18-9c86-efd1b5d965da",
+     "stance": "strongly_supports",
+     "summary": "Strongly supports border security and stricter immigration enforcement.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:22.89591+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "99a8bc30-76c8-4512-8193-cb7d255b7b0d",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "8c652663-a4d1-4e96-a1b0-39584852b849",
+     "stance": "leans_oppose",
+     "summary": "Favors reducing regulations to lower housing costs.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:22.89591+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "04c91a31-8250-415c-90c0-0dbb585021ed",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "640fe9a8-407a-435d-b84b-05b7b9007ac2",
+     "stance": "strongly_opposes",
+     "summary": "Strongly opposes abortion and supports restrictive pro-life legislation.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:28.40197+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "8cf6c4e1-6f36-4623-81bc-e34fdfaba61f",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "a2b3f9fe-49c1-4685-b3dd-c4d65057b3ea",
+     "stance": "opposes",
+     "summary": "Opposes the ACA and supports market-based healthcare solutions.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:21.234502+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "7b2998ac-51cb-4b4d-8f85-322c301f934a",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "12b8314d-7983-4fc1-9908-6d916ecbf5aa",
+     "stance": "opposes",
+     "summary": "Opposes student debt forgiveness and supports school choice programs.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:21.234502+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "05b59e76-579c-4837-8f95-538fcae22c5b",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "84905f27-29c7-4732-88ae-ebcbf34e0b30",
+     "stance": "opposes",
+     "summary": "Opposes climate regulations and EPA mandates.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:21.234502+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "a4a13ab8-4585-4645-b618-bd7ffb730112",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "8e4085b6-c93f-4042-aba3-174182a13820",
+     "stance": "supports",
+     "summary": "Supports strong U.S. military posture abroad.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:21.234502+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "4b2f547c-af38-481a-8370-69b86fce8d59",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "4faef289-ab03-4943-990b-39ab712c063d",
+     "stance": "supports",
+     "summary": "Supports infrastructure investment for Jacksonville.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:21.234502+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "12f3a978-2e39-47de-83ff-eab980b65f13",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "b0c7beb8-de0a-4981-8288-50c36017710d",
+     "stance": "strongly_supports",
+     "summary": "Supports domestic fossil fuel production and energy independence.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:21.234502+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "69bec445-de2e-496d-bdbf-a12e6d9b3a28",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "47cfbae8-f72c-4d3c-9a7a-afff2fcc1fa3",
+     "stance": "supports",
+     "summary": "Pledges to protect Social Security and Medicare.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:21.234502+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "3c044126-7f74-49ed-bf3a-fe91e6b6a7aa",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "0f0c788a-fe8e-470d-9ee6-ee7a6ea7085d",
+     "stance": "leans_oppose",
+     "summary": "Favors minimal tech regulation.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:23.089162+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "31844971-5b4c-4e3b-8a70-d986699c3b7c",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "3b644843-cecc-4a59-92e0-dc145de73739",
+     "stance": "strongly_supports",
+     "summary": "Strongly supports military spending and Jacksonville's naval installations.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:23.089162+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "8a1deefb-8e26-457d-8db3-1ec41aa4e2be",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "32bbc165-17fd-47f2-8bf4-f66dd248eef9",
+     "stance": "strongly_supports",
+     "summary": "Strong Second Amendment supporter.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:23.089162+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "8540e0a1-2b89-4375-8b2f-9746d217e735",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "04b514b6-e141-40df-aa1d-0083cc194104",
+     "stance": "strongly_supports",
+     "summary": "Supports tax cuts and pro-business policies for Jacksonville and Northeast Florida.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:23.089162+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "aa7e613e-dba8-4daf-91a7-4958fb6959b0",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "be2c25b0-bfa1-4736-8384-d0d5df4f5a09",
+     "stance": "opposes",
+     "summary": "Supports law enforcement funding and tough-on-crime approaches.",
+     "source_url": null,
+     "created_at": "2026-03-21T13:35:16.801244+00:00",
+     "updated_at": "2026-09-10T01:35:23.089162+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "25fc5f8e-4748-4dff-b84c-a0995300b998",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "550939e9-84c9-421a-8a9a-12a6d6cb977f",
+     "stance": "opposes",
+     "summary": "Opposes LGBTQ anti-discrimination legislation.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:23.435904+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "dca65861-3908-44e3-9e8a-3af08726aea7",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "e688fa81-43fd-49e5-883f-a3155493a493",
+     "stance": "opposes",
+     "summary": "Opposes marijuana legalization.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:23.435904+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "05b08369-d8a2-44cc-886b-87d6c8af1546",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "2a0d480e-ed2a-44c2-b269-b498a8d7dda1",
+     "stance": "opposes",
+     "summary": "Supports voter ID and election integrity measures.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:23.435904+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "afea9330-1b67-46e8-8746-404e76c5892c",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "5bc0946c-6bd9-45a1-9c49-4685ebfcbb0b",
+     "stance": "opposes",
+     "summary": "Opposes the PRO Act and supports right-to-work.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:23.435904+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "b70d3eb7-931d-4589-ac63-e21916b5d8f1",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "0806f0fa-8288-488a-8456-05fbb2233162",
+     "stance": "strongly_supports",
+     "summary": "Supports tax cuts and reducing federal spending.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:23.435904+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "d45e6c5b-8c42-4d32-b41b-d0d23b31ec31",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "23225681-ed5d-4bc2-93b8-cbd450f32e15",
+     "stance": "leans_oppose",
+     "summary": "Supports law enforcement surveillance capabilities.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:23.435904+00:00",
+     "is_verified": false
+    },
+    {
+     "id": "fd96105f-4c47-4b07-9cdc-a765ec934f07",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "issue_id": "39a93f5f-4ed6-45a9-b91a-0d18fcc877c9",
+     "stance": "supports",
+     "summary": "Supports trade policies benefiting Jacksonville's port economy.",
+     "source_url": null,
+     "created_at": "2026-03-23T01:42:43.561488+00:00",
+     "updated_at": "2026-09-10T01:35:28.40197+00:00",
+     "is_verified": false
+    }
+   ],
+   "likes": [
+    {
+     "id": "0e44f6c5-93e4-4d0b-a719-8297eb61a14c",
+     "user_id": "6bcd9c96-507a-43f2-a95a-6cb343ab01cf",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "7a02e5d4-cfed-4013-ac7d-45f70c4ff3f7",
+     "user_id": "b4dd13bd-0c95-42e2-9182-ab4d6e0167ed",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "43c2bbf7-8b4a-49a7-b644-1f99cca326f6",
+     "user_id": "5af18256-3c90-4667-987a-1d5910c48264",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "43fd1f97-1648-45e2-b694-be38c7170e74",
+     "user_id": "da5ff746-1e80-44d1-96b3-c68c99241075",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "ec17b60b-e913-4622-97a6-5fb7b20ffbbf",
+     "user_id": "5ba62a1c-ae38-4365-b8ce-b6eceac0537c",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "0aeb97d1-d836-4499-bd31-4e0d27c53d8c",
+     "user_id": "276325ee-c8f2-4a02-99b8-fd8156da1c35",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "f5140295-7443-4085-bc59-298ba23e2a68",
+     "user_id": "d4a5bae8-b1ca-4e2b-81fa-528605d2702e",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "b15cffcb-6340-4c6f-9ad6-54ce7b75048d",
+     "user_id": "980fbfc4-bd79-4861-bf94-cac80634dc46",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "bbcd0d69-e106-4e15-8848-31032979753e",
+     "user_id": "ba224680-e6cb-432d-8fc5-6887aa51156f",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "5adcfc91-93e7-4e48-9e36-a7b87fc7ddfa",
+     "user_id": "2902dd24-c574-419c-ab74-f5b7acb23717",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "43a6ced9-1fe7-4fd4-b2ea-1d9cba78ea56",
+     "user_id": "d9a34e97-daa4-4981-8a1c-dd4506bd2aa9",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "e154e6a3-71fb-4c99-84d7-75bdd14328dd",
+     "user_id": "17c6e4da-d0b0-4495-a572-1a93acdb4196",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    },
+    {
+     "id": "f6a629e3-0607-47af-974a-c460c0150255",
+     "user_id": "7d4ba194-398d-46c3-a2ce-ade9b3b3b26d",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:21.245752+00:00"
+    }
+   ],
+   "follows": [
+    {
+     "id": "0b1fc302-5a02-49cd-813f-1acc2ecf223c",
+     "user_id": "f3081de3-bbb3-4ac8-97ff-98f6e271ff0b",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:34:28.038326+00:00"
+    },
+    {
+     "id": "31d358a3-68fd-4554-9411-d9c5ffe50f81",
+     "user_id": "a39062e9-1161-493a-bfa1-9db5c72fbedd",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:34:28.328651+00:00"
+    },
+    {
+     "id": "0f5fe378-0392-48ef-ad2a-b80d9cd816fa",
+     "user_id": "5ba62a1c-ae38-4365-b8ce-b6eceac0537c",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:41:11.572766+00:00"
+    },
+    {
+     "id": "668cb429-ea51-4aae-ae49-8afe57e9bfb6",
+     "user_id": "2902dd24-c574-419c-ab74-f5b7acb23717",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:41:11.572766+00:00"
+    },
+    {
+     "id": "00b2b115-0a03-4d7a-acf1-5e147fc43dc6",
+     "user_id": "bb9ec9e9-b750-4ec6-a832-b55b410ce84e",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:41:11.572766+00:00"
+    },
+    {
+     "id": "01859f11-bf93-48a6-a487-c1b3b087353f",
+     "user_id": "13a2cdf2-a2b5-4d8f-bda6-da0adfd4ba08",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:41:11.572766+00:00"
+    },
+    {
+     "id": "6e149078-6343-4203-bcb7-cb8c6e2d91d5",
+     "user_id": "b4dd13bd-0c95-42e2-9182-ab4d6e0167ed",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:41:11.572766+00:00"
+    },
+    {
+     "id": "0e91955c-8fbb-4973-b32f-01a0fd871fe1",
+     "user_id": "34bc24a6-8f97-4b96-919d-8d30be404356",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:41:11.572766+00:00"
+    },
+    {
+     "id": "c2e93a16-e643-4872-811c-492f3bc19dc8",
+     "user_id": "276325ee-c8f2-4a02-99b8-fd8156da1c35",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-24T23:41:11.572766+00:00"
+    },
+    {
+     "id": "0fb288aa-a72d-47d1-88f4-62981162d566",
+     "user_id": "6bcd9c96-507a-43f2-a95a-6cb343ab01cf",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "2c20b81c-8e28-498c-a050-0c4aedaef5fc",
+     "user_id": "5af18256-3c90-4667-987a-1d5910c48264",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "e1346147-0bae-497c-96dc-5cc92e294e17",
+     "user_id": "da5ff746-1e80-44d1-96b3-c68c99241075",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "e21ccd5b-58ba-4fea-a101-f8453acdfd6e",
+     "user_id": "d4a5bae8-b1ca-4e2b-81fa-528605d2702e",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "e38e798c-e7f2-41a3-ae2a-18ba5512ae87",
+     "user_id": "980fbfc4-bd79-4861-bf94-cac80634dc46",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "b8858031-c604-413b-8ac4-f7811755fdbc",
+     "user_id": "ba224680-e6cb-432d-8fc5-6887aa51156f",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "ce6d08e9-bdb9-48f9-82cc-187c77bf56d6",
+     "user_id": "d9a34e97-daa4-4981-8a1c-dd4506bd2aa9",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "90a8e51d-bf83-4228-a8ea-56dfad32b8f7",
+     "user_id": "17c6e4da-d0b0-4495-a572-1a93acdb4196",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    },
+    {
+     "id": "4c080736-10ba-4169-9553-80d42cb6bbd4",
+     "user_id": "7d4ba194-398d-46c3-a2ce-ade9b3b3b26d",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "created_at": "2026-03-25T02:14:24.062624+00:00"
+    }
+   ],
+   "campaign_finance": [
+    {
+     "id": "6d916949-efc0-471b-a350-793daeeecb0a",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "cycle": "2026",
+     "total_raised": 51310.68,
+     "total_spent": 48106.32,
+     "cash_on_hand": 3204.36,
+     "source": "FEC API (candidates/totals, cycle 2026, through 2026-07-29)",
+     "last_updated": "2026-09-09T15:56:07.537+00:00",
+     "created_at": "2026-09-09T15:56:37.904098+00:00"
+    },
+    {
+     "id": "5da5279f-ce5d-476f-a343-3f30b094aa19",
+     "politician_id": "816272a6-6bfb-4184-8927-a4ffc7969038",
+     "cycle": "2022",
+     "total_raised": 0,
+     "total_spent": 0,
+     "cash_on_hand": 0,
+     "source": "FEC API (candidates/totals, cycle 2022)",
+     "last_updated": "2026-09-09T16:08:19.726+00:00",
+     "created_at": "2026-09-09T16:08:51.782452+00:00"
+    }
+   ],
+   "stance_history": [],
+   "politician_committees": []
+  }
+ }
+}

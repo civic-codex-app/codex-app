@@ -69,7 +69,7 @@ export function StanceDeviation({ party, stances }: StanceDeviationProps) {
           return (
             <div
               key={d.issues!.slug}
-              className="flex items-center justify-between rounded-md border border-[var(--poli-border)] px-4 py-2.5"
+              className="flex items-center justify-between rounded-md border border-[var(--poli-border)] px-4 py-2.5 bg-[var(--poli-card)]"
             >
               <span className="text-[13px] text-[var(--poli-text)]">
                 {d.issues!.name}

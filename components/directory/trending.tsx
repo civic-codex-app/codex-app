@@ -50,7 +50,7 @@ export function Trending({ minTotalFollows = 0 }: { minTotalFollows?: number }) 
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 rounded-lg border border-[var(--poli-border)] p-4"
+              className="flex items-center gap-3 rounded-lg border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]"
             >
               <div className="h-11 w-11 flex-shrink-0 animate-pulse rounded-full bg-[var(--poli-hover)]" />
               <div className="flex-1 space-y-2">
@@ -79,12 +79,12 @@ export function Trending({ minTotalFollows = 0 }: { minTotalFollows?: number }) 
             <Link
               key={pol.id}
               href={`/politicians/${pol.slug}`}
-              className="group flex items-center gap-3 rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)]"
+              className="group flex items-center gap-3 rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
             >
               {/* Avatar */}
               <div
                 className="h-11 w-11 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
-                style={{ border: `2px solid ${color}44` }}
+                style={{ boxShadow: `0 0 0 2px ${color}` }}
               >
                 <AvatarImage
                   src={pol.image_url}

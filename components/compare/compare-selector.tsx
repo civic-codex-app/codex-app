@@ -181,7 +181,7 @@ function PoliticianAutocomplete({
             className="absolute right-2 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-[var(--poli-faint)] transition-colors hover:bg-[var(--poli-hover)] hover:text-[var(--poli-sub)]"
             aria-label="Clear selection"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
@@ -193,7 +193,7 @@ function PoliticianAutocomplete({
         <div
           ref={dropdownRef}
           role="listbox"
-          className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[320px] overflow-y-auto rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)] shadow-lg"
+          className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[320px] overflow-y-auto rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)]"
         >
           {suggestions.map((s, i) => (
             <button
@@ -227,7 +227,7 @@ function PoliticianAutocomplete({
                   className="flex h-7 w-7 items-center justify-center rounded-full"
                   style={{
                     backgroundColor: s.party
-                      ? `${partyColor(s.party)}18`
+                      ? 'var(--poli-hover)'
                       : 'var(--poli-hover)',
                   }}
                 >
@@ -293,7 +293,7 @@ export function CompareSelector({ selectedA, selectedB, nameA, nameB }: CompareS
 
         <button
           onClick={swap}
-          className="flex h-9 w-9 flex-shrink-0 items-center justify-center self-center rounded-full border border-[var(--poli-border)] text-[var(--poli-faint)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)] sm:mt-5"
+          className="flex h-9 w-9 flex-shrink-0 items-center justify-center self-center rounded-full border border-[var(--poli-border)] text-[var(--poli-faint)] transition-all hover:border-[var(--poli-input-focus)] hover:text-[var(--poli-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--poli-input-focus)] sm:mt-5 bg-[var(--poli-card)]"
           title="Swap"
           aria-label="Swap officials A and B"
         >

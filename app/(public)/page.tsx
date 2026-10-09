@@ -125,7 +125,7 @@ export default async function HomePage() {
       <div className="mx-auto max-w-[560px] px-4 pt-5">
         <header className="mb-5 px-1">
           <p className="mb-1 text-[13px] font-medium text-[var(--poli-sub)]">{today}</p>
-          <h1 className="text-[32px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--poli-text)]">
+          <h1 className="font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">
             Your government
           </h1>
         </header>

@@ -32,7 +32,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
         <h2 className="mb-4 text-sm font-semibold text-[var(--poli-sub)]">
           Campaign Finance
         </h2>
-        <div className="rounded-md border border-[var(--poli-border)] px-6 py-8 text-center text-[13px] text-[var(--poli-faint)]">
+        <div className="rounded-md border border-[var(--poli-border)] px-6 py-8 text-center text-[13px] text-[var(--poli-faint)] bg-[var(--poli-card)]">
           No campaign finance data on record
         </div>
       </div>
@@ -63,7 +63,7 @@ export function FinanceComparison({ financeA, financeB, polA, polB }: FinanceCom
         Campaign Finance
       </h2>
 
-      <div className="space-y-4 rounded-md border border-[var(--poli-border)] p-4 sm:p-5">
+      <div className="space-y-4 rounded-md border border-[var(--poli-border)] p-4 sm:p-5 bg-[var(--poli-card)]">
         {/* Cycle labels */}
         <div className="flex items-center justify-between text-[11px] text-[var(--poli-faint)]">
           <div className="flex items-center gap-1.5">

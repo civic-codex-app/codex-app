@@ -1,17 +1,11 @@
 /**
- * Surfaces for the app-shell redesign.
- *
- * The convention the rest of the app uses is a white page with outlined cards
- * (`rounded-* border border-[var(--poli-border)]`, 356 of them across 132
- * files). This is the other convention: a grey ground with white cards that
- * carry a shadow and no outline. Both are valid; mixing them on one screen is
- * not, which is why these are separate components rather than a tweak to the
- * border token.
- *
- * Tokens live in app/globals.css as --poli-app-*.
+ * Surfaces. One model, in both themes: a ground, then cards with a 1px
+ * hairline. A card never carries a shadow (shadows vanish in dark mode) and
+ * the app never puts a dark panel inside the light theme; dark is a theme,
+ * not a card. Tokens live in app/globals.css as --poli-*.
  */
 
-/** The grey ground. Wrap a whole screen in this, not a section of one. */
+/** The ground. Wrap a whole screen in this, not a section of one. */
 export function AppShell({
   children,
   className = '',
@@ -21,7 +15,7 @@ export function AppShell({
 }) {
   return (
     <div
-      className={`min-h-screen bg-[var(--poli-app-bg)] ${className}`}
+      className={`min-h-screen bg-[var(--poli-bg)] ${className}`}
       style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 88px)' }}
     >
       {children}
@@ -29,7 +23,7 @@ export function AppShell({
   )
 }
 
-/** A white card. `flush` drops the padding for rows that manage their own. */
+/** A card. `flush` drops the padding for rows that manage their own. */
 export function Card({
   children,
   className = '',
@@ -41,26 +35,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`rounded-2xl bg-[var(--poli-app-card)] ${flush ? '' : 'p-4'} ${className}`}
-      style={{ boxShadow: 'var(--poli-app-shadow)' }}
-    >
-      {children}
-    </div>
-  )
-}
-
-/** The near-black card the design uses for the one thing with a deadline. */
-export function InkCard({
-  children,
-  className = '',
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <div
-      className={`rounded-2xl bg-[var(--poli-app-ink)] p-5 text-white ${className}`}
-      style={{ boxShadow: 'var(--poli-app-shadow-lg)' }}
+      className={`rounded-2xl border border-[var(--poli-border)] bg-[var(--poli-card)] ${flush ? '' : 'p-4'} ${className}`}
     >
       {children}
     </div>
@@ -68,9 +43,10 @@ export function InkCard({
 }
 
 /**
- * The small uppercase grey label above a group. 11px, wide tracking. Rendered
- * as a real heading so the section is navigable, with `as` to keep the
- * document outline sane on a screen that has several.
+ * The small uppercase label above a group: 11px, wide tracking, in --poli-sub
+ * (--poli-faint is for icons; as text it fails contrast in both themes).
+ * Rendered as a real heading so the section is navigable, with `as` to keep
+ * the document outline sane on a screen that has several.
  */
 export function SectionLabel({
   children,
@@ -83,7 +59,7 @@ export function SectionLabel({
 }) {
   return (
     <div className="mb-2 flex items-baseline justify-between gap-3 px-1">
-      <Tag className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-faint)]">
+      <Tag className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
         {children}
       </Tag>
       {right}
@@ -91,22 +67,26 @@ export function SectionLabel({
   )
 }
 
-/** A tinted status chip. */
+/**
+ * A chip. `marker` is the brand accent: a fill with ink text on it, for the
+ * one thing on the screen that is the visitor's to act on. Use it once.
+ */
 export function Chip({
   tone = 'neutral',
   children,
 }: {
-  tone?: 'neutral' | 'good' | 'warn'
+  tone?: 'neutral' | 'good' | 'warn' | 'marker'
   children: React.ReactNode
 }) {
   const tones = {
     neutral: 'bg-[var(--poli-badge-bg)] text-[var(--poli-badge-text)]',
     good: 'bg-[var(--poli-app-good-bg)] text-[var(--poli-app-good-ink)]',
     warn: 'bg-[var(--poli-app-warn-bg)] text-[var(--poli-app-warn-ink)]',
+    marker: 'bg-[var(--poli-marker)] text-[var(--poli-marker-ink)]',
   } as const
   return (
     <span
-      className={`inline-flex items-center rounded-md px-2 py-[3px] text-[11.5px] font-semibold ${tones[tone]}`}
+      className={`inline-flex items-center rounded-sm px-2 py-[3px] text-[11.5px] font-semibold ${tones[tone]}`}
     >
       {children}
     </span>

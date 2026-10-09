@@ -139,7 +139,7 @@ function Sparkline({ data, color = '#3B82F6' }: { data: number[]; color?: string
         points={points}
         fill="none"
         stroke={color}
-        strokeWidth="1.5"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -245,7 +245,7 @@ export default function AdminAnalyticsPage() {
       {/* Header */}
       <div className="mb-8 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-[var(--poli-text)]">Analytics</h1>
+          <h1 className="font-serif text-[32px] font-normal leading-[1.08] text-[var(--poli-text)]">Analytics</h1>
           <p className="mt-1 text-sm text-[var(--poli-sub)]">
             User activity and engagement tracking
           </p>
@@ -293,7 +293,7 @@ export default function AdminAnalyticsPage() {
       {/* Daily Activity Chart */}
       {dailyUsers.length > 0 && (
         <div className="mb-8 rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Daily Activity
           </h2>
           <DailyChart data={dailyUsers} />
@@ -304,7 +304,7 @@ export default function AdminAnalyticsPage() {
       <div className="mb-8 grid gap-6 lg:grid-cols-2">
         {/* Top Events */}
         <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Top Events
           </h2>
           <div className="space-y-2">
@@ -338,12 +338,12 @@ export default function AdminAnalyticsPage() {
 
         {/* Quiz Funnel */}
         <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Quiz Funnel
           </h2>
           <FunnelBar stages={quizFunnel} />
 
-          <h2 className="mb-3 mt-8 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-3 mt-8 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Top Politicians Viewed
           </h2>
           <div className="space-y-1.5">
@@ -370,7 +370,7 @@ export default function AdminAnalyticsPage() {
 
         {/* Top Pages */}
         <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Top Pages
           </h2>
           <div className="space-y-1.5">
@@ -396,7 +396,7 @@ export default function AdminAnalyticsPage() {
 
         {/* Top Cities */}
         <div className="rounded-xl border border-[var(--poli-border)] bg-[var(--poli-card)] p-5">
-          <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+          <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Visitor Locations
           </h2>
           <div className="space-y-1.5">

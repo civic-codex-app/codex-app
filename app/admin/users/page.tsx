@@ -37,17 +37,17 @@ export default async function AdminUsersPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[var(--poli-text)]">Users</h1>
+        <h1 className="font-serif text-[28px] font-normal leading-[1.12] text-[var(--poli-text)]">Users</h1>
         <p className="mt-1 text-sm text-[var(--poli-sub)]">
           {users.length} registered users
         </p>
       </div>
 
       {/* Demo Users Section */}
-      <div className="mb-8 rounded-lg border border-[var(--poli-border)] p-5">
+      <div className="mb-8 rounded-lg border border-[var(--poli-border)] p-5 bg-[var(--poli-card)]">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <h2 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Demo Community Members
             </h2>
             <p className="mt-1 text-[24px] font-bold text-[var(--poli-text)]">
@@ -68,7 +68,7 @@ export default async function AdminUsersPage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-[var(--poli-border)]">
+      <div className="overflow-x-auto rounded-lg border border-[var(--poli-border)] bg-[var(--poli-card)]">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-hover)]">

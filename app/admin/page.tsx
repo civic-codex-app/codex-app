@@ -112,7 +112,7 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <h1 className="mb-2 text-3xl font-bold">Admin Overview</h1>
+      <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08]">Admin Overview</h1>
       <p className="mb-1 text-sm text-[var(--poli-sub)]">Manage your political directory data</p>
       {/* Says so because it is true: the large tables report the planner's
           estimate rather than a counted census, and the whole block is cached
@@ -194,7 +194,7 @@ export default async function AdminOverviewPage() {
               View all
             </Link>
           </div>
-          <div className="overflow-hidden rounded-md border border-[var(--poli-border)]">
+          <div className="overflow-hidden rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
             {(recentPoliticians ?? []).map((pol: any) => (
               <Link
                 key={pol.id}

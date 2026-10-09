@@ -49,7 +49,7 @@ function VoteIcon() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-3.5 w-3.5"
@@ -67,7 +67,7 @@ function StanceIcon() {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
       className="h-3.5 w-3.5"
@@ -80,7 +80,7 @@ function StanceIcon() {
 export function RecentActivityFeed({ items }: { items: ActivityItem[] }) {
   if (items.length === 0) {
     return (
-      <div className="rounded-md border border-[var(--poli-border)] py-10 text-center">
+      <div className="rounded-md border border-[var(--poli-border)] py-10 text-center bg-[var(--poli-card)]">
         <p className="mb-2 text-sm text-[var(--poli-sub)]">
           No recent activity
         </p>

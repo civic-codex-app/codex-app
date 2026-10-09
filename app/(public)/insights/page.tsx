@@ -253,7 +253,7 @@ export default async function InsightsPage() {
       <div className="mx-auto max-w-[1200px] px-6 pt-6 md:px-10">
         {/* Hero */}
         <div className="mb-14 max-w-[650px]">
-          <h1 className="mb-4 animate-fade-up text-[clamp(32px,4vw,52px)] font-bold leading-[1.1]">
+          <h1 className="mb-4 animate-fade-up font-serif text-[clamp(36px,4.5vw,52px)] font-normal leading-[1.08]">
             Political Insights
           </h1>
           <p className="animate-fade-up text-[15px] leading-[1.7] text-[var(--poli-subtle)]">
@@ -387,15 +387,15 @@ export default async function InsightsPage() {
             Explore More
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            <Link href="/issues/map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
+            <Link href="/issues/map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)] bg-[var(--poli-card)]">
               <div className="mb-2 text-lg font-semibold">Issue Map</div>
               <p className="text-[13px] text-[var(--poli-sub)]">See how each state&apos;s delegation leans on key issues</p>
             </Link>
-            <a href="/insights/money-map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
+            <a href="/insights/money-map" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)] bg-[var(--poli-card)]">
               <div className="mb-2 text-lg font-semibold">Money Map</div>
               <p className="text-[13px] text-[var(--poli-sub)]">Campaign finance totals by state</p>
             </a>
-            <a href="/report-cards" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)]">
+            <a href="/report-cards" className="rounded-md border border-[var(--poli-border)] p-5 transition-colors hover:border-[var(--poli-text)] bg-[var(--poli-card)]">
               <div className="mb-2 text-lg font-semibold">Report Cards</div>
               <p className="text-[13px] text-[var(--poli-sub)]">How active and bipartisan is each politician? Scored on real data.</p>
             </a>

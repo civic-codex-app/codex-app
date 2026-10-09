@@ -15,7 +15,7 @@ import { SkeletonBlock, SkeletonText, SkeletonScreen } from '@/components/ui/ske
 /** Mirrors components/community/voter-card.tsx: 40px avatar, meta lines, distribution bar, tags, compare button. */
 function SkeletonVoterCard() {
   return (
-    <div className="rounded-lg border border-[var(--poli-border)] p-4">
+    <div className="rounded-lg border border-[var(--poli-border)] p-4 bg-[var(--poli-card)]">
       <div className="mb-3 flex items-center gap-3">
         <SkeletonBlock className="h-10 w-10 shrink-0 rounded-full" />
         <div className="min-w-0 flex-1 space-y-1.5">
@@ -87,7 +87,7 @@ export default function CommunityLoading() {
           {Array.from({ length: 5 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-lg border border-[var(--poli-border)] px-4 py-3 text-center"
+              className="rounded-lg border border-[var(--poli-border)] px-4 py-3 text-center bg-[var(--poli-card)]"
             >
               {/* Line boxes, not glyph heights: the real tile stacks a
                   text-[18px] value (27px line) directly on a text-[11px]

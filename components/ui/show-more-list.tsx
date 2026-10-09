@@ -39,7 +39,7 @@ export function ShowMoreList<T>({
       {hasMore && (
         <button
           onClick={() => setVisible((v) => v + increment)}
-          className="mt-3 w-full rounded-lg border border-[var(--poli-border)] py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)]"
+          className="mt-3 w-full rounded-lg border border-[var(--poli-border)] py-2.5 text-[13px] font-medium text-[var(--poli-sub)] transition-all hover:border-[var(--poli-text)] hover:text-[var(--poli-text)] bg-[var(--poli-card)]"
         >
           Show {Math.min(remaining, increment)} more of {total}
         </button>

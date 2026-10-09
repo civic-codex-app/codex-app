@@ -107,7 +107,7 @@ export default function DailyTopicsPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">Daily Topics</h1>
+          <h1 className="font-serif text-[28px] font-normal leading-[1.12]">Daily Topics</h1>
           <p className="mt-1 text-sm text-[var(--poli-sub)]">
             Manage daily news headlines shown on the homepage
           </p>
@@ -141,11 +141,11 @@ export default function DailyTopicsPage() {
       {loading ? (
         <div className="py-12 text-center text-sm text-[var(--poli-faint)]">Loading...</div>
       ) : topics.length === 0 ? (
-        <div className="rounded-xl border border-[var(--poli-border)] py-12 text-center">
+        <div className="rounded-xl border border-[var(--poli-border)] py-12 text-center bg-[var(--poli-card)]">
           <div className="text-sm text-[var(--poli-faint)]">No topics found</div>
           <button
             onClick={handleRefresh}
-            className="mt-3 text-sm font-medium text-blue-400 hover:text-blue-300"
+            className="mt-3 text-sm font-semibold text-[var(--poli-text)]"
           >
             Fetch topics from GNews
           </button>

@@ -12,7 +12,7 @@ const TABS = [
     label: 'Home',
     match: ['/'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
         <polyline points="9 22 9 12 15 12 15 22" />
       </svg>
@@ -23,7 +23,7 @@ const TABS = [
     label: 'Reps',
     match: ['/directory', '/politicians', '/compare', '/states'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
         <circle cx="9" cy="7" r="4" />
         <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -42,7 +42,7 @@ const TABS = [
     label: 'Ballot',
     match: ['/ballot', '/elections', '/quiz', '/report-cards'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
         <circle cx="12" cy="12" r="3" />
       </svg>
@@ -53,7 +53,7 @@ const TABS = [
     label: 'Issues',
     match: ['/issues', '/bills'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="12 2 2 7 12 12 22 7 12 2" />
         <polyline points="2 17 12 22 22 17" />
         <polyline points="2 12 12 17 22 12" />
@@ -65,7 +65,7 @@ const TABS = [
     label: 'Feed',
     match: ['/feed', '/community', '/insights'],
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 4h16v16H4z" />
         <line x1="8" y1="9" x2="16" y2="9" />
         <line x1="8" y1="13" x2="16" y2="13" />
@@ -177,7 +177,7 @@ export function BottomTabs() {
           className="fixed left-0 right-0 z-50 rounded-t-xl border-t lg:hidden"
           style={{
             bottom: 'calc(56px + var(--safe-bottom, 0px))',
-            backgroundColor: 'var(--poli-bg)',
+            backgroundColor: 'var(--poli-card)',
             borderColor: 'var(--poli-border)',
             padding: '12px 16px',
             maxHeight: '60vh',
@@ -246,7 +246,7 @@ export function BottomTabs() {
       <nav
         className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
         style={{
-          backgroundColor: 'var(--poli-bg)',
+          backgroundColor: 'var(--poli-card)',
           borderTop: '1px solid var(--poli-border)',
           paddingBottom: 'var(--safe-bottom, 0px)',
         }}
@@ -328,7 +328,7 @@ export function BottomTabs() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.8"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
             >

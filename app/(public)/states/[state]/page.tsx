@@ -229,7 +229,7 @@ export default async function StateDetailPage({ params }: PageProps) {
               {abbr}
             </span>
           </div>
-          <h1 className="mb-2 text-[clamp(28px,4vw,42px)] font-bold leading-[1.1]">
+          <h1 className="mb-2 font-serif text-[clamp(32px,4vw,44px)] font-normal leading-[1.08]">
             {stateName}
           </h1>
           <p className="text-[15px] text-[var(--poli-sub)]">
@@ -241,7 +241,7 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Your Representatives */}
         {politicians.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Your Representatives
             </h2>
 
@@ -266,7 +266,7 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Campaign Finance */}
         {finance.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Campaign Finance
             </h2>
 
@@ -304,7 +304,7 @@ export default async function StateDetailPage({ params }: PageProps) {
                     >
                       <div
                         className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full bg-[var(--poli-card)]"
-                        style={{ border: `2px solid ${color}44` }}
+                        style={{ boxShadow: `0 0 0 2px ${color}` }}
                       >
                         <AvatarImage
                           src={pol.image_url}
@@ -342,7 +342,7 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* Upcoming Races */}
         {races.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               Upcoming Races
             </h2>
             <div className="space-y-2">
@@ -355,7 +355,7 @@ export default async function StateDetailPage({ params }: PageProps) {
                   <Link
                     key={race.id}
                     href={`/elections/${race.slug}`}
-                    className="flex items-center justify-between rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] hover:shadow-sm"
+                    className="flex items-center justify-between rounded-lg border border-[var(--poli-border)] p-4 no-underline transition-all hover:border-[var(--poli-text)] bg-[var(--poli-card)]"
                   >
                     <div>
                       <div className="text-[14px] font-medium text-[var(--poli-text)]">
@@ -396,7 +396,7 @@ export default async function StateDetailPage({ params }: PageProps) {
         {/* All Officials grid */}
         {politicians.length > 0 && (
           <section className="mb-10">
-            <h2 className="mb-4 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]">
+            <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
               All Officials
               <span className="ml-2 text-[var(--poli-faint)]">{politicians.length}</span>
             </h2>

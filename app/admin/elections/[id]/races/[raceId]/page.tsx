@@ -37,7 +37,7 @@ export default async function EditRacePage({ params }: PageProps) {
   return (
     <div>
       <div className="max-w-2xl">
-        <h1 className="mb-8 text-3xl font-bold">Edit Race</h1>
+        <h1 className="mb-8 font-serif text-[32px] font-normal leading-[1.08]">Edit Race</h1>
         <RaceForm election_id={id} race={race as any} politicians={politicians ?? []} />
       </div>
 
@@ -52,7 +52,7 @@ export default async function EditRacePage({ params }: PageProps) {
           </Link>
         </div>
 
-        <div className="overflow-x-auto rounded-md border border-[var(--poli-border)]">
+        <div className="overflow-x-auto rounded-md border border-[var(--poli-border)] bg-[var(--poli-card)]">
           <table className="w-full">
             <thead>
               <tr className="border-b border-[var(--poli-border)] bg-[var(--poli-card)]">

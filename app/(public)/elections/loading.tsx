@@ -54,7 +54,7 @@ export default function ElectionsLoading() {
         {/* Quick stats — 4 cards, 2-up until sm */}
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="rounded-lg border border-[var(--poli-border)] p-4 text-center">
+            <div key={i} className="rounded-lg border border-[var(--poli-border)] p-4 text-center bg-[var(--poli-card)]">
               <div className="flex h-8 items-center justify-center">
                 <SkeletonBlock className="h-6 w-12" />
               </div>
@@ -103,7 +103,7 @@ export default function ElectionsLoading() {
             rendering cost. */}
         <div className="mb-12 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="rounded-lg border border-[var(--poli-border)] p-3">
+            <div key={i} className="rounded-lg border border-[var(--poli-border)] p-3 bg-[var(--poli-card)]">
               <div className="mb-1 flex h-[21px] items-center gap-2">
                 <SkeletonBlock className="h-3 w-5 rounded" />
                 <SkeletonBlock className="h-[15px] w-20" />

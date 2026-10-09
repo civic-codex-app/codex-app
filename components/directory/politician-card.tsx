@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { PartyIcon } from '@/components/icons/party-icons'
+import { AvatarImage } from '@/components/ui/avatar-image'
 import { partyColor } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
 import type { Politician } from '@/lib/types/politician'
@@ -54,9 +55,7 @@ export function PoliticianCard({ politician, alignment, stances }: PoliticianCar
               className="h-full w-full object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center" style={{ background: `${color}08` }}>
-              <PartyIcon party={politician.party} size={20} />
-            </div>
+            <AvatarImage src={null} alt={politician.name} size={56} />
           )}
         </div>
         {politician.image_url && (

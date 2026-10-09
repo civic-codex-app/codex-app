@@ -95,7 +95,7 @@ export default async function ElectionCountdownPage() {
         </Link>
 
         {/* Title */}
-        <h1 className="mb-2 text-3xl font-bold text-[var(--poli-text)]">
+        <h1 className="mb-2 font-serif text-[32px] font-normal leading-[1.08] text-[var(--poli-text)]">
           Election Countdown
         </h1>
         <p className="mb-8 text-sm text-[var(--poli-sub)]">
@@ -103,8 +103,8 @@ export default async function ElectionCountdownPage() {
         </p>
 
         {/* Countdown timer card */}
-        <div className="mb-10 rounded-md border border-[var(--poli-border)] p-6 text-center">
-          <div className="mb-2 text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-faint)]">
+        <div className="mb-10 rounded-md border border-[var(--poli-border)] p-6 text-center bg-[var(--poli-card)]">
+          <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             Time remaining
           </div>
           <div className="flex justify-center">
@@ -153,7 +153,7 @@ export default async function ElectionCountdownPage() {
           </p>
           <Link
             href="/elections"
-            className="inline-flex items-center gap-1.5 text-[14px] font-medium text-blue-400 hover:underline"
+            className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[var(--poli-text)] underline underline-offset-2"
           >
             Browse all elections
             <svg

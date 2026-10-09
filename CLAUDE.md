@@ -38,10 +38,44 @@ Poli is a **civic engagement platform** that tracks U.S. politicians, their stan
 - For seed scripts (.mjs files), must `export $(grep -v '^#' .env.local | xargs)` before running with `node`
 
 ### Design System
-- Color tokens: `--poli-text`, `--poli-sub`, `--poli-faint`, `--poli-border`, `--poli-card`, `--poli-hover`, `--poli-badge-bg`, `--poli-badge-text`, `--poli-input-border`
-- Typography: `font-serif` for headings, `text-[clamp(...)]` for responsive sizing
-- Section headers: `text-[12px] font-medium uppercase tracking-[0.15em] text-[var(--poli-sub)]`
-- Party colors via `partyColor()` from `lib/constants/parties.ts`
+
+One system, both themes, built from the tokens that were already in
+`app/globals.css`. Decided 2026-10-09 after the app had drifted into three
+surface styles (outlined cards, shadowed cards, dark panels inside the light
+theme), two headline voices and ten radii. The canvas: "Poli Brand".
+
+1. **One surface.** `--poli-bg` is the ground (`#E8EAED` light, `#0B1220`
+   dark) and every card is `--poli-card` with a 1px `--poli-border`
+   hairline. No shadows anywhere (they vanish in dark mode). No screen is
+   ever partly dark: dark is a theme (`:root.dark`), never a panel.
+   `components/app/surface.tsx` (`AppShell`, `Card`, `SectionLabel`, `Chip`)
+   is the reference implementation; `InkCard` is gone.
+2. **Serif for headlines only**, upright, `leading-[1.08]` or more. Every
+   `<h1>` is `font-serif … font-normal`. Numbers, labels, buttons and body
+   are DM Sans; big numbers are `font-bold tabular-nums`. Nothing is italic.
+3. **One accent, the Marker:** `--poli-marker` (`#FFD23F`, the same in both
+   themes) with `--poli-marker-ink` text on it. A fill, once per screen, for
+   the thing that is the visitor's to act on (`Chip tone="marker"`, the
+   countdown's button). Never a text colour, never on a dark surface. Links
+   are `--poli-text`; `--poli-input-focus` is the focus ring only, never a
+   link colour, because it is Democrat blue.
+4. **Party and stance colours are data.** A 2px ring (`boxShadow: 0 0 0 2px`
+   partyColor), a 10px dot, a bar, a label of 14px or less. Never a
+   background tint and never a headline.
+5. **One avatar.** A circle; a photo or ink initials on the card colour
+   (`AvatarImage` falls back to initials, not a party icon). Sizes 56/40/28.
+   No squares, no tiles.
+6. **Four radii, one stroke.** `tailwind.config.ts` maps `rounded-sm`=6
+   (chips), `rounded-md`/`rounded-xl`=12 (controls), `rounded-lg`/
+   `rounded-2xl`=16 (cards), `rounded-3xl`=24 (sheets). Inline icons use
+   `strokeWidth={2}`. Section labels are one class:
+   `text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]`
+   (`--poli-faint` is for icons; as text it fails contrast in both themes).
+
+Color tokens: `--poli-text`, `--poli-sub`, `--poli-faint`, `--poli-border`,
+`--poli-card`, `--poli-hover`, `--poli-badge-bg`, `--poli-badge-text`,
+`--poli-input-border`, `--poli-marker`, `--poli-marker-ink`. Party colors via
+`partyColor()` from `lib/constants/parties.ts`.
 
 ## Database Schema (Key Tables)
 
