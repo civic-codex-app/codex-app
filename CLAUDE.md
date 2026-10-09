@@ -466,6 +466,20 @@ a server round-trip from every tab tap.
   local seats with no free authoritative source.
 - The retirement list in `scripts/destale-2026.mjs` is hand-verified but **not
   exhaustive**.
+- **37 `house`/`senate` rows are `is_verified = false`** — the Congress.gov
+  current-member import did not match them — yet every one is still titled
+  "U.S. Representative"/"U.S. Senator". They are three different things:
+  duplicates of a verified row under another spelling (merge; the
+  Waltz/Turner/Carter pairs in `merge-duplicate-politicians.mjs` were never
+  applied), former members (retitle "Former …", keep), and people who never
+  served (retitle as the candidate they were). Michigan's three were fixed
+  2026-10-09 and set the pattern: "Scholten Hillary" merged into the verified
+  row with the script's new `keep: 'official'` override and `--only=MI`;
+  Paul Junge and Curtis Hertel retitled "Candidate for U.S. House, 2024
+  (MI-8/MI-7)" with their FEC ids as `source`. The other 34 still present
+  non-members as sitting. Also found that day: John James's "portrait" on
+  the CDN was a 1 KB "JJ" initials placeholder; replaced with his official
+  photo (bioguide J000307).
 
 ## SQL Migrations (in order)
 

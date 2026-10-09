@@ -32,6 +32,9 @@ import { createClient } from '@supabase/supabase-js'
 import { writeFileSync } from 'fs'
 
 const APPLY = process.argv.includes('--apply')
+// --only=MI,GA limits a run to pairs in those states, so one newly confirmed
+// pair can be applied without re-deciding the others.
+const ONLY = (process.argv.find((a) => a.startsWith('--only=')) ?? '').slice('--only='.length).split(',').map((s) => s.trim()).filter(Boolean)
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
 
 /** Pairs confirmed by hand against Congress.gov. Not derived -- do not guess. */
@@ -39,6 +42,12 @@ const PAIRS = [
   { a: 'Mike Waltz',   b: 'Michael Waltz',   state: 'FL', official: 'Michael Waltz' },
   { a: 'Mike Turner',  b: 'Michael Turner',  state: 'OH', official: 'Michael Turner' },
   { a: 'Buddy Carter', b: 'Earl Carter',     state: 'GA', official: 'Earl Carter' },
+  // The seed stored her surname-first with no district; the Congress.gov
+  // import then added the real row. The seed row holds all the likes, follows
+  // and stances, so by reference count it would survive — `keep` pins the
+  // verified row instead, since it is the one with the district, the
+  // candidate link and the race incumbency.
+  { a: 'Scholten Hillary', b: 'Hillary J. Scholten', state: 'MI', official: 'Hillary J. Scholten', keep: 'official' },
 ]
 
 /** Every column that points at politicians.id. */
@@ -85,6 +94,7 @@ const backup = { generatedAt: new Date().toISOString(), pairs: [] }
 const plans = []
 
 for (const pair of PAIRS) {
+  if (ONLY.length && !ONLY.includes(pair.state)) continue
   const { data: found } = await sb
     .from('politicians')
     .select('id,name,slug,state,chamber,district')
@@ -100,9 +110,12 @@ for (const pair of PAIRS) {
   const cx = await countRefs(x.id)
   const cy = await countRefs(y.id)
 
-  // More references wins; a tie goes to the Congress.gov spelling.
+  // More references wins; a tie goes to the Congress.gov spelling. A pair
+  // with `keep: 'official'` keeps the Congress.gov spelling regardless.
   let survivor, loser, sc, lc
-  if (cx.total !== cy.total) {
+  if (pair.keep === 'official') {
+    ;[survivor, loser, sc, lc] = x.name === pair.official ? [x, y, cx, cy] : [y, x, cy, cx]
+  } else if (cx.total !== cy.total) {
     ;[survivor, loser, sc, lc] = cx.total > cy.total ? [x, y, cx, cy] : [y, x, cy, cx]
   } else {
     ;[survivor, loser, sc, lc] = x.name === pair.official ? [x, y, cx, cy] : [y, x, cy, cx]
