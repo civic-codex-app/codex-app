@@ -22,7 +22,11 @@ export function ElectionCard({
   candidacy: Candidacy | null
   days: number | null
   when: string | null
-  /** Everyone else with status running in the race the status refers to. */
+  /**
+   * Everyone else with status running in the race the status refers to.
+   * Named as a matchup only when `candidacy.confirmed`; otherwise they are
+   * FEC filers, counted and not paired.
+   */
   opponents: Opponent[]
 }) {
   if (!candidacy || candidacy.kind === 'not_up') return null
@@ -34,11 +38,16 @@ export function ElectionCard({
     ? `${named.map((o) => `${o.name} (${partyLabel(o.party)})`).join(', ')}${rest > 0 ? ` and ${rest} other${rest === 1 ? '' : 's'}` : ''}`
     : null
 
+  const n = opponents.length
+  const filed = `${n} other${n === 1 ? '' : 's'} filed · nominees not confirmed`
+
   let line: string
-  if (candidacy.kind === 'running') line = versus ? `vs. ${versus}` : 'No other candidate on record yet'
-  else if (candidacy.kind === 'other_race') line = `${candidacy.label}${versus ? ` · vs. ${versus}` : ''}`
+  if (candidacy.kind === 'running') line = !n ? 'No other candidate on record yet' : candidacy.confirmed ? `vs. ${versus}` : filed
+  else if (candidacy.kind === 'other_race') line = `${candidacy.label}${!n ? '' : candidacy.confirmed ? ` · vs. ${versus}` : ` · ${filed}`}`
   else if (candidacy.kind === 'lost') line = `${last(name)} lost the primary for ${candidacy.raceName ?? 'this seat'}`
-  else line = versus ? `${last(name)} is not running. ${versus} are running for the seat.` : `${last(name)} is not a candidate for this seat.`
+  else if (!n) line = `${last(name)} is not a candidate for this seat.`
+  else if (candidacy.confirmed) line = `${last(name)} is not running. ${versus} are running for the seat.`
+  else line = `${last(name)} is not running. ${n} filed for the seat · nominees not confirmed`
 
   return (
     <Card className="mb-3">

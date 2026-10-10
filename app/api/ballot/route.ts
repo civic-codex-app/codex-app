@@ -18,6 +18,11 @@ import { fetchBallotRaces } from '@/lib/utils/fetch-ballot'
  *
  * A ZIP that straddles districts returns every House race it touches, flagged
  * `ambiguous`, rather than silently picking one.
+ *
+ * `confirmed` says whether the race's statuses were reconciled against the
+ * state's certified candidate listing. Where it is false the running list is
+ * everyone who filed with the FEC, primary losers included, and the screens
+ * say so instead of drawing a matchup.
  */
 export async function GET(request: NextRequest) {
   const limited = rateLimit(request, PUBLIC_READ)
@@ -45,6 +50,7 @@ export async function GET(request: NextRequest) {
       chamber: r.chamber,
       district: r.district,
       election_date: r.election_date,
+      confirmed: r.ballot_confirmed,
       candidates: r.candidates
         .sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name))
         .map((c) => ({

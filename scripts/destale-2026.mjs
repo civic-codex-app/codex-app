@@ -255,6 +255,20 @@ for (const r of missing) {
     }
   }
 
+  // A Senate race has no district and a state has two senators, so (state,
+  // chamber) cannot say which seat is on the ballot. The race's own candidate
+  // rows can: the one sitting senator of that state who filed in it holds
+  // that seat (the Ohio and Florida specials, Texas). Two filing in the same
+  // race would be ambiguous and is left alone.
+  if ((!cands2 || cands2.length !== 1) && r.chamber === 'senate') {
+    const inRace = new Set(cands.filter((c) => c.race_id === r.id && c.politician_id).map((c) => c.politician_id))
+    const pool = (byStateChamber.get(`${r.state}|senate`) || []).filter((p) => /^U\.S\. Senator/.test(p.title || '') && inRace.has(p.id))
+    if (pool.length >= 1) {
+      cands2 = pool
+      how = 'senate: the sitting senator who filed in it'
+    }
+  }
+
   if (cands2 && cands2.length === 1) matches.push({ race: r, pol: cands2[0], how })
   else if (cands2 && cands2.length > 1) ambiguous.push({ race: r, n: cands2.length })
   else nomatch.push(r)

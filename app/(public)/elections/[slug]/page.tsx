@@ -224,6 +224,7 @@ export default async function RaceDetailPage({ params }: PageProps) {
           finance={finance}
           comparison={comparison}
           unverified={candidateList.length > 0 && candidateList.every((c) => !c.is_verified)}
+          confirmed={!!race.ballot_confirmed_at}
         />
       </div>
     </AppShell>
@@ -256,7 +257,7 @@ async function renderStateElection(
   while (true) {
     const { data } = await supabase
       .from('races')
-      .select('id, name, slug, chamber, district, description, candidates(id, name, party, is_incumbent, image_url, politician_id)')
+      .select('id, name, slug, chamber, district, description, ballot_confirmed_at, candidates(id, name, party, status, is_incumbent, image_url, politician_id)')
       .eq('election_id', election.id)
       .order('chamber')
       .order('name')
@@ -267,10 +268,20 @@ async function renderStateElection(
     from += 500
   }
 
-  // Group by chamber, excluding races with no candidates
+  // Group by chamber, excluding races with no running candidates. A row
+  // marked lost or withdrawn by a reconcile is not on the ballot. The row
+  // names its first three, so the major-party candidates and the incumbent
+  // come first rather than whoever the table returned first.
+  type Listed = { name: string; party: string; status: string; is_incumbent: boolean }
+  const rank = (c: Listed) => (c.party === 'democrat' || c.party === 'republican' ? 0 : 2) + (c.is_incumbent ? -1 : 0)
   const grouped: Record<string, typeof allRaces> = {}
+  let filedOnly = false
   for (const race of allRaces) {
-    if ((race.candidates ?? []).length === 0) continue
+    race.candidates = ((race.candidates ?? []) as Listed[])
+      .filter((c) => c.status === 'running')
+      .sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name))
+    if (race.candidates.length === 0) continue
+    if (!race.ballot_confirmed_at) filedOnly = true
     if (!grouped[race.chamber]) grouped[race.chamber] = []
     grouped[race.chamber].push(race)
   }
@@ -312,6 +323,11 @@ async function renderStateElection(
         <p className="mb-4 mt-1 text-[14px] text-[var(--poli-sub)]">
           {electionDate} · {racesWithCandidates} race{racesWithCandidates !== 1 ? 's' : ''}
         </p>
+        {filedOnly && (
+          <p className="-mt-2 mb-4 px-1 text-[13px] leading-[1.5] text-[var(--poli-sub)]">
+            Candidates are listed as they filed with the FEC until the state&rsquo;s certified ballot is reconciled, so a race can still name people who lost their primary.
+          </p>
+        )}
 
         <div className="mb-6">
           <ElectionCountdown electionDate={election.election_date} />

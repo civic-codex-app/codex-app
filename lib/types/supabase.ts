@@ -245,6 +245,8 @@ export interface RaceDetailRow {
   state: string
   district: string | null
   chamber: string
+  /** Set by a state reconcile (migration 032); NULL means the running list is who filed with the FEC. */
+  ballot_confirmed_at?: string | null
   elections: ElectionJoin | null
   incumbent: IncumbentJoin | null
 }

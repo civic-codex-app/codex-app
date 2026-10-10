@@ -27,6 +27,8 @@ export type BallotRace = {
   slug: string
   chamber: string
   district: string | null
+  /** Reconciled against the state's certified listing; false means "filed with the FEC". */
+  confirmed: boolean
   candidates: Array<{
     id: string
     name: string
@@ -50,16 +52,19 @@ function lastName(name: string) {
   return name.trim().split(/\s+/).pop() ?? name
 }
 
-/** "El-Sayed vs. Rogers and 4 others · open seat" */
+/** "El-Sayed vs. Rogers and 4 others · open seat", or "7 filed · nominees not confirmed". */
 export function raceLine(r: BallotRace) {
   const running = r.candidates.filter((c) => c.status === 'running')
+  if (!running.length) return 'No candidates on record yet'
+  // Until the state's certified listing has been reconciled, "running" is
+  // everyone who filed with the FEC, and two filers are not a matchup.
+  if (!r.confirmed) return `${running.length} filed · nominees not confirmed`
   const major = running.filter((c) => c.party === 'democrat' || c.party === 'republican')
   const lead = (major.length ? major : running).slice(0, 2)
   const others = running.length - lead.length
   const openSeat = running.length > 0 && !running.some((c) => c.is_incumbent)
   const names = lead.map((c) => lastName(c.name)).join(' vs. ')
   const tail = others > 0 ? ` and ${others} other${others === 1 ? '' : 's'}` : ''
-  if (!running.length) return 'No candidates on record yet'
   return `${names}${tail}${openSeat ? ' · open seat' : ''}`
 }
 
@@ -111,8 +116,10 @@ export function BallotCard({
         {mine ? (
           <Disclosure title={`${races.length} race${races.length === 1 ? '' : 's'} on your ballot`} last>
             {races.map((r) => {
+              // An unconfirmed race shows the incumbent's face at most:
+              // the other filers are a list, not the matchup.
               const faces = r.candidates
-                .filter((c) => c.status === 'running' && c.image_url)
+                .filter((c) => c.status === 'running' && c.image_url && (r.confirmed || c.is_incumbent))
                 .slice(0, 2)
                 .map((c) => ({ src: c.image_url, alt: c.name, party: c.party }))
               return (

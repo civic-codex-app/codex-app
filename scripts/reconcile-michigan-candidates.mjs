@@ -27,6 +27,12 @@
  * Dry-run by default; --apply writes after backing up every Michigan
  * candidate row.
  *
+ * Every race the listing covers is then stamped `ballot_confirmed_source` /
+ * `ballot_confirmed_at` (migration 032). That stamp is what lets the app
+ * draw a head-to-head and say "on the ballot": a race without it shows its
+ * running candidates as "filed with the FEC", because that is all the FEC
+ * import can vouch for. Copy this when reconciling another state.
+ *
  *   export $(grep -v '^#' .env.local | xargs)
  *   node scripts/reconcile-michigan-candidates.mjs
  *   node scripts/reconcile-michigan-candidates.mjs --apply
@@ -227,6 +233,7 @@ console.log(`\nNOMINEES whose party party_type cannot hold (not inserted): ${pla
 const byParty = plan.skippedParty.reduce((a, x) => ((a[shortParty(x.g.party)] = (a[shortParty(x.g.party)] ?? 0) + 1), a), {})
 console.log(`   ${JSON.stringify(byParty)}`)
 console.log(`\nRaces the state listing does not cover: ${plan.uncovered.join(', ') || 'none'}`)
+console.log(`Races the listing covers, to be stamped ballot_confirmed: ${seen.size}`)
 
 if (!APPLY) { console.log('\nDry run complete — no writes.'); process.exit(0) }
 
@@ -253,4 +260,12 @@ if (plan.insert.length) {
   const { error } = await sb.from('candidates').insert(plan.insert.map((x) => ({ ...x.row, last_checked: now })))
   if (error) { failed++; console.log(`   ! insert: ${error.message}`) } else ok += plan.insert.length
 }
-console.log(`\n=> ${ok} written, ${failed} failed`)
+// The races this listing covers now hold a confirmed ballot. The app draws
+// a matchup and says "on the ballot" only for races carrying this stamp.
+const stamp = `Michigan Dept. of State, Official Candidate Listing, General Election 2026-11-03 (fetched ${TODAY})`
+let stamped = 0
+for (const id of seen.values()) {
+  const { error } = await sb.from('races').update({ ballot_confirmed_source: stamp, ballot_confirmed_at: now }).eq('id', id)
+  if (error) { failed++; console.log(`   ! stamp race ${id}: ${error.message}`) } else stamped++
+}
+console.log(`\n=> ${ok} written, ${stamped} races stamped ballot_confirmed, ${failed} failed`)

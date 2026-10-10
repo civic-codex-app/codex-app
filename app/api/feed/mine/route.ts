@@ -131,6 +131,9 @@ export async function GET(request: NextRequest) {
     })
   }
   for (const race of myRaces) {
+    // A race is "set" only once the state's certified listing has been
+    // reconciled; before that "running" is everyone who filed with the FEC.
+    if (!race.ballot_confirmed) continue
     const running = race.candidates.filter((c) => c.status === 'running')
     const major = running.filter((c) => c.party === 'democrat' || c.party === 'republican')
     if (major.length < 2) continue

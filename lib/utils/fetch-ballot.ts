@@ -38,6 +38,13 @@ export interface Race {
   candidates: Candidate[]
   election_name: string
   election_date: string
+  /**
+   * True once the race's candidate statuses have been reconciled against the
+   * state's certified listing (races.ballot_confirmed_at, migration 032).
+   * Until then "running" means "filed with the FEC", which includes primary
+   * losers, and no screen may draw a matchup from it.
+   */
+  ballot_confirmed: boolean
 }
 
 /* ── Data fetching ────────────────────────────────────────────────── */
@@ -68,7 +75,7 @@ export async function fetchBallotRaces(state: string, userDistrict?: string | st
   while (hasMore) {
     const { data } = await supabase
       .from('races')
-      .select('id, name, slug, state, chamber, district, description, election_id')
+      .select('id, name, slug, state, chamber, district, description, election_id, ballot_confirmed_at')
       .in('election_id', electionIds)
       .eq('state', state)
       .order('chamber')
@@ -196,6 +203,7 @@ export async function fetchBallotRaces(state: string, userDistrict?: string | st
       candidates: candidatesByRace.get(r.id) ?? [],
       election_name: election?.name ?? '',
       election_date: election?.election_date ?? '',
+      ballot_confirmed: !!r.ballot_confirmed_at,
     }
   })
 }
