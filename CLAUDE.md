@@ -117,6 +117,21 @@ titles by full name, or by a distinctive surname plus the state name
 (`daily_topic_politicians` is empty); titles and summaries are shown as
 stored. Votes everywhere are the honest empty state until roll calls exist.
 
+**A ballot is confirmed per race, never assumed.** The FEC lists who filed,
+not who won the primary. Measured 2026-10-09: 369 of the 505 federal and
+governor races for Nov 3, in every state but Michigan, still carried more
+than one running candidate from the same major party, and every screen drew
+the first two alphabetically as the matchup ("Adams vs. Brown and 5 others ·
+open seat", "Compare them", "Senate race is set"). Migration 032 adds
+`races.ballot_confirmed_source` / `ballot_confirmed_at`, and only a
+reconcile against a state's certified listing may set them (the Michigan
+script stamps every race it covers). While they are NULL, `/api/ballot`
+sends `confirmed: false` and `candidacy.confirmed` is false, and the screens
+count instead of pairing: "7 filed · nominees not confirmed", "Filed with
+the FEC", "Filed to run again", "Filed for Nov 3", no head-to-head, no
+feed "race is set" event. Reconciling a state is what turns the words
+back on; nothing in the app may infer a nominee from a filing.
+
 New public routes: `/api/ballot`, `/api/directory`, `/api/feed/mine` — all
 reads, all in the `verify:api` table.
 
@@ -516,7 +531,10 @@ a server round-trip from every tab tap.
   who filed, not who won a primary. No free API covers that; needs state SoS,
   AP, or Ballotpedia. The 319 candidates still `is_verified = false` are the
   original seed rows for non-federal races; FEC cannot verify those at all,
-  since state and local candidates file with state agencies.
+  since state and local candidates file with state agencies. Measured the
+  same day: 369 of 505 federal and governor races, in all 49 other states,
+  list more than one running candidate from the same major party. The app
+  now says so on every screen (see "A ballot is confirmed per race").
 - **Michigan is reconciled (2026-10-09)** against the Department of State's
   Official Candidate Listings for the Aug 4 primary and Nov 3 general, which
   cover every federal and legislative seat:
@@ -535,9 +553,13 @@ a server round-trip from every tab tap.
   reconcile script all carry the five new values; `partyColor`/`partyLabel`
   still fall back to Independent for anything unlisted, so add a party to
   all four places at once.
-- 152 races have no `incumbent_id` (was 196; 44 were derived on 2026-09-10 —
+- 122 races have no `incumbent_id` (was 196; 44 were derived on 2026-09-10 —
   38 mayors and county executives matched by place name + office, 6 at-large
-  House seats). The rest are genuinely underivable from what we hold.
+  House seats — and 4 more on 2026-10-09: GA-1, and the three Senate races
+  whose seat is identified by the one sitting senator of the state who filed
+  in them, the Ohio and Florida specials and Texas. Without that, Husted read
+  "Running for Senate" as if for someone else's seat.) The rest, all state
+  legislative and local, are genuinely underivable from what we hold.
 - 155 races have zero candidates, **all non-federal** (was 172). Every federal
   race now has at least one FEC-sourced candidate. The remainder are state and
   local seats with no free authoritative source.
@@ -610,6 +632,7 @@ Each is idempotent. Two ways to run them:
 17. **`029_fix_daily_topics_rls.sql` — SECURITY.** *(applied 2026-09-16)* See below.
 18. `030_candidate_fec_id.sql` — `candidates.fec_candidate_id`, unique per race; makes the FEC import idempotent
 19. `031_more_parties.sql` — adds `libertarian`, `constitution`, `us_taxpayers`, `natural_law`, `working_class` to `party_type`, so minor-party nominees stop being filed as Independent *(applied 2026-10-09 over the IPv4 pooler — see below)*
+20. `032_race_ballot_confirmed.sql` — `races.ballot_confirmed_source` / `ballot_confirmed_at`, set only by a reconcile against a state's certified listing; NULL means the running list is who filed with the FEC *(applied 2026-10-09 over the pooler)*
 
 > **`DATABASE_URL` in `.env.local` points at `db.<ref>.supabase.co`, which has
 > only an AAAA record.** On a network without IPv6 it fails with `ENOTFOUND`
@@ -637,8 +660,9 @@ All are dry-run by default; pass `--apply` to write. Prefix with
 
 | Script | Purpose |
 |---|---|
-| `scripts/destale-2026.mjs` | Derivable-only fixes: race incumbents via `(state, chamber, district)`, candidate→politician links, expired polls, status vocabulary, known retirements |
-| `scripts/reconcile-michigan-candidates.mjs` | Michigan candidates against the state's Official Candidate Listings: nominees verified, primary losers `lost`, non-qualifiers `withdrawn`, seed inventions deleted, missing nominees inserted. Re-running is a no-op once applied |
+| `scripts/destale-2026.mjs` | Derivable-only fixes: race incumbents via `(state, chamber, district)`, or for a Senate race the one sitting senator of the state with a candidate row in it; candidate→politician links, expired polls, status vocabulary, known retirements |
+| `scripts/reconcile-michigan-candidates.mjs` | Michigan candidates against the state's Official Candidate Listings: nominees verified, primary losers `lost`, non-qualifiers `withdrawn`, seed inventions deleted, missing nominees inserted, and every covered race stamped `ballot_confirmed` (032). Re-running refreshes against the live listing |
+| `scripts/stamp-michigan-ballot-confirmed.mjs` | The 032 stamp alone, for Michigan only, using the reconcile's own coverage rule. Written because the Bureau of Elections report answered 503 the day the columns landed. Must not be copied for a state that has not been reconciled |
 | `scripts/link-candidate-rows.mjs` | Explicit candidate→politician links the name matcher cannot make (a nickname on the ballot, a member running for another office). Each link names the candidate id, race, stored name, politician slug and reason; every one is checked against the live row; writes only where `politician_id` is NULL. Applied 2026-10-09 for Bergman (MI-1, "John" on the listing) and Stevens (Senate primary) |
 | `scripts/import-fec-finance.mjs` | Real FEC finance. `--cycle=2026 --office=S,H,P`. Caches responses to `.fec-cache/` |
 | `scripts/rebuild-bills-from-congress.mjs` | Real 119th-Congress bills from Congress.gov (`--scan`, `--active`) |

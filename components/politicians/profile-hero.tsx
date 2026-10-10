@@ -15,7 +15,9 @@ const ROLE: Record<string, string> = {
 /**
  * The top of a profile: one face, one name, one line, and what to do next.
  * The party is the ring, never a tinted chip. The Marker appears here only
- * when the person is actually on a ballot.
+ * when the person is actually on a ballot, or has filed for one: until the
+ * state's certified listing is reconciled the chip says "Filed for", since
+ * the FEC knows who filed and not who survived the primary.
  */
 export function ProfileHero({
   pol,
@@ -51,7 +53,7 @@ export function ProfileHero({
       </p>
       {onBallot && electionDate && (
         <span className="mt-2.5">
-          <Chip tone="marker">On your ballot {electionDate}</Chip>
+          <Chip tone="marker">{candidacy?.confirmed ? 'On your ballot' : 'Filed for'} {electionDate}</Chip>
         </span>
       )}
       <div className="mt-4 flex w-full gap-2">

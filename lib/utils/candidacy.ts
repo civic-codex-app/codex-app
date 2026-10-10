@@ -29,6 +29,12 @@ import type { SupabaseClient } from '@supabase/supabase-js'
  * only as complete as those are; a House member in a state whose candidates
  * were never imported reads as seat_open, which is why the label says "Seat
  * open" and not "Retiring".
+ *
+ * The FEC knows who filed, not who survived the primary. Until a race has
+ * been reconciled against the state's certified listing
+ * (races.ballot_confirmed_at, migration 032) the words are "Filed to run
+ * again" and "Filed for Governor", and `confirmed` is false so the screens
+ * can stop short of "on your ballot".
  */
 export type CandidacyKind = 'running' | 'other_race' | 'lost' | 'seat_open' | 'not_up'
 
@@ -39,6 +45,8 @@ export interface Candidacy {
   raceSlug: string | null
   raceName: string | null
   raceChamber: string | null
+  /** That race's statuses were reconciled against the state's certified listing. */
+  confirmed: boolean
 }
 
 interface Seat {
@@ -71,6 +79,7 @@ type RaceRow = {
   district: string | null
   election_id: string
   incumbent_id: string | null
+  ballot_confirmed_at: string | null
   candidates?: Array<{ status: string; is_incumbent: boolean; politician_id: string | null }>
 }
 
@@ -105,11 +114,11 @@ export async function candidacyFor(
   const [{ data: candidateRows }, { data: seatRaces }] = await Promise.all([
     supabase
       .from('candidates')
-      .select('politician_id, status, races:race_id(id, slug, name, state, chamber, district, election_id, incumbent_id)')
+      .select('politician_id, status, races:race_id(id, slug, name, state, chamber, district, election_id, incumbent_id, ballot_confirmed_at)')
       .in('politician_id', seats.map((s) => s.id)),
     supabase
       .from('races')
-      .select('id, slug, name, state, chamber, district, election_id, incumbent_id, candidates(status, is_incumbent, politician_id)')
+      .select('id, slug, name, state, chamber, district, election_id, incumbent_id, ballot_confirmed_at, candidates(status, is_incumbent, politician_id)')
       .in('election_id', electionIds)
       .in('state', states)
       .in('chamber', ['senate', 'house', 'governor', 'presidential']),
@@ -139,10 +148,12 @@ export async function candidacyFor(
       seatRace?.candidates?.some((c) => c.status === 'running' && c.is_incumbent && (c.politician_id === null || c.politician_id === seat.id)) ?? false
 
     if (runningHere || (unlinkedIncumbentRunning && seatRace)) {
-      out.set(seat.id, pick('running', 'Running again', (runningHere?.race ?? seatRace)!))
+      const race = (runningHere?.race ?? seatRace)!
+      out.set(seat.id, pick('running', race.ballot_confirmed_at ? 'Running again' : 'Filed to run again', race))
     } else if (runningElsewhere) {
       const office = OFFICE[runningElsewhere.race.chamber] ?? runningElsewhere.race.chamber
-      out.set(seat.id, pick('other_race', `Running for ${office}`, runningElsewhere.race))
+      const word = runningElsewhere.race.ballot_confirmed_at ? 'Running for' : 'Filed for'
+      out.set(seat.id, pick('other_race', `${word} ${office}`, runningElsewhere.race))
     } else if (lost) {
       out.set(seat.id, pick('lost', 'Lost primary', lost.race))
     } else if (seatRace) {
@@ -155,9 +166,9 @@ export async function candidacyFor(
 }
 
 function pick(kind: CandidacyKind, label: string, race: RaceRow): Candidacy {
-  return { kind, label, raceSlug: race.slug, raceName: race.name, raceChamber: race.chamber }
+  return { kind, label, raceSlug: race.slug, raceName: race.name, raceChamber: race.chamber, confirmed: !!race.ballot_confirmed_at }
 }
 
 function notUp(): Candidacy {
-  return { kind: 'not_up', label: 'Not up this year', raceSlug: null, raceName: null, raceChamber: null }
+  return { kind: 'not_up', label: 'Not up this year', raceSlug: null, raceName: null, raceChamber: null, confirmed: false }
 }

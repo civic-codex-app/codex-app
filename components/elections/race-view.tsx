@@ -5,6 +5,7 @@ import { Face } from '@/components/app/face'
 import { money } from '@/components/politicians/money-card'
 import { partyColor, partyLabel } from '@/lib/constants/parties'
 import { CHAMBER_LABELS, type ChamberKey } from '@/lib/constants/chambers'
+import { STATE_NAMES } from '@/lib/constants/us-states'
 import { countdown } from '@/lib/utils/next-election'
 
 export interface RaceCandidate {
@@ -76,6 +77,11 @@ function PersonRow({ c, last, note }: { c: RaceCandidate; last: boolean; note?: 
  * a House member running for Senate carries House-committee totals that say
  * nothing about the Senate race; showing them beside an opponent's Senate
  * numbers would be a confident comparison of two different things.
+ *
+ * The head-to-head itself exists only once the race has been reconciled
+ * against the state's certified candidate listing (`confirmed`). Before
+ * that, "running" is everyone who filed with the FEC, primary losers
+ * included, and the page lists them under "Filed with the FEC" and says so.
  */
 export function RaceView({
   race,
@@ -85,6 +91,7 @@ export function RaceView({
   finance,
   comparison,
   unverified,
+  confirmed,
 }: {
   race: { name: string; slug: string; state: string; chamber: string; district: string | null; description: string | null }
   electionDate: string | null
@@ -94,11 +101,14 @@ export function RaceView({
   finance: Record<string, RaceFinance>
   comparison: React.ReactNode
   unverified: boolean
+  /** races.ballot_confirmed_at is set: statuses come from the state's certified listing. */
+  confirmed: boolean
 }) {
   const running = candidates.filter((c) => c.status === 'running')
   const major = running.filter(isMajor)
-  const leads = major.length >= 2 ? major.slice(0, 2) : running.slice(0, 2)
-  const others = running.filter((c) => !leads.includes(c))
+  const leads = !confirmed ? [] : major.length >= 2 ? major.slice(0, 2) : running.slice(0, 2)
+  const others = confirmed ? running.filter((c) => !leads.includes(c)) : []
+  const filed = confirmed ? [] : running
   const lost = candidates.filter((c) => c.status === 'lost')
   const withdrawn = candidates.filter((c) => c.status === 'withdrawn')
   const incumbentRunning = incumbent ? running.some((c) => c.politician?.id === incumbent.id) : running.some((c) => c.is_incumbent)
@@ -123,7 +133,7 @@ export function RaceView({
           <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">
             {office} · {where}
           </span>
-          {running.length > 0 && <Chip>{openSeat ? 'Open seat' : 'Incumbent running'}</Chip>}
+          {running.length > 0 && <Chip>{!confirmed ? 'Nominees not confirmed' : openSeat ? 'Open seat' : 'Incumbent running'}</Chip>}
         </div>
         <h1 className="mt-2 font-serif text-[40px] font-normal leading-[1.08] text-[var(--poli-text)]">{race.name}</h1>
         {c && (
@@ -140,7 +150,7 @@ export function RaceView({
             <Link href={`/politicians/${incumbent.slug}`} className="font-semibold text-[var(--poli-text)] no-underline">
               {incumbent.name}
             </Link>{' '}
-            ({partyLabel(incumbent.party)}) {incumbentRunning ? 'is running again.' : 'is not on the ballot for this seat.'}
+            ({partyLabel(incumbent.party)}) {incumbentRunning ? (confirmed ? 'is running again.' : 'filed to run again.') : 'is not on the ballot for this seat.'}
           </p>
         </Card>
       )}
@@ -197,8 +207,14 @@ export function RaceView({
         </Card>
       )}
 
-      {(others.length > 0 || lost.length > 0 || withdrawn.length > 0 || (leads.length > 0 && leads.length < 2)) && (
+      {(filed.length > 0 || others.length > 0 || lost.length > 0 || withdrawn.length > 0 || (leads.length > 0 && leads.length < 2)) && (
         <Card flush className="mb-3 px-4">
+          {filed.length > 0 && (
+            <div className={lost.length > 0 || withdrawn.length > 0 ? 'border-b border-[var(--poli-border)]' : ''}>
+              <div className="pt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">Filed with the FEC</div>
+              {filed.map((o, i) => <PersonRow key={o.id} c={o} last={i === filed.length - 1} />)}
+            </div>
+          )}
           {leads.length === 1 && (
             <div className="border-b border-[var(--poli-border)]">
               <div className="pt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--poli-sub)]">On the ballot</div>
@@ -230,6 +246,12 @@ export function RaceView({
           <p className="text-[15px] font-semibold text-[var(--poli-text)]">No candidates on record yet</p>
           <p className="mt-1 text-[13.5px] text-[var(--poli-sub)]">We don&rsquo;t have a candidate list for this race.</p>
         </Card>
+      )}
+
+      {filed.length > 0 && (
+        <p className="mb-3 px-1 text-[13px] leading-[1.5] text-[var(--poli-sub)]">
+          Everyone who filed with the FEC for this seat. Poli hasn&rsquo;t checked {STATE_NAMES[race.state] ?? race.state}&rsquo;s certified ballot yet, so this can include candidates who lost their primary.
+        </p>
       )}
 
       {unverified && candidates.length > 0 && (

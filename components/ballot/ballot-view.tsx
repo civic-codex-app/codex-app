@@ -23,6 +23,11 @@ import { STATE_NAMES } from '@/lib/constants/us-states'
  * Each race is a card whose header carries the nominees' faces and opens to
  * everyone on the ballot. Candidates marked lost or withdrawn in the
  * reconciled `candidates` table are not on the ballot and are not shown.
+ *
+ * A race the state's certified listing has not been reconciled against
+ * (`confirmed: false` from /api/ballot) is not drawn as a matchup: "running"
+ * there means "filed with the FEC", primary losers included, so the card
+ * counts the filers, lists them, and says why.
  */
 
 const ORDER: Record<string, number> = { presidential: 0, senate: 1, governor: 2, house: 3 }
@@ -124,15 +129,22 @@ export function BallotView({ days, when }: { days: number; when: string }) {
         {sorted.map((r, idx) => {
           const running = r.candidates.filter((c) => c.status === 'running')
           const major = running.filter(isMajor)
-          const lead = major.length >= 2 ? major : running.slice(0, Math.max(2, major.length))
-          const rest = running.filter((c) => !lead.includes(c))
           const incumbent = running.find((c) => c.is_incumbent)
+          // A reconciled race shows its nominees face to face. Until then the
+          // incumbent is the one row worth a face; the other filers are a
+          // list, not the matchup.
+          const lead = !r.confirmed
+            ? incumbent ? [incumbent] : []
+            : major.length >= 2 ? major : running.slice(0, Math.max(2, major.length))
+          const rest = running.filter((c) => !lead.includes(c))
           const faces = lead.filter((c) => c.image_url).slice(0, 2).map((c) => ({ src: c.image_url, alt: c.name, party: c.party }))
-          const sub = incumbent
-            ? `${incumbent.name} is running again`
-            : running.length
-              ? 'Open seat'
-              : 'No candidates on record yet'
+          const sub = !running.length
+            ? 'No candidates on record yet'
+            : !r.confirmed
+              ? `${running.length} filed · nominees not confirmed`
+              : incumbent
+                ? `${incumbent.name} is running again`
+                : 'Open seat'
           return (
             <Card key={r.id} flush className="px-4">
               <Disclosure
@@ -166,8 +178,9 @@ export function BallotView({ days, when }: { days: number; when: string }) {
                     </Link>
                   ))}
                   {rest.length > 0 && (
-                    <p className="mt-1 text-[12.5px] leading-[1.45] text-[var(--poli-sub)]">
-                      Also running: {rest.map((c) => `${c.name} (${partyLabel(c.party)})`).join(', ')}.
+                    <p className={`${lead.length ? 'mt-1' : 'mt-3'} text-[12.5px] leading-[1.45] text-[var(--poli-sub)]`}>
+                      {r.confirmed ? 'Also running: ' : 'Filed with the FEC: '}
+                      {rest.map((c) => `${c.name} (${partyLabel(c.party)})`).join(', ')}.
                     </p>
                   )}
                   <Link
@@ -182,6 +195,12 @@ export function BallotView({ days, when }: { days: number; when: string }) {
           )
         })}
       </div>
+
+      {races !== null && sorted.some((r) => !r.confirmed && r.candidates.some((c) => c.status === 'running')) && (
+        <p className="mt-2 px-1 text-[12.5px] leading-[1.5] text-[var(--poli-sub)]">
+          Poli hasn&rsquo;t checked {stateName ?? 'your state'}&rsquo;s certified ballot yet. Until it has, each race lists everyone who filed with the FEC, which can include candidates who lost their primary.
+        </p>
+      )}
 
       {ambiguous && (
         <p className="mt-2 px-1 text-[12px] leading-relaxed text-[var(--poli-faint)]">
